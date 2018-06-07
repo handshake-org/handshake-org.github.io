@@ -1,6 +1,7 @@
 #!/bin/bash
 mkdir -p output
 rm output/*.html
+cp *.png output/
 
 for file in *.md
 do
