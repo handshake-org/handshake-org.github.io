@@ -1,6 +1,5 @@
 
-What is Handshake?
-------------------
+## What is Handshake?
 
 Handshake is an free/open source project that aims to replace the
 centralized control of the domain name system (DNS) with an open, secure
@@ -18,8 +17,7 @@ up**](http://beta.hndshk.net/signup) is easy, and after verifying your
 GitHub account, freenode username and email address you can claim your
 tokens.
 
-Getting started
----------------
+## Getting started
 
 -   hskd is the Handshake Daemon
 -   We have a bunch of other useful utilities and things on our [GitHub
@@ -29,8 +27,7 @@ Getting started
     Slack channel you have to beg to join. Find us in \#handshake on
     freenode.
 
-About us
---------
+### About us
 
 Names of everyone go here.
 
@@ -39,19 +36,10 @@ Lightning Network, freenode, Bcoin, KiwiIRC.
 
 And our mascot, [Luci has her own website](http://luci.cat).
 
-Add your name here by contributing to this project. This page is in
-GitHub at
-<https://github.com/handshake-org/website/blob/master/index.md>. Our
-website is generated from Markdown to HTML with the brillant
-[Pandoc](https://pandoc.org/)
+Add your name here by contributing to this project. 
 
-Come talk to us at an upcoming event
-------------------------------------
+### Come talk to us at an upcoming event
 
 [![](https://mat.tl/img/mattl.png){width="32"} Matt
 Lee](https://mat.tl){.p-author .h-card}: RSVP [yes]{.p-rsvp} to
 [IndieWeb Summit](https://2018.indieweb.org/){.u-in-reply-to}
-
-------------------------------------------------------------------------
-
-Last modified: Mon Jun 4 22:51:42 UTC 2018
