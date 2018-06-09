@@ -11,7 +11,7 @@ serving the root zone file embedded in the blockchain.
 
 We also have a SPV client, [hnsd](https://github.com/handshake-org/hnsd),
 which is written in C. It acts as a light client to the blockchain, as well
-as a recursive dns resolver. It can serve provable resource records and verify
+as a recursive name server. It can serve provable resource records and verify
 payments without having the resource requirements of a full node.
 
 By installing Handshake, you are participating in a decentralized open
