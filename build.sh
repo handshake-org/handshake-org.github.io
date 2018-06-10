@@ -14,4 +14,5 @@ echo 'finished'
 # build API documentation
 echo 'building api documentation...'
 cd ./src/docs
+bundle install
 bundle exec middleman build --clean --build-dir=../../docs
