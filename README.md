@@ -13,3 +13,23 @@ just run gem install bundler in a terminal.
 ```
 ./build.sh
 ```
+
+## Run
+To view the site locally, run a simple http server from the project's root
+directory.
+
+Python:
+
+```bash
+$ python -m SimpleHTTPServer 8000
+```
+
+Ruby:
+```bash
+$ ruby -run -e httpd . -p 8000
+```
+
+Nodejs:
+```
+$ npm install -g http-server
+$ http-server -p 8000
