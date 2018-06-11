@@ -6,16 +6,30 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Handshake Developer Resources</title>
     <link rel="icon" type="image/ico" href="favicon.ico" />
-    <style
-type="text/css">body{margin:40px
-auto;font-family: sans-serif;max-width:800px;line-height:1.6;font-size:18px;color:#444;padding:0
-10px}h1,h2,h3{line-height:1.2}.h-entry a {text-decoration: none;} .lynx {display: none !important;}</style>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" />
+    <style>
+    	.markdown-body {
+    		box-sizing: border-box;
+    		min-width: 200px;
+    		max-width: 980px;
+    		margin: 0 auto;
+    		padding: 45px;
+    	}
+
+      .lynx {display: none !important;}
+
+    	@media (max-width: 767px) {
+    		.markdown-body {
+    			padding: 15px;
+    		}
+    	}
+    </style>
   </head>
-  <body>
+  <body class="markdown-body">
 
 <a href="/"><img alt="handshake logo" src="logo.png"></a>
 
-<pre class="lynx">      
+<pre class="lynx">
     ___   
    /\__\  
   /:/__/_ 
@@ -25,6 +39,150 @@ auto;font-family: sans-serif;max-width:800px;line-height:1.6;font-size:18px;colo
    \/__/  
 </pre>
 
+<!-- <section class="markdown-body"><h2 id="windows-install-guide">Windows Install Guide</h2>
+<blockquote>
+<p>NOTE: the software has not been thoroughly tested on Windows.</p>
+</blockquote>
+<ol type="1">
+<li>Install Some Software</li>
+</ol>
+<ul>
+<li>Node / NPM https://nodejs.org/en/download/</li>
+<li>OpenSSL Win 64 http://slproweb.com/products/Win32OpenSSL.html</li>
+</ul>
+<ol start="2" type="1">
+<li>Python and Windows Build Tools install</li>
+</ol>
+<pre><code>$ npm install --global --production windows-build-tools
+$ npm config set msvs_version 2015 --global</code></pre>
+<ol start="3" type="1">
+<li>Install Cygwin with the following instructions</li>
+</ol>
+<ul>
+<li>Download from https://cygwin.com/install.html</li>
+<li>Open command prompt by running ‘cmd’</li>
+<li>Run:</li>
+</ul>
+<pre><code>cd Downloads
+setup-x86_64.exe ^
+  --root C:\Cygwin64\ ^
+  --site http://cygwin.mirror.constant.com ^
+  --quiet-mode ^
+  --no-desktop ^
+  --packages wget,git,automake,autoconf,cygwin32-libtool,libunbound-common,libunbound-devel,libunbound2,nano,libtool,gcc-g++,cygwin32-gcc-g++,make</code></pre>
+<blockquote>
+<p>Note: this assumes you use the C: drive</p>
+</blockquote>
+<ol start="4" type="1">
+<li>Set Cygwin Path</li>
+</ol>
+<ul>
+<li>Open command prompt (cmd)</li>
+<li>Set path:</li>
+</ul>
+<pre><code>$ set PATH=%PATH;C:\Cygwin64\bin
+$ setx PATH %PATH;C:\Cygwin64\bin</code></pre>
+<blockquote>
+<p>Note: or just Cygwin above if on 32bit machine</p>
+</blockquote>
+<ol start="5" type="1">
+<li>Run bash</li>
+</ol>
+<pre><code>$ bash</code></pre>
+<ol start="6" type="1">
+<li>Go home</li>
+</ol>
+<pre><code>$ cd /home</code></pre>
+<ol start="7" type="1">
+<li>Install <code>hskd</code></li>
+</ol>
+<ul>
+<li>Start</li>
+</ul>
+<pre><code>$ git clone git@github.com:handshake-org/hskd.git
+$ cd hskd
+$ git clone git@github.com:handshake-org/hsk-client.git
+$ cd hsk-client
+$ npm install --production
+$ cd ..
+$ npm link hsk-client
+$ npm pack bsip
+$ npm pack mrmr
+$ npm pack bcrypto
+$ tar -zvxf mrmr*
+$ mv package mrmr
+$ tar -zxvf bcrypto*
+$ mv package bcrypto
+$ tar -zxvf bsip*
+$ mv package bsip
+$ rm *.tgz
+$ cd bcrypto</code></pre>
+<ul>
+<li>Go thru and edit package.json in root <code>hskd/</code> folder to use file: of the above.</li>
+<li>Edit binding.gyp: <code>&quot;&lt;!(bash -c \&quot;python -c 'from __future__ import print_function; import sys; print(sys.byteorder)'\&quot;)&quot;,</code></li>
+<li>Continue</li>
+</ul>
+<pre><code>$ cd ..
+$ cd bsip</code></pre>
+<ul>
+<li>Do same to binding.gyp</li>
+<li>Continue</li>
+</ul>
+<pre><code>$ cd ..
+$ cd bstring</code></pre>
+<ul>
+<li>Do same to binding.gyp</li>
+<li>Continue</li>
+</ul>
+<pre><code>$ cd ..
+$ cd bcrypto
+$ cd src
+$ cd chacha20
+$ mv chacha20.c chacha20_2.c
+$ mv chacha20.h chacha20_2.h</code></pre>
+<ul>
+<li>Replace chacha20.h reference in chacha20_2.c to chacha20_2.h</li>
+<li>Continue</li>
+</ul>
+<pre><code>$ cd ..</code></pre>
+<ul>
+<li>Replace chacha20.h reference in chacha20.h to chacha20_2.h and crypt_scrypt.c also needs to change sha256_2.h</li>
+<li>Continue</li>
+</ul>
+<pre><code>$ cd ..</code></pre>
+<ul>
+<li>Replace reference to chacha20/chacha20.c to chacha20/chacha20_2.c in binding.gyp</li>
+<li>Do the same for blake2b</li>
+<li>Do the same for sha256 (note: It’s only in binding.gyp and not in the src/sha256.h)</li>
+<li>Continue by going to root /hskd/ folder but make sure you edit package.json to do file: for the above modules.</li>
+</ul>
+<pre><code>$ npm install --production
+$ cd ..</code></pre>
+<ol start="8" type="1">
+<li>Exit bash and setup mklink</li>
+</ol>
+<pre><code>$ mklink /D C:\home C:\Cygwin64\home</code></pre>
+<ol start="9" type="1">
+<li>Start <code>hskd</code> (in simnet) (open bash again)</li>
+</ol>
+<pre><code># Start the full node in simnet
+$ ./hskd/bin/hskd -n simnet --daemon --no-auth --coinbase-address=ss1qnwxzkgfymaz84k7wwf8v009nuqjf90vx2zfmts
+
+# Mine two blocks to ensure the name trie is in the correct state
+$ ./hskd/hsk-client/bin/hsk-cli -n simnet rpc generate 2</code></pre>
+<ol start="10" type="1">
+<li>Install <code>hnsd</code></li>
+</ol>
+<pre><code>$ git clone git@github.com:handshake-org/hnsd.git
+$ cd hnsd
+$ ./autogen.sh &amp;&amp; ./configure --with-network simnet &amp;&amp; make</code></pre>
+<ol start="11" type="1">
+<li>Start <code>hnsd</code></li>
+</ol>
+<pre><code>$ ./hnsd.exe --pool-size=1 --rs-host=127.0.0.1:53</code></pre>
+<ol start="12" type="1">
+<li>Change Windows DNS Settings to point to 127.0.0.1</li>
+</ol></section> -->
 <h2 id="windows-install-guide">Windows Install Guide</h2>
 <blockquote>
 <p>NOTE: the software has not been thoroughly tested on Windows.</p>

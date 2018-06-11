@@ -6,16 +6,30 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Handshake Developer Resources</title>
     <link rel="icon" type="image/ico" href="favicon.ico" />
-    <style
-type="text/css">body{margin:40px
-auto;font-family: sans-serif;max-width:800px;line-height:1.6;font-size:18px;color:#444;padding:0
-10px}h1,h2,h3{line-height:1.2}.h-entry a {text-decoration: none;} .lynx {display: none !important;}</style>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" />
+    <style>
+    	.markdown-body {
+    		box-sizing: border-box;
+    		min-width: 200px;
+    		max-width: 980px;
+    		margin: 0 auto;
+    		padding: 45px;
+    	}
+
+      .lynx {display: none !important;}
+
+    	@media (max-width: 767px) {
+    		.markdown-body {
+    			padding: 15px;
+    		}
+    	}
+    </style>
   </head>
-  <body>
+  <body class="markdown-body">
 
 <a href="/"><img alt="handshake logo" src="logo.png"></a>
 
-<pre class="lynx">      
+<pre class="lynx">
     ___   
    /\__\  
   /:/__/_ 
@@ -25,6 +39,64 @@ auto;font-family: sans-serif;max-width:800px;line-height:1.6;font-size:18px;colo
    \/__/  
 </pre>
 
+<!-- <section class="markdown-body"><h2 id="macos-install-guide">macOS Install Guide</h2>
+<ol type="1">
+<li><p>Open Terminal.App</p></li>
+<li>Install Xcode Command Line Tools</li>
+</ol>
+<pre><code>$ xcode-select --install</code></pre>
+<ol start="3" type="1">
+<li>Install Homebrew and npm</li>
+</ol>
+<pre><code>$ /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+$ brew install npm</code></pre>
+<ol start="4" type="1">
+<li>Install <code>hskd</code></li>
+</ol>
+<pre><code>$ git clone git@github.com:handshake-org/hskd.git
+$ cd hskd
+$ git clone git@github.com:handshake-org/hsk-client.git
+$ cd hsk-client
+$ npm install --production
+$ cd ..
+$ npm link hsk-client
+$ npm install --production
+$ cd ..</code></pre>
+<ol start="5" type="1">
+<li>Start <code>hskd</code> (in simnet)</li>
+</ol>
+<pre><code># Start the full node in simnet
+$ ./hskd/bin/hskd -n simnet --daemon --no-auth --coinbase-address=ss1qnwxzkgfymaz84k7wwf8v009nuqjf90vx2zfmts
+
+# Mine two blocks to ensure the name trie is in the correct state
+$ ./hskd/hsk-client/bin/hsk-cli -n simnet rpc generate 2</code></pre>
+<ol start="6" type="1">
+<li>Install Dependencies for hnsd</li>
+</ol>
+<pre><code>$ brew install git automake autoconf libtool unbound
+
+# If something breaks, create folder that wasn’t created.
+$ mkdir /usr/local/sbin &amp;&amp; chmod `whoami`:admin /usr/local/sbin &amp;&amp; chmod 0775 /usr/local/sbin</code></pre>
+<ol start="7" type="1">
+<li>Install <code>hnsd</code></li>
+</ol>
+<pre><code>$ git clone git@github.com:handshake-org/hnsd.git
+$ cd hnsd
+$ ./autogen.sh &amp;&amp; ./configure --with-network=simnet &amp;&amp; make</code></pre>
+<ol start="8" type="1">
+<li>Start <code>hnsd</code></li>
+</ol>
+<pre><code>$ sudo ./hnsd --pool-size=1 --rs-host=127.0.0.1:53 </code></pre>
+<ol start="9" type="1">
+<li>Add <code>hnsd</code> to your default nameserver settings</li>
+</ol>
+<ul>
+<li>Open “System Preferences” on the panel/dock.</li>
+<li>Select “Network”.</li>
+<li>Select “Advanced”.</li>
+<li>Select “DNS”.</li>
+<li>Remove all nameservers and add a single server: “127.0.0.1”.</li>
+</ul></section> -->
 <h2 id="macos-install-guide">macOS Install Guide</h2>
 <ol type="1">
 <li><p>Open Terminal.App</p></li>

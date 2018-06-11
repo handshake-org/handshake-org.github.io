@@ -6,16 +6,30 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Handshake Developer Resources</title>
     <link rel="icon" type="image/ico" href="favicon.ico" />
-    <style
-type="text/css">body{margin:40px
-auto;font-family: sans-serif;max-width:800px;line-height:1.6;font-size:18px;color:#444;padding:0
-10px}h1,h2,h3{line-height:1.2}.h-entry a {text-decoration: none;} .lynx {display: none !important;}</style>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" />
+    <style>
+    	.markdown-body {
+    		box-sizing: border-box;
+    		min-width: 200px;
+    		max-width: 980px;
+    		margin: 0 auto;
+    		padding: 45px;
+    	}
+
+      .lynx {display: none !important;}
+
+    	@media (max-width: 767px) {
+    		.markdown-body {
+    			padding: 15px;
+    		}
+    	}
+    </style>
   </head>
-  <body>
+  <body class="markdown-body">
 
 <a href="/"><img alt="handshake logo" src="logo.png"></a>
 
-<pre class="lynx">      
+<pre class="lynx">
     ___   
    /\__\  
   /:/__/_ 
@@ -25,6 +39,29 @@ auto;font-family: sans-serif;max-width:800px;line-height:1.6;font-size:18px;colo
    \/__/  
 </pre>
 
+<!-- <section class="markdown-body"><h2 id="about-handshake">About Handshake</h2>
+<p>Handshake is a UTXO-based blockchain protocol which manages the registration, renewal and transfer of DNS top-level domains (TLDs). Our naming protocol differs from its predecessors in that it has no concept of namespacing or subdomains at the consensus layer. Its purpose is <em>not</em> to replace DNS, but to replace the root zone file and the root servers.</p>
+<p>The full node daemon, <a href="https://github.com/handshake-org/hskd">hskd</a>, is written in Javascript and is a fork of <a href="https://bcoin.io">bcoin</a>. By running a full node you, you can participate in securing the network and serving the root zone file embedded in the blockchain.</p>
+<p>We also have a SPV client, <a href="https://github.com/handshake-org/hnsd">hnsd</a>, which is written in C. It acts as a light client to the blockchain, as well as a recursive name server. It can serve provable resource records and verify payments without having the resource requirements of a full node.</p>
+<p>By installing and/or contributing to Handshake, you are participating in a decentralized open platform owned by the commons.</p>
+<h2 id="installation">Installation</h2>
+<p>We have installation instructions for <a href="/install-linux.html">Linux</a>, <a href="/install-mac.html">macOS</a>, and <a href="/install-win.html">Windows</a></p>
+<blockquote>
+<p>NOTE: the software works best with unix-like OSes, and has not yet been thoroughly tested on Windows. The BSDs and Solaris have also not been tested yet, but should work in theory.</p>
+</blockquote>
+<h2 id="source-code">Source Code</h2>
+<p>The latest source code is available on <a href="https://github.com/handshake-org">GitHub</a>.</p>
+<p>The source code is under an MIT license.</p>
+<h2 id="documentation">Documentation</h2>
+<p>API documentation for hskd can be found <a href="/docs">here</a>.</p>
+<h2 id="security-audit">Security Audit</h2>
+<p>The protocol and implementation are being audited by a team led by <a href="https://isi.jhu.edu/~mgreen/">Dr. Matthew Green</a> of John Hopkins University. Dr. Green has previously led audits on the <a href="https://www.privateinternetaccess.com/blog/2017/08/libsodium-v1-0-12-and-v1-0-13-security-assessment/">libsodium</a> crypto library and the <a href="https://blog.cryptographyengineering.com/2015/04/02/truecrypt-report/">Truecrypt</a> disk encryption project. He is also a co-author of both the <a href="http://zerocoin.org/talks_and_press">Zerocoin</a> and <a href="http://zerocash-project.org/paper">Zerocash</a> papers. He is also a research scientist for the <a href="https://z.cash/">Zcash Company</a> and shares his thoughts on cryptographic engineering on his <a href="https://blog.cryptographyengineering.com/">blog</a>.</p>
+<h2 id="coins">Coins</h2>
+<p>Handshake utilizes a utility coin system for name registration. Handshake depends on the free and open source community to take ownership and decentralize the system <a href="https://handshake.org" class="uri">https://handshake.org</a>.</p>
+<h2 id="mailing-list">Mailing List</h2>
+<p>You can subscribe to the GNU Mailman mailing list by e-mailing ‘subscribe’ to devs@handshake.org.</p>
+<h2 id="irc">IRC</h2>
+<p>A community IRC channel exists on Freenode in irc.freenode.net:#handshake.</p></section> -->
 <h2 id="about-handshake">About Handshake</h2>
 <p>Handshake is a UTXO-based blockchain protocol which manages the registration, renewal and transfer of DNS top-level domains (TLDs). Our naming protocol differs from its predecessors in that it has no concept of namespacing or subdomains at the consensus layer. Its purpose is <em>not</em> to replace DNS, but to replace the root zone file and the root servers.</p>
 <p>The full node daemon, <a href="https://github.com/handshake-org/hskd">hskd</a>, is written in Javascript and is a fork of <a href="https://bcoin.io">bcoin</a>. By running a full node you, you can participate in securing the network and serving the root zone file embedded in the blockchain.</p>
