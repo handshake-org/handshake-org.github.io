@@ -29,7 +29,7 @@ Ruby:
 $ ruby -run -e httpd . -p 8000
 ```
 
-Nodejs:
+Node.js:
 ```
 $ npm install -g http-server
 $ http-server -p 8000

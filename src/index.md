@@ -1,3 +1,5 @@
+## About Handshake
+
 Handshake is a UTXO-based blockchain protocol which manages the
 registration, renewal and transfer of DNS top-level domains (TLDs). Our naming
 protocol differs from its predecessors in that it has no concept of
@@ -14,10 +16,19 @@ which is written in C. It acts as a light client to the blockchain, as well
 as a recursive name server. It can serve provable resource records and verify
 payments without having the resource requirements of a full node.
 
-By installing Handshake, you are participating in a decentralized open
-platform owned by the commons.
+By installing and/or contributing to Handshake, you are participating in a
+decentralized open platform owned by the commons.
 
-## Download
+## Installation
+
+We have installation instructions for [Linux](/install-linux.html),
+[macOS](/install-mac.html), and [Windows](/install-win.html)
+
+>NOTE: the software works best with unix-like OSes, and has not yet been
+thoroughly tested on Windows. The BSDs and Solaris have also not been
+tested yet, but should work in theory.
+
+## Source Code
 
 The latest source code is available on
 [GitHub](https://github.com/handshake-org).
