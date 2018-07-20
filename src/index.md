@@ -38,7 +38,7 @@ The source code is under an MIT license.
 ## Documentation
 
 API documentation for hskd can be found
-[here](/docs).
+[here](/api-docs).
 
 ## Security Audit
 
