@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: dns/resource.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: dns/resource.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+ * resource.js - hsk resource for hsk
+ * Copyright (c) 2017-2018, Christopher Jeffrey (MIT License).
+ * https://github.com/handshake-org/hskd
+ */
+
+'use strict';
+
+const assert = require('assert');
+const bns = require('bns');
+const bio = require('bufio');
+const compress = require('./compress');
+const key = require('./key');
+const records = require('./records');
+const {tlsa, smimea, srv, openpgpkey} = bns;
+const {Struct} = bio;
+
+const {
+  Target,
+  Service,
+  Location,
+  Magnet,
+  DS,
+  TLS,
+  SMIME,
+  SSH,
+  PGP,
+  Addr,
+  Extra,
+  readTarget
+} = records;
+
+const {
+  wire,
+  util
+} = bns;
+
+const {
+  Message,
+  Record,
+  ARecord,
+  AAAARecord,
+  NSRecord,
+  MXRecord,
+  CNAMERecord,
+  DNAMERecord,
+  SRVRecord,
+  TXTRecord,
+  LOCRecord,
+  DSRecord,
+  TLSARecord,
+  SMIMEARecord,
+  SSHFPRecord,
+  OPENPGPKEYRecord,
+  URIRecord,
+  RPRecord,
+  NSECRecord,
+  types
+} = wire;
+
+const {
+  Compressor,
+  Decompressor
+} = compress;
+
+/*
+ * Constants
+ */
+
+const DUMMY = Buffer.alloc(0);
+
+// A RRSIG NSEC
+// const TYPE_MAP_A = Buffer.from('0006400000000003', 'hex');
+
+// AAAA RRSIG NSEC
+// const TYPE_MAP_AAAA = Buffer.from('0006000000080003', 'hex');
+
+/**
+ * Resource
+ * @extends {Struct}
+ */
+
+class Resource extends Struct {
+  constructor() {
+    super();
+    this.version = 0;
+    this.ttl = 0;
+    this.compat = false;
+    this.hosts = [];
+    this.canonical = null;
+    this.delegate = null;
+    this.ns = [];
+    this.service = [];
+    this.uri = [];
+    this.email = [];
+    this.text = [];
+    this.location = [];
+    this.magnet = [];
+    this.ds = [];
+    this.tls = [];
+    this.smime = [];
+    this.ssh = [];
+    this.pgp = [];
+    this.addr = [];
+    this.extra = [];
+  }
+
+  compress() {
+    const c = new Compressor();
+
+    for (const host of this.hosts)
+      host.compress(c);
+
+    if (this.canonical)
+      this.canonical.compress(c);
+
+    if (this.delegate)
+      this.delegate.compress(c);
+
+    for (const ns of this.ns)
+      ns.compress(c);
+
+    for (const srv of this.service)
+      srv.compress(c);
+
+    for (const uri of this.uri)
+      c.addString(uri);
+
+    for (const email of this.email)
+      c.addString(email);
+
+    for (const text of this.text)
+      c.addString(text);
+
+    for (const loc of this.location)
+      loc.compress(c);
+
+    for (const urn of this.magnet)
+      urn.compress(c);
+
+    for (const ds of this.ds)
+      ds.compress(c);
+
+    for (const tls of this.tls)
+      tls.compress(c);
+
+    for (const smime of this.smime)
+      smime.compress(c);
+
+    for (const ssh of this.ssh)
+      ssh.compress(c);
+
+    for (const pgp of this.pgp)
+      pgp.compress(c);
+
+    for (const addr of this.addr)
+      addr.compress(c);
+
+    for (const extra of this.extra)
+      extra.compress(c);
+
+    return c;
+  }
+
+  encode() {
+    const c = this.compress();
+    const size = this.getSize(c);
+    const bw = bio.write(size);
+    this.write(bw, c);
+    return bw.slice();
+  }
+
+  getSize(c) {
+    let size = 1 + 2;
+
+    size += c.getSize();
+
+    for (const host of this.hosts)
+      size += host.getSize(c);
+
+    if (this.canonical)
+      size += 1 + this.canonical.getSize(c);
+
+    if (this.delegate)
+      size += 1 + this.delegate.getSize(c);
+
+    for (const ns of this.ns)
+      size += 1 + ns.getSize(c);
+
+    for (const srv of this.service)
+      size += 1 + srv.getSize(c);
+
+    for (const uri of this.uri)
+      size += 1 + c.size(uri);
+
+    for (const email of this.email)
+      size += 1 + c.size(email);
+
+    for (const text of this.text)
+      size += 1 + c.size(text);
+
+    for (const loc of this.location)
+      size += 1 + loc.getSize(c);
+
+    for (const urn of this.magnet)
+      size += 1 + urn.getSize(c);
+
+    for (const ds of this.ds)
+      size += 1 + ds.getSize(c);
+
+    for (const tls of this.tls)
+      size += 1 + tls.getSize(c);
+
+    for (const smime of this.smime)
+      size += 1 + smime.getSize(c);
+
+    for (const ssh of this.ssh)
+      size += 1 + ssh.getSize(c);
+
+    for (const pgp of this.pgp)
+      size += 1 + pgp.getSize(c);
+
+    for (const addr of this.addr)
+      size += 1 + addr.getSize(c);
+
+    for (const extra of this.extra)
+      size += 1 + extra.getSize(c);
+
+    return size;
+  }
+
+  write(bw, c) {
+    // Serialization version.
+    bw.writeU8(this.version);
+
+    // TTL has a granularity of 6
+    // (about 1 minute per unit).
+    const cmp = this.compat ? 0x8000 : 0;
+    const ttl = this.ttl >>> 6;
+    assert((ttl &amp; 0x8000) === 0); // 15 bits max
+
+    bw.writeU16BE(cmp | ttl);
+
+    // Write the symbol table.
+    c.write(bw);
+
+    for (const host of this.hosts)
+      host.write(bw, c);
+
+    if (this.canonical) {
+      bw.writeU8(records.types.CANONICAL);
+      this.canonical.write(bw, c);
+    }
+
+    if (this.delegate) {
+      bw.writeU8(records.types.DELEGATE);
+      this.delegate.write(bw, c);
+    }
+
+    for (const ns of this.ns) {
+      bw.writeU8(records.types.NS);
+      ns.write(bw, c);
+    }
+
+    for (const srv of this.service) {
+      bw.writeU8(records.types.SERVICE);
+      srv.write(bw, c);
+    }
+
+    for (const uri of this.uri) {
+      bw.writeU8(records.types.URI);
+      c.writeString(bw, uri);
+    }
+
+    for (const email of this.email) {
+      bw.writeU8(records.types.EMAIL);
+      c.writeString(bw, email);
+    }
+
+    for (const text of this.text) {
+      bw.writeU8(records.types.TEXT);
+      c.writeString(bw, text);
+    }
+
+    for (const loc of this.location) {
+      bw.writeU8(records.types.LOCATION);
+      loc.write(bw, c);
+    }
+
+    for (const urn of this.magnet) {
+      bw.writeU8(records.types.MAGNET);
+      urn.write(bw, c);
+    }
+
+    for (const ds of this.ds) {
+      bw.writeU8(records.types.DS);
+      ds.write(bw, c);
+    }
+
+    for (const tls of this.tls) {
+      bw.writeU8(records.types.TLS);
+      tls.write(bw, c);
+    }
+
+    for (const smime of this.smime) {
+      bw.writeU8(records.types.SMIME);
+      smime.write(bw, c);
+    }
+
+    for (const ssh of this.ssh) {
+      bw.writeU8(records.types.SSH);
+      ssh.write(bw, c);
+    }
+
+    for (const pgp of this.pgp) {
+      bw.writeU8(records.types.PGP);
+      pgp.write(bw, c);
+    }
+
+    for (const addr of this.addr) {
+      bw.writeU8(records.types.ADDR);
+      addr.write(bw, c);
+    }
+
+    for (const extra of this.extra) {
+      bw.writeU8(extra.type);
+      extra.write(bw, c);
+    }
+
+    return this;
+  }
+
+  read(br) {
+    // Serialization version.
+    const version = br.readU8();
+
+    if (version !== 0)
+      throw new Error(`Unknown serialization version: ${version}.`);
+
+    // TTL has a granularity of 6
+    // (about 1 minute per unit).
+    const field = br.readU16BE();
+    this.compat = (field &amp; 0x8000) !== 0;
+    this.ttl = (field &amp; 0x7fff) &lt;&lt; 6;
+
+    if (this.ttl === 0)
+      this.ttl = 1 &lt;&lt; 6;
+
+    // Read the symbol table.
+    const d = Decompressor.read(br);
+
+    let count = 0;
+
+    while (br.left()) {
+      if (count === 255)
+        throw new Error('Too many records.');
+
+      count += 1;
+
+      const type = br.readU8();
+
+      switch (type) {
+        case records.types.INET4:
+        case records.types.INET6:
+        case records.types.ONION:
+        case records.types.ONIONNG: {
+          const target = readTarget(type, br);
+          this.hosts.push(new Target(type, target));
+          break;
+        }
+        case records.types.NAME: {
+          assert(!this.canonical);
+          const target = readTarget(type, br);
+          this.canonical = new Target(type, target);
+          assert(!this.canonical.isTor());
+          break;
+        }
+        case records.types.CANONICAL: {
+          assert(!this.canonical);
+          this.canonical = Target.read(br, d);
+          assert(!this.canonical.isTor());
+          break;
+        }
+        case records.types.DELEGATE: {
+          assert(!this.delegate);
+          this.delegate = Target.read(br, d);
+          assert(this.delegate.isName());
+          break;
+        }
+        case records.types.NS: {
+          const ns = Target.read(br, d);
+          assert(!ns.isTor());
+          this.ns.push(ns);
+          break;
+        }
+        case records.types.SERVICE: {
+          this.service.push(Service.read(br, d));
+          break;
+        }
+        case records.types.URI: {
+          this.uri.push(d.readString(br));
+          break;
+        }
+        case records.types.EMAIL: {
+          this.email.push(d.readString(br));
+          break;
+        }
+        case records.types.TEXT: {
+          this.text.push(d.readString(br));
+          break;
+        }
+        case records.types.LOCATION: {
+          this.location.push(Location.read(br, d));
+          break;
+        }
+        case records.types.MAGNET: {
+          this.magnet.push(Magnet.read(br, d));
+          break;
+        }
+        case records.types.DS: {
+          this.ds.push(DS.read(br, d));
+          break;
+        }
+        case records.types.TLS: {
+          this.tls.push(TLS.read(br, d));
+          break;
+        }
+        case records.types.SMIME: {
+          this.smime.push(SMIME.read(br, d));
+          break;
+        }
+        case records.types.SSH: {
+          this.ssh.push(SSH.read(br, d));
+          break;
+        }
+        case records.types.PGP: {
+          this.pgp.push(PGP.read(br, d));
+          break;
+        }
+        case records.types.ADDR: {
+          this.addr.push(Addr.read(br, d));
+          break;
+        }
+        default: {
+          this.extra.push(Extra.read(br, d));
+          break;
+        }
+      }
+    }
+
+    return this;
+  }
+
+  toA(name) {
+    const answer = [];
+
+    for (const host of this.hosts) {
+      if (!host.isINET4())
+        continue;
+
+      const rr = new Record();
+      rr.name = name;
+      rr.ttl = this.ttl;
+      rr.type = types.A;
+      rr.data = new ARecord();
+      rr.data.address = host.target;
+
+      answer.push(rr);
+    }
+
+    if (this.hasTor())
+      answer.push(this.toTorTXT(name));
+
+    return answer;
+  }
+
+  toAAAA(name) {
+    const answer = [];
+
+    for (const host of this.hosts) {
+      if (!host.isINET6())
+        continue;
+
+      const rr = new Record();
+      rr.name = name;
+      rr.ttl = this.ttl;
+      rr.type = types.AAAA;
+      rr.data = new AAAARecord();
+      rr.data.address = host.target;
+
+      answer.push(rr);
+    }
+
+    if (this.hasTor())
+      answer.push(this.toTorTXT(name));
+
+    return answer;
+  }
+
+  toCNAME(name) {
+    if (!this.canonical)
+      return [];
+
+    const cn = this.canonical;
+    const rr = new Record();
+    rr.name = name;
+    rr.ttl = this.ttl;
+    rr.type = types.CNAME;
+    rr.data = new CNAMERecord();
+
+    if (!cn.isName())
+      return [];
+
+    rr.data.target = this.canonical.toDNS();
+
+    return [rr];
+  }
+
+  toDNAME(name) {
+    if (!this.delegate)
+      return [];
+
+    assert(this.delegate.isName());
+    const rr = new Record();
+    rr.name = name;
+    rr.ttl = this.ttl;
+    rr.type = types.DNAME;
+    rr.data = new DNAMERecord();
+    rr.data.target = this.delegate.toDNS();
+
+    return [rr];
+  }
+
+  toNS(name) {
+    const authority = [];
+
+    for (const ns of this.ns) {
+      let nsname = null;
+
+      if (ns.isName())
+        nsname = ns.toDNS();
+      else if (ns.isINET())
+        nsname = ns.toPointer(name);
+
+      if (!nsname)
+        continue;
+
+      const rr = new Record();
+      const rd = new NSRecord();
+      rr.name = name;
+      rr.ttl = this.ttl;
+      rr.type = types.NS;
+      rr.data = rd;
+      rd.ns = nsname;
+
+      authority.push(rr);
+    }
+
+    return authority;
+  }
+
+  toNSIP(name) {
+    const additional = [];
+
+    for (const ns of this.ns) {
+      if (!ns.isINET())
+        continue;
+
+      const rr = new Record();
+      rr.name = ns.toPointer(name);
+      rr.ttl = this.ttl;
+
+      if (ns.isINET4()) {
+        rr.type = types.A;
+        rr.data = new ARecord();
+      } else {
+        rr.type = types.AAAA;
+        rr.data = new AAAARecord();
+      }
+
+      rr.data.address = ns.target;
+
+      additional.push(rr);
+    }
+
+    return additional;
+  }
+
+  toMX(name) {
+    const answer = [];
+
+    for (const srv of this.service) {
+      if (!util.equal(srv.protocol, 'tcp.'))
+        continue;
+
+      if (!util.equal(srv.service, 'smtp.'))
+        continue;
+
+      let mxname = null;
+
+      if (srv.target.isName())
+        mxname = srv.target.toDNS();
+      else if (srv.target.isINET())
+        mxname = srv.target.toPointer(name);
+
+      if (!mxname)
+        continue;
+
+      const rr = new Record();
+      const rd = new MXRecord();
+
+      rr.name = name;
+      rr.type = types.MX;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.preference = srv.priority;
+      rd.mx = mxname;
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toMXIP(name) {
+    return this.toSRVIP(name, 'tcp.', 'smtp.');
+  }
+
+  toSRV(name, protocol, service) {
+    const answer = [];
+
+    for (const srv of this.service) {
+      let target = null;
+
+      if (srv.target.isName())
+        target = srv.target.toDNS();
+      else if (srv.target.isINET())
+        target = srv.target.toPointer(name);
+
+      if (!target)
+        continue;
+
+      if (!util.equal(protocol, srv.protocol))
+        continue;
+
+      if (!util.equal(service, srv.service))
+        continue;
+
+      const rr = new Record();
+      const rd = new SRVRecord();
+
+      rr.name = name;
+      rr.type = types.SRV;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.priority = srv.priority;
+      rd.weight = srv.weight;
+      rd.target = target;
+      rd.port = srv.port;
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toSRVIP(name, protocol, service) {
+    const additional = [];
+
+    for (const srv of this.service) {
+      if (!srv.target.isINET())
+        continue;
+
+      if (!util.equal(protocol, srv.protocol))
+        continue;
+
+      if (!util.equal(service, srv.service))
+        continue;
+
+      const rr = new Record();
+      rr.name = srv.target.toPointer(name);
+      rr.ttl = this.ttl;
+
+      if (srv.target.isINET4()) {
+        rr.type = types.A;
+        rr.data = new ARecord();
+      } else {
+        rr.type = types.AAAA;
+        rr.data = new AAAARecord();
+      }
+
+      rr.data.address = srv.target.target;
+
+      additional.push(rr);
+    }
+
+    return additional;
+  }
+
+  toLOC(name) {
+    const answer = [];
+
+    for (const loc of this.location) {
+      const rr = new Record();
+      const rd = new LOCRecord();
+
+      rr.name = name;
+      rr.type = types.LOC;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.version = loc.version;
+      rd.size = loc.size;
+      rd.horizPre = loc.horizPre;
+      rd.vertPre = loc.vertPre;
+      rd.latitude = loc.latitude;
+      rd.longitude = loc.longitude;
+      rd.altitude = loc.altitude;
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toDS(name) {
+    const answer = [];
+
+    for (const ds of this.ds) {
+      const rr = new Record();
+      const rd = new DSRecord();
+
+      rr.name = name;
+      rr.type = types.DS;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.keyTag = ds.keyTag;
+      rd.algorithm = ds.algorithm;
+      rd.digestType = ds.digestType;
+      rd.digest = ds.digest;
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toTLSA(name, protocol, port) {
+    const answer = [];
+
+    for (const tls of this.tls) {
+      const rr = new Record();
+      const rd = new TLSARecord();
+
+      if (!util.equal(protocol, tls.protocol))
+        continue;
+
+      if (tls.port !== port)
+        continue;
+
+      rr.name = name;
+      rr.type = types.TLSA;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.usage = tls.usage;
+      rd.selector = tls.selector;
+      rd.matchingType = tls.matchingType;
+      rd.certificate = tls.certificate;
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toSMIMEA(name, hash) {
+    const answer = [];
+
+    for (const smime of this.smime) {
+      const rr = new Record();
+      const rd = new SMIMEARecord();
+
+      if (!hash.equals(smime.hash))
+        continue;
+
+      rr.name = name;
+      rr.type = types.SMIMEA;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.usage = smime.usage;
+      rd.selector = smime.selector;
+      rd.matchingType = smime.matchingType;
+      rd.certificate = smime.certificate;
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toSSHFP(name) {
+    const answer = [];
+
+    for (const ssh of this.ssh) {
+      const rr = new Record();
+      const rd = new SSHFPRecord();
+
+      rr.name = name;
+      rr.type = types.SSHFP;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.algorithm = ssh.algorithm;
+      rd.keyType = ssh.keyType;
+      rd.fingerprint = ssh.fingerprint;
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toOPENPGPKEY(name, hash) {
+    const answer = [];
+
+    for (const pgp of this.pgp) {
+      const rr = new Record();
+      const rd = new OPENPGPKEYRecord();
+
+      if (!hash.equals(pgp.hash))
+        continue;
+
+      rr.name = name;
+      rr.type = types.OPENPGPKEY;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.publicKey = pgp.publicKey;
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toURI(name) {
+    const answer = [];
+
+    for (const uri of this.uri) {
+      const rr = new Record();
+      const rd = new URIRecord();
+
+      rr.name = name;
+      rr.type = types.URI;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.priority = 0;
+      rd.weight = 0;
+      rd.target = uri;
+
+      answer.push(rr);
+    }
+
+    for (const urn of this.magnet) {
+      const rr = new Record();
+      const rd = new URIRecord();
+
+      rr.name = name;
+      rr.type = types.URI;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.priority = 0;
+      rd.weight = 0;
+      rd.target = urn.toString();
+
+      answer.push(rr);
+    }
+
+    for (const addr of this.addr) {
+      const rr = new Record();
+      const rd = new URIRecord();
+
+      rr.name = name;
+      rr.type = types.URI;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.priority = 0;
+      rd.weight = 0;
+      rd.target = addr.toString();
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toRP(name) {
+    const answer = [];
+
+    for (const email of this.email) {
+      if (email.length > 63)
+        continue;
+
+      const rr = new Record();
+      const rd = new RPRecord();
+
+      rr.name = name;
+      rr.type = types.RP;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.mbox = util.fqdn(email);
+
+      if (!util.isName(rd.mbox))
+        continue;
+
+      rd.txt = '.';
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  hasTor() {
+    for (const host of this.hosts) {
+      if (host.isTor())
+        return true;
+    }
+    return false;
+  }
+
+  toTorTXT(name) {
+    const rr = new Record();
+    const rd = new TXTRecord();
+
+    rr.name = name;
+    rr.type = types.TXT;
+    rr.ttl = this.ttl;
+    rr.data = rd;
+
+    rd.txt.push('hsk:tor');
+
+    for (const host of this.hosts) {
+      if (host.isTor())
+        rd.txt.push(host.target);
+    }
+
+    return rr;
+  }
+
+  toTXT(name) {
+    const answer = [];
+
+    for (const txt of this.text) {
+      const rr = new Record();
+      const rd = new TXTRecord();
+
+      rr.name = name;
+      rr.type = types.TXT;
+      rr.ttl = this.ttl;
+      rr.data = rd;
+
+      rd.txt.push(txt);
+
+      answer.push(rr);
+    }
+
+    return answer;
+  }
+
+  toGlue(type) {
+    assert((type &amp; 0xffff) === type);
+
+    const additional = [];
+    const glue = [];
+
+    switch (type) {
+      case types.CNAME:
+        if (this.canonical &amp;&amp; this.canonical.isGlue())
+          glue.push(this.canonical);
+        break;
+      case types.DNAME:
+        if (this.delegate &amp;&amp; this.delegate.isGlue())
+          glue.push(this.delegate);
+        break;
+      case types.NS:
+        for (const ns of this.ns) {
+          if (ns.isGlue())
+            glue.push(ns);
+        }
+        break;
+      case types.SRV:
+      case types.MX:
+        for (const srv of this.service) {
+          if (type === types.MX) {
+            if (!util.equal(srv.protocol, 'tcp.'))
+              continue;
+
+            if (!util.equal(srv.service, 'smtp.'))
+              continue;
+          }
+
+          if (srv.target.isGlue())
+            glue.push(srv.target);
+        }
+
+        break;
+    }
+
+    for (const target of glue) {
+      if (target.inet4 !== '0.0.0.0') {
+        const rr = new Record();
+        const rd = new ARecord();
+
+        rr.name = target.toDNS();
+        rr.type = types.A;
+        rr.ttl = this.ttl;
+        rr.data = rd;
+
+        rd.address = target.inet4;
+
+        additional.push(rr);
+      }
+
+      if (target.inet6 !== '::') {
+        const rr = new Record();
+        const rd = new AAAARecord();
+
+        rr.name = target.toDNS();
+        rr.type = types.AAAA;
+        rr.ttl = this.ttl;
+        rr.data = rd;
+
+        rd.address = target.inet6;
+
+        additional.push(rr);
+      }
+    }
+
+    return additional;
+  }
+
+  toNSEC(name, map) {
+    const rr = new Record();
+    const rd = new NSECRecord();
+
+    rr.name = name;
+    rr.type = types.NSEC;
+    rr.ttl = 86400;
+    rr.data = rd;
+    rd.nextDomain = '.';
+
+    if (map)
+      rd.typeBitmap = map;
+
+    return rr;
+  }
+
+  toDNS(name, type) {
+    assert(util.isFQDN(name));
+    assert(typeof type === 'number');
+
+    const res = new Message();
+    const labels = util.split(name);
+
+    // Handle reverse pointers.
+    if (labels.length === 2) {
+      const hash = util.label(name, labels, 0);
+
+      if (Target.isPointer(hash, type)) {
+        const ptr = Target.fromPointer(hash);
+
+        if (!ptr.matches(type)) {
+          // Needs SOA.
+          // TODO: Make reverse pointers TLDs.
+          // Empty Proof:
+          // XXX Can't push this on yet (SOA check).
+          // const map = ptr.isINET4() ? TYPE_MAP_A : TYPE_MAP_AAAA;
+          // const nsec = this.toNSEC(name, map);
+          // res.authority.push(nsec);
+          return res;
+        }
+
+        res.aa = true;
+
+        const rr = new Record();
+
+        rr.name = name;
+        rr.ttl = this.ttl;
+
+        if (ptr.isINET4()) {
+          rr.type = types.A;
+          rr.data = new ARecord();
+        } else {
+          rr.type = types.AAAA;
+          rr.data = new AAAARecord();
+        }
+
+        rr.data.address = ptr.target;
+
+        res.answer.push(rr);
+        key.signZSK(res.answer, rr.type);
+
+        return res;
+      }
+    }
+
+    // Handle SRV, TLSA, and SMIMEA.
+    if (labels.length === 3) {
+      switch (type) {
+        case types.SRV: {
+          const [ok, protocol, service] = decodeSRV(name);
+          if (ok) {
+            res.answer = this.toSRV(name, protocol, service);
+            res.additional = this.toSRVIP(name, protocol, service);
+            for (const rr of this.toGlue(types.SRV))
+              res.additional.push(rr);
+            key.signZSK(res.answer, types.SRV);
+          }
+          break;
+        }
+        case types.TLSA: {
+          const [ok, protocol, port] = decodeTLSA(name);
+          if (ok) {
+            res.answer = this.toTLSA(name, protocol, port);
+            key.signZSK(res.answer, types.TLSA);
+          }
+          break;
+        }
+        case types.SMIMEA: {
+          const [ok, hash] = decodeSMIMEA(name);
+          if (ok) {
+            res.answer = this.toSMIMEA(name, hash);
+            key.signZSK(res.answer, types.SMIMEA);
+          }
+          break;
+        }
+        case types.OPENPGPKEY: {
+          const [ok, hash] = decodeOPENPGPKEY(name);
+          if (ok) {
+            res.answer = this.toOPENPGPKEY(name, hash);
+            key.signZSK(res.answer, types.OPENPGPKEY);
+          }
+          break;
+        }
+      }
+
+      if (res.answer.length > 0) {
+        res.aa = true;
+        return res;
+      }
+    }
+
+    // Referral.
+    if (labels.length > 1) {
+      const tld = util.from(name, labels, -1);
+
+      if (this.ns.length > 0) {
+        res.authority = this.toNS(tld);
+
+        for (const rr of this.toDS(tld))
+          res.authority.push(rr);
+
+        res.additional = this.toNSIP(tld);
+
+        for (const rr of this.toGlue(types.NS))
+          res.additional.push(rr);
+
+        if (this.ds.length === 0)
+          key.signZSK(res.authority, types.NS);
+        else
+          key.signZSK(res.authority, types.DS);
+      } else if (this.delegate) {
+        res.answer = this.toDNAME(name);
+
+        for (const rr of this.toGlue(types.DNAME))
+          res.additional.push(rr);
+
+        key.signZSK(res.answer, types.DNAME);
+        key.signZSK(res.additional, types.A);
+        key.signZSK(res.additional, types.AAAA);
+      } else {
+        // Needs SOA.
+        // Empty Proof:
+        // XXX Can't push this on yet (SOA check).
+        // const nsec = this.toNSEC(tld);
+        // res.authority.push(nsec);
+      }
+
+      return res;
+    }
+
+    switch (type) {
+      case types.A:
+        res.answer = this.toA(name);
+        key.signZSK(res.answer, types.A);
+        break;
+      case types.AAAA:
+        res.answer = this.toAAAA(name);
+        key.signZSK(res.answer, types.AAAA);
+        break;
+      case types.CNAME:
+        res.answer = this.toCNAME(name);
+        for (const rr of this.toGlue(types.CNAME))
+          res.additional.push(rr);
+        key.signZSK(res.answer, types.CNAME);
+        key.signZSK(res.additional, types.A);
+        key.signZSK(res.additional, types.AAAA);
+        break;
+      case types.DNAME:
+        res.answer = this.toDNAME(name);
+        for (const rr of this.toGlue(types.DNAME))
+          res.additional.push(rr);
+        key.signZSK(res.answer, types.DNAME);
+        key.signZSK(res.additional, types.A);
+        key.signZSK(res.additional, types.AAAA);
+        break;
+      case types.NS:
+        res.authority = this.toNS(name);
+        res.additional = this.toNSIP(name);
+        for (const rr of this.toGlue(types.NS))
+          res.additional.push(rr);
+        key.signZSK(res.authority, types.NS);
+        break;
+      case types.MX:
+        res.answer = this.toMX(name);
+        res.additional = this.toMXIP(name);
+        for (const rr of this.toGlue(types.MX))
+          res.additional.push(rr);
+        key.signZSK(res.answer, types.MX);
+        break;
+      case types.TXT:
+        res.answer = this.toTXT(name);
+        key.signZSK(res.answer, types.TXT);
+        break;
+      case types.LOC:
+        res.answer = this.toLOC(name);
+        key.signZSK(res.answer, types.LOC);
+        break;
+      case types.DS:
+        res.answer = this.toDS(name);
+        key.signZSK(res.answer, types.DS);
+        break;
+      case types.SSHFP:
+        res.answer = this.toSSHFP(name);
+        key.signZSK(res.answer, types.SSHFP);
+        break;
+      case types.URI:
+        res.answer = this.toURI(name);
+        key.signZSK(res.answer, types.URI);
+        break;
+      case types.RP:
+        res.answer = this.toRP(name);
+        key.signZSK(res.answer, types.RP);
+        break;
+    }
+
+    if (res.answer.length > 0)
+      res.aa = true;
+
+    if (res.answer.length === 0
+        &amp;&amp; res.authority.length === 0) {
+      if (this.canonical) {
+        res.aa = true;
+        res.answer = this.toCNAME(name);
+
+        for (const rr of this.toGlue(types.CNAME))
+          res.additional.push(rr);
+
+        key.signZSK(res.answer, types.CNAME);
+        key.signZSK(res.additional, types.A);
+        key.signZSK(res.additional, types.AAAA);
+      } else if (this.ns.length > 0) {
+        res.authority = this.toNS(name);
+
+        for (const rr of this.toDS(name))
+          res.authority.push(rr);
+
+        res.additional = this.toNSIP(name);
+
+        for (const rr of this.toGlue(types.NS))
+          res.additional.push(rr);
+
+        if (this.ds.length === 0)
+          key.signZSK(res.authority, types.NS);
+        else
+          key.signZSK(res.authority, types.DS);
+      } else {
+        // Needs SOA.
+        // Empty Proof:
+        // XXX Can't push this on yet (SOA check).
+        // const nsec = this.toNSEC(name);
+        // res.authority.push(nsec);
+      }
+    }
+
+    return res;
+  }
+
+  getJSON(name) {
+    const json = {
+      version: this.version,
+      name,
+      compat: this.compat,
+      ttl: this.ttl
+    };
+
+    if (this.hosts.length > 0) {
+      json.hosts = [];
+      for (const host of this.hosts)
+        json.hosts.push(host.toJSON());
+    }
+
+    if (this.canonical)
+      json.canonical = this.canonical.toJSON();
+
+    if (this.delegate)
+      json.delegate = this.delegate.toJSON();
+
+    if (this.ns.length > 0) {
+      json.ns = [];
+      for (const ns of this.ns)
+        json.ns.push(ns.toJSON());
+    }
+
+    if (this.service.length > 0) {
+      json.service = [];
+      for (const srv of this.service)
+        json.service.push(srv.toJSON());
+    }
+
+    if (this.uri.length > 0) {
+      json.uri = [];
+      for (const uri of this.uri)
+        json.uri.push(uri);
+    }
+
+    if (this.email.length > 0) {
+      json.email = [];
+      for (const email of this.email)
+        json.email.push(email);
+    }
+
+    if (this.text.length > 0) {
+      json.text = [];
+      for (const txt of this.text)
+        json.text.push(txt);
+    }
+
+    if (this.location.length > 0) {
+      json.location = [];
+      for (const loc of this.location)
+        json.location.push(loc.toJSON());
+    }
+
+    if (this.magnet.length > 0) {
+      json.magnet = [];
+      for (const urn of this.magnet)
+        json.magnet.push(urn.toJSON());
+    }
+
+    if (this.ds.length > 0) {
+      json.ds = [];
+      for (const ds of this.ds)
+        json.ds.push(ds.toJSON());
+    }
+
+    if (this.tls.length > 0) {
+      json.tls = [];
+      for (const tls of this.tls)
+        json.tls.push(tls.toJSON());
+    }
+
+    if (this.smime.length > 0) {
+      json.smime = [];
+      for (const smime of this.smime)
+        json.smime.push(smime.toJSON());
+    }
+
+    if (this.ssh.length > 0) {
+      json.ssh = [];
+      for (const ssh of this.ssh)
+        json.ssh.push(ssh.toJSON());
+    }
+
+    if (this.pgp.length > 0) {
+      json.pgp = [];
+      for (const pgp of this.pgp)
+        json.pgp.push(pgp.toJSON());
+    }
+
+    if (this.pgp.length > 0) {
+      json.pgp = [];
+      for (const pgp of this.pgp)
+        json.pgp.push(pgp.toJSON());
+    }
+
+    if (this.addr.length > 0) {
+      json.addr = [];
+      for (const addr of this.addr)
+        json.addr.push(addr.toJSON());
+    }
+
+    if (this.extra.length > 0) {
+      json.extra = [];
+      for (const extra of this.extra)
+        json.extra.push(extra.toJSON());
+    }
+
+    return json;
+  }
+
+  fromJSON(json) {
+    assert(json &amp;&amp; typeof json === 'object');
+
+    if (json.version != null) {
+      assert(json.version === 0);
+      this.version = json.version;
+    }
+
+    if (json.ttl != null) {
+      assert((json.ttl >>> 0) === json.ttl);
+      this.ttl = json.ttl;
+    }
+
+    if (json.compat != null) {
+      assert(typeof json.compat === 'boolean');
+      this.compat = json.compat;
+    }
+
+    if (json.hosts != null) {
+      assert(Array.isArray(json.hosts));
+      for (const host of json.hosts)
+        this.hosts.push(Target.fromJSON(host));
+    }
+
+    if (json.canonical != null) {
+      this.canonical = Target.fromJSON(json.canonical);
+      assert(!this.canonical.isTor());
+    }
+
+    if (json.delegate != null) {
+      this.delegate = Target.fromJSON(json.delegate);
+      assert(this.delegate.isName());
+    }
+
+    if (json.ns != null) {
+      assert(Array.isArray(json.ns));
+      for (const ns of json.ns) {
+        const target = Target.fromJSON(ns);
+        assert(!target.isTor());
+        this.ns.push(target);
+      }
+    }
+
+    if (json.service != null) {
+      assert(Array.isArray(json.service));
+      for (const srv of json.service)
+        this.service.push(Service.fromJSON(srv));
+    }
+
+    if (json.uri != null) {
+      assert(Array.isArray(json.uri));
+      for (const uri of json.uri) {
+        assert(typeof uri === 'string');
+        assert(uri.length &lt;= 255);
+        this.uri.push(uri);
+      }
+    }
+
+    if (json.email != null) {
+      assert(Array.isArray(json.email));
+      for (const email of json.email) {
+        assert(typeof email === 'string');
+        assert(email.length &lt;= 255);
+        this.email.push(email);
+      }
+    }
+
+    if (json.text != null) {
+      assert(Array.isArray(json.text));
+      for (const txt of json.text) {
+        assert(typeof txt === 'string');
+        assert(txt.length &lt;= 255);
+        this.text.push(txt);
+      }
+    }
+
+    if (json.location != null) {
+      assert(Array.isArray(json.location));
+      for (const loc of json.location)
+        this.location.push(Location.fromJSON(loc));
+    }
+
+    if (json.magnet != null) {
+      assert(Array.isArray(json.magnet));
+      for (const urn of json.magnet)
+        this.magnet.push(Magnet.fromJSON(urn));
+    }
+
+    if (json.ds != null) {
+      assert(Array.isArray(json.ds));
+      for (const ds of json.ds)
+        this.ds.push(DS.fromJSON(ds));
+    }
+
+    if (json.tls != null) {
+      assert(Array.isArray(json.tls));
+      for (const tls of json.tls)
+        this.tls.push(TLS.fromJSON(tls));
+    }
+
+    if (json.smime != null) {
+      assert(Array.isArray(json.smime));
+      for (const smime of json.smime)
+        this.smime.push(SMIME.fromJSON(smime));
+    }
+
+    if (json.ssh != null) {
+      assert(Array.isArray(json.ssh));
+      for (const ssh of json.ssh)
+        this.ssh.push(SSH.fromJSON(ssh));
+    }
+
+    if (json.pgp != null) {
+      assert(Array.isArray(json.pgp));
+      for (const pgp of json.pgp)
+        this.pgp.push(PGP.fromJSON(pgp));
+    }
+
+    if (json.addr != null) {
+      assert(Array.isArray(json.addr));
+      for (const addr of json.addr)
+        this.addr.push(Addr.fromJSON(addr));
+    }
+
+    if (json.extra != null) {
+      assert(Array.isArray(json.extra));
+      for (const extra of json.extra)
+        this.extra.push(Extra.fromJSON(extra));
+    }
+
+    return this;
+  }
+}
+
+/*
+ * Helpers
+ */
+
+function isPointer(name) {
+  return Target.isPointer(name, null);
+}
+
+function decodeSRV(name) {
+  try {
+    const {protocol, service} = srv.decodeName(name);
+    return [true, `${protocol}.`, `${service}.`];
+  } catch (e) {
+    return [false, '', ''];
+  }
+}
+
+function isSRV(name) {
+  return decodeSRV(name)[0];
+}
+
+function decodeTLSA(name) {
+  try {
+    const {protocol, port} = tlsa.decodeName(name);
+    return [true, `${protocol}.`, port];
+  } catch (e) {
+    return [false, '', 0];
+  }
+}
+
+function isTLSA(name) {
+  return decodeTLSA(name)[0];
+}
+
+function decodeSMIMEA(name) {
+  try {
+    const {hash} = smimea.decodeName(name);
+    return [true, hash];
+  } catch (e) {
+    return [false, DUMMY];
+  }
+}
+
+function isSMIMEA(name) {
+  return decodeSMIMEA(name)[0];
+}
+
+function decodeOPENPGPKEY(name) {
+  try {
+    const {hash} = openpgpkey.decodeName(name);
+    return [true, hash];
+  } catch (e) {
+    return [false, DUMMY];
+  }
+}
+
+function isOPENPGPKEY(name) {
+  return decodeOPENPGPKEY(name)[0];
+}
+
+/*
+ * Expose
+ */
+
+exports = Resource;
+exports.isPointer = isPointer;
+exports.isSRV = isSRV;
+exports.isTLSA = isTLSA;
+exports.isSMIMEA = isSMIMEA;
+exports.isOPENPGPKEY = isOPENPGPKEY;
+
+module.exports = exports;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-btc.html">btc</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsk.html">hsk</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="Auction.html">Auction</a></li><li><a href="AuctionDelta.html">AuctionDelta</a></li><li><a href="AuctionState.html">AuctionState</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-btc.URI.html">URI</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDB.html">NameDB</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 19 2018 21:52:41 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
