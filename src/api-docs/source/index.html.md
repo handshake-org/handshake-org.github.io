@@ -1,7 +1,7 @@
 ---
 title: Handshake API Reference
 
-home_link: https://handshake-org.github.io
+home_link: /
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell--curl: cURL
