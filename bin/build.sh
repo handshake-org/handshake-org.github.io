@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# enter project root dir
+cd `dirname $0`
+cd ../
+
 # convert .md to .html files
 echo 'converting markdown files to html...'
 rm -f ./*.html
