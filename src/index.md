@@ -19,28 +19,12 @@ payments without having the resource requirements of a full node.
 By installing and/or contributing to Handshake, you are participating in a
 decentralized open platform owned by the commons.
 
-## Installation
-
-We have installation instructions for [Linux](/install/linux.html),
-[macOS](/install/mac.html), and [Windows](/install/win.html)
-
->NOTE: the software works best with unix-like OSes, and has not yet been
-thoroughly tested on Windows. The BSDs and Solaris have also not been
-tested yet, but should work in theory.
-
-## Source Code
+### Source Code
 
 The latest source code is available on
-[GitHub](https://github.com/handshake-org).
+[GitHub](https://github.com/handshake-org) under the [MIT license](https://opensource.org/licenses/mit-license.php).
 
-The source code is under an MIT license.
-
-## Documentation
-
-API documentation for hskd can be found
-[here](/api-docs).
-
-## Security Audit
+### Security Audit
 
 The protocol and implementation are being audited by a team led by
 [Dr. Matthew Green](https://isi.jhu.edu/~mgreen/) of John Hopkins University.
@@ -52,18 +36,17 @@ disk encryption project. He is also a co-author of both the
 [Zcash Company](https://z.cash/) and shares his thoughts on cryptographic
 engineering on his [blog](https://blog.cryptographyengineering.com/).
 
-
-## Coins
+### Coins
 
 Handshake utilizes a utility coin system for name registration.
 Handshake depends on the free and open source community to take ownership
 and decentralize the system [https://handshake.org](https://handshake.org).
 
-## Mailing List
+### Mailing List
 
 You can subscribe to the GNU Mailman mailing list by e-mailing ‘subscribe’
-to devs@handshake.org.
+to [devs@handshake.org](mailto:devs@handshake.org).
 
-## IRC
+### IRC
 
 A community IRC channel exists on Freenode in irc.freenode.net:#handshake.

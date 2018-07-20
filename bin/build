@@ -14,13 +14,13 @@ mkdir -p ./install
 for file in ./src/*.md
 do
     PREFIX=$(basename "$file" | cut -d. -f1)
-    pandoc $file -T $PREFIX -V "pagetitle:$PREFIX" -V "title:$PREFIX" -w html5 -o "$PREFIX.html" --template ./templates/layout.html
+    pandoc $file -T $PREFIX -V "active-$PREFIX:true" -V "ghpath:$PREFIX" -V "pagetitle:$PREFIX" -w html5 -o "$PREFIX.html" --template ./templates/layout.html
 done
 
 for file in ./src/install/*.md
 do
     PREFIX=$(basename "$file" | cut -d. -f1)
-    pandoc $file -T $PREFIX -V "pagetitle:$PREFIX" -V "title:$PREFIX" -w html5 -o ./install/"$PREFIX.html" --template ./templates/layout.html
+    pandoc $file -T $PREFIX -V "active-install-$PREFIX:true" -V "ghpath:install/$PREFIX" -V "pagetitle:$PREFIX" -w html5 -o ./install/"$PREFIX.html" --template ./templates/layout.html
 done
 echo 'finished'
 
