@@ -21,8 +21,8 @@ decentralized open platform owned by the commons.
 
 ## Installation
 
-We have installation instructions for [Linux](/install-linux.html),
-[macOS](/install-mac.html), and [Windows](/install-win.html)
+We have installation instructions for [Linux](/install/linux.html),
+[macOS](/install/mac.html), and [Windows](/install/win.html)
 
 >NOTE: the software works best with unix-like OSes, and has not yet been
 thoroughly tested on Windows. The BSDs and Solaris have also not been
