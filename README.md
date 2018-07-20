@@ -10,8 +10,15 @@ just run gem install bundler in a terminal.
 
 ## Build
 >NOTE: be sure to build site before submitting a pull request.
+
+Build site and slate api docs:
 ```
-./build.sh
+./bin/build
+```
+
+Build jsdoc:
+```
+./bin/build-docs
 ```
 
 ## Run
