@@ -32,53 +32,53 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 @font-face {
   font-family: "IBM Plex Mono";
   font-weight: 400;
-  src: url('../font/IBMPlexMono-Regular.ttf') format('truetype');
+  src: url('../fonts/IBMPlexMono-Regular.ttf') format('truetype');
 }
 
 @font-face {
   font-family: "IBM Plex Mono";
   font-style: italic;
   font-weight: 400;
-  src: url('../font/IBMPlexMono-Italic.ttf');
+  src: url('../fonts/IBMPlexMono-Italic.ttf');
 }
 
 @font-face {
   font-family: "IBM Plex Mono";
   font-weight: 600;
-  src: url('../font/IBMPlexMono-SemiBold.ttf');
+  src: url('../fonts/IBMPlexMono-SemiBold.ttf');
 }
 
 @font-face {
   font-family: "IBM Plex Mono";
   font-style: italic;
   font-weight: 600;
-  src: url('../font/IBMPlexMono-SemiBoldItalic.ttf');
+  src: url('../fonts/IBMPlexMono-SemiBoldItalic.ttf');
 }
 
 @font-face {
   font-family: "IBM Plex Sans";
   font-weight: 400;
-  src: url('../font/IBMPlexSans-Regular.ttf');
+  src: url('../fonts/IBMPlexSans-Regular.ttf');
 }
 
 @font-face {
   font-family: "IBM Plex Sans";
   font-style: italic;
   font-weight: 400;
-  src: url('../font/IBMPlexSans-Italic.ttf');
+  src: url('../fonts/IBMPlexSans-Italic.ttf');
 }
 
 @font-face {
   font-family: "IBM Plex Sans";
   font-weight: 600;
-  src: url('../font/IBMPlexSans-SemiBold.ttf');
+  src: url('../fonts/IBMPlexSans-SemiBold.ttf');
 }
 
 @font-face {
   font-family: "IBM Plex Sans";
   font-style: italic;
   font-weight: 600;
-  src: url('../font/IBMPlexSans-SemiBoldItalic.ttf');
+  src: url('../fonts/IBMPlexSans-SemiBoldItalic.ttf');
 }
 
 html, body {
