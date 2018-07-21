@@ -1,4 +1,4 @@
-## About Handshake
+## Introduction
 
 Handshake is a UTXO-based blockchain protocol which manages the
 registration, renewal and transfer of DNS top-level domains (TLDs). Our naming
