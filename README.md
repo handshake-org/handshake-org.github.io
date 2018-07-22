@@ -17,7 +17,6 @@ just run gem install bundler in a terminal.
 - [Pandoc](https://pandoc.org/installing.html)
 
 ## Build
->NOTE: be sure to build the site before submitting a pull request.
 
 Build site and slate api docs:
 ```bash
