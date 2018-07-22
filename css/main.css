@@ -325,6 +325,11 @@ nav a.active {
   margin-bottom: 15px;
 }
 
+.markdown-body hr {
+  background-color: #c2c2c2;
+  height: 0.025em;
+}
+
 .lynx {
   display: none !important;
 }
