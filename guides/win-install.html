@@ -56,72 +56,49 @@
 </pre>
 
 <h2 id="windows-install-guide">Windows Install Guide</h2>
+<p>The Handshake software suite consists of a full node (<code>hskd</code>) and a light client (<code>hnsd</code>). The full node allows users to register, update, and transfer names, resolve names, and make blockchain payments. The light client (SPV node) allows users to resolve names without the computing resource requirements of running a full node.</p>
+<p>This guide includes instructions for installing <a href="#hskd-installation-instructions"><code>hskd</code></a> and <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
 <blockquote>
 <p>NOTE: the software has not been thoroughly tested on Windows.</p>
 </blockquote>
-<ol type="1">
-<li>Install Some Software</li>
-</ol>
+<p><br/></p>
+<h2 id="hskd-installation-instructions"><code>hskd</code> Installation Instructions</h2>
+<h4 id="install-dependencies">Install dependencies</h4>
 <ul>
-<li>Node / NPM https://nodejs.org/en/download/</li>
-<li>OpenSSL Win 64 http://slproweb.com/products/Win32OpenSSL.html</li>
+<li>Node / NPM <a href="https://nodejs.org/en/download/" class="uri">https://nodejs.org/en/download/</a></li>
+<li>OpenSSL Win 64 <a href="http://slproweb.com/products/Win32OpenSSL.html" class="uri">http://slproweb.com/products/Win32OpenSSL.html</a></li>
 </ul>
-<ol start="2" type="1">
-<li>Python and Windows Build Tools install</li>
-</ol>
-<pre><code>$ npm install --global --production windows-build-tools
-$ npm config set msvs_version 2015 --global</code></pre>
-<ol start="3" type="1">
-<li>Install Cygwin with the following instructions</li>
-</ol>
-<ul>
-<li>Download from https://cygwin.com/install.html</li>
-<li>Open command prompt by running ‘cmd’</li>
-<li>Run:</li>
-</ul>
-<pre><code>cd Downloads
-setup-x86_64.exe ^
-  --root C:\Cygwin64\ ^
-  --site http://cygwin.mirror.constant.com ^
-  --quiet-mode ^
-  --no-desktop ^
-  --packages wget,git,automake,autoconf,cygwin32-libtool,libunbound-common,libunbound-devel,libunbound2,nano,libtool,gcc-g++,cygwin32-gcc-g++,make</code></pre>
+<p>Python and Windows Build Tools install:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="ex">npm</span> install --global --production windows-build-tools</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">$ <span class="ex">npm</span> config set msvs_version 2015 --global</a></code></pre></div>
+<p>Cygwin - Download from https://cygwin.com/install.html - Open command prompt by running ‘cmd’ - Run:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="bu">cd</span> Downloads</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="ex">setup-x86_64.exe</span> ^</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="ex">--root</span> C:\Cygwin64<span class="dt">\ </span>^</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="ex">--site</span> http://cygwin.mirror.constant.com ^</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="ex">--quiet-mode</span> ^</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="ex">--no-desktop</span> ^</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="ex">--packages</span> wget,git,automake,autoconf,cygwin32-libtool,libunbound-common,libunbound-devel,libunbound2,nano,libtool,gcc-g++,cygwin32-gcc-g++,make</a></code></pre></div>
 <blockquote>
 <p>Note: this assumes you use the C: drive</p>
 </blockquote>
-<ol start="4" type="1">
-<li>Set Cygwin Path</li>
-</ol>
+<h4 id="set-cygwin-path">Set Cygwin Path</h4>
 <ul>
 <li>Open command prompt (cmd)</li>
 <li>Set path:</li>
 </ul>
-<pre><code>$ set PATH=%PATH;C:\Cygwin64\bin
-$ setx PATH %PATH;C:\Cygwin64\bin</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="kw">set</span> <span class="va">PATH=</span><span class="ex">%PATH</span><span class="kw">;</span><span class="ex">C</span>:\Cygwin64\bin</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">$ <span class="ex">setx</span> PATH %PATH<span class="kw">;</span><span class="ex">C</span>:\Cygwin64\bin</a></code></pre></div>
 <blockquote>
-<p>Note: or just Cygwin above if on 32bit machine</p>
+<p>Note: if on 32bit machine, just Cygwin above</p>
 </blockquote>
-<ol start="5" type="1">
-<li>Run bash</li>
-</ol>
-<pre><code>$ bash</code></pre>
-<ol start="6" type="1">
-<li>Go home</li>
-</ol>
-<pre><code>$ cd /home</code></pre>
-<ol start="7" type="1">
-<li>Install <code>hskd</code></li>
-</ol>
-<ul>
-<li>Start</li>
-</ul>
+<h4 id="run-bash">Run bash</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="fu">bash</span></a></code></pre></div>
+<h4 id="change-to-home-directory">Change to home directory</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="bu">cd</span> /home</a></code></pre></div>
+<h4 id="download-and-install-hskd">Download and install <code>hskd</code></h4>
 <pre><code>$ git clone git@github.com:handshake-org/hskd.git
 $ cd hskd
-$ git clone git@github.com:handshake-org/hsk-client.git
-$ cd hsk-client
-$ npm install --production
-$ cd ..
-$ npm link hsk-client
 $ npm pack bsip
 $ npm pack mrmr
 $ npm pack bcrypto
@@ -174,31 +151,19 @@ $ mv chacha20.h chacha20_2.h</code></pre>
 </ul>
 <pre><code>$ npm install --production
 $ cd ..</code></pre>
-<ol start="8" type="1">
-<li>Exit bash and setup mklink</li>
-</ol>
+<h4 id="exit-bash-and-setup-mklink">Exit bash and setup mklink</h4>
 <pre><code>$ mklink /D C:\home C:\Cygwin64\home</code></pre>
-<ol start="9" type="1">
-<li>Start <code>hskd</code> (in simnet) (open bash again)</li>
-</ol>
-<pre><code># Start the full node in simnet
-$ ./hskd/bin/hskd -n simnet --daemon --no-auth --coinbase-address=ss1qnwxzkgfymaz84k7wwf8v009nuqjf90vx2zfmts
-
-# Mine two blocks to ensure the name trie is in the correct state
-$ ./hskd/hsk-client/bin/hsk-cli -n simnet rpc generate 2</code></pre>
-<ol start="10" type="1">
-<li>Install <code>hnsd</code></li>
-</ol>
-<pre><code>$ git clone git@github.com:handshake-org/hnsd.git
-$ cd hnsd
-$ ./autogen.sh &amp;&amp; ./configure --with-network simnet &amp;&amp; make</code></pre>
-<ol start="11" type="1">
-<li>Start <code>hnsd</code></li>
-</ol>
+<h4 id="open-bash-again-and-start-on-testnet">open bash again and Start (on testnet)</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">./hskd/bin/hskd</span> --daemon --no-auth</a></code></pre></div>
+<p><br/></p>
+<h2 id="hnsd-installation-instructions"><code>hnsd</code> Installation Instructions</h2>
+<h4 id="download-and-compile-hnsd">Download and compile <code>hnsd</code></h4>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">$ <span class="fu">git</span> clone git@github.com:handshake-org/hnsd.git</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">$ <span class="bu">cd</span> hnsd</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network testnet <span class="kw">&amp;&amp;</span> <span class="fu">make</span></a></code></pre></div>
+<h4 id="start-hnsd">Start <code>hnsd</code></h4>
 <pre><code>$ ./hnsd.exe --pool-size=1 --rs-host=127.0.0.1:53</code></pre>
-<ol start="12" type="1">
-<li>Change Windows DNS Settings to point to 127.0.0.1</li>
-</ol>
+<h4 id="change-windows-dns-settings-to-point-to-127.0.0.1">Change Windows DNS Settings to point to 127.0.0.1</h4>
 </section>
 </main>
 

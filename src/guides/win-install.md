@@ -1,21 +1,35 @@
 ## Windows Install Guide
+
+The Handshake software suite consists of a full node (`hskd`) and a light
+client (`hnsd`). The full node allows users to register, update, and transfer
+names, resolve names, and make blockchain payments. The light client (SPV node)
+allows users to resolve names without the computing resource requirements of
+running a full node.
+
+This guide includes instructions for installing
+[`hskd`](#hskd-installation-instructions) and
+[`hnsd`](#hnsd-installation-instructions).
+
 >NOTE: the software has not been thoroughly tested on Windows.
 
-1. Install Some Software
-- Node / NPM https://nodejs.org/en/download/
-- OpenSSL Win 64 http://slproweb.com/products/Win32OpenSSL.html
+<br/>
 
-2. Python and Windows Build Tools install
-```
+## `hskd` Installation Instructions
+#### Install dependencies
+- Node / NPM [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
+- OpenSSL Win 64 [http://slproweb.com/products/Win32OpenSSL.html](http://slproweb.com/products/Win32OpenSSL.html)
+
+Python and Windows Build Tools install:
+```bash
 $ npm install --global --production windows-build-tools
 $ npm config set msvs_version 2015 --global
 ```
 
-3. Install Cygwin with the following instructions
+Cygwin
 - Download from https://cygwin.com/install.html
 - Open command prompt by running ‘cmd’
 - Run:
-```
+```bash
 cd Downloads
 setup-x86_64.exe ^
   --root C:\Cygwin64\ ^
@@ -26,35 +40,29 @@ setup-x86_64.exe ^
 ```
 >Note: this assumes you use the C: drive
 
-4. Set Cygwin Path
+#### Set Cygwin Path
 - Open command prompt (cmd)
 - Set path:
-```
+```bash
 $ set PATH=%PATH;C:\Cygwin64\bin
 $ setx PATH %PATH;C:\Cygwin64\bin
 ```
->Note: or just Cygwin above if on 32bit machine
+>Note: if on 32bit machine, just Cygwin above
 
-5. Run bash
-```
+#### Run bash
+```bash
 $ bash
 ```
 
-6. Go home
-```
+#### Change to home directory
+```bash
 $ cd /home
 ```
 
-7. Install `hskd`
-- Start
+#### Download and install `hskd`
 ```
 $ git clone git@github.com:handshake-org/hskd.git
 $ cd hskd
-$ git clone git@github.com:handshake-org/hsk-client.git
-$ cd hsk-client
-$ npm install --production
-$ cd ..
-$ npm link hsk-client
 $ npm pack bsip
 $ npm pack mrmr
 $ npm pack bcrypto
@@ -109,31 +117,29 @@ $ npm install --production
 $ cd ..
 ```
 
-8. Exit bash and setup mklink
+#### Exit bash and setup mklink
 ```
 $ mklink /D C:\home C:\Cygwin64\home
 ```
 
-9. Start `hskd` (in simnet) (open bash again)
-```
-# Start the full node in simnet
-$ ./hskd/bin/hskd -n simnet --daemon --no-auth --coinbase-address=ss1qnwxzkgfymaz84k7wwf8v009nuqjf90vx2zfmts
-
-# Mine two blocks to ensure the name trie is in the correct state
-$ ./hskd/hsk-client/bin/hsk-cli -n simnet rpc generate 2
+#### open bash again and Start (on testnet)
+```bash
+$ ./hskd/bin/hskd --daemon --no-auth
 ```
 
-10. Install `hnsd`
-```
+<br/>
+
+## `hnsd` Installation Instructions
+#### Download and compile `hnsd`
+```bash
 $ git clone git@github.com:handshake-org/hnsd.git
 $ cd hnsd
-$ ./autogen.sh && ./configure --with-network simnet && make
+$ ./autogen.sh && ./configure --with-network testnet && make
 ```
 
-11. Start `hnsd`
+#### Start `hnsd`
 ```
 $ ./hnsd.exe --pool-size=1 --rs-host=127.0.0.1:53
 ```
 
-12. Change Windows DNS Settings to point to 127.0.0.1
-
+#### Change Windows DNS Settings to point to 127.0.0.1

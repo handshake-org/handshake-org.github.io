@@ -1,64 +1,61 @@
-## macOS Install Guide
+# macOS Install Guide
 
-1. Open Terminal.App
+The Handshake software suite consists of a full node (`hskd`) and a light
+client (`hnsd`). The full node allows users to register, update, and transfer
+names, resolve names, and make blockchain payments. The light client (SPV node)
+allows users to resolve names without the computing resource requirements of
+running a full node.
 
-2. Install Xcode Command Line Tools
-```
+This guide includes instructions for installing
+[`hskd`](#hskd-installation-instructions) and
+[`hnsd`](#hnsd-installation-instructions).
+
+<br/>
+
+## `hskd` Installation Instructions
+#### Install dependencies
+Xcode Command Line Tools, Homebrew, node.js & git
+```bash
 $ xcode-select --install
-```
-
-3. Install Homebrew and npm
-```
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-$ brew install npm
+$ brew install node git
 ```
 
-4. Install `hskd`
-```
+#### Download and install `hskd`
+```bash
 $ git clone git@github.com:handshake-org/hskd.git
 $ cd hskd
-$ git clone git@github.com:handshake-org/hsk-client.git
-$ cd hsk-client
 $ npm install --production
-$ cd ..
-$ npm link hsk-client
-$ npm install --production
-$ cd ..
 ```
 
-5. Start `hskd` (in simnet)
-```
-# Start the full node in simnet
-$ ./hskd/bin/hskd -n simnet --daemon --no-auth --coinbase-address=ss1qnwxzkgfymaz84k7wwf8v009nuqjf90vx2zfmts
-
-# Mine two blocks to ensure the name trie is in the correct state
-$ ./hskd/hsk-client/bin/hsk-cli -n simnet rpc generate 2
+#### Start (on testnet)
+```bash
+$ ./hskd/bin/hskd --daemon --no-auth
 ```
 
-6. Install Dependencies for hnsd
-```
+<br/>
+
+## `hnsd` Installation Instructions
+#### Install dependencies
+```bash
 $ brew install git automake autoconf libtool unbound
-
-# If something breaks, create folder that wasn’t created.
-$ mkdir /usr/local/sbin && chmod `whoami`:admin /usr/local/sbin && chmod 0775 /usr/local/sbin
 ```
 
-7. Install `hnsd`
-```
+#### Download and compile `hnsd`
+```bash
 $ git clone git@github.com:handshake-org/hnsd.git
 $ cd hnsd
-$ ./autogen.sh && ./configure --with-network=simnet && make
+$ ./autogen.sh && ./configure --with-network=testnet && make
 ```
 
-8. Start `hnsd`
-```
-$ sudo ./hnsd --pool-size=1 --rs-host=127.0.0.1:53 
+#### Start `hnsd`
+```bash
+$ sudo ./hnsd --pool-size=1 --rs-host=127.0.0.1:53
 ```
 
-9. Add `hnsd` to your default nameserver settings
+#### Configure nameserver settings
 - Open "System Preferences" on the panel/dock.
 - Select "Network".
 - Select "Advanced".
 - Select "DNS".
 - Remove all nameservers and add a single server: "127.0.0.1".
-
