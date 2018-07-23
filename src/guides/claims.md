@@ -1,4 +1,4 @@
-## Claiming a name
+## How to Claim a Name
 
 If you own a name in the existing root zone or the Alexa top 100k, your name is
 waiting for you on the blockchain. You are able to claim it by publishing a
