@@ -26,7 +26,8 @@ $ npm config set msvs_version 2015 --global
 ```
 
 Cygwin
-- Download from https://cygwin.com/install.html
+
+- Download from [https://cygwin.com/install.html](https://cygwin.com/install.html)
 - Open command prompt by running ‘cmd’
 - Run:
 ```bash
