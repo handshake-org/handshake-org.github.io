@@ -327,7 +327,7 @@ nav a.active {
 
 .markdown-body hr {
   background-color: #c2c2c2;
-  height: 0.025em;
+  height: 1px;
 }
 
 .lynx {
