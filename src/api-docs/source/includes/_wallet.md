@@ -2,12 +2,12 @@
 ## The Wallet Client
 
 ```shell--cli
-npm i -g hsk-client
+npm i -g hsd-client
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -23,13 +23,13 @@ const id = 'primary'; // or whatever your wallet name is
 const wallet = walletClient.wallet(id);
 ```
 
-The best way to interact with the wallet API is with the hwallet-cli in the `hsk-client`
-[package](https://www.npmjs.com/package/hsk-client). Installing globally with
-`npm i -g hsk-client` gives you access to the cli. You can also install locally
+The best way to interact with the wallet API is with the hsw-cli in the `hsd-client`
+[package](https://www.npmjs.com/package/hsd-client). Installing globally with
+`npm i -g hsd-client` gives you access to the cli. You can also install locally
 to your project.
 
 Note that when using it in your own program, you will need to explicitly
-pass in a port option. The easiest way to do this is with `hskd.Network`.
+pass in a port option. The easiest way to do this is with `hsd.Network`.
 
 You can create a client for a specific wallet (and be compatible with the old
 api) with the `wallet` method on `WalletClient` class.
@@ -65,17 +65,17 @@ curl $walleturl/$id
 
 ```shell--cli
 # Like the node client, you can configure it by passing arguments:
-hwallet-cli --network=regtest --id=$id get
+hsw-cli --network=regtest --id=$id get
 
 # ...or you can use environment variables. The default `id` is `primary`:
 export HSK_API_KEY=yoursecret
 export HSK_NETWORK=regtest
-hwallet-cli get
+hsw-cli get
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -119,11 +119,11 @@ const wallet = walletClient.wallet(id);
 }
 ```
 
-hskd maintains a wallet database which contains every wallet. Wallets are not usable without also using a wallet database. For testing, the wallet database can be in-memory, but it must be there. Wallets are uniquely identified by an id and the walletdb is created with a default id of `primary`. (See [Create a Wallet](#create-a-wallet) below for more details.)
+hsd maintains a wallet database which contains every wallet. Wallets are not usable without also using a wallet database. For testing, the wallet database can be in-memory, but it must be there. Wallets are uniquely identified by an id and the walletdb is created with a default id of `primary`. (See [Create a Wallet](#create-a-wallet) below for more details.)
 
-Wallets in hskd use bip44. They also originally supported bip45 for multisig, but support was removed to reduce code complexity, and also because bip45 doesn't seem to add any benefit in practice.
+Wallets in hsd use bip44. They also originally supported bip45 for multisig, but support was removed to reduce code complexity, and also because bip45 doesn't seem to add any benefit in practice.
 
-The wallet database can contain many different wallets, with many different accounts, with many different addresses for each account. hskd should theoretically be able to scale to hundreds of thousands of wallets/accounts/addresses.
+The wallet database can contain many different wallets, with many different accounts, with many different addresses for each account. hsd should theoretically be able to scale to hundreds of thousands of wallets/accounts/addresses.
 
 Each account can be of a different type. You could have a pubkeyhash account, as well as a multisig account, a witness pubkeyhash account, etc.
 
@@ -131,7 +131,7 @@ Note that accounts should not be accessed directly from the public API. They do 
 
 ### wallet object vs wallet client object
 
-hsk-client returns a WalletClient object that can perform [admin functions](#wallet-admin-commands) without specifying a wallet, and may be useful when managing multiple wallets. WalletClient can also return a wallet object specified by an <code>id</code>. This object performs functions (and may be authorized by a token) specific to that wallet only.
+hsd-client returns a WalletClient object that can perform [admin functions](#wallet-admin-commands) without specifying a wallet, and may be useful when managing multiple wallets. WalletClient can also return a wallet object specified by an <code>id</code>. This object performs functions (and may be authorized by a token) specific to that wallet only.
 
 
 <aside class="warning">
@@ -139,8 +139,8 @@ Accounts within the same wallet are all related by deterministic hierarchy. Howe
 </aside>
 
 ## Configuration
-Persistent configuration can be added to `wallet.conf` in your `prefix` directory.
-Same directory has `hsk.conf` for the node server.
+Persistent configuration can be added to `hsw.conf` in your `prefix` directory.
+Same directory has `hsd.conf` for the node server.
 
 > Example Configuration:
 
@@ -212,12 +212,12 @@ curl $walleturl/$id?token=$token
 ```
 
 ```shell--cli
-hwallet-cli get --token=$token
+hsw-cli get --token=$token
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -256,7 +256,7 @@ passphrase='secret123'
 ```
 
 ```shell--cli
-hwallet-cli retoken --id=$id --passphrase=$passphrase
+hsw-cli retoken --id=$id --passphrase=$passphrase
 ```
 
 ```shell--curl
@@ -266,8 +266,8 @@ curl $walleturl/$id/retoken \
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -296,7 +296,7 @@ const wallet = walletClient.wallet(id);
 Derive a new wallet token, required for access of this particular wallet.
 
 <aside class="warning">
-Note: if you happen to lose the returned token, you will not be able to access the wallet (as long as <nobr><code>wallet-auth: true</code></nobr> is still set, as recommended, in <code>wallet.conf</code>
+Note: if you happen to lose the returned token, you will not be able to access the wallet (as long as <nobr><code>wallet-auth: true</code></nobr> is still set, as recommended, in <code>hsw.conf</code>
 </aside>
 
 
@@ -318,12 +318,12 @@ curl $walleturl/$id
 ```
 
 ```shell--cli
-hwallet-cli get --id=$id
+hsw-cli get --id=$id
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -392,12 +392,12 @@ curl $walleturl/$id/master
 ```
 
 ```shell--cli
-hwallet-cli master --id=$id
+hsw-cli master --id=$id
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -485,12 +485,12 @@ curl $walleturl/$id \
 ```shell--cli
 # watchOnly defaults to true if --key flag is set
 
-hwallet-cli mkwallet $id --witness=$witness --passphrase=$passphrase --watch=$watchOnly --key=$accountKey
+hsw-cli mkwallet $id --witness=$witness --passphrase=$passphrase --watch=$watchOnly --key=$accountKey
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -580,8 +580,8 @@ curl $walleturl/$id/passphrase \
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -631,7 +631,7 @@ rate=0.00000500
 value=0.00001000
 address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
 
-hwallet-cli send --id=$id --value=$value --address=$address ---passphrase=$passphrase
+hsw-cli send --id=$id --value=$value --address=$address ---passphrase=$passphrase
 ```
 
 ```shell--curl
@@ -660,8 +660,8 @@ rate=500
 value=1000
 address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
 
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -784,7 +784,7 @@ rate=0.00000500
 value=0.05000000
 address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
 
-hwallet-cli mktx --id=$id --value=$value --address=$address ---passphrase=$passphrase
+hsw-cli mktx --id=$id --value=$value --address=$address ---passphrase=$passphrase
 ```
 
 ```shell--curl
@@ -813,8 +813,8 @@ rate=500
 value=5000000
 address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
 
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -937,7 +937,7 @@ tx="0100000001be4330126fc108092daffca823d9b5d8bf0ee86ed727d19880e5a03977d8eb3100
 ```
 
 ```shell--cli
-hwallet-cli sign --id=$id --passphrase=$passphrase --tx=$tx
+hsw-cli sign --id=$id --passphrase=$passphrase --tx=$tx
 ```
 
 ```shell--curl
@@ -947,8 +947,8 @@ curl $walleturl/$id/sign \
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1044,7 +1044,7 @@ id="primary"
 account="default"
 age=259200 # 72 hours
 
-hwallet-cli zap --id=$id --account=$account --age=$age
+hsw-cli zap --id=$id --account=$account --age=$age
 ```
 
 ```shell--curl
@@ -1066,8 +1066,8 @@ id="primary"
 account="default"
 age=259200 // 72 hours
 
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1128,7 +1128,7 @@ timeout=60
 ```
 
 ```shell--cli
-hwallet-cli unlock --id=$id $pass $timeout
+hsw-cli unlock --id=$id $pass $timeout
 ```
 
 ```shell--curl
@@ -1138,8 +1138,8 @@ curl $walleturl/$id/unlock \
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1193,7 +1193,7 @@ id='primary'
 ```
 
 ```shell--cli
-hwallet-cli lock --id=$id
+hsw-cli lock --id=$id
 ```
 
 ```shell--curl
@@ -1202,8 +1202,8 @@ curl $walleturl/$id/lock \
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1254,8 +1254,8 @@ privkey='EMdDCvF1ZjsCnimTnTQfjw6x8CQmVidtJxKBegCVzPw3g6yRoDkK'
 ```
 
 ```shell--cli
-hwallet-cli --id=$id --account=$account import $privkey
-hwallet-cli --id=$watchid --account=$account import $pubkey
+hsw-cli --id=$id --account=$account import $privkey
+hsw-cli --id=$watchid --account=$account import $pubkey
 ```
 
 ```shell--curl
@@ -1270,8 +1270,8 @@ curl $walleturl/$watchid/import \
 
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1339,7 +1339,7 @@ address='rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap'
 ```
 
 ```shell--cli
-hwallet-cli watch --id=$id --account=$account $address
+hsw-cli watch --id=$id --account=$account $address
 ```
 
 ```shell--curl
@@ -1349,8 +1349,8 @@ curl $walleturl/$id/import \
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1404,12 +1404,12 @@ curl $walleturl/$id/block
 ```
 
 ```shell--cli
-hwallet-cli blocks --id=$id
+hsw-cli blocks --id=$id
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1453,7 +1453,7 @@ height=50
 ```
 
 ```shell--cli
-hwallet-cli --id=$id block $height
+hsw-cli --id=$id block $height
 ```
 
 ```shell--curl
@@ -1461,8 +1461,8 @@ curl $walleturl/$id/block/$height
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1517,7 +1517,7 @@ key="rpubKBBGCWqgVn4RRVpJTDUvTJnFHYiQuoUNy7s6W57U36KJ3r5inJp7iVRJZHvkFjbgfaGVs9f
 ```
 
 ```shell--cli
-hwallet-cli --id=$id --account=$account shared add $key
+hsw-cli --id=$id --account=$account shared add $key
 ```
 
 ```shell--curl
@@ -1527,8 +1527,8 @@ curl $walleturl/$id/shared-key \
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1587,7 +1587,7 @@ key="rpubKBBGCWqgVn4RRVpJTDUvTJnFHYiQuoUNy7s6W57U36KJ3r5inJp7iVRJZHvkFjbgfaGVs9f
 ```
 
 ```shell--cli
-hwallet-cli --id=$id --account=$account shared remove $key
+hsw-cli --id=$id --account=$account shared remove $key
 ```
 
 ```shell--curl
@@ -1597,8 +1597,8 @@ curl $walleturl/$id/shared-key \
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1658,7 +1658,7 @@ address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
 ```
 
 ```shell--cli
-hwallet-cli --id=$id key $address
+hsw-cli --id=$id key $address
 ```
 
 ```shell--curl
@@ -1666,8 +1666,8 @@ curl $walleturl/$id/key/$address
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1722,7 +1722,7 @@ address='rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap'
 ```
 
 ```shell--cli
-hwallet-cli --id=$id --passphrase=$passphrase dump $address
+hsw-cli --id=$id --passphrase=$passphrase dump $address
 ```
 
 ```shell--curl
@@ -1730,8 +1730,8 @@ curl $walleturl/$id/wif/$address?passphrase=$passphrase
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1780,7 +1780,7 @@ account="default"
 ```
 
 ```shell--cli
-hwallet-cli --id=$id --account=$account address
+hsw-cli --id=$id --account=$account address
 ```
 
 ```shell--curl
@@ -1788,8 +1788,8 @@ curl $walleturl/$id/address -X POST --data '{"account":"'$account'"}'
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1848,7 +1848,7 @@ account="default"
 ```
 
 ```shell--cli
-hwallet-cli --id=$id --account=$account change
+hsw-cli --id=$id --account=$account change
 ```
 
 ```shell--curl
@@ -1856,8 +1856,8 @@ curl $walleturl/$id/change -X POST --data '{"account":"'$account'"}'
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1915,7 +1915,7 @@ account='default'
 ```
 
 ```shell--cli
-hwallet-cli --id=$id nested --account=$account
+hsw-cli --id=$id nested --account=$account
 ```
 
 ```shell--curl
@@ -1923,8 +1923,8 @@ curl $walleturl/$id/nested -X POST --data '{"account": "'$account'"}'
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -1980,7 +1980,7 @@ account='default'
 ```
 
 ```shell--cli
-hwallet-cli --id=$id balance --account=$account
+hsw-cli --id=$id balance --account=$account
 ```
 
 ```shell--curl
@@ -1988,8 +1988,8 @@ curl $walleturl/$id/balance?account=$account
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -2049,12 +2049,12 @@ curl $walleturl/$id/coin
 ```
 
 ```shell--cli
-hwallet-cli --id=$id coins
+hsw-cli --id=$id coins
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -2132,8 +2132,8 @@ curl $walleturl/$id/locked/$hash/$index -X PUT
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -2198,8 +2198,8 @@ curl $walleturl/$id/locked/$hash/$index -X DELETE
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -2263,8 +2263,8 @@ curl $walleturl/$id/locked
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -2320,7 +2320,7 @@ index="0"
 ```shell--cli
 # command is wallet agnostic, same as in vanilla coin command
 
-hsk-cli coin $hash $index
+hsd-cli coin $hash $index
 ```
 
 ```shell--curl
@@ -2328,8 +2328,8 @@ curl $walleturl/$id/coin/$hash/$index
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {

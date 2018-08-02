@@ -32,7 +32,7 @@ First, we need to create a TXT record which we will sign in our zone (say we
 own example.com for instance):
 
 ``` bash
-$ hwallet-cli rpc createclaim example
+$ hsw-cli rpc createclaim example
 {
   "name": "example",
   "target": "example.com.",
@@ -71,7 +71,7 @@ Once our proof is published on the DNS layer, we can use `sendclaim` to crawl
 the relevant zones and create the proof.
 
 ``` bash
-$ hwallet-cli rpc sendclaim example
+$ hsw-cli rpc sendclaim example
 ```
 
 This will create and broadcast the proof to all of your peers, ultimately
@@ -82,7 +82,7 @@ Once the claim has reached maturity, you are able to bypass the auction process
 by calling `sendupdate` on your claimed name.
 
 ``` bash
-$ hwallet-cli rpc sendupdate example \
+$ hsw-cli rpc sendupdate example \
   '{"ttl":3600,"canonical":"icanhazip.com."}'
 ```
 
@@ -105,5 +105,5 @@ $ bns-prove -x -K /path/to/keys example.com. \
 The above will output a hex string which can then be passed to the RPC:
 
 ``` bash
-$ hsk-cli rpc sendrawclaim 'hex-string'
+$ hsd-cli rpc sendrawclaim 'hex-string'
 ```

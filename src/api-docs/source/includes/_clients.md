@@ -15,41 +15,41 @@ testnet   | 13037
 regtest   | 14037
 simnet    | 15037
 
-You can interact with hskd with its REST API as well as with RPC.
+You can interact with hsd with its REST API as well as with RPC.
 There are couple of ways you can use the API:
 
-- `hsk-cli` - methods built specifically into hskd by its developers
-- `hsk-cli rpc` - adds functionality that mimics Bitcoin Core RPC
-- `javascript` - methods used by `hsk-cli` can be accessed directly from javascript
+- `hsd-cli` - methods built specifically into hsd by its developers
+- `hsd-cli rpc` - adds functionality that mimics Bitcoin Core RPC
+- `javascript` - methods used by `hsd-cli` can be accessed directly from javascript
 - `curl` - you can use direct HTTP calls for invoking both REST and RPC API calls
 
 Only thing to keep in mind is authentication, which is described in the ["Authentication"](#authentication) section.
 
 
-## Configuring hsk-cli
+## Configuring hsd-cli
 
 ```shell--visible
 # You can configure it by passing arguments:
-hsk-cli --network=regtest info
-hsk-cli info --network=regtest
+hsd-cli --network=regtest info
+hsd-cli info --network=regtest
 
 # Or use environment variables (Starting with HSK_)
 export HSK_NETWORK=regtest
 export HSK_API_KEY=$YOUR-API-KEY
-hsk-cli info
+hsd-cli info
 ```
 
-Install `hsk-cli` and `hwallet-cli` command line tools with the `hsk-client` package.
-Included with `hskd` by default, but can be installed separately:
-`npm install -g hsk-client`
+Install `hsd-cli` and `hsw-cli` command line tools with the `hs-client` package.
+Included with `hsd` by default, but can be installed separately:
+`npm install -g hsd-client`
 
-`hsk-cli` params:
+`hsd-cli` params:
 
 ### General configuration:
 
 Config    | Options                      | Description
 --------- | -----------                  | -----------
-network   | `main`, `testnet`, `regtest` | This will configure which network to load, also where to look for `hsk.conf` file
+network   | `main`, `testnet`, `regtest` | This will configure which network to load, also where to look for `hsd.conf` file
 uri, url  | Base HTTP URI                | This can be used for custom port
 api-key   | _string_                     | Secret used by RPC for authorization
 
@@ -62,17 +62,17 @@ token     | _string_        | Token specific wallet
 
 
 ```shell--visible
-# Example hsk.conf syntax:
+# Example hsd.conf syntax:
 network: main
-prefix: ~/.hsk
+prefix: ~/.hsd
 api-key: <api-key>
 ```
 
-### hsk.conf and wallet.conf files
+### hsd.conf and hsw.conf files
 
-These files may contain any of the configuration parameters, and will be interpreted by hsk-client at startup. The node and wallet clients look for their own respective conf files.
+These files may contain any of the configuration parameters, and will be interpreted by hsd-client at startup. The node and wallet clients look for their own respective conf files.
 
-[A sample hsk.conf file is included in the code repository](https://github.com/handshake-org/hskd/blob/master/etc/sample.conf)
+[A sample hsd.conf file is included in the code repository](https://github.com/handshake-org/hsd/blob/master/etc/sample.conf)
 
 
 
@@ -84,8 +84,8 @@ Some commands might accept additional parameters.
 ## Using Javascript Clients
 
 ```javascript--visible
-const {NodeClient, WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient, WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -104,9 +104,9 @@ const client = new NodeClient(clientOptions);
 const wallet = new WalletClient(walletOptions);
 ```
 
-You can also use the API with a Javascript library (used by `hsk-cli`).
+You can also use the API with a Javascript library (used by `hsd-cli`).
 There are two objects: `NodeClient` for general API and `WalletClient` for wallet API.
-`hskd` also provides an object `Network` and its method `get` which will return the default configuration paramaters for a specified network.
+`hsd` also provides an object `Network` and its method `get` which will return the default configuration paramaters for a specified network.
 Custom port numbers are also configurable by the user.
 
 `NodeClient` and `WalletClient` options:
@@ -114,6 +114,6 @@ Custom port numbers are also configurable by the user.
 Config    | Type                         | Description
 --------- | -----------                  | -----------
 network   | _string_ | Network to use: `main`, `testnet`, `regtest`
-port      | _int_                          | hskd socket port (specific for each network)
+port      | _int_                          | hsd socket port (specific for each network)
 apiKey    | _string_                       | API secret
 

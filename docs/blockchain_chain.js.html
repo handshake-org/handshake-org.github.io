@@ -27,25 +27,27 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/*!
- * chain.js - blockchain management for hsk
+ * chain.js - blockchain management for hsd
  * Copyright (c) 2017-2018, Christopher Jeffrey (MIT License).
- * https://github.com/handshake-org/hskd
+ * https://github.com/handshake-org/hsd
  */
 
 'use strict';
 
-const assert = require('assert');
+const assert = require('bsert');
 const path = require('path');
 const AsyncEmitter = require('bevent');
 const Logger = require('blgr');
 const {Lock} = require('bmutex');
 const BN = require('bn.js');
 const LRU = require('blru');
+const {BufferMap, BufferSet} = require('buffer-map');
 const Network = require('../protocol/network');
 const ChainDB = require('./chaindb');
 const common = require('./common');
 const consensus = require('../protocol/consensus');
 const rules = require('../covenants/rules');
+const NameState = require('../covenants/namestate');
 const util = require('../utils/util');
 const ChainEntry = require('./chainentry');
 const CoinView = require('../coins/coinview');
@@ -53,6 +55,7 @@ const Script = require('../script/script');
 const {VerifyError} = require('../protocol/errors');
 const {OwnershipProof} = require('../covenants/ownership');
 const thresholdStates = common.thresholdStates;
+const {states} = NameState;
 
 /**
  * Blockchain
@@ -81,18 +84,17 @@ class Chain extends AsyncEmitter {
     this.workers = this.options.workers;
 
     this.db = new ChainDB(this.options);
-    this.cdb = this.db.cdb;
 
-    this.locker = new Lock(true);
-    this.invalid = new LRU(100);
+    this.locker = new Lock(true, BufferMap);
+    this.invalid = new LRU(100, null, BufferMap);
     this.state = new DeploymentState(this.network.genesis.hash);
 
     this.tip = new ChainEntry();
     this.height = -1;
     this.synced = false;
 
-    this.orphanMap = new Map();
-    this.orphanPrev = new Map();
+    this.orphanMap = new BufferMap();
+    this.orphanPrev = new BufferMap();
   }
 
   /**
@@ -129,6 +131,9 @@ class Chain extends AsyncEmitter {
 
     this.setDeploymentState(state);
 
+    if (!this.options.spv)
+      await this.syncTree();
+
     this.logger.memory();
 
     this.emit('tip', tip);
@@ -145,6 +150,36 @@ class Chain extends AsyncEmitter {
     assert(this.opened, 'Chain is not open.');
     this.opened = false;
     return this.db.close();
+  }
+
+  /**
+   * Sync tree state.
+   */
+
+  async syncTree() {
+    const {treeInterval} = this.network.names;
+    const last = this.height - (this.height % treeInterval);
+
+    for (let height = last + 1; height &lt;= this.height; height++) {
+      const entry = await this.db.getEntryByHeight(height);
+      assert(entry);
+
+      const block = await this.db.getBlock(entry.hash);
+      assert(block);
+
+      const state = await this.readDeploymentState(entry);
+      assert(state);
+
+      const view = new CoinView();
+      const hardened = state.hasHardening();
+
+      for (const tx of block.txs)
+        await this.verifyCovenants(tx, view, height, hardened);
+
+      assert((height % this.network.names.treeInterval) !== 0);
+
+      await this.db.saveNames(view, height);
+    }
   }
 
   /**
@@ -168,7 +203,7 @@ class Chain extends AsyncEmitter {
 
     // Skip everything if we're using checkpoints.
     if (this.isHistorical(prev)) {
-      const view = await this.updateInputs(block, prev);
+      const view = await this.updateInputs(block, prev, state);
       return [view, state];
     }
 
@@ -336,11 +371,11 @@ class Chain extends AsyncEmitter {
     assert(typeof flags === 'number');
 
     // Extra sanity check.
-    if (block.prevBlock !== prev.hash)
+    if (!block.prevBlock.equals(prev.hash))
       throw new VerifyError(block, 'invalid', 'bad-prevblk', 0);
 
     // Verify a checkpoint if there is one.
-    const hash = block.hash('hex');
+    const hash = block.hash();
     if (!this.verifyCheckpoint(prev, hash)) {
       throw new VerifyError(block,
         'checkpoint',
@@ -357,9 +392,9 @@ class Chain extends AsyncEmitter {
       if (flags &amp; common.flags.VERIFY_BODY) {
         assert(typeof block.createMerkleRoot === 'function');
 
-        const root = block.createMerkleRoot('hex');
+        const root = block.createMerkleRoot();
 
-        if (block.merkleRoot !== root) {
+        if (!block.merkleRoot.equals(root)) {
           throw new VerifyError(block,
             'invalid',
             'bad-txnmrklroot',
@@ -379,11 +414,24 @@ class Chain extends AsyncEmitter {
         throw new VerifyError(block, 'invalid', reason, score, true);
     }
 
-    // Ensure we have no more than 500 name updates.
+    // Check name DoS limits.
+    const set = new BufferSet();
+
+    let opens = 0;
     let updates = 0;
+    let renewals = 0;
 
     for (let i = 0; i &lt; block.txs.length; i++) {
       const tx = block.txs[i];
+
+      opens += rules.countOpens(tx);
+
+      if (opens > consensus.MAX_BLOCK_OPENS) {
+        throw new VerifyError(block,
+          'invalid',
+          'bad-blk-updates',
+          100);
+      }
 
       updates += rules.countUpdates(tx);
 
@@ -393,6 +441,24 @@ class Chain extends AsyncEmitter {
           'bad-blk-updates',
           100);
       }
+
+      renewals += rules.countRenewals(tx);
+
+      if (renewals > consensus.MAX_BLOCK_RENEWALS) {
+        throw new VerifyError(block,
+          'invalid',
+          'bad-blk-updates',
+          100);
+      }
+
+      if (rules.hasNames(tx, set)) {
+        throw new VerifyError(block,
+          'invalid',
+          'bad-blk-updates',
+          100);
+      }
+
+      rules.addNames(tx, set);
     }
 
     // Ensure the POW is what we expect.
@@ -400,8 +466,9 @@ class Chain extends AsyncEmitter {
 
     if (block.bits !== bits) {
       this.logger.debug(
-        'Bad diffbits: %d != %d',
-        block.bits, bits);
+        'Bad diffbits: 0x%d != 0x%d',
+        util.hex32(block.bits),
+        util.hex32(bits));
 
       throw new VerifyError(block,
         'invalid',
@@ -556,7 +623,8 @@ class Chain extends AsyncEmitter {
    * @returns {Promise} - Returns {@link CoinView}.
    */
 
-  async updateInputs(block, prev) {
+  async updateInputs(block, prev, state) {
+    const hardened = state.hasHardening();
     const view = new CoinView();
     const height = prev.height + 1;
     const cb = block.txs[0];
@@ -569,12 +637,7 @@ class Chain extends AsyncEmitter {
       assert(await view.spendInputs(this.db, tx),
         'BUG: Spent inputs in historical data!');
 
-      if (!await this.cdb.process(tx, view, height, false)) {
-        throw new VerifyError(block,
-          'invalid',
-          'invalid-covenant',
-          100);
-      }
+      await this.verifyCovenants(tx, view, height, hardened);
 
       view.addTX(tx, height);
     }
@@ -611,7 +674,7 @@ class Chain extends AsyncEmitter {
     let reward = 0;
 
     // Check the name tree root.
-    if (block.treeRoot !== this.db.treeRoot()) {
+    if (!block.treeRoot.equals(this.db.treeRoot())) {
       throw new VerifyError(block,
         'invalid',
         'bad-tree-root',
@@ -671,12 +734,8 @@ class Chain extends AsyncEmitter {
           100);
       }
 
-      if (!await this.cdb.process(tx, view, height, hardened)) {
-        throw new VerifyError(block,
-          'invalid',
-          'invalid-covenant',
-          100);
-      }
+      // Verify covenants.
+      await this.verifyCovenants(tx, view, height, hardened);
 
       // Add new coins.
       view.addTX(tx, height);
@@ -715,6 +774,527 @@ class Chain extends AsyncEmitter {
   }
 
   /**
+   * Verify a renewal.
+   * @param {Hash} hash
+   * @param {Number} height
+   * @returns {Boolean}
+   */
+
+  async verifyRenewal(hash, height) {
+    assert(Buffer.isBuffer(hash));
+    assert((height >>> 0) === height);
+
+    // Cannot renew yet.
+    if (height &lt; this.network.names.renewalMaturity)
+      return true;
+
+    // We require renewals to commit to a block
+    // within the past 6 months, to prove that
+    // the user still owns the key. This prevents
+    // people from presigning thousands of years
+    // worth of renewals. The block must be at
+    // least 400 blocks back to prevent the
+    // possibility of a reorg invalidating the
+    // covenant.
+
+    const entry = await this.db.getEntry(hash);
+
+    if (!entry)
+      return false;
+
+    // Must be the current chain.
+    if (!await this.db.isMainChain(entry))
+      return false;
+
+    // Make sure it's a mature block (unlikely to be reorgd).
+    if (entry.height > height - this.network.names.renewalMaturity)
+      return false;
+
+    // Block committed to must be
+    // no older than a 6 months.
+    if (entry.height &lt; height - this.network.names.renewalPeriod)
+      return false;
+
+    return true;
+  }
+
+  /**
+   * Verify covenants.
+   * @param {TX} tx
+   * @param {CoinView} view
+   * @param {Number} height
+   * @param {Boolean} hardened
+   */
+
+  async verifyCovenants(tx, view, height, hardened) {
+    assert(tx);
+    assert(view instanceof CoinView);
+    assert((height >>> 0) === height);
+    assert(typeof hardened === 'boolean');
+
+    const {types} = rules;
+    const network = this.network;
+
+    for (let i = 0; i &lt; tx.outputs.length; i++) {
+      const output = tx.outputs[i];
+      const {covenant} = output;
+
+      if (!covenant.isName())
+        continue;
+
+      const nameHash = covenant.getHash(0);
+      const start = covenant.getU32(1);
+      const ns = await view.getNameState(this.db, nameHash);
+
+      if (ns.isNull()) {
+        if (!covenant.isClaim() &amp;&amp; !covenant.isOpen())
+          throw new Error('Database inconsistency.');
+
+        const name = covenant.get(2);
+        ns.set(name, height);
+      }
+
+      // Once the soft-fork is activated,
+      // any name that used a weak algorithm
+      // must be re-claimed with a proper key.
+      let existed = false;
+      if (hardened) {
+        if (ns.isWeak(height, network)) {
+          ns.reset(height);
+          existed = true;
+        }
+      }
+
+      // Check for name expiration/revocation.
+      let expired = false;
+      if (ns.isExpired(height, network)) {
+        ns.reset(height);
+        expired = true;
+      }
+
+      // Calculate the current state.
+      const state = ns.state(height, network);
+
+      // none -> claim
+      if (covenant.isClaim()) {
+        const flags = covenant.getU8(3);
+        const weak = (flags &amp; 1) !== 0;
+        const forked = (flags &amp; 2) !== 0;
+
+        if (state !== states.OPENING) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-claim-state',
+            100);
+        }
+
+        // Can only claim reserved names.
+        if (!rules.isReserved(nameHash, height, network)) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-claim-notreserved',
+            100);
+        }
+
+        // Once a reserved name expires or is
+        // revoked, it is no longer claimable.
+        if (expired) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-claim-state',
+            100);
+        }
+
+        // Participant must commit to the fork.
+        if (forked !== existed) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-claim-flags',
+            100);
+        }
+
+        // Once the fork is active, we reject
+        // any weak algorithms (i.e. RSA-1024).
+        if (hardened &amp;&amp; weak) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-claim-algorithm',
+            100);
+        }
+
+        ns.setClaimed(true);
+        ns.setValue(0);
+        ns.setOwner(tx.outpoint(i));
+        ns.setHighest(0);
+        ns.setWeak(weak);
+
+        continue;
+      }
+
+      assert(!tx.isCoinbase());
+
+      // none/redeem/open -> open
+      if (covenant.isOpen()) {
+        if (state !== states.OPENING) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-open-state',
+            100);
+        }
+
+        // Only one open transaction can ever exist.
+        if (ns.height !== height) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-open-multiple',
+            100);
+        }
+
+        // Cannot bid on a reserved name.
+        if (rules.isReserved(nameHash, height, network)) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-open-reserved',
+            100);
+        }
+
+        // On mainnet, names are released on a
+        // weekly basis for the first year.
+        if (!rules.hasRollout(nameHash, height, network)) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-open-rollout',
+            100);
+        }
+
+        continue;
+      }
+
+      // none/redeem/open -> bid
+      if (covenant.isBid()) {
+        if (state !== states.BIDDING) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-bid-state',
+            100);
+        }
+
+        if (start !== ns.height) {
+          throw new VerifyError(tx,
+            'invalid',
+            'bad-bid-height',
+            100);
+        }
+
+        continue;
+      }
+
+      assert(i &lt; tx.inputs.length);
+
+      const {prevout} = tx.inputs[i];
+
+      switch (covenant.type) {
+        // bid -> reveal
+        case types.REVEAL: {
+          if (start !== ns.height) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-reveal-nonlocal',
+              100);
+          }
+
+          // Early reveals? No.
+          if (state !== states.REVEAL) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-reveal-state',
+              100);
+          }
+
+          if (ns.owner.isNull() || output.value > ns.highest) {
+            ns.setValue(ns.highest);
+            ns.setOwner(tx.outpoint(i));
+            ns.setHighest(output.value);
+          } else if (output.value > ns.value) {
+            ns.setValue(output.value);
+          }
+
+          break;
+        }
+
+        // reveal -> redeem
+        case types.REDEEM: {
+          if (start !== ns.height) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-redeem-nonlocal',
+              100);
+          }
+
+          // Allow participants to get their
+          // money out, even in a revoked state.
+          if (state &lt; states.CLOSED) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-redeem-state',
+              100);
+          }
+
+          // Must be the loser in order
+          // to redeem the money now.
+          if (prevout.equals(ns.owner)) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-redeem-owner',
+              100);
+          }
+
+          break;
+        }
+
+        // claim/reveal -> register
+        case types.REGISTER: {
+          if (start !== ns.height) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-register-nonlocal',
+              100);
+          }
+
+          if (state !== states.CLOSED) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-register-state',
+              100);
+          }
+
+          const data = covenant.get(2);
+          const hash = covenant.getHash(3);
+
+          // Verify block hash for renewal.
+          if (!await this.verifyRenewal(hash, height)) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-register-renewal',
+              100);
+          }
+
+          // Must be the winner in
+          // order to redeem the name.
+          if (!prevout.equals(ns.owner)) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-register-owner',
+              100);
+          }
+
+          // Must match the second highest bid.
+          if (output.value !== ns.value) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-register-value',
+              100);
+          }
+
+          ns.setOwner(tx.outpoint(i));
+          ns.setData(data);
+          ns.setRenewal(height);
+
+          break;
+        }
+
+        // update/renew/register/finalize -> update
+        case types.UPDATE: {
+          if (start !== ns.height) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-update-nonlocal',
+              100);
+          }
+
+          if (state !== states.CLOSED) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-update-state',
+              100);
+          }
+
+          const data = covenant.get(2);
+
+          ns.setOwner(tx.outpoint(i));
+
+          if (data.length > 0)
+            ns.setData(data);
+
+          ns.setTransfer(0);
+
+          break;
+        }
+
+        // update/renew/register/finalize -> renew
+        case types.RENEW: {
+          if (start !== ns.height) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-renewal-nonlocal',
+              100);
+          }
+
+          if (state !== states.CLOSED) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-renewal-state',
+              100);
+          }
+
+          const hash = covenant.getHash(2);
+
+          if (height &lt; ns.renewal + network.names.treeInterval) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-renewal-premature',
+              100);
+          }
+
+          if (!await this.verifyRenewal(hash, height)) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-renewal',
+              100);
+          }
+
+          ns.setOwner(tx.outpoint(i));
+          ns.setTransfer(0);
+          ns.setRenewal(height);
+
+          break;
+        }
+
+        // update/renew/register/finalize -> transfer
+        case types.TRANSFER: {
+          if (start !== ns.height) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-transfer-nonlocal',
+              100);
+          }
+
+          if (state !== states.CLOSED) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-transfer-state',
+              100);
+          }
+
+          if (ns.isWeak(height, network)) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-transfer-state',
+              100);
+          }
+
+          ns.setOwner(tx.outpoint(i));
+
+          assert(ns.transfer === 0);
+          ns.setTransfer(height);
+
+          break;
+        }
+
+        // transfer -> finalize
+        case types.FINALIZE: {
+          if (start !== ns.height) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-finalize-nonlocal',
+              100);
+          }
+
+          if (state !== states.CLOSED) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-finalize-state',
+              100);
+          }
+
+          assert(ns.transfer !== 0);
+          assert(network.names.transferLockup >= network.names.treeInterval);
+
+          if (height &lt; ns.transfer + network.names.transferLockup) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-finalize-maturity',
+              100);
+          }
+
+          const flags = covenant.getU8(3);
+          const weak = (flags &amp; 1) !== 0;
+          const claimed = (flags &amp; 4) !== 0;
+          const hash = covenant.getHash(4);
+
+          if (weak !== ns.weak || claimed !== ns.claimed) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-finalize-statetransfer',
+              100);
+          }
+
+          if (!await this.verifyRenewal(hash, height)) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-finalize-renewal',
+              100);
+          }
+
+          ns.setOwner(tx.outpoint(i));
+          ns.setTransfer(0);
+          ns.setRenewal(height);
+
+          break;
+        }
+
+        // register/update/renew/transfer/finalize -> revoke
+        case types.REVOKE: {
+          if (start !== ns.height) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-revoke-nonlocal',
+              100);
+          }
+
+          if (state !== states.CLOSED) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-revoke-state',
+              100);
+          }
+
+          if (ns.isWeak(height, network)) {
+            throw new VerifyError(tx,
+              'invalid',
+              'bad-revoke-state',
+              100);
+          }
+
+          assert(ns.revoked === 0);
+          ns.setRevoked(height);
+          ns.setTransfer(0);
+          ns.setData(null);
+
+          break;
+        }
+
+        default: {
+          assert.fail('Invalid covenant type.');
+          break;
+        }
+      }
+    }
+
+    return;
+  }
+
+  /**
    * Find the block at which a fork ocurred.
    * @private
    * @param {ChainEntry} fork - The current chain.
@@ -723,14 +1303,14 @@ class Chain extends AsyncEmitter {
    */
 
   async findFork(fork, longer) {
-    while (fork.hash !== longer.hash) {
+    while (!fork.hash.equals(longer.hash)) {
       while (longer.height > fork.height) {
         longer = await this.getPrevious(longer);
         if (!longer)
           throw new Error('No previous entry for new tip.');
       }
 
-      if (fork.hash === longer.hash)
+      if (fork.hash.equals(longer.hash))
         return fork;
 
       fork = await this.getPrevious(fork);
@@ -760,7 +1340,7 @@ class Chain extends AsyncEmitter {
     // Blocks to disconnect.
     const disconnect = [];
     let entry = tip;
-    while (entry.hash !== fork.hash) {
+    while (!entry.hash.equals(fork.hash)) {
       disconnect.push(entry);
       entry = await this.getPrevious(entry);
       assert(entry);
@@ -769,7 +1349,7 @@ class Chain extends AsyncEmitter {
     // Blocks to connect.
     const connect = [];
     entry = competitor;
-    while (entry.hash !== fork.hash) {
+    while (!entry.hash.equals(fork.hash)) {
       connect.push(entry);
       entry = await this.getPrevious(entry);
       assert(entry);
@@ -790,7 +1370,7 @@ class Chain extends AsyncEmitter {
     }
 
     this.logger.warning(
-      'Chain reorganization: old=%s(%d) new=%s(%d)',
+      'Chain reorganization: old=%x(%d) new=%x(%d)',
       tip.hash,
       tip.height,
       competitor.hash,
@@ -817,7 +1397,7 @@ class Chain extends AsyncEmitter {
     // Buffer disconnected blocks.
     const disconnect = [];
     let entry = tip;
-    while (entry.hash !== fork.hash) {
+    while (!entry.hash.equals(fork.hash)) {
       disconnect.push(entry);
       entry = await this.getPrevious(entry);
       assert(entry);
@@ -838,7 +1418,7 @@ class Chain extends AsyncEmitter {
     }
 
     this.logger.warning(
-      'SPV reorganization: old=%s(%d) new=%s(%d)',
+      'SPV reorganization: old=%x(%d) new=%x(%d)',
       tip.hash,
       tip.height,
       competitor.hash,
@@ -912,7 +1492,7 @@ class Chain extends AsyncEmitter {
         if (!err.malleated)
           this.setInvalid(entry.hash);
         this.logger.warning(
-          'Tried to reconnect invalid block: %s (%d).',
+          'Tried to reconnect invalid block: %x (%d).',
           entry.hash, entry.height);
       }
       throw err;
@@ -946,7 +1526,7 @@ class Chain extends AsyncEmitter {
   async setBestChain(entry, block, prev, flags) {
     // A higher fork has arrived.
     // Time to reorganize the chain.
-    if (entry.prevBlock !== this.tip.hash) {
+    if (!entry.prevBlock.equals(this.tip.hash)) {
       this.logger.warning('WARNING: Reorganizing chain.');
 
       // In spv-mode, we reset the
@@ -961,7 +1541,7 @@ class Chain extends AsyncEmitter {
     if (entry.hasUnknown(this.network)) {
       this.logger.warning(
         'Unknown version bits in block %d: %s.',
-        entry.height, entry.version.toString(16));
+        entry.height, util.hex32(entry.version));
     }
 
     // Otherwise, everything is in order.
@@ -976,7 +1556,7 @@ class Chain extends AsyncEmitter {
         if (!err.malleated)
           this.setInvalid(entry.hash);
         this.logger.warning(
-          'Tried to connect invalid block: %s (%d).',
+          'Tried to connect invalid block: %x (%d).',
           entry.hash, entry.height);
       }
       throw err;
@@ -1016,7 +1596,7 @@ class Chain extends AsyncEmitter {
         if (!err.malleated)
           this.setInvalid(entry.hash);
         this.logger.warning(
-          'Invalid block on alternate chain: %s (%d).',
+          'Invalid block on alternate chain: %x (%d).',
           entry.hash, entry.height);
       }
       throw err;
@@ -1026,14 +1606,14 @@ class Chain extends AsyncEmitter {
     if (entry.hasUnknown(this.network)) {
       this.logger.warning(
         'Unknown version bits in block %d: %s.',
-        entry.height, entry.version.toString(16));
+        entry.height, util.hex32(entry.version));
     }
 
     await this.db.save(entry, block);
 
     this.logger.warning('Heads up: Competing chain at height %d:'
       + ' tip-height=%d competitor-height=%d'
-      + ' tip-hash=%s competitor-hash=%s'
+      + ' tip-hash=%x competitor-hash=%x'
       + ' tip-chainwork=%s competitor-chainwork=%s'
       + ' chainwork-diff=%s',
       entry.height,
@@ -1205,7 +1785,7 @@ class Chain extends AsyncEmitter {
    */
 
   async add(block, flags, id) {
-    const hash = block.hash('hex');
+    const hash = block.hash();
     const unlock = await this.locker.lock(hash);
     try {
       return await this._add(block, flags, id);
@@ -1224,7 +1804,7 @@ class Chain extends AsyncEmitter {
    */
 
   async _add(block, flags, id) {
-    const hash = block.hash('hex');
+    const hash = block.hash();
 
     if (flags == null)
       flags = common.flags.DEFAULT_FLAGS;
@@ -1233,27 +1813,27 @@ class Chain extends AsyncEmitter {
       id = -1;
 
     // Special case for genesis block.
-    if (hash === this.network.genesis.hash) {
-      this.logger.debug('Saw genesis block: %s.', block.hash('hex'));
+    if (hash.equals(this.network.genesis.hash)) {
+      this.logger.debug('Saw genesis block: %x.', block.hash());
       throw new VerifyError(block, 'duplicate', 'duplicate', 0);
     }
 
     // Do we already have this block in the queue?
     if (this.hasPending(hash)) {
-      this.logger.debug('Already have pending block: %s.', block.hash('hex'));
+      this.logger.debug('Already have pending block: %x.', block.hash());
       throw new VerifyError(block, 'duplicate', 'duplicate', 0);
     }
 
     // If the block is already known to be
     // an orphan, ignore it.
     if (this.hasOrphan(hash)) {
-      this.logger.debug('Already have orphan block: %s.', block.hash('hex'));
+      this.logger.debug('Already have orphan block: %x.', block.hash());
       throw new VerifyError(block, 'duplicate', 'duplicate', 0);
     }
 
     // Do not revalidate known invalid blocks.
     if (this.hasInvalid(block)) {
-      this.logger.debug('Invalid ancestors for block: %s.', block.hash('hex'));
+      this.logger.debug('Invalid ancestors for block: %x.', block.hash());
       throw new VerifyError(block, 'duplicate', 'duplicate', 100);
     }
 
@@ -1268,7 +1848,7 @@ class Chain extends AsyncEmitter {
 
     // Do we already have this block?
     if (await this.hasEntry(hash)) {
-      this.logger.debug('Already have block: %s.', block.hash('hex'));
+      this.logger.debug('Already have block: %x.', block.hash());
       throw new VerifyError(block, 'duplicate', 'duplicate', 0);
     }
 
@@ -1305,7 +1885,7 @@ class Chain extends AsyncEmitter {
     const start = util.bench();
 
     // Sanity check.
-    assert(block.prevBlock === prev.hash);
+    assert(block.prevBlock.equals(prev.hash));
 
     // Explanation: we try to keep as much data
     // off the javascript heap as possible. Blocks
@@ -1372,8 +1952,8 @@ class Chain extends AsyncEmitter {
       } catch (err) {
         if (err.type === 'VerifyError') {
           this.logger.warning(
-            'Could not resolve orphan block %s: %s.',
-            block.hash('hex'), err.message);
+            'Could not resolve orphan block %x: %s.',
+            block.hash(), err.message);
 
           this.emit('bad orphan', err, id);
 
@@ -1383,8 +1963,8 @@ class Chain extends AsyncEmitter {
       }
 
       this.logger.debug(
-        'Orphan block was resolved: %s (%d).',
-        block.hash('hex'), entry.height);
+        'Orphan block was resolved: %x (%d).',
+        block.hash(), entry.height);
 
       this.emit('resolved', block, entry);
 
@@ -1433,7 +2013,7 @@ class Chain extends AsyncEmitter {
     const elapsed = util.bench(start);
 
     this.logger.info(
-      'Block %s (%d) added to chain (size=%d txs=%d time=%d).',
+      'Block %x (%d) added to chain (size=%d txs=%d time=%d).',
       entry.hash,
       entry.height,
       block.getSize(),
@@ -1464,8 +2044,8 @@ class Chain extends AsyncEmitter {
     if (!checkpoint)
       return true;
 
-    if (hash === checkpoint) {
-      this.logger.debug('Hit checkpoint block %s (%d).', hash, height);
+    if (hash.equals(checkpoint)) {
+      this.logger.debug('Hit checkpoint block %x (%d).', hash, height);
       this.emit('checkpoint', hash, height);
       return true;
     }
@@ -1475,7 +2055,7 @@ class Chain extends AsyncEmitter {
     // consensus protocol is broken and
     // there was a 20k+ block reorg.
     this.logger.warning(
-      'Checkpoint mismatch at height %d: expected=%s received=%s',
+      'Checkpoint mismatch at height %d: expected=%x received=%x',
       height,
       checkpoint,
       hash
@@ -1500,12 +2080,12 @@ class Chain extends AsyncEmitter {
 
     // The orphan chain forked.
     if (orphan) {
-      assert(orphan.block.hash('hex') !== block.hash('hex'));
-      assert(orphan.block.prevBlock === block.prevBlock);
+      assert(!orphan.block.hash().equals(block.hash()));
+      assert(orphan.block.prevBlock.equals(block.prevBlock));
 
       this.logger.warning(
-        'Removing forked orphan block: %s (%d).',
-        orphan.block.hash('hex'), height);
+        'Removing forked orphan block: %x (%d).',
+        orphan.block.hash(), height);
 
       this.removeOrphan(orphan);
     }
@@ -1514,8 +2094,8 @@ class Chain extends AsyncEmitter {
     this.addOrphan(new Orphan(block, flags, id));
 
     this.logger.debug(
-      'Storing orphan block: %s (%d).',
-      block.hash('hex'), height);
+      'Storing orphan block: %x (%d).',
+      block.hash(), height);
 
     this.emit('orphan', block);
   }
@@ -1529,7 +2109,7 @@ class Chain extends AsyncEmitter {
 
   addOrphan(orphan) {
     const block = orphan.block;
-    const hash = block.hash('hex');
+    const hash = block.hash();
 
     assert(!this.orphanMap.has(hash));
     assert(!this.orphanPrev.has(block.prevBlock));
@@ -1550,7 +2130,7 @@ class Chain extends AsyncEmitter {
 
   removeOrphan(orphan) {
     const block = orphan.block;
-    const hash = block.hash('hex');
+    const hash = block.hash();
 
     assert(this.orphanMap.has(hash));
     assert(this.orphanPrev.has(block.prevBlock));
@@ -1641,7 +2221,7 @@ class Chain extends AsyncEmitter {
    */
 
   hasInvalid(block) {
-    const hash = block.hash('hex');
+    const hash = block.hash();
 
     if (this.invalid.has(hash))
       return true;
@@ -2063,7 +2643,7 @@ class Chain extends AsyncEmitter {
     if (start == null)
       start = this.tip.hash;
 
-    assert(typeof start === 'string');
+    assert(Buffer.isBuffer(start));
 
     let entry = await this.getEntry(start);
 
@@ -2460,17 +3040,27 @@ class Chain extends AsyncEmitter {
    */
 
   async getDeploymentState() {
-    const prev = await this.getPrevious(this.tip);
+    return this.readDeploymentState(this.tip);
+  }
+
+  /**
+   * Get deployment state.
+   * @private
+   * @returns {Promise} - Returns {@link DeploymentState}.
+   */
+
+  async readDeploymentState(tip) {
+    const prev = await this.getPrevious(tip);
 
     if (!prev) {
-      assert(this.tip.isGenesis());
-      return this.state;
+      assert(tip.isGenesis());
+      return new DeploymentState(this.network.genesis.hash);
     }
 
     if (this.options.spv)
-      return this.state;
+      return new DeploymentState(this.network.genesis.hash);
 
-    return this.getDeployments(this.tip.time, prev);
+    return this.getDeployments(tip.time, prev);
   }
 
   /**
@@ -2581,6 +3171,30 @@ class Chain extends AsyncEmitter {
     }
 
     return true;
+  }
+
+  /**
+   * Get safe tree root.
+   * @returns {Hash}
+   */
+
+  async getSafeRoot() {
+    // The tree is committed on an interval.
+    // Mainnet is 72 blocks, meaning at height 72,
+    // the name set of the past 72 blocks are
+    // inserted into the tree. The commitment for
+    // that insertion actually appears in a block
+    // header one block later (height 73). We
+    // want the the root _before_ the current one
+    // so we can calculate that with:
+    //   chain_height - (chain_height % interval)
+    const interval = this.network.names.treeInterval;
+    const mod = this.height % interval;
+    const height = this.height - mod;
+    const entry = await this.getEntryByHeight(height);
+    assert(entry);
+
+    return entry.treeRoot;
   }
 }
 
@@ -2730,6 +3344,9 @@ class ChainOptions {
       this.checkpoints = options.checkpoints;
     }
 
+    if (this.spv || this.memory)
+      this.treePrefix = null;
+
     return this;
   }
 
@@ -2816,13 +3433,13 @@ module.exports = Chain;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-btc.html">btc</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsk.html">hsk</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="Auction.html">Auction</a></li><li><a href="AuctionDelta.html">AuctionDelta</a></li><li><a href="AuctionState.html">AuctionState</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-btc.URI.html">URI</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDB.html">NameDB</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 19 2018 21:52:41 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:48 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

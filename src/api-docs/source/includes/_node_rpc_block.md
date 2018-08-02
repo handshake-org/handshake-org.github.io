@@ -9,12 +9,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getblockchaininfo
+hsd-cli rpc getblockchaininfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -74,12 +74,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getbestblockhash
+hsd-cli rpc getbestblockhash
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -121,12 +121,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getblockcount
+hsd-cli rpc getblockcount
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -180,12 +180,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getblock $blockhash $verbose $details
+hsd-cli rpc getblock $blockhash $verbose $details
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -274,12 +274,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getblockbyheight $blockheight $verbose $details
+hsd-cli rpc getblockbyheight $blockheight $verbose $details
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -366,12 +366,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getblockhash $blockheight
+hsd-cli rpc getblockhash $blockheight
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -424,12 +424,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getblockheader $blockhash $verbose
+hsd-cli rpc getblockheader $blockhash $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -495,12 +495,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getchaintips
+hsd-cli rpc getchaintips
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -551,12 +551,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getdifficulty
+hsd-cli rpc getdifficulty
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {

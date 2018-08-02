@@ -73,7 +73,7 @@
 </ul>
 <hr />
 <p>First, we need to create a TXT record which we will sign in our zone (say we own example.com for instance):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="ex">hwallet-cli</span> rpc createclaim example</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="ex">hsw-cli</span> rpc createclaim example</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">{</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="st">&quot;name&quot;</span>: <span class="st">&quot;example&quot;</span>,</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="st">&quot;target&quot;</span>: <span class="st">&quot;example.com.&quot;</span>,</a>
@@ -91,10 +91,10 @@ example.com. 1800 IN RRSIG TXT 5 2 1800 20190615140933 20180615131108 ...</code>
 <p>The RR name of the TXT record (<code>example.com.</code> in this case) <em>must</em> be equal to the name shown in the <code>target</code> field output by <code>createclaim</code> (note: case insensitive). Note that DNSSEC ownership proofs are a stricter subset of DNSSEC proofs: your parent zones must operate through a series of typical <code>DS-&gt;DNSKEY</code> referrals. No CNAMEs or wildcards are allowed, and each label separation (<code>.</code>) must behave like a zone cut (with an appropriate child zone referral).</p>
 <p>The ZSK which signs our TXT record must be signed by our zone’s KSK. As per the typical DNSSEC setup, our zone’s KSK must be committed as a DS record in the parent zone.</p>
 <p>Once our proof is published on the DNS layer, we can use <code>sendclaim</code> to crawl the relevant zones and create the proof.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">hwallet-cli</span> rpc sendclaim example</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">hsw-cli</span> rpc sendclaim example</a></code></pre></div>
 <p>This will create and broadcast the proof to all of your peers, ultimately ending up in a miner’s mempool. Your claim should be mined within 5-20 minutes. Once mined, you must wait 400 blocks before your claim is considered “mature”.</p>
 <p>Once the claim has reached maturity, you are able to bypass the auction process by calling <code>sendupdate</code> on your claimed name.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="ex">hwallet-cli</span> rpc sendupdate example \</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="ex">hsw-cli</span> rpc sendupdate example \</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="st">&#39;{&quot;ttl&quot;:3600,&quot;canonical&quot;:&quot;icanhazip.com.&quot;}&#39;</span></a></code></pre></div>
 <h3 id="creating-a-proof-by-hand">Creating a proof by hand</h3>
 <p>If you already have DNSSEC setup, you can avoid publishing a TXT record publicly by creating the proof locally. This requires that you have direct access to your zone-signing keys. The private keys themselves must be stored in BIND’s private key format (v1.3) and naming convention.</p>
@@ -103,7 +103,7 @@ example.com. 1800 IN RRSIG TXT 5 2 1800 20190615140933 20180615131108 ...</code>
 <a class="sourceLine" id="cb5-2" data-line-number="2">$ <span class="ex">bns-prove</span> -x -K /path/to/keys example.com. \</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="st">&#39;hns-claim:qnPxvMRKAAAAAAAA+4mmSeRmfY/8TOEF+ux&#39;</span></a></code></pre></div>
 <p>The above will output a hex string which can then be passed to the RPC:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="ex">hsk-cli</span> rpc sendrawclaim <span class="st">&#39;hex-string&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="ex">hsd-cli</span> rpc sendrawclaim <span class="st">&#39;hex-string&#39;</span></a></code></pre></div>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>

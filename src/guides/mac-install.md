@@ -1,18 +1,18 @@
 # macOS Install Guide
 
-The Handshake software suite consists of a full node (`hskd`) and a light
+The Handshake software suite consists of a full node (`hsd`) and a light
 client (`hnsd`). The full node allows users to register, update, and transfer
 names, resolve names, and make blockchain payments. The light client (SPV node)
 allows users to resolve names without the computing resource requirements of
 running a full node.
 
 This guide includes instructions for installing
-[`hskd`](#hskd-installation-instructions) and
+[`hsd`](#hsd-installation-instructions) and
 [`hnsd`](#hnsd-installation-instructions).
 
 <br/>
 
-## `hskd` Installation Instructions
+## `hsd` Installation Instructions
 #### Install dependencies
 Xcode Command Line Tools, Homebrew, node.js & git
 ```bash
@@ -21,16 +21,16 @@ $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/inst
 $ brew install node git
 ```
 
-#### Download and install `hskd`
+#### Download and install `hsd`
 ```bash
-$ git clone git@github.com:handshake-org/hskd.git
-$ cd hskd
+$ git clone git@github.com:handshake-org/hsd.git
+$ cd hsd
 $ npm install --production
 ```
 
 #### Start (on testnet)
 ```bash
-$ ./hskd/bin/hskd --daemon --no-auth
+$ ./hsd/bin/hsd --daemon --no-auth
 ```
 
 <br/>

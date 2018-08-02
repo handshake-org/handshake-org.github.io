@@ -1,6 +1,6 @@
-# hskd - Node
+# hsd - Node
 
-## hskd client requests
+## hsd client requests
 
 Complete list of commands:
 
@@ -28,12 +28,12 @@ curl $url/
 ```
 
 ```shell--cli
-hsk-cli info
+hsd-cli info
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -64,7 +64,7 @@ const client = new NodeClient(clientOptions);
   "pool": {
     "host": "18.188.224.12",
     "port": 14038,
-    "agent": "/hskd:0.0.0/",
+    "agent": "/hsd:0.0.0/",
     "services": "1001",
     "outbound": 1,
     "inbound": 1
@@ -106,12 +106,12 @@ curl $url/mempool
 ```
 
 ```shell--cli
-hsk-cli mempool
+hsd-cli mempool
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -168,13 +168,13 @@ curl $url/block/$blockHeight # by height
 ```
 
 ```shell--cli
-hsk-cli block $blockHash # by hash
-hsk-cli block $blockHeight # by height
+hsd-cli block $blockHash # by hash
+hsd-cli block $blockHeight # by height
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -286,12 +286,12 @@ curl $url/broadcast \
 ```
 
 ```shell--cli
-hsk-cli broadcast $tx
+hsd-cli broadcast $tx
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {

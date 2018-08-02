@@ -12,12 +12,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc pruneblockchain
+hsd-cli rpc pruneblockchain
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -70,12 +70,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc invalidateblock $blockhash
+hsd-cli rpc invalidateblock $blockhash
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -126,12 +126,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc reconsiderblock $blockhash
+hsd-cli rpc reconsiderblock $blockhash
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {

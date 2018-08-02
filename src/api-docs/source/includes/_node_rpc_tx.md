@@ -22,12 +22,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc gettxout $txhash $index $includemempool
+hsd-cli rpc gettxout $txhash $index $includemempool
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -83,12 +83,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc gettxoutsetinfo
+hsd-cli rpc gettxoutsetinfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -149,12 +149,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getrawtransaction $txhash $verbose
+hsd-cli rpc getrawtransaction $txhash $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -207,12 +207,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc decoderawtransaction $rawtx
+hsd-cli rpc decoderawtransaction $rawtx
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -302,12 +302,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc decodescript $script
+hsd-cli rpc decodescript $script
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -363,12 +363,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc sendrawtransaction $rawtx
+hsd-cli rpc sendrawtransaction $rawtx
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -426,14 +426,14 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc createrawtransaction \
+hsd-cli rpc createrawtransaction \
   '[{ "txid": "'$txhash'", "vout": '$txindex' }]' \
   '{ "'$address'": '$amount', "data": "'$data'" }'
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -517,15 +517,15 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc signrawtransaction $rawtx \
+hsd-cli rpc signrawtransaction $rawtx \
   '[{ "txid": "'$txhash'", "vout": '$txindex', "scriptPubKey": "'$scriptPubKey'", "amount": '$amount' }]' \
   '[ "'$privkey'" ]'
 ```
 
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -596,13 +596,13 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc gettxoutproof '[ "'$txid0'", "'$txid1'" ]'
+hsd-cli rpc gettxoutproof '[ "'$txid0'", "'$txid1'" ]'
 ```
 
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -655,13 +655,13 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc verifytxoutproof $proof
+hsd-cli rpc verifytxoutproof $proof
 ```
 
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {

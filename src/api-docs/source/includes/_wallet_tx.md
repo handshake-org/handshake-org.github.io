@@ -12,7 +12,7 @@ hash="580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9"
 ```
 
 ```shell--cli
-hwallet-cli --id=$id tx $hash
+hsw-cli --id=$id tx $hash
 ```
 
 ```shell--curl
@@ -20,8 +20,8 @@ curl $walleturl/$id/tx/$hash
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -157,7 +157,7 @@ id='primary'
 ```
 
 ```shell--cli
-hwallet-cli --id=$id history
+hsw-cli --id=$id history
 ```
 
 ```shell--curl
@@ -165,8 +165,8 @@ curl $walleturl/$id/tx/history
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -270,7 +270,7 @@ id='primary'
 ```
 
 ```shell--cli
-hwallet-cli --id=$id pending
+hsw-cli --id=$id pending
 ```
 
 ```shell--curl
@@ -278,8 +278,8 @@ curl $walleturl/$id/tx/unconfirmed
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -330,8 +330,8 @@ curl $walleturl/$id/tx/range?start=$start'&'end=$end
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {

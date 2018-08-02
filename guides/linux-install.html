@@ -55,25 +55,25 @@
 </pre>
 
 <h1 id="linux-install-guide">Linux Install Guide</h1>
-<p>The Handshake software suite consists of a full node (<code>hskd</code>) and a light client (<code>hnsd</code>). The full node allows users to register, update, and transfer names, resolve names, and make blockchain payments. The light client (SPV node) allows users to resolve names without the computing resource requirements of running a full node.</p>
-<p>This guide includes instructions for installing <a href="#hskd-installation-instructions"><code>hskd</code></a> and <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
+<p>The Handshake software suite consists of a full node (<code>hsd</code>) and a light client (<code>hnsd</code>). The full node allows users to register, update, and transfer names, resolve names, and make blockchain payments. The light client (SPV node) allows users to resolve names without the computing resource requirements of running a full node.</p>
+<p>This guide includes instructions for installing <a href="#hsd-installation-instructions"><code>hsd</code></a> and <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
 <blockquote>
 <p>Note: the instructions are specifically for Debian/Ubuntu. Be sure to use the proper package manager for your OS. The BSDs and Solaris have not been tested yet, but should work in theory.</p>
 </blockquote>
 <p><br/></p>
-<h2 id="hskd-installation-instructions"><code>hskd</code> Installation Instructions</h2>
+<h2 id="hsd-installation-instructions"><code>hsd</code> Installation Instructions</h2>
 <h4 id="install-dependencies">Install dependencies</h4>
 <ul>
 <li>node.js</li>
 <li>git</li>
 </ul>
 <pre><code>$ sudo apt install nodejs git</code></pre>
-<h4 id="download-and-install-hskd">Download and install <code>hskd</code></h4>
-<pre><code>$ git clone git@github.com:handshake-org/hskd.git
-$ cd hskd
+<h4 id="download-and-install-hsd">Download and install <code>hsd</code></h4>
+<pre><code>$ git clone git@github.com:handshake-org/hsd.git
+$ cd hsd
 $ npm install --production</code></pre>
 <h4 id="start-on-testnet">Start (on testnet)</h4>
-<pre><code>$ ./hskd/bin/hskd --daemon --no-auth</code></pre>
+<pre><code>$ ./hsd/bin/hsd --daemon --no-auth</code></pre>
 <p><br/></p>
 <h2 id="hnsd-installation-instructions"><code>hnsd</code> Installation Instructions</h2>
 <h4 id="install-dependencies-1">Install dependencies</h4>

@@ -6,7 +6,7 @@ protocol differs from its predecessors in that it has no concept of
 namespacing or subdomains at the consensus layer. Its purpose is _not_ to
 replace DNS, but to replace the root zone file and the root servers.
 
-The full node daemon, [hskd](https://github.com/handshake-org/hskd),
+The full node daemon, [hsd](https://github.com/handshake-org/hsd),
 is written in Javascript and is a fork of [bcoin](https://bcoin.io). By
 running a full node you, you can participate in securing the network and
 serving the root zone file embedded in the blockchain.

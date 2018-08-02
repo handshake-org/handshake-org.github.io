@@ -1,20 +1,20 @@
 ## Windows Install Guide
 
-The Handshake software suite consists of a full node (`hskd`) and a light
+The Handshake software suite consists of a full node (`hsd`) and a light
 client (`hnsd`). The full node allows users to register, update, and transfer
 names, resolve names, and make blockchain payments. The light client (SPV node)
 allows users to resolve names without the computing resource requirements of
 running a full node.
 
 This guide includes instructions for installing
-[`hskd`](#hskd-installation-instructions) and
+[`hsd`](#hsd-installation-instructions) and
 [`hnsd`](#hnsd-installation-instructions).
 
 >NOTE: the software has not been thoroughly tested on Windows.
 
 <br/>
 
-## `hskd` Installation Instructions
+## `hsd` Installation Instructions
 #### Install dependencies
 - Node / NPM [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
 - OpenSSL Win 64 [http://slproweb.com/products/Win32OpenSSL.html](http://slproweb.com/products/Win32OpenSSL.html)
@@ -60,10 +60,10 @@ $ bash
 $ cd /home
 ```
 
-#### Download and install `hskd`
+#### Download and install `hsd`
 ```
-$ git clone git@github.com:handshake-org/hskd.git
-$ cd hskd
+$ git clone git@github.com:handshake-org/hsd.git
+$ cd hsd
 $ npm pack bsip
 $ npm pack mrmr
 $ npm pack bcrypto
@@ -76,7 +76,7 @@ $ mv package bsip
 $ rm *.tgz
 $ cd bcrypto
 ```
-- Go thru and edit package.json in root `hskd/` folder to use file: of the above.
+- Go thru and edit package.json in root `hsd/` folder to use file: of the above.
 - Edit binding.gyp: `"<!(bash -c \"python -c 'from __future__ import print_function; import sys; print(sys.byteorder)'\")",`
 - Continue
 ```
@@ -112,7 +112,7 @@ $ cd ..
 - Replace reference to chacha20/chacha20.c to chacha20/chacha20_2.c in binding.gyp
 - Do the same for blake2b
 - Do the same for sha256 (note: It’s only in binding.gyp and not in the src/sha256.h)
-- Continue by going to root /hskd/ folder but make sure you edit package.json to do file: for the above modules.
+- Continue by going to root /hsd/ folder but make sure you edit package.json to do file: for the above modules.
 ```
 $ npm install --production
 $ cd ..
@@ -125,7 +125,7 @@ $ mklink /D C:\home C:\Cygwin64\home
 
 #### open bash again and Start (on testnet)
 ```bash
-$ ./hskd/bin/hskd --daemon --no-auth
+$ ./hsd/bin/hsd --daemon --no-auth
 ```
 
 <br/>

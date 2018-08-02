@@ -33,12 +33,12 @@ curl $walletadminurl/rescan \
 ```
 
 ```shell--cli
-hwallet-cli rescan $height
+hsw-cli rescan $height
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -75,12 +75,12 @@ curl $walletadminurl/resend \
 ```
 
 ```shell--cli
-hwallet-cli resend
+hsw-cli resend
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -124,12 +124,12 @@ curl $walletadminurl/backup?path=$path \
 ```
 
 ```shell--cli
-hwallet-cli backup $path
+hsw-cli backup $path
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
@@ -165,12 +165,12 @@ curl $walletadminurl/wallet
 ```
 
 ```shell--cli
-hwallet-cli wallets
+hsw-cli wallets
 ```
 
 ```javascript
-const {WalletClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {WalletClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {

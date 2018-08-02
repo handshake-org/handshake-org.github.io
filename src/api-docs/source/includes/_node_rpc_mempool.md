@@ -11,12 +11,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getmempoolinfo
+hsd-cli rpc getmempoolinfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -75,12 +75,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getmempoolancestors $txhash $verbose
+hsd-cli rpc getmempoolancestors $txhash $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -180,12 +180,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getmempooldescendants $txhash $verbose
+hsd-cli rpc getmempooldescendants $txhash $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -284,12 +284,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getmempoolentry $txhash
+hsd-cli rpc getmempoolentry $txhash
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -358,12 +358,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getrawmempool $verbose
+hsd-cli rpc getrawmempool $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -454,12 +454,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc prioritisetransaction $txhash $priorityDelta $feeDelta
+hsd-cli rpc prioritisetransaction $txhash $priorityDelta $feeDelta
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -516,12 +516,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc estimatefee $nblocks
+hsd-cli rpc estimatefee $nblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -573,12 +573,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc estimatepriority $nblocks
+hsd-cli rpc estimatepriority $nblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -630,12 +630,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc estimatesmartfee $nblocks
+hsd-cli rpc estimatesmartfee $nblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -690,12 +690,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc estimatesmartpriority $nblocks
+hsd-cli rpc estimatesmartpriority $nblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {

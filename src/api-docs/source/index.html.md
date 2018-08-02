@@ -9,7 +9,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - javascript
 
 toc_footers:
-  - <a href='https://github.com/handshake-org/hskd'>See the code on GitHub</a>
+  - <a href='https://github.com/handshake-org/hsd'>See the code on GitHub</a>
   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -37,9 +37,9 @@ search: true
 
 # Introduction
 
-Welcome to the hskd API!
+Welcome to the hsd API!
 
-The default hskd HTTP server listens on port (`12037` for main, `13037` for testnet, `14037` for regtest, and `15037` for simnet). It exposes a REST JSON, as well as a JSON-RPC api.
+The default hsd HTTP server listens on port (`12037` for main, `13037` for testnet, `14037` for regtest, and `15037` for simnet). It exposes a REST JSON, as well as a JSON-RPC api.
 
 # Authentication
 ## Auth
@@ -57,17 +57,17 @@ curl $url
 cli --api-key=api-key --network=regtest info
 
 # store API key and network type in environment variables:
-export HSKD_API_KEY=api-key
-export HSKD_NETWORK=regtest
+export HSD_API_KEY=api-key
+export HSD_NETWORK=regtest
 cli info
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
-// network type derived from hskd object, client object stores API key
+// network type derived from hsd object, client object stores API key
 const clientOptions = {
   network: network.type,
   port: network.rpcPort,

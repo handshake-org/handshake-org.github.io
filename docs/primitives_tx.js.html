@@ -27,19 +27,20 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/*!
- * tx.js - transaction object for hsk
+ * tx.js - transaction object for hsd
  * Copyright (c) 2017-2018, Christopher Jeffrey (MIT License).
- * https://github.com/handshake-org/hskd
+ * https://github.com/handshake-org/hsd
  */
 
 'use strict';
 
-const assert = require('assert');
+const assert = require('bsert');
 const bio = require('bufio');
 const blake2b = require('bcrypto/lib/blake2b');
 const secp256k1 = require('bcrypto/lib/secp256k1');
+const {BufferSet} = require('buffer-map');
 const util = require('../utils/util');
-const Amount = require('../btc/amount');
+const Amount = require('../ui/amount');
 const Network = require('../protocol/network');
 const Script = require('../script/script');
 const Input = require('./input');
@@ -53,7 +54,6 @@ const ScriptError = require('../script/scripterror');
 const {OwnershipProof} = require('../covenants/ownership');
 const {encoding} = bio;
 const {hashType} = Script;
-const {types} = rules;
 
 /**
  * TX
@@ -65,7 +65,7 @@ const {types} = rules;
  * @property {Number} locktime
  */
 
-class TX {
+class TX extends bio.Struct {
   /**
    * Create a transaction.
    * @constructor
@@ -73,6 +73,8 @@ class TX {
    */
 
   constructor(options) {
+    super();
+
     this.version = 0;
     this.inputs = [];
     this.outputs = [];
@@ -81,10 +83,8 @@ class TX {
     this.mutable = false;
 
     this._hash = null;
-    this._hhash = null;
     this._wdhash = null;
     this._whash = null;
-    this._whhash = null;
 
     this._raw = null;
     this._sizes = null;
@@ -134,25 +134,6 @@ class TX {
   }
 
   /**
-   * Instantiate TX from options object.
-   * @param {Object} options
-   * @returns {TX}
-   */
-
-  static fromOptions(options) {
-    return new this().fromOptions(options);
-  }
-
-  /**
-   * Clone the transaction.
-   * @returns {TX}
-   */
-
-  clone() {
-    return new this.constructor().inject(this);
-  }
-
-  /**
    * Inject properties from tx.
    * Used for cloning.
    * @private
@@ -180,10 +161,8 @@ class TX {
 
   refresh() {
     this._hash = null;
-    this._hhash = null;
     this._wdhash = null;
     this._whash = null;
-    this._whhash = null;
 
     this._raw = null;
     this._sizes = null;
@@ -197,29 +176,17 @@ class TX {
 
   /**
    * Hash the transaction with the non-witness serialization.
-   * @param {String?} enc - Can be `'hex'` or `null`.
-   * @returns {Hash|Buffer} hash
+   * @returns {Hash} hash
    */
 
-  hash(enc) {
-    let h = this._hash;
+  hash() {
+    if (this.mutable)
+      return this.left();
 
-    if (!h)
-      h = this.left();
+    if (!this._hash)
+      this._hash = this.left();
 
-    if (enc === 'hex') {
-      let hex = this._hhash;
-
-      if (!hex) {
-        hex = h.toString('hex');
-        if (!this.mutable)
-          this._hhash = hex;
-      }
-
-      h = hex;
-    }
-
-    return h;
+    return this._hash;
   }
 
   /**
@@ -227,29 +194,17 @@ class TX {
    * serialization, return the wtxid (normal
    * hash if no witness is present, all zeroes
    * if coinbase).
-   * @param {String?} enc - Can be `'hex'` or `null`.
-   * @returns {Hash|Buffer} hash
+   * @returns {Hash} hash
    */
 
-  witnessHash(enc) {
-    let h = this._whash;
+  witnessHash() {
+    if (this.mutable)
+      return this.root();
 
-    if (!h)
-      h = this.root();
+    if (!this._whash)
+      this._whash = this.root();
 
-    if (enc === 'hex') {
-      let hex = this._whhash;
-
-      if (!hex) {
-        hex = h.toString('hex');
-        if (!this.mutable)
-          this._whhash = hex;
-      }
-
-      h = hex;
-    }
-
-    return enc === 'hex' ? h.toString('hex') : h;
+    return this._whash;
   }
 
   /**
@@ -284,9 +239,9 @@ class TX {
    */
 
   getWeight() {
-    const {base, witness, cost} = this.getSizes();
-    const total = (base + cost) + witness;
-    return (base + cost) * (consensus.WITNESS_SCALE_FACTOR - 1) + total;
+    const {base, witness} = this.getSizes();
+    const total = base + witness;
+    return base * (consensus.WITNESS_SCALE_FACTOR - 1) + total;
   }
 
   /**
@@ -358,7 +313,7 @@ class TX {
         const bw = bio.pool(this.inputs.length * 36);
 
         for (const input of this.inputs)
-          input.prevout.toWriter(bw);
+          input.prevout.write(bw);
 
         prevouts = blake2b.digest(bw.render());
 
@@ -398,7 +353,7 @@ class TX {
         const bw = bio.pool(size);
 
         for (const output of this.outputs)
-          output.toWriter(bw);
+          output.write(bw);
 
         outputs = blake2b.digest(bw.render());
 
@@ -408,7 +363,7 @@ class TX {
     } else if ((type &amp; 0x1f) === hashType.SINGLE) {
       if (index &lt; this.outputs.length) {
         const output = this.outputs[index];
-        outputs = blake2b.digest(output.toRaw());
+        outputs = blake2b.digest(output.encode());
       }
     }
 
@@ -420,7 +375,7 @@ class TX {
     bw.writeBytes(sequences);
     bw.writeHash(input.prevout.hash);
     bw.writeU32(input.prevout.index);
-    bw.writeVarBytes(prev.toRaw());
+    bw.writeVarBytes(prev.encode());
     bw.writeU64(value);
     bw.writeU32(input.sequence);
     bw.writeBytes(outputs);
@@ -737,7 +692,7 @@ class TX {
    */
 
   _getInputAddresses(view) {
-    const table = Object.create(null);
+    const table = new BufferSet();
     const addrs = [];
 
     if (this.isCoinbase())
@@ -750,10 +705,10 @@ class TX {
       if (!addr)
         continue;
 
-      const hash = addr.getHash('hex');
+      const hash = addr.getHash();
 
-      if (!table[hash]) {
-        table[hash] = true;
+      if (!table.has(hash)) {
+        table.add(hash);
         addrs.push(addr);
       }
     }
@@ -768,7 +723,7 @@ class TX {
    */
 
   _getOutputAddresses() {
-    const table = Object.create(null);
+    const table = new BufferSet();
     const addrs = [];
 
     for (const output of this.outputs) {
@@ -777,10 +732,10 @@ class TX {
       if (!addr)
         continue;
 
-      const hash = addr.getHash('hex');
+      const hash = addr.getHash();
 
-      if (!table[hash]) {
-        table[hash] = true;
+      if (!table.has(hash)) {
+        table.add(hash);
         addrs.push(addr);
       }
     }
@@ -800,10 +755,10 @@ class TX {
     const output = this.getOutputAddresses();
 
     for (const addr of output) {
-      const hash = addr.getHash('hex');
+      const hash = addr.getHash();
 
-      if (!table[hash]) {
-        table[hash] = true;
+      if (!table.has(hash)) {
+        table.add(hash);
         addrs.push(addr);
       }
     }
@@ -849,19 +804,9 @@ class TX {
    * @returns {Hash[]} hashes
    */
 
-  getInputHashes(view, enc) {
-    if (enc === 'hex') {
-      const [, table] = this._getInputAddresses(view);
-      return Object.keys(table);
-    }
-
-    const addrs = this.getInputAddresses(view);
-    const hashes = [];
-
-    for (const addr of addrs)
-      hashes.push(addr.getHash());
-
-    return hashes;
+  getInputHashes(view) {
+    const [, table] = this._getInputAddresses(view);
+    return table.toArray();
   }
 
   /**
@@ -869,19 +814,9 @@ class TX {
    * @returns {Hash[]} hashes
    */
 
-  getOutputHashes(enc) {
-    if (enc === 'hex') {
-      const [, table] = this._getOutputAddresses();
-      return Object.keys(table);
-    }
-
-    const addrs = this.getOutputAddresses();
-    const hashes = [];
-
-    for (const addr of addrs)
-      hashes.push(addr.getHash());
-
-    return hashes;
+  getOutputHashes() {
+    const [, table] = this._getOutputAddresses();
+    return table.toArray();
   }
 
   /**
@@ -890,19 +825,9 @@ class TX {
    * @returns {Hash[]} hashes
    */
 
-  getHashes(view, enc) {
-    if (enc === 'hex') {
-      const [, table] = this._getAddresses(view);
-      return Object.keys(table);
-    }
-
-    const addrs = this.getAddresses(view);
-    const hashes = [];
-
-    for (const addr of addrs)
-      hashes.push(addr.getHash());
-
-    return hashes;
+  getHashes(view) {
+    const [, table] = this._getAddresses(view);
+    return table.toArray();
   }
 
   /**
@@ -1127,7 +1052,7 @@ class TX {
           return [false, 'bad-cb-length', 100];
       }
     } else {
-      const prevout = new Set();
+      const prevout = new BufferSet();
 
       for (const input of this.inputs) {
         const key = input.prevout.toKey();
@@ -1203,7 +1128,7 @@ class TX {
         continue;
       }
 
-      if (output.covenant.type > rules.MAX_COVENANT_TYPE)
+      if (output.covenant.isUnknown())
         return [false, 'covenant', 0];
 
       if (output.isDust(policy.MIN_RELAY))
@@ -1268,7 +1193,7 @@ class TX {
         if (raw.length > policy.MAX_P2WSH_SIZE)
           return false;
 
-        const redeem = Script.fromRaw(raw);
+        const redeem = Script.decode(raw);
 
         if (redeem.isPubkey()) {
           if (witness.items.length - 1 !== 1)
@@ -1542,7 +1467,7 @@ class TX {
    * to be relayable (not the constant min relay fee).
    * @param {Number?} size - If not present, max size
    * estimation will be calculated and used.
-   * @param {Rate?} rate - Rate of satoshi per kB.
+   * @param {Rate?} rate - Rate of dollarydoo per kB.
    * @returns {Amount} fee
    */
 
@@ -1559,7 +1484,7 @@ class TX {
    * when taking into account size.
    * @param {Number?} size - If not present, max size
    * estimation will be calculated and used.
-   * @param {Rate?} rate - Rate of satoshi per kB.
+   * @param {Rate?} rate - Rate of dollarydoo per kB.
    * @returns {Amount} fee
    */
 
@@ -1599,12 +1524,12 @@ class TX {
     if (this.isCoinbase())
       return [];
 
-    const prevout = Object.create(null);
+    const prevout = new BufferSet();
 
     for (const input of this.inputs)
-      prevout[input.prevout.hash] = true;
+      prevout.add(input.prevout.hash);
 
-    return Object.keys(prevout);
+    return prevout.toArray();
   }
 
   /**
@@ -1624,7 +1549,7 @@ class TX {
 
       if (filter.test(address.hash) || covenant.test(filter)) {
         const prevout = Outpoint.fromTX(this, i);
-        filter.add(prevout.toRaw());
+        filter.add(prevout.encode());
         found = true;
       }
     }
@@ -1633,7 +1558,7 @@ class TX {
       return found;
 
     for (const {prevout} of this.inputs) {
-      if (filter.test(prevout.toRaw()))
+      if (filter.test(prevout.encode()))
         return true;
     }
 
@@ -1646,7 +1571,7 @@ class TX {
    */
 
   txid() {
-    return this.hash('hex');
+    return this.hash().toString('hex');
   }
 
   /**
@@ -1655,7 +1580,7 @@ class TX {
    */
 
   wtxid() {
-    return this.witnessHash('hex');
+    return this.witnessHash().toString('hex');
   }
 
   /**
@@ -1665,7 +1590,43 @@ class TX {
    */
 
   outpoint(index) {
-    return new Outpoint(this.hash('hex'), index);
+    return new Outpoint(this.hash(), index);
+  }
+
+  /**
+   * Get input from index.
+   * @param {Number} index
+   * @returns {Input|null}
+   */
+
+  input(index) {
+    if (index >= this.inputs.length)
+      return null;
+    return this.inputs[index];
+  }
+
+  /**
+   * Get output from index.
+   * @param {Number} index
+   * @returns {Output|null}
+   */
+
+  output(index) {
+    if (index >= this.outputs.length)
+      return null;
+    return this.outputs[index];
+  }
+
+  /**
+   * Get covenant from index.
+   * @param {Number} index
+   * @returns {Covenant|null}
+   */
+
+  covenant(index) {
+    if (index >= this.outputs.length)
+      return null;
+    return this.outputs[index].covenant;
   }
 
   /**
@@ -1674,17 +1635,7 @@ class TX {
    */
 
   toInv() {
-    return new InvItem(InvItem.types.TX, this.hash('hex'));
-  }
-
-  /**
-   * Inspect the transaction and return a more
-   * user-friendly representation of the data.
-   * @returns {Object}
-   */
-
-  inspect() {
-    return this.format();
+    return new InvItem(InvItem.types.TX, this.hash());
   }
 
   /**
@@ -1750,18 +1701,6 @@ class TX {
   /**
    * Convert the transaction to an object suitable
    * for JSON serialization.
-   * @returns {Object}
-   */
-
-  toJSON() {
-    return this.getJSON();
-  }
-
-  /**
-   * Convert the transaction to an object suitable
-   * for JSON serialization. Note that the hashes
-   * will be reversed to abide by bitcoind's legacy
-   * of little-endian uint256s.
    * @param {Network} network
    * @param {CoinView} view
    * @param {ChainEntry} entry
@@ -1783,7 +1722,7 @@ class TX {
 
     if (entry) {
       height = entry.height;
-      block = entry.hash;
+      block = entry.hash.toString('hex');
       time = entry.time;
       date = util.date(time);
     }
@@ -1810,7 +1749,7 @@ class TX {
         return output.getJSON(network);
       }),
       locktime: this.locktime,
-      hex: this.toRaw().toString('hex')
+      hex: this.toHex()
     };
   }
 
@@ -1842,24 +1781,13 @@ class TX {
   }
 
   /**
-   * Instantiate a transaction from a
-   * jsonified transaction object.
-   * @param {Object} json - The jsonified transaction object.
-   * @returns {TX}
-   */
-
-  static fromJSON(json) {
-    return new this().fromJSON(json);
-  }
-
-  /**
    * Inject properties from serialized
    * buffer reader (witness serialization).
    * @private
    * @param {BufferReader} br
    */
 
-  fromReader(br) {
+  read(br) {
     br.start();
 
     this.version = br.readU32();
@@ -1867,12 +1795,12 @@ class TX {
     const inCount = br.readVarint();
 
     for (let i = 0; i &lt; inCount; i++)
-      this.inputs.push(Input.fromReader(br));
+      this.inputs.push(Input.read(br));
 
     const outCount = br.readVarint();
 
     for (let i = 0; i &lt; outCount; i++)
-      this.outputs.push(Output.fromReader(br));
+      this.outputs.push(Output.read(br));
 
     this.locktime = br.readU32();
 
@@ -1880,7 +1808,7 @@ class TX {
 
     for (let i = 0; i &lt; inCount; i++) {
       const input = this.inputs[i];
-      input.witness.fromReader(br);
+      input.witness.read(br);
     }
 
     const witness = br.offset - start;
@@ -1888,78 +1816,13 @@ class TX {
     if (!this.mutable) {
       const raw = br.endData();
       const base = raw.length - witness;
-      const cost = this.getCovenantCost();
       this._raw = raw;
-      this._sizes = new Sizes(base, witness, cost);
+      this._sizes = new Sizes(base, witness);
     } else {
       br.end();
     }
 
     return this;
-  }
-
-  /**
-   * Instantiate a transaction from a buffer reader.
-   * @param {BufferReader} br
-   * @returns {TX}
-   */
-
-  static fromReader(br) {
-    return new this().fromReader(br);
-  }
-
-  /**
-   * Inject properties from serialized data.
-   * @private
-   * @param {Buffer} data
-   */
-
-  fromRaw(data) {
-    return this.fromReader(bio.read(data));
-  }
-
-  /**
-   * Instantiate a transaction from a serialized Buffer.
-   * @param {Buffer} data
-   * @param {String?} enc - Encoding, can be `'hex'` or null.
-   * @returns {TX}
-   */
-
-  static fromRaw(data, enc) {
-    if (typeof data === 'string')
-      data = Buffer.from(data, enc);
-    return new this().fromRaw(data);
-  }
-
-  /**
-   * Get covenant cost.
-   * @returns {Number}
-   */
-
-  getCovenantCost() {
-    let cost = 0;
-
-    for (const {covenant} of this.outputs) {
-      const {type} = covenant;
-
-      // Make bids bigger so reveals can get in.
-      if (type === types.BID) {
-        const size = covenant.getSize();
-
-        if (size > rules.MAX_BID_SIZE) {
-          cost += size - rules.MAX_BID_SIZE;
-        } else {
-          cost += rules.MAX_BID_SIZE * 2;
-          cost -= size;
-        }
-
-        continue;
-      }
-    }
-
-    assert(cost >= 0);
-
-    return cost;
   }
 
   /**
@@ -1990,8 +1853,7 @@ class TX {
 
     base += 4;
 
-    const cost = this.getCovenantCost();
-    const sizes = new Sizes(base, witness, cost);
+    const sizes = new Sizes(base, witness);
 
     if (!this.mutable)
       this._sizes = sizes;
@@ -2007,7 +1869,7 @@ class TX {
    * @returns {Sizes}
    */
 
-  toWriter(bw) {
+  write(bw) {
     if (this._raw) {
       bw.writeBytes(this._raw);
       return bw;
@@ -2018,17 +1880,17 @@ class TX {
     bw.writeVarint(this.inputs.length);
 
     for (const input of this.inputs)
-      input.toWriter(bw);
+      input.write(bw);
 
     bw.writeVarint(this.outputs.length);
 
     for (const output of this.outputs)
-      output.toWriter(bw);
+      output.write(bw);
 
     bw.writeU32(this.locktime);
 
     for (const input of this.inputs)
-      input.witness.toWriter(bw);
+      input.witness.write(bw);
 
     return bw;
   }
@@ -2038,21 +1900,14 @@ class TX {
    * @returns {Buffer}
    */
 
-  toRaw() {
-    if (this._raw)
-      return this._raw;
+  encode() {
+    if (this.mutable)
+      return super.encode();
 
-    const size = this.getSize();
-    const bw = bio.write(size);
+    if (!this._raw)
+      this._raw = super.encode();
 
-    this.toWriter(bw);
-
-    const raw = bw.render();
-
-    if (!this.mutable)
-      this._raw = raw;
-
-    return raw;
+    return this._raw;
   }
 
   /**
@@ -2093,7 +1948,7 @@ class TX {
       return [this._hash, this._wdhash, this._whash];
 
     const {base, witness} = this.getSizes();
-    const raw = this.toRaw();
+    const raw = this.encode();
 
     assert(raw.length === base + witness);
 
@@ -2112,7 +1967,7 @@ class TX {
     // WTXID = HASH(normal-txid || witness-data-hash)
     const whash = blake2b.root(hash, wdhash);
 
-    if (!this._mutable) {
+    if (!this.mutable) {
       this._hash = hash;
       this._wdhash = wdhash;
       this._whash = whash;
@@ -2137,10 +1992,9 @@ class TX {
  */
 
 class Sizes {
-  constructor(base, witness, cost) {
+  constructor(base, witness) {
     this.base = base;
     this.witness = witness;
-    this.cost = cost;
   }
 }
 
@@ -2159,13 +2013,13 @@ module.exports = TX;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-btc.html">btc</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsk.html">hsk</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="Auction.html">Auction</a></li><li><a href="AuctionDelta.html">AuctionDelta</a></li><li><a href="AuctionState.html">AuctionState</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-btc.URI.html">URI</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDB.html">NameDB</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 19 2018 21:52:41 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:48 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

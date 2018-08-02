@@ -1,11 +1,11 @@
-# hskd - Transactions
+# hsd - Transactions
 Getting transaction information via API.
 
 <aside class="info">
 You need to enable <code>index-address</code> in order to lookup coins by address.<br>
 You can also enable <code>index-tx</code> to lookup transactions by txid.<br>
-Launch the hskd daemon with these arguments:<br>
-<code>hskd --daemon --index-address=true --index-tx=true</code>
+Launch the hsd daemon with these arguments:<br>
+<code>hsd --daemon --index-address=true --index-tx=true</code>
 </aside>
 
 ## Get tx by txhash
@@ -23,12 +23,12 @@ curl $url/tx/$txhash
 ```
 
 ```shell--cli
-hsk-cli tx $txhash
+hsd-cli tx $txhash
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -132,12 +132,12 @@ curl $url/tx/address/$address
 ```
 
 ```shell--cli
-hsk-cli tx $address
+hsd-cli tx $address
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -253,8 +253,8 @@ No CLI Option.
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {

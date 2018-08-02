@@ -27,24 +27,25 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/*!
- * rpc.js - bitcoind-compatible json rpc for hsk.
+ * rpc.js - bitcoind-compatible json rpc for hsd.
  * Copyright (c) 2017-2018, Christopher Jeffrey (MIT License).
- * https://github.com/handshake-org/hskd
+ * https://github.com/handshake-org/hsd
  */
 
 'use strict';
 
-const assert = require('assert');
+const assert = require('bsert');
 const bweb = require('bweb');
 const {Lock} = require('bmutex');
 const IP = require('binet');
 const Validator = require('bval');
+const {BufferMap, BufferSet} = require('buffer-map');
 const blake2b = require('bcrypto/lib/blake2b');
 const ccmp = require('bcrypto/lib/ccmp');
 const secp256k1 = require('bcrypto/lib/secp256k1');
 const util = require('../utils/util');
 const common = require('../blockchain/common');
-const Amount = require('../btc/amount');
+const Amount = require('../ui/amount');
 const NetAddress = require('../net/netaddress');
 const Script = require('../script/script');
 const Address = require('../primitives/address');
@@ -106,7 +107,7 @@ const errs = {
 const MAGIC_STRING = `${pkg.currency} signed message:\n`;
 
 /**
- * Bitcoin RPC
+ * Handshake RPC
  * @alias module:http.RPC
  * @extends bweb.RPC
  */
@@ -140,7 +141,7 @@ class RPC extends RPCBase {
     this.boundChain = false;
     this.nonce1 = 0;
     this.nonce2 = 0;
-    this.merkleMap = new Map();
+    this.merkleMap = new BufferMap();
     this.pollers = [];
 
     this.init();
@@ -495,10 +496,8 @@ class RPC extends RPCBase {
       const offset = this.network.time.known.get(peer.hostname()) || 0;
       const hashes = [];
 
-      for (const hash in peer.blockMap.keys()) {
-        const str = hash;
-        hashes.push(str);
-      }
+      for (const hash in peer.blockMap.keys())
+        hashes.push(hash.toString('hex'));
 
       peer.getName();
 
@@ -525,7 +524,9 @@ class RPC extends RPCBase {
         subver: peer.agent,
         inbound: !peer.outbound,
         startingheight: peer.height,
-        besthash: peer.bestHash ? peer.bestHash : null,
+        besthash: peer.bestHash
+          ? peer.bestHash.toString('hex')
+          : null,
         bestheight: peer.bestHeight,
         banscore: peer.banScore,
         inflight: hashes,
@@ -610,7 +611,7 @@ class RPC extends RPCBase {
         : 'test',
       blocks: this.chain.height,
       headers: this.chain.height,
-      bestblockhash: this.chain.tip.hash,
+      bestblockhash: this.chain.tip.hash.toString('hex'),
       difficulty: toDifficulty(this.chain.tip.bits),
       mediantime: await this.chain.getMedianTime(this.chain.tip),
       verificationprogress: this.chain.getProgress(),
@@ -627,7 +628,7 @@ class RPC extends RPCBase {
     if (help || args.length !== 0)
       throw new RPCError(errs.MISC_ERROR, 'getbestblockhash');
 
-    return this.chain.tip.hash;
+    return this.chain.tip.hash.toString('hex');
   }
 
   async getBlockCount(args, help) {
@@ -642,7 +643,7 @@ class RPC extends RPCBase {
       throw new RPCError(errs.MISC_ERROR, 'getblock "hash" ( verbose )');
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
     const verbose = valid.bool(1, true);
     const details = valid.bool(2, false);
 
@@ -669,7 +670,7 @@ class RPC extends RPCBase {
     }
 
     if (!verbose)
-      return block.toRaw().toString('hex');
+      return block.toHex();
 
     return this.blockToJSON(entry, block, details);
   }
@@ -708,7 +709,7 @@ class RPC extends RPCBase {
     }
 
     if (!verbose)
-      return block.toRaw().toString('hex');
+      return block.toHex();
 
     return this.blockToJSON(entry, block, details);
   }
@@ -736,7 +737,7 @@ class RPC extends RPCBase {
       throw new RPCError(errs.MISC_ERROR, 'getblockheader "hash" ( verbose )');
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
     const verbose = valid.bool(1, true);
 
     if (!hash)
@@ -748,7 +749,7 @@ class RPC extends RPCBase {
       throw new RPCError(errs.MISC_ERROR, 'Block not found');
 
     if (!verbose)
-      return entry.toRaw().toString('hex', 0, 80);
+      return entry.encode().toString('hex', 0, 80);
 
     return this.headerToJSON(entry);
   }
@@ -770,7 +771,7 @@ class RPC extends RPCBase {
 
       result.push({
         height: entry.height,
-        hash: entry.hash,
+        hash: entry.hash.toString('hex'),
         branchlen: entry.height - fork.height,
         status: main ? 'active' : 'valid-headers'
       });
@@ -807,7 +808,7 @@ class RPC extends RPCBase {
       throw new RPCError(errs.MISC_ERROR, 'getmempoolancestors txid (verbose)');
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
     const verbose = valid.bool(1, false);
 
     if (!this.mempool)
@@ -842,7 +843,7 @@ class RPC extends RPCBase {
     }
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
     const verbose = valid.bool(1, false);
 
     if (!this.mempool)
@@ -875,7 +876,7 @@ class RPC extends RPCBase {
       throw new RPCError(errs.MISC_ERROR, 'getmempoolentry txid');
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
 
     if (!this.mempool)
       throw new RPCError(errs.MISC_ERROR, 'No mempool available.');
@@ -902,7 +903,7 @@ class RPC extends RPCBase {
       throw new RPCError(errs.MISC_ERROR, 'No mempool available.');
 
     if (verbose) {
-      const out = {};
+      const out = Object.create(null);
 
       for (const entry of this.mempool.map.values())
         out[entry.txid()] = this.entryToJSON(entry);
@@ -912,7 +913,7 @@ class RPC extends RPCBase {
 
     const hashes = this.mempool.getSnapshot();
 
-    return hashes;
+    return hashes.map(hash => hash.toString('hex'));
   }
 
   async getTXOut(args, help) {
@@ -922,7 +923,7 @@ class RPC extends RPCBase {
     }
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
     const index = valid.u32(1);
     const mempool = valid.bool(2, true);
 
@@ -949,7 +950,7 @@ class RPC extends RPCBase {
       return null;
 
     return {
-      bestblock: this.chain.tip.hash,
+      bestblock: this.chain.tip.hash.toString('hex'),
       confirmations: coin.getDepth(this.chain.height),
       value: Amount.coin(coin.value, true),
       address: this.addrToJSON(coin.address),
@@ -966,7 +967,7 @@ class RPC extends RPCBase {
 
     const valid = new Validator(args);
     const txids = valid.array(0);
-    const hash = valid.hash(1);
+    const hash = valid.bhash(1);
 
     if (this.chain.options.spv)
       throw new RPCError(errs.MISC_ERROR, 'Cannot get coins in SPV mode.');
@@ -978,13 +979,13 @@ class RPC extends RPCBase {
       throw new RPCError(errs.INVALID_PARAMETER, 'Invalid TXIDs.');
 
     const items = new Validator(txids);
-    const set = new Set();
+    const set = new BufferSet();
     const hashes = [];
 
     let last = null;
 
     for (let i = 0; i &lt; txids.length; i++) {
-      const hash = items.hash(i);
+      const hash = items.bhash(i);
 
       if (!hash)
         throw new RPCError(errs.TYPE_ERROR, 'Invalid TXID.');
@@ -1032,7 +1033,7 @@ class RPC extends RPCBase {
 
     const mblock = MerkleBlock.fromHashes(block, whashes);
 
-    return mblock.toRaw().toString('hex');
+    return mblock.toHex();
   }
 
   async verifyTXOutProof(args, help) {
@@ -1045,12 +1046,12 @@ class RPC extends RPCBase {
     if (!data)
       throw new RPCError(errs.TYPE_ERROR, 'Invalid hex string.');
 
-    const block = MerkleBlock.fromRaw(data);
+    const block = MerkleBlock.decode(data);
 
     if (!block.verify())
       return [];
 
-    const entry = await this.chain.getEntry(block.hash('hex'));
+    const entry = await this.chain.getEntry(block.hash());
 
     if (!entry)
       throw new RPCError(errs.MISC_ERROR, 'Block not found in chain.');
@@ -1075,7 +1076,7 @@ class RPC extends RPCBase {
 
     return {
       height: this.chain.height,
-      bestblock: this.chain.tip.hash,
+      bestblock: this.chain.tip.hash.toString('hex'),
       transactions: this.chain.db.state.tx,
       txouts: this.chain.db.state.coin,
       bytes_serialized: 0,
@@ -1146,9 +1147,9 @@ class RPC extends RPCBase {
     if (!attempt)
       return [false, 'no-mining-job'];
 
-    const header = Headers.fromRaw(data);
+    const header = Headers.decode(data);
 
-    if (header.prevBlock !== attempt.prevBlock
+    if (!header.prevBlock.equals(attempt.prevBlock)
         || header.bits !== attempt.bits) {
       return [false, 'stale'];
     }
@@ -1179,7 +1180,7 @@ class RPC extends RPCBase {
     } catch (err) {
       if (err.type === 'VerifyError') {
         this.logger.warning('RPC block rejected: %s (%s).',
-          block.hash('hex'), err.reason);
+          block.hash(), err.reason);
         return [false, err.reason];
       }
       throw err;
@@ -1187,7 +1188,7 @@ class RPC extends RPCBase {
 
     if (!entry) {
       this.logger.warning('RPC block rejected: %s (bad-prevblk).',
-        block.hash('hex'));
+        block.hash());
       return [false, 'bad-prevblk'];
     }
 
@@ -1232,7 +1233,7 @@ class RPC extends RPCBase {
 
     if (args.length === 1) {
       const valid = new Validator(args);
-      const root = valid.hash(0);
+      const root = valid.bhash(0);
 
       if (!root)
         throw new RPCError(errs.TYPE_ERROR, 'Invalid witness root.');
@@ -1266,7 +1267,7 @@ class RPC extends RPCBase {
     const valid = new Validator(args);
     const data = valid.buf(0);
 
-    const block = Block.fromRaw(data);
+    const block = Block.decode(data);
 
     return this.addBlock(block);
   }
@@ -1291,9 +1292,9 @@ class RPC extends RPCBase {
       if (!data)
         throw new RPCError(errs.TYPE_ERROR, 'Missing data parameter.');
 
-      const block = Block.fromRaw(data);
+      const block = Block.decode(data);
 
-      if (block.prevBlock !== this.chain.tip.hash)
+      if (!block.prevBlock.equals(this.chain.tip.hash))
         return 'inconclusive-not-best-prevblk';
 
       try {
@@ -1410,7 +1411,7 @@ class RPC extends RPCBase {
     }
 
     // Build an index of every transaction.
-    const index = new Map();
+    const index = new BufferMap();
     for (let i = 0; i &lt; attempt.items.length; i++) {
       const entry = attempt.items[i];
       index.set(entry.hash, i + 1);
@@ -1437,7 +1438,7 @@ class RPC extends RPCBase {
       }
 
       txs.push({
-        data: tx.toRaw().toString('hex'),
+        data: tx.toHex(),
         txid: tx.txid(),
         hash: tx.wtxid(),
         depends: deps,
@@ -1499,9 +1500,9 @@ class RPC extends RPCBase {
       vbavailable: vbavailable,
       vbrequired: 0,
       height: attempt.height,
-      previousblockhash: attempt.prevBlock,
-      treeroot: attempt.treeRoot,
-      reservedroot: attempt.reservedRoot,
+      previousblockhash: attempt.prevBlock.toString('hex'),
+      treeroot: attempt.treeRoot.toString('hex'),
+      reservedroot: attempt.reservedRoot.toString('hex'),
       target: attempt.target.toString('hex'),
       cuckoo: this.network.cuckoo,
       bits: hex32(attempt.bits),
@@ -1516,7 +1517,7 @@ class RPC extends RPCBase {
       // sizelimit: consensus.MAX_RAW_BLOCK_SIZE,
       sizelimit: consensus.MAX_BLOCK_SIZE,
       weightlimit: consensus.MAX_BLOCK_WEIGHT,
-      longpollid: this.chain.tip.hash + hex32(this.totalTX()),
+      longpollid: this.chain.tip.hash.toString('hex') + hex32(this.totalTX()),
       submitold: false,
       coinbaseaux: {
         flags: attempt.coinbaseFlags.toString('hex')
@@ -1526,8 +1527,8 @@ class RPC extends RPCBase {
       claims: attempt.claims.map((claim) => {
         return {
           data: claim.blob.toString('hex'),
-          name: claim.name,
-          namehash: claim.nameHash,
+          name: claim.name.toString('binary'),
+          namehash: claim.nameHash.toString('hex'),
           version: claim.address.version,
           hash: claim.address.hash.toString('hex'),
           value: claim.value,
@@ -1553,7 +1554,7 @@ class RPC extends RPCBase {
       tx.refresh();
 
       json.coinbasetxn = {
-        data: tx.toRaw().toString('hex'),
+        data: tx.toHex(),
         txid: tx.txid(),
         hash: tx.wtxid(),
         depends: [],
@@ -1624,7 +1625,7 @@ class RPC extends RPCBase {
     }
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
     const pri = valid.i64(1);
     const fee = valid.i64(2);
 
@@ -1660,7 +1661,7 @@ class RPC extends RPCBase {
     if (this.chain.options.spv)
       throw new RPCError(errs.MISC_ERROR, 'Cannot verify block in SPV mode.');
 
-    const block = Block.fromRaw(data);
+    const block = Block.decode(data);
 
     try {
       await this.chain.verifyBlock(block);
@@ -1771,8 +1772,9 @@ class RPC extends RPCBase {
 
     for (const obj of inputs) {
       const valid = new Validator(obj);
-      const hash = valid.hash('txid');
+      const hash = valid.bhash('txid');
       const index = valid.u32('vout');
+
       let sequence = valid.u32('sequence', 0xffffffff);
 
       if (tx.locktime)
@@ -1827,7 +1829,7 @@ class RPC extends RPCBase {
       tx.outputs.push(output);
     }
 
-    return tx.toRaw().toString('hex');
+    return tx.toHex();
   }
 
   async decodeRawTransaction(args, help) {
@@ -1840,7 +1842,7 @@ class RPC extends RPCBase {
     if (!data)
       throw new RPCError(errs.TYPE_ERROR, 'Invalid hex string.');
 
-    const tx = TX.fromRaw(data);
+    const tx = TX.decode(data);
 
     return this.txToJSON(tx);
   }
@@ -1854,7 +1856,7 @@ class RPC extends RPCBase {
     const script = new Script();
 
     if (data)
-      script.fromRaw(data);
+      script.decode(data);
 
     const addr = Address.fromScripthash(script.sha3());
 
@@ -1871,7 +1873,7 @@ class RPC extends RPCBase {
     }
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
     const verbose = valid.bool(1, false);
 
     if (!hash)
@@ -1885,7 +1887,7 @@ class RPC extends RPCBase {
     const tx = meta.tx;
 
     if (!verbose)
-      return tx.toRaw().toString('hex');
+      return tx.toHex();
 
     let entry;
     if (meta.block)
@@ -1893,7 +1895,7 @@ class RPC extends RPCBase {
 
     const json = this.txToJSON(tx, entry);
     json.time = meta.mtime;
-    json.hex = tx.toRaw().toString('hex');
+    json.hex = tx.toHex();
 
     return json;
   }
@@ -1910,7 +1912,7 @@ class RPC extends RPCBase {
     if (!data)
       throw new RPCError(errs.TYPE_ERROR, 'Invalid hex string.');
 
-    const tx = TX.fromRaw(data);
+    const tx = TX.decode(data);
 
     this.node.relay(tx);
 
@@ -1939,10 +1941,10 @@ class RPC extends RPCBase {
     if (!this.mempool)
       throw new RPCError(errs.MISC_ERROR, 'No mempool available.');
 
-    const tx = MTX.fromRaw(data);
+    const tx = MTX.decode(data);
     tx.view = await this.mempool.getSpentView(tx);
 
-    const map = new Map();
+    const map = new BufferMap();
     const keys = [];
 
     if (secrets) {
@@ -1950,7 +1952,7 @@ class RPC extends RPCBase {
       for (let i = 0; i &lt; secrets.length; i++) {
         const secret = valid.str(i, '');
         const key = parseSecret(secret, this.network);
-        map.set(key.getPublicKey('hex'), key);
+        map.set(key.getPublicKey(), key);
         keys.push(key);
       }
     }
@@ -1958,7 +1960,7 @@ class RPC extends RPCBase {
     if (prevout) {
       for (const prev of prevout) {
         const valid = new Validator(prev);
-        const hash = valid.hash('txid');
+        const hash = valid.bhash('txid');
         const index = valid.u32('vout');
         const addrRaw = valid.str('address');
         const value = valid.ufixed('amount', EXP);
@@ -1985,13 +1987,13 @@ class RPC extends RPCBase {
             'P2SH requires redeem script.');
         }
 
-        const redeem = Script.fromRaw(redeemRaw);
+        const redeem = Script.decode(redeemRaw);
 
         for (const op of redeem.code) {
           if (!op.data)
             continue;
 
-          const key = map.get(op.data.toString('hex'));
+          const key = map.get(op.data);
 
           if (key) {
             key.script = redeem;
@@ -2029,7 +2031,7 @@ class RPC extends RPCBase {
     await tx.signAsync(keys, type, this.workers);
 
     return {
-      hex: tx.toRaw().toString('hex'),
+      hex: tx.toHex(),
       complete: tx.isSigned()
     };
   }
@@ -2230,7 +2232,7 @@ class RPC extends RPCBase {
       throw new RPCError(errs.MISC_ERROR, 'invalidateblock "hash"');
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
 
     if (!hash)
       throw new RPCError(errs.TYPE_ERROR, 'Invalid block hash.');
@@ -2245,7 +2247,7 @@ class RPC extends RPCBase {
       throw new RPCError(errs.MISC_ERROR, 'reconsiderblock "hash"');
 
     const valid = new Validator(args);
-    const hash = valid.hash(0);
+    const hash = valid.bhash(0);
 
     if (!hash)
       throw new RPCError(errs.TYPE_ERROR, 'Invalid block hash.');
@@ -2308,13 +2310,13 @@ class RPC extends RPCBase {
     const nameHash = rules.hashName(name);
     const reserved = rules.isReserved(nameHash, height + 1, network);
     const [start, week] = rules.getRollout(nameHash, network);
-    const auction = await this.chain.cdb.getAuction(nameHash);
+    const ns = await this.chain.db.getNameState(nameHash);
 
     let info = null;
 
-    if (auction) {
-      if (!auction.isExpired(height, network))
-        info = auction.getJSON(height, network);
+    if (ns) {
+      if (!ns.isExpired(height, network))
+        info = ns.getJSON(height, network);
     }
 
     return {
@@ -2323,7 +2325,7 @@ class RPC extends RPCBase {
         week: week,
         start: start
       },
-      auction: info
+      info
     };
   }
 
@@ -2338,13 +2340,13 @@ class RPC extends RPCBase {
       throw new RPCError(errs.TYPE_ERROR, 'Invalid name.');
 
     const nameHash = rules.hashName(name);
-    const auction = await this.chain.cdb.getAuction(nameHash);
+    const ns = await this.chain.db.getNameState(nameHash);
 
-    if (!auction || !auction.data)
+    if (!ns || ns.data.length === 0)
       return null;
 
     try {
-      const res = Resource.fromRaw(auction.data);
+      const res = Resource.decode(ns.data);
       return res.toJSON();
     } catch (e) {
       return {};
@@ -2357,7 +2359,7 @@ class RPC extends RPCBase {
 
     const valid = new Validator(args);
     const name = valid.str(0);
-    const treeRoot = valid.hash(1);
+    const treeRoot = valid.bhash(1);
 
     if (!name || !rules.verifyName(name))
       throw new RPCError(errs.TYPE_ERROR, 'Invalid name.');
@@ -2369,9 +2371,9 @@ class RPC extends RPCBase {
     const proof = await this.chain.db.prove(root, key);
 
     return {
-      hash: hash,
+      hash: hash.toString('hex'),
       height: height,
-      root: root,
+      root: root.toString('hex'),
       name: name,
       key: key.toString('hex'),
       proof: proof.toJSON()
@@ -2383,17 +2385,17 @@ class RPC extends RPCBase {
       throw new RPCError(errs.MISC_ERROR, 'getnamebyhash "hash"');
 
     const valid = new Validator(args);
-    const hash = valid.buf(0, null, 'hex');
+    const hash = valid.bhash(0);
 
-    if (!hash || hash.length !== 32)
+    if (!hash)
       throw new RPCError(errs.TYPE_ERROR, 'Invalid name hash.');
 
-    const auction = await this.chain.cdb.getAuction(hash);
+    const ns = await this.chain.db.getNameState(hash);
 
-    if (!auction)
+    if (!ns)
       return null;
 
-    return auction.name.toString('ascii');
+    return ns.name.toString('binary');
   }
 
   async sendRawClaim(args, help) {
@@ -2410,7 +2412,7 @@ class RPC extends RPCBase {
 
     this.node.relayClaim(claim);
 
-    return claim.hash('hex');
+    return claim.hash().toString('hex');
   }
 
   /*
@@ -2427,9 +2429,9 @@ class RPC extends RPCBase {
     if ((lastTX >>> 0) !== lastTX)
       throw new RPCError(errs.INVALID_PARAMETER, 'Invalid longpoll ID.');
 
-    const hash = watched;
+    const hash = util.parseHex(watched, 32);
 
-    if (this.chain.tip.hash !== hash)
+    if (!this.chain.tip.hash.equals(hash))
       return;
 
     await this.longpoll();
@@ -2528,9 +2530,8 @@ class RPC extends RPCBase {
       const n2 = this.nonce2;
 
       const root = attempt.getRoot(n1, n2);
-      const hash = root.toString('hex');
 
-      this.merkleMap.set(hash, [n1, n2]);
+      this.merkleMap.set(root, [n1, n2]);
 
       return attempt;
     }
@@ -2546,11 +2547,10 @@ class RPC extends RPCBase {
     const n2 = this.nonce2;
 
     const root = attempt.getRoot(n1, n2);
-    const hash = root.toString('hex');
 
     this.attempt = attempt;
     this.lastActivity = util.now();
-    this.merkleMap.set(hash, [n1, n2]);
+    this.merkleMap.set(root, [n1, n2]);
 
     return attempt;
   }
@@ -2567,7 +2567,7 @@ class RPC extends RPCBase {
   }
 
   async _addBlock(block) {
-    this.logger.info('Handling submitted block: %s.', block.hash('hex'));
+    this.logger.info('Handling submitted block: %s.', block.hash());
 
     let entry;
     try {
@@ -2575,7 +2575,7 @@ class RPC extends RPCBase {
     } catch (err) {
       if (err.type === 'VerifyError') {
         this.logger.warning('RPC block rejected: %s (%s).',
-          block.hash('hex'), err.reason);
+          block.hash(), err.reason);
         return `rejected: ${err.reason}`;
       }
       throw err;
@@ -2583,7 +2583,7 @@ class RPC extends RPCBase {
 
     if (!entry) {
       this.logger.warning('RPC block rejected: %s (bad-prevblk).',
-        block.hash('hex'));
+        block.hash());
       return 'rejected: bad-prevblk';
     }
 
@@ -2692,7 +2692,7 @@ class RPC extends RPCBase {
       const block = await this.miner.mineBlock(null, addr);
       const entry = await this.chain.add(block);
       assert(entry);
-      hashes.push(entry.hash);
+      hashes.push(entry.hash.toString('hex'));
     }
 
     return hashes;
@@ -2761,7 +2761,7 @@ class RPC extends RPCBase {
       locktime: tx.locktime,
       vin: vin,
       vout: vout,
-      blockhash: hash,
+      blockhash: hash ? hash.toString('hex') : null,
       confirmations: conf,
       time: time,
       blocktime: time,
@@ -2803,24 +2803,24 @@ class RPC extends RPCBase {
     const next = await this.chain.getNextHash(entry.hash);
 
     return {
-      hash: entry.hash,
+      hash: entry.hash.toString('hex'),
       confirmations: this.chain.height - entry.height + 1,
       height: entry.height,
       version: entry.version,
       versionHex: hex32(entry.version),
-      merkleroot: entry.merkleRoot,
-      treeroot: entry.treeRoot,
-      reservedroot: entry.reservedRoot,
+      merkleroot: entry.merkleRoot.toString('hex'),
+      treeroot: entry.treeRoot.toString('hex'),
+      reservedroot: entry.reservedRoot.toString('hex'),
       solution: entry.solution.toJSON(),
       time: entry.time,
       mediantime: mtp,
       bits: entry.bits,
       difficulty: toDifficulty(entry.bits),
       chainwork: entry.chainwork.toString('hex', 64),
-      previousblockhash: entry.prevBlock !== consensus.NULL_HASH
-        ? entry.prevBlock
+      previousblockhash: !entry.prevBlock.equals(consensus.ZERO_HASH)
+        ? entry.prevBlock.toString('hex')
         : null,
-      nextblockhash: next ? next : null
+      nextblockhash: next ? next.toString('hex') : null
     };
   }
 
@@ -2839,7 +2839,7 @@ class RPC extends RPCBase {
     }
 
     return {
-      hash: entry.hash,
+      hash: entry.hash.toString('hex'),
       confirmations: this.chain.height - entry.height + 1,
       strippedsize: block.getBaseSize(),
       size: block.getSize(),
@@ -2847,9 +2847,9 @@ class RPC extends RPCBase {
       height: entry.height,
       version: entry.version,
       versionHex: hex32(entry.version),
-      merkleroot: entry.merkleRoot,
-      treeroot: entry.treeRoot,
-      reservedroot: entry.reservedRoot,
+      merkleroot: entry.merkleRoot.toString('hex'),
+      treeroot: entry.treeRoot.toString('hex'),
+      reservedroot: entry.reservedRoot.toString('hex'),
       solution: entry.solution.toJSON(),
       coinbase: !details
         ? block.txs[0].inputs[0].witness.toJSON()
@@ -2860,10 +2860,10 @@ class RPC extends RPCBase {
       bits: entry.bits,
       difficulty: toDifficulty(entry.bits),
       chainwork: entry.chainwork.toString('hex', 64),
-      previousblockhash: entry.prevBlock !== consensus.NULL_HASH
-        ? entry.prevBlock
+      previousblockhash: !entry.prevBlock.equals(consensus.ZERO_HASH)
+        ? entry.prevBlock.toString('hex')
         : null,
-      nextblockhash: next ? next : null
+      nextblockhash: next ? next.toString('hex') : null
     };
   }
 
@@ -2970,13 +2970,13 @@ module.exports = RPC;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-btc.html">btc</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsk.html">hsk</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="Auction.html">Auction</a></li><li><a href="AuctionDelta.html">AuctionDelta</a></li><li><a href="AuctionState.html">AuctionState</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-btc.URI.html">URI</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDB.html">NameDB</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 19 2018 21:52:41 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:48 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

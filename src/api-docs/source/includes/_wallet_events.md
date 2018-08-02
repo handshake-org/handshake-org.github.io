@@ -39,7 +39,7 @@ join` event to listen for events on a wallet.
 Emitted on connection.
 
 Returns version. Object in the form:
-`[{ version: '0.0.0-alpha', agent: '/hskd:0.0.0-alpha/', network: 'main' }]`.
+`[{ version: '0.0.0-alpha', agent: '/hsd:0.0.0-alpha/', network: 'main' }]`.
 
 ## `wallet tx`
 
@@ -110,13 +110,13 @@ Received on transaction.
 
 ```
 
-## `wallet conflict`
+## `hsw.conflict`
 
 Received on double spend.
 
 Returns tx details of removed double spender.
 
-## `wallet confirmed`
+## `hsw.confirmed`
 
 Received when a transaction is confirmed.
 

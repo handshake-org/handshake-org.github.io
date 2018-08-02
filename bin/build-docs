@@ -1,6 +1,6 @@
 #!/bin/sh
 # This command builds the jsdoc documentation
-# for hskd. If an options, git ref is passed
+# for hsd. If an options, git ref is passed
 # as an argument it will build the documentation
 # from that ref. Otherwise, the master branch
 # source is used.
@@ -15,8 +15,8 @@ destDir=`pwd`
 buildDir=`mktemp -d`
 trap "rm -rf $buildDir" EXIT
 
-echo "cloning git@github.com:handshake-org/hskd.git"
-git clone git@github.com:handshake-org/hskd.git $buildDir
+echo "cloning git@github.com:handshake-org/hsd.git"
+git clone git@github.com:handshake-org/hsd.git $buildDir
 cd $buildDir
 
 if [ "$1" ]; then
@@ -25,7 +25,7 @@ fi
 
 echo "building docs"
 rm -rf docs
-make docs
+jsdoc -c jsdoc.json
 cd $destDir
 rm -rf ./docs
 cp -r "$buildDir/docs/reference" ./docs

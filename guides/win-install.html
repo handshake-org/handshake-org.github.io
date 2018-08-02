@@ -55,13 +55,13 @@
 </pre>
 
 <h2 id="windows-install-guide">Windows Install Guide</h2>
-<p>The Handshake software suite consists of a full node (<code>hskd</code>) and a light client (<code>hnsd</code>). The full node allows users to register, update, and transfer names, resolve names, and make blockchain payments. The light client (SPV node) allows users to resolve names without the computing resource requirements of running a full node.</p>
-<p>This guide includes instructions for installing <a href="#hskd-installation-instructions"><code>hskd</code></a> and <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
+<p>The Handshake software suite consists of a full node (<code>hsd</code>) and a light client (<code>hnsd</code>). The full node allows users to register, update, and transfer names, resolve names, and make blockchain payments. The light client (SPV node) allows users to resolve names without the computing resource requirements of running a full node.</p>
+<p>This guide includes instructions for installing <a href="#hsd-installation-instructions"><code>hsd</code></a> and <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
 <blockquote>
 <p>NOTE: the software has not been thoroughly tested on Windows.</p>
 </blockquote>
 <p><br/></p>
-<h2 id="hskd-installation-instructions"><code>hskd</code> Installation Instructions</h2>
+<h2 id="hsd-installation-instructions"><code>hsd</code> Installation Instructions</h2>
 <h4 id="install-dependencies">Install dependencies</h4>
 <ul>
 <li>Node / NPM <a href="https://nodejs.org/en/download/" class="uri">https://nodejs.org/en/download/</a></li>
@@ -100,9 +100,9 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="fu">bash</span></a></code></pre></div>
 <h4 id="change-to-home-directory">Change to home directory</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="bu">cd</span> /home</a></code></pre></div>
-<h4 id="download-and-install-hskd">Download and install <code>hskd</code></h4>
-<pre><code>$ git clone git@github.com:handshake-org/hskd.git
-$ cd hskd
+<h4 id="download-and-install-hsd">Download and install <code>hsd</code></h4>
+<pre><code>$ git clone git@github.com:handshake-org/hsd.git
+$ cd hsd
 $ npm pack bsip
 $ npm pack mrmr
 $ npm pack bcrypto
@@ -115,7 +115,7 @@ $ mv package bsip
 $ rm *.tgz
 $ cd bcrypto</code></pre>
 <ul>
-<li>Go thru and edit package.json in root <code>hskd/</code> folder to use file: of the above.</li>
+<li>Go thru and edit package.json in root <code>hsd/</code> folder to use file: of the above.</li>
 <li>Edit binding.gyp: <code>&quot;&lt;!(bash -c \&quot;python -c 'from __future__ import print_function; import sys; print(sys.byteorder)'\&quot;)&quot;,</code></li>
 <li>Continue</li>
 </ul>
@@ -151,14 +151,14 @@ $ mv chacha20.h chacha20_2.h</code></pre>
 <li>Replace reference to chacha20/chacha20.c to chacha20/chacha20_2.c in binding.gyp</li>
 <li>Do the same for blake2b</li>
 <li>Do the same for sha256 (note: It’s only in binding.gyp and not in the src/sha256.h)</li>
-<li>Continue by going to root /hskd/ folder but make sure you edit package.json to do file: for the above modules.</li>
+<li>Continue by going to root /hsd/ folder but make sure you edit package.json to do file: for the above modules.</li>
 </ul>
 <pre><code>$ npm install --production
 $ cd ..</code></pre>
 <h4 id="exit-bash-and-setup-mklink">Exit bash and setup mklink</h4>
 <pre><code>$ mklink /D C:\home C:\Cygwin64\home</code></pre>
 <h4 id="open-bash-again-and-start-on-testnet">open bash again and Start (on testnet)</h4>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">./hskd/bin/hskd</span> --daemon --no-auth</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">./hsd/bin/hsd</span> --daemon --no-auth</a></code></pre></div>
 <p><br/></p>
 <h2 id="hnsd-installation-instructions"><code>hnsd</code> Installation Instructions</h2>
 <h4 id="download-and-compile-hnsd">Download and compile <code>hnsd</code></h4>

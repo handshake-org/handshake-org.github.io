@@ -7,12 +7,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc <method> <params>
+hsd-cli rpc <method> <params>
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -41,14 +41,14 @@ const client = new NodeClient(clientOptions);
 
 
 
-hskd RPC calls mimic Bitcoin Core's RPC.
+hsd RPC calls mimic Bitcoin Core's RPC.
 
 RPC Calls are accepted at:
 `POST /`
 
 *Notes:*
 
-*hsk-cli rpc and Javascript will either return an error OR the result.*
+*hsd-cli rpc and Javascript will either return an error OR the result.*
 
 *Javascript result will return the "result" part of the object, not the id or error*
 

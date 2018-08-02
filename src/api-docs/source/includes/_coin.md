@@ -1,4 +1,4 @@
-# hskd - Coins
+# hsd - Coins
 Getting coin information via API.
 
 *Coin stands for UTXO*
@@ -6,9 +6,9 @@ Getting coin information via API.
 <aside class="info">
 You need to enable <code>index-address</code> in order to lookup coins by address.<br>
 You can also enable <code>index-tx</code> to lookup transactions by txid.<br>
-Launch the hskd daemon with these arguments:<br>
-<code>hskd --daemon --index-address=true --index-tx=true</code><br>
-These index arguments cannot be changed once hskd has been started for the first time, without resyncing the node.
+Launch the hsd daemon with these arguments:<br>
+<code>hsd --daemon --index-address=true --index-tx=true</code><br>
+These index arguments cannot be changed once hsd has been started for the first time, without resyncing the node.
 </aside>
 
 
@@ -32,12 +32,12 @@ curl $url/coin/$hash/$index
 ```
 
 ```shell--cli
-hsk-cli coin $hash $index
+hsd-cli coin $hash $index
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -72,7 +72,7 @@ const client = new NodeClient(clientOptions);
 }
 ```
 
-Get coin by outpoint (hash and index). Returns coin in hskd coin JSON format.
+Get coin by outpoint (hash and index). Returns coin in hsd coin JSON format.
 `value` is always expressed in subunits.
 
 ### HTTP Request
@@ -101,12 +101,12 @@ curl $url/coin/address/$address
 ```
 
 ```shell--cli
-hsk-cli coin $address
+hsd-cli coin $address
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -193,8 +193,8 @@ No CLI Option.
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {

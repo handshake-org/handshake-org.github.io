@@ -29,15 +29,16 @@
             <pre class="prettyprint source linenums"><code>/*!
  * txdb.js - persistent transaction pool
  * Copyright (c) 2017-2018, Christopher Jeffrey (MIT License).
- * https://github.com/handshake-org/hskd
+ * https://github.com/handshake-org/hsd
  */
 
 'use strict';
 
-const assert = require('assert');
+const assert = require('bsert');
 const bio = require('bufio');
+const {BufferSet} = require('buffer-map');
 const util = require('../utils/util');
-const Amount = require('../btc/amount');
+const Amount = require('../ui/amount');
 const CoinView = require('../coins/coinview');
 const Coin = require('../primitives/coin');
 const Outpoint = require('../primitives/outpoint');
@@ -46,8 +47,8 @@ const layout = require('./layout').txdb;
 const consensus = require('../protocol/consensus');
 const policy = require('../protocol/policy');
 const rules = require('../covenants/rules');
-const Auction = require('../covenants/auction');
-const AuctionUndo = require('../covenants/undo');
+const NameState = require('../covenants/namestate');
+const NameUndo = require('../covenants/undo');
 const {TXRecord} = records;
 const {types} = rules;
 
@@ -77,7 +78,7 @@ class TXDB {
     this.wid = wid || 0;
     this.bucket = null;
     this.wallet = null;
-    this.locked = new Set();
+    this.locked = new BufferSet();
   }
 
   /**
@@ -113,7 +114,7 @@ class TXDB {
    */
 
   getPath(output) {
-    const hash = output.getHash('hex');
+    const hash = output.getHash();
 
     if (!hash)
       return null;
@@ -128,7 +129,7 @@ class TXDB {
    */
 
   hasPath(output) {
-    const hash = output.getHash('hex');
+    const hash = output.getHash();
 
     if (!hash)
       return false;
@@ -145,7 +146,7 @@ class TXDB {
   async saveCredit(b, credit, path) {
     const {coin} = credit;
 
-    b.put(layout.c.build(coin.hash, coin.index), credit.toRaw());
+    b.put(layout.c.build(coin.hash, coin.index), credit.encode());
     b.put(layout.C.build(path.account, coin.hash, coin.index), null);
 
     return this.addOutpointMap(b, coin.hash, coin.index);
@@ -176,8 +177,8 @@ class TXDB {
   spendCredit(b, credit, tx, index) {
     const prevout = tx.inputs[index].prevout;
     const spender = Outpoint.fromTX(tx, index);
-    b.put(layout.s.build(prevout.hash, prevout.index), spender.toRaw());
-    b.put(layout.d.build(spender.hash, spender.index), credit.coin.toRaw());
+    b.put(layout.s.build(prevout.hash, prevout.index), spender.encode());
+    b.put(layout.d.build(spender.hash, spender.index), credit.coin.encode());
   }
 
   /**
@@ -202,7 +203,7 @@ class TXDB {
   async writeInput(b, tx, index) {
     const prevout = tx.inputs[index].prevout;
     const spender = Outpoint.fromTX(tx, index);
-    b.put(layout.s.build(prevout.hash, prevout.index), spender.toRaw());
+    b.put(layout.s.build(prevout.hash, prevout.index), spender.encode());
     return this.addOutpointMap(b, prevout.hash, prevout.index);
   }
 
@@ -226,7 +227,7 @@ class TXDB {
   async updateBalance(b, state) {
     const balance = await this.getWalletBalance();
     state.applyTo(balance);
-    b.put(layout.R.build(), balance.toRaw());
+    b.put(layout.R.build(), balance.encode());
     return balance;
   }
 
@@ -239,7 +240,7 @@ class TXDB {
   async updateAccountBalance(b, acct, delta) {
     const balance = await this.getAccountBalance(acct);
     delta.applyTo(balance);
-    b.put(layout.r.build(acct), balance.toRaw());
+    b.put(layout.r.build(acct), balance.encode());
     return balance;
   }
 
@@ -256,7 +257,7 @@ class TXDB {
     if (!data)
       return null;
 
-    return Outpoint.fromRaw(data);
+    return Outpoint.decode(data);
   }
 
   /**
@@ -379,7 +380,7 @@ class TXDB {
     if (!data)
       return null;
 
-    return BlockRecord.fromRaw(data);
+    return BlockRecord.decode(data);
   }
 
   /**
@@ -396,7 +397,7 @@ class TXDB {
     if (!data) {
       const blk = BlockRecord.fromMeta(block);
       blk.add(hash);
-      b.put(key, blk.toRaw());
+      b.put(key, blk.encode());
       return;
     }
 
@@ -461,59 +462,59 @@ class TXDB {
       return;
     }
 
-    b.put(layout.b.build(height), block.toRaw());
+    b.put(layout.b.build(height), block.encode());
   }
 
   /**
-   * Test whether we have an auction.
+   * Test whether we have a name.
    * @param {Buffer} nameHash
    * @returns {Boolean}
    */
 
-  async hasAuction(nameHash) {
+  async hasNameState(nameHash) {
     return this.bucket.has(layout.A.build(nameHash));
   }
 
   /**
-   * Get an auction if present.
+   * Get a name state if present.
    * @param {Buffer} nameHash
-   * @returns {Auction}
+   * @returns {NameState}
    */
 
-  async getAuction(nameHash) {
+  async getNameState(nameHash) {
     const raw = await this.bucket.get(layout.A.build(nameHash));
 
     if (!raw)
       return null;
 
-    const auction = Auction.fromRaw(raw);
-    auction.nameHash = nameHash;
+    const ns = NameState.decode(raw);
+    ns.nameHash = nameHash;
 
-    return auction;
+    return ns;
   }
 
   /**
-   * Get all auctions.
-   * @returns {Auction[]}
+   * Get all names.
+   * @returns {NameState[]}
    */
 
-  async getAuctions() {
+  async getNames() {
     const iter = this.bucket.iterator({
       gte: layout.A.min(),
       lte: layout.A.max(),
       values: true
     });
 
-    const auctions = [];
+    const names = [];
 
     await iter.each((key, raw) => {
       const nameHash = layout.A.parse(key);
-      const auction = Auction.fromRaw(raw);
-      auction.nameHash = nameHash;
-      auctions.push(auction);
+      const ns = NameState.decode(raw);
+      ns.nameHash = nameHash;
+      names.push(ns);
     });
 
-    return auctions;
+    return names;
   }
 
   /**
@@ -542,7 +543,7 @@ class TXDB {
     if (!raw)
       return null;
 
-    const bb = BlindBid.fromRaw(raw);
+    const bb = BlindBid.decode(raw);
     bb.nameHash = nameHash;
     bb.prevout = outpoint;
 
@@ -565,7 +566,7 @@ class TXDB {
     bb.lockup = options.lockup;
     bb.blind = options.blind;
     bb.own = options.own;
-    b.put(layout.i.build(nameHash, hash, index), bb.toRaw());
+    b.put(layout.i.build(nameHash, hash, index), bb.encode());
   }
 
   /**
@@ -597,7 +598,7 @@ class TXDB {
 
     await iter.each(async (key, raw) => {
       const [nameHash, hash, index] = layout.i.parse(key);
-      const bb = BlindBid.fromRaw(raw);
+      const bb = BlindBid.decode(raw);
 
       bb.nameHash = nameHash;
       bb.prevout = new Outpoint(hash, index);
@@ -653,7 +654,7 @@ class TXDB {
     if (!raw)
       return null;
 
-    const brv = BidReveal.fromRaw(raw);
+    const brv = BidReveal.decode(raw);
     brv.nameHash = nameHash;
     brv.prevout = outpoint;
 
@@ -676,7 +677,7 @@ class TXDB {
     brv.value = options.value;
     brv.height = options.height;
     brv.own = options.own;
-    b.put(layout.B.build(nameHash, hash, index), brv.toRaw());
+    b.put(layout.B.build(nameHash, hash, index), brv.encode());
   }
 
   /**
@@ -708,7 +709,7 @@ class TXDB {
 
     await iter.each(async (key, raw) => {
       const [nameHash, hash, index] = layout.B.parse(key);
-      const brv = BidReveal.fromRaw(raw);
+      const brv = BidReveal.decode(raw);
       brv.nameHash = nameHash;
       brv.prevout = new Outpoint(hash, index);
       reveals.push(brv);
@@ -754,7 +755,7 @@ class TXDB {
     if (!raw)
       return null;
 
-    return BlindValue.fromRaw(raw);
+    return BlindValue.decode(raw);
   }
 
   /**
@@ -769,7 +770,7 @@ class TXDB {
     const bv = new BlindValue();
     bv.value = value;
     bv.nonce = nonce;
-    b.put(layout.v.build(blind), bv.toRaw());
+    b.put(layout.v.build(blind), bv.encode());
   }
 
   /**
@@ -802,7 +803,7 @@ class TXDB {
    */
 
   async add(tx, block) {
-    const hash = tx.hash('hex');
+    const hash = tx.hash();
     const existing = await this.getTX(hash);
 
     assert(!tx.mutable, 'Cannot add mutable TX to wallet.');
@@ -840,55 +841,82 @@ class TXDB {
     return this.insert(wtx, block);
   }
 
+  /**
+   * Test whether the transaction
+   * has a duplicate open.
+   * @param {TX}
+   * @returns {Boolean}
+   */
+
   async isDoubleOpen(tx) {
     for (const {covenant} of tx.outputs) {
-      if (covenant.type !== types.OPEN)
+      if (!covenant.isOpen())
         continue;
 
-      const nameHash = covenant.items[0];
+      const nameHash = covenant.getHash(0);
       const key = layout.o.build(nameHash);
 
       if (await this.bucket.has(key))
         return true;
     }
+
+    return false;
   }
+
+  /**
+   * Remove duplicate opens.
+   * @private
+   * @param {TX} tx
+   */
 
   async removeDoubleOpen(tx) {
     for (const {covenant} of tx.outputs) {
-      if (covenant.type !== types.OPEN)
+      if (!covenant.isOpen())
         continue;
 
-      const nameHash = covenant.items[0];
+      const nameHash = covenant.getHash(0);
       const key = layout.o.build(nameHash);
       const hash = await this.bucket.get(key);
 
       if (!hash)
         continue;
 
-      const txid = hash.toString('hex');
-
-      await this.remove(txid);
+      await this.remove(hash);
     }
   }
 
+  /**
+   * Index open covenants.
+   * @private
+   * @param {Batch} b
+   * @param {TX} tx
+   */
+
   indexOpens(b, tx) {
     for (const {covenant} of tx.outputs) {
-      if (covenant.type !== types.OPEN)
+      if (!covenant.isOpen())
         continue;
 
-      const nameHash = covenant.items[0];
+      const nameHash = covenant.getHash(0);
       const key = layout.o.build(nameHash);
 
       b.put(key, tx.hash());
     }
   }
 
+  /**
+   * Unindex open covenants.
+   * @private
+   * @param {Batch} b
+   * @param {TX} tx
+   */
+
   unindexOpens(b, tx) {
     for (const {covenant} of tx.outputs) {
-      if (covenant.type !== types.OPEN)
+      if (!covenant.isOpen())
         continue;
 
-      const nameHash = covenant.items[0];
+      const nameHash = covenant.getHash(0);
       const key = layout.o.build(nameHash);
 
       b.del(key);
@@ -1000,9 +1028,9 @@ class TXDB {
       await this.saveCredit(b, credit, path);
     }
 
-    // Handle auctions.
+    // Handle names.
     if (block) {
-      const updated = await this.connectAuctions(b, tx, view, height);
+      const updated = await this.connectNames(b, tx, view, height);
 
       if (updated &amp;&amp; !state.updated())
         await b.write();
@@ -1018,7 +1046,7 @@ class TXDB {
       this.indexOpens(b, tx);
 
     // Save and index the transaction record.
-    b.put(layout.t.build(hash), wtx.toRaw());
+    b.put(layout.t.build(hash), wtx.encode());
     b.put(layout.m.build(wtx.mtime, hash), null);
 
     if (!block)
@@ -1175,13 +1203,13 @@ class TXDB {
       await this.saveCredit(b, credit, path);
     }
 
-    // Handle auctions.
-    await this.connectAuctions(b, tx, view, height);
+    // Handle names.
+    await this.connectNames(b, tx, view, height);
 
     // Save the new serialized transaction as
     // the block-related properties have been
     // updated. Also reindex for height.
-    b.put(layout.t.build(hash), wtx.toRaw());
+    b.put(layout.t.build(hash), wtx.encode());
     b.del(layout.p.build(hash));
     b.put(layout.h.build(height, hash), null);
 
@@ -1303,8 +1331,8 @@ class TXDB {
       await this.removeCredit(b, credit, path);
     }
 
-    // Undo auction.
-    await this.undoAuction(b, tx);
+    // Undo name state.
+    await this.undoNameState(b, tx);
 
     if (!block)
       this.unindexOpens(b, tx);
@@ -1504,8 +1532,8 @@ class TXDB {
       await this.saveCredit(b, credit, path);
     }
 
-    // Undo auction.
-    await this.undoAuction(b, tx);
+    // Undo name state.
+    await this.undoNameState(b, tx);
 
     await this.addTXMap(b, hash);
     await this.removeBlockMap(b, height);
@@ -1514,7 +1542,7 @@ class TXDB {
     // We need to update the now-removed
     // block properties and reindex due
     // to the height change.
-    b.put(layout.t.build(hash), wtx.toRaw());
+    b.put(layout.t.build(hash), wtx.encode());
     b.put(layout.p.build(hash), null);
     b.del(layout.h.build(height, hash));
 
@@ -1552,11 +1580,11 @@ class TXDB {
   async removeConflict(wtx) {
     const tx = wtx.tx;
 
-    this.logger.warning('Handling conflicting tx: %s.', tx.txid());
+    this.logger.warning('Handling conflicting tx: %x.', tx.hash());
 
     const details = await this.removeRecursive(wtx);
 
-    this.logger.warning('Removed conflict: %s.', tx.txid());
+    this.logger.warning('Removed conflict: %x.', tx.hash());
 
     // Emit the _removed_ transaction.
     this.emit('conflict', tx, details);
@@ -1576,7 +1604,7 @@ class TXDB {
     if (tx.isCoinbase())
       return true;
 
-    const txid = tx.hash('hex');
+    const txid = tx.hash();
     const spends = [];
 
     // Gather all spent records first.
@@ -1590,7 +1618,7 @@ class TXDB {
         continue;
 
       // Did _we_ spend it?
-      if (spent.hash === txid)
+      if (spent.hash.equals(txid))
         continue;
 
       const spender = await this.getTX(spent.hash);
@@ -1640,7 +1668,7 @@ class TXDB {
       case types.REVEAL: {
         assert(i &lt; tx.inputs.length);
 
-        const nameHash = covenant.items[0];
+        const nameHash = covenant.getHash(0);
         const prevout = tx.inputs[i].prevout;
 
         const bb = await this.getBid(nameHash, prevout);
@@ -1694,7 +1722,7 @@ class TXDB {
       case types.REVEAL: {
         assert(i &lt; tx.inputs.length);
 
-        const nameHash = covenant.items[0];
+        const nameHash = covenant.getHash(0);
         const prevout = tx.inputs[i].prevout;
 
         const bb = await this.getBid(nameHash, prevout);
@@ -1730,8 +1758,8 @@ class TXDB {
    * @param {Number} height
    */
 
-  async connectAuctions(b, tx, view, height) {
-    const hash = tx.hash('hex');
+  async connectNames(b, tx, view, height) {
+    const hash = tx.hash();
     const network = this.wdb.network;
 
     assert(height !== -1);
@@ -1742,19 +1770,17 @@ class TXDB {
       const output = tx.outputs[i];
       const {covenant} = output;
 
-      if (covenant.type &lt; types.CLAIM
-          || covenant.type > types.REVOKE) {
+      if (!covenant.isName())
         continue;
-      }
 
       const path = await this.getPath(output);
-      const nameHash = covenant.items[0];
+      const nameHash = covenant.getHash(0);
       const outpoint = tx.outpoint(i);
-      const auction = await view.getAuction(this, nameHash);
+      const ns = await view.getNameState(this, nameHash);
 
-      if (!auction.isNull()) {
-        if (auction.isExpired(height, network))
-          auction.reset(height);
+      if (!ns.isNull()) {
+        if (ns.isExpired(height, network))
+          ns.reset(height);
       }
 
       switch (covenant.type) {
@@ -1762,18 +1788,18 @@ class TXDB {
           if (!path)
             break;
 
-          const name = covenant.items[1];
-          const flags = covenant.items[2];
+          const name = covenant.get(2);
+          const flags = covenant.getU8(3);
 
-          if (auction.isNull())
+          if (ns.isNull())
             await this.addNameMap(b, nameHash);
 
-          auction.setAuction(name, height);
-          auction.setClaimed(true);
-          auction.setValue(0);
-          auction.setOwner(outpoint);
-          auction.setHighest(0);
-          auction.setWeak((flags[0] &amp; 1) === 1);
+          ns.set(name, height);
+          ns.setClaimed(true);
+          ns.setValue(0);
+          ns.setOwner(outpoint);
+          ns.setHighest(0);
+          ns.setWeak((flags &amp; 1) !== 0);
 
           updated = true;
 
@@ -1784,12 +1810,12 @@ class TXDB {
           if (!path)
             break;
 
-          if (auction.isNull()) {
-            const name = covenant.items[1];
+          if (ns.isNull()) {
+            const name = covenant.get(2);
 
             await this.addNameMap(b, nameHash);
 
-            auction.setAuction(name, height);
+            ns.set(name, height);
 
             updated = true;
           }
@@ -1798,13 +1824,13 @@ class TXDB {
         }
 
         case types.BID: {
-          const name = covenant.items[1];
-          const start = covenant.items[2].readUInt32LE(0);
-          const blind = covenant.items[3];
+          const start = covenant.getU32(1);
+          const name = covenant.get(2);
+          const blind = covenant.getHash(3);
           const lockup = output.value;
 
           if (!path) {
-            if (auction.isNull())
+            if (ns.isNull())
               break;
 
             this.putBid(b, nameHash, outpoint, {
@@ -1819,10 +1845,10 @@ class TXDB {
             break;
           }
 
-          if (auction.isNull())
+          if (ns.isNull())
             await this.addNameMap(b, nameHash);
 
-          auction.setAuction(name, start);
+          ns.set(name, start);
 
           this.putBid(b, nameHash, outpoint, {
             name,
@@ -1837,20 +1863,20 @@ class TXDB {
         }
 
         case types.REVEAL: {
-          if (auction.isNull())
+          if (ns.isNull())
             break;
 
-          if (output.value > auction.highest) {
-            auction.setValue(auction.highest);
-            auction.setOwner(outpoint);
-            auction.setHighest(output.value);
-          } else if (output.value > auction.value) {
-            auction.setValue(output.value);
+          if (ns.owner.isNull() || output.value > ns.highest) {
+            ns.setValue(ns.highest);
+            ns.setOwner(outpoint);
+            ns.setHighest(output.value);
+          } else if (output.value > ns.value) {
+            ns.setValue(output.value);
           }
 
           if (!path) {
             this.putReveal(b, nameHash, outpoint, {
-              name: auction.name,
+              name: ns.name,
               value: output.value,
               height: height,
               own: false
@@ -1862,8 +1888,8 @@ class TXDB {
           const {prevout} = tx.inputs[i];
           const coin = view.getOutput(prevout);
           const uc = coin.covenant;
-          const blind = uc.items[3];
-          const nonce = covenant.items[1];
+          const blind = uc.getHash(3);
+          const nonce = covenant.getHash(2);
 
           this.putBlind(b, blind, {
             value: output.value,
@@ -1871,7 +1897,7 @@ class TXDB {
           });
 
           this.putReveal(b, nameHash, outpoint, {
-            name: auction.name,
+            name: ns.name,
             value: output.value,
             height: height,
             own: true
@@ -1887,24 +1913,14 @@ class TXDB {
         }
 
         case types.REGISTER: {
-          if (auction.isNull())
+          if (ns.isNull())
             break;
 
-          const data = covenant.items[1];
+          const data = covenant.get(2);
 
-          // If we didn't have a second
-          // bidder, use our own bid.
-          if (auction.value === -1) {
-            assert(auction.highest !== -1);
-            auction.setValue(auction.highest);
-          }
-
-          auction.setOwner(outpoint);
-
-          if (data.length > 0)
-            auction.setData(data);
-
-          auction.setRenewal(height);
+          ns.setOwner(outpoint);
+          ns.setData(data);
+          ns.setRenewal(height);
 
           updated = true;
 
@@ -1912,19 +1928,30 @@ class TXDB {
         }
 
         case types.UPDATE: {
-          if (auction.isNull())
+          if (ns.isNull())
             break;
 
-          const data = covenant.items[1];
+          const data = covenant.get(2);
 
-          auction.setOwner(outpoint);
-          auction.setTransfer(-1);
+          ns.setOwner(outpoint);
 
           if (data.length > 0)
-            auction.setData(data);
+            ns.setData(data);
 
-          if (covenant.items.length === 3)
-            auction.setRenewal(height);
+          ns.setTransfer(0);
+
+          updated = true;
+
+          break;
+        }
+
+        case types.RENEW: {
+          if (ns.isNull())
+            break;
+
+          ns.setOwner(outpoint);
+          ns.setTransfer(0);
+          ns.setRenewal(height);
 
           updated = true;
 
@@ -1932,16 +1959,13 @@ class TXDB {
         }
 
         case types.TRANSFER: {
-          if (auction.isNull())
+          if (ns.isNull())
             break;
 
-          auction.setOwner(outpoint);
+          ns.setOwner(outpoint);
 
-          assert(auction.transfer === -1);
-          auction.setTransfer(height);
-
-          if (covenant.items.length === 3)
-            auction.setRenewal(height);
+          assert(ns.transfer === 0);
+          ns.setTransfer(height);
 
           updated = true;
 
@@ -1949,31 +1973,32 @@ class TXDB {
         }
 
         case types.FINALIZE: {
-          if (auction.isNull()) {
+          if (ns.isNull()) {
             if (!path)
               break;
 
             await this.addNameMap(b, nameHash);
 
-            const name = covenant.items[1];
-            const start = covenant.items[2].readUInt32LE(0);
-            const weak = (covenant.items[3][0] &amp; 1) === 1;
-            const claimed = (covenant.items[3][0] &amp; 4) === 4;
+            const start = covenant.getU32(1);
+            const name = covenant.get(2);
+            const flags = covenant.getU8(3);
+            const weak = (flags &amp; 1) !== 0;
+            const claimed = (flags &amp; 4) !== 0;
 
-            auction.setAuction(name, start);
-            auction.setValue(output.value);
-            auction.setWeak(weak);
-            auction.setClaimed(claimed);
+            ns.set(name, start);
+            ns.setValue(output.value);
+            ns.setWeak(weak);
+            ns.setClaimed(claimed);
 
             // Cannot get data or highest.
-            auction.setHighest(output.value);
+            ns.setHighest(output.value);
           } else {
-            assert(auction.transfer !== -1);
-            auction.setTransfer(-1);
+            assert(ns.transfer !== 0);
+            ns.setTransfer(0);
           }
 
-          auction.setOwner(tx.outpoint(i));
-          auction.setRenewal(height);
+          ns.setOwner(tx.outpoint(i));
+          ns.setRenewal(height);
 
           updated = true;
 
@@ -1981,12 +2006,13 @@ class TXDB {
         }
 
         case types.REVOKE: {
-          if (auction.isNull())
+          if (ns.isNull())
             break;
 
-          assert(auction.revoked === -1);
-          auction.setRevoked(height);
-          auction.setData(null);
+          assert(ns.revoked === 0);
+          ns.setRevoked(height);
+          ns.setTransfer(0);
+          ns.setData(null);
 
           updated = true;
 
@@ -1995,19 +2021,21 @@ class TXDB {
       }
     }
 
-    for (const auction of view.auctions.values()) {
-      const {nameHash} = auction;
+    for (const ns of view.names.values()) {
+      const {nameHash} = ns;
 
-      if (auction.isNull())
+      if (ns.isNull()) {
         b.del(layout.A.build(nameHash));
-      else
-        b.put(layout.A.build(nameHash), auction.toRaw());
+        continue;
+      }
+
+      b.put(layout.A.build(nameHash), ns.encode());
     }
 
     if (updated) {
-      const undo = view.toAuctionUndo();
+      const undo = view.toNameUndo();
 
-      if (undo.auctions.length > 0)
+      if (undo.names.length > 0)
         b.put(layout.U.build(hash), undo.encode());
     }
 
@@ -2023,26 +2051,24 @@ class TXDB {
    * @param {Number} height
    */
 
-  async undoAuction(b, tx) {
-    const hash = tx.hash('hex');
+  async undoNameState(b, tx) {
+    const hash = tx.hash();
 
     for (let i = 0; i &lt; tx.outputs.length; i++) {
       const output = tx.outputs[i];
       const {covenant} = output;
 
-      if (covenant.type &lt; types.CLAIM
-          || covenant.type > types.REVOKE) {
+      if (!covenant.isName())
         continue;
-      }
 
       switch (covenant.type) {
         case types.BID: {
-          const nameHash = covenant.items[0];
+          const nameHash = covenant.getHash(0);
           this.removeBid(b, nameHash, tx.outpoint(i));
           break;
         }
         case types.REVEAL: {
-          const nameHash = covenant.items[0];
+          const nameHash = covenant.getHash(0);
           this.removeReveal(b, nameHash, tx.outpoint(i));
           break;
         }
@@ -2054,18 +2080,18 @@ class TXDB {
     if (!raw)
       return;
 
-    const undo = AuctionUndo.decode(raw);
+    const undo = NameUndo.decode(raw);
     const view = new CoinView();
 
-    for (const [nameHash, delta] of undo.auctions) {
-      const auction = await view.getAuction(this, nameHash);
+    for (const [nameHash, delta] of undo.names) {
+      const ns = await view.getNameState(this, nameHash);
 
-      auction.applyState(delta);
+      ns.applyState(delta);
 
-      if (auction.isNull())
+      if (ns.isNull())
         b.del(layout.A.build(nameHash));
       else
-        b.put(layout.A.build(nameHash), auction.toRaw());
+        b.put(layout.A.build(nameHash), ns.encode());
     }
 
     b.del(layout.U.build(hash));
@@ -2115,6 +2141,15 @@ class TXDB {
   unlockCoin(coin) {
     const key = coin.toKey();
     return this.locked.delete(key);
+  }
+
+  /**
+   * Unlock all locked coins.
+   */
+
+  unlockCoins() {
+    for (const coin of this.getLocked())
+      this.unlockCoin(coin);
   }
 
   /**
@@ -2462,7 +2497,7 @@ class TXDB {
     return this.bucket.values({
       gte: layout.t.min(),
       lte: layout.t.max(),
-      parse: data => TXRecord.fromRaw(data)
+      parse: data => TXRecord.decode(data)
     });
   }
 
@@ -2523,7 +2558,7 @@ class TXDB {
       lte: layout.c.max(),
       parse: (key, value) => {
         const [hash, index] = layout.c.parse(key);
-        const credit = Credit.fromRaw(value);
+        const credit = Credit.decode(value);
         credit.coin.hash = hash;
         credit.coin.index = index;
         return credit;
@@ -2560,7 +2595,7 @@ class TXDB {
     if (tx.isCoinbase())
       return [];
 
-    const hash = tx.hash('hex');
+    const hash = tx.hash();
     const credits = [];
 
     for (let i = 0; i &lt; tx.inputs.length; i++)
@@ -2571,7 +2606,7 @@ class TXDB {
       lte: layout.d.max(hash),
       parse: (key, value) => {
         const [, index] = layout.d.parse(key);
-        const coin = Coin.fromRaw(value);
+        const coin = Coin.decode(value);
         const input = tx.inputs[index];
         assert(input);
         coin.hash = input.prevout.hash;
@@ -2709,7 +2744,7 @@ class TXDB {
     if (!raw)
       return null;
 
-    return TXRecord.fromRaw(raw);
+    return TXRecord.decode(raw);
   }
 
   /**
@@ -2823,7 +2858,7 @@ class TXDB {
     if (!data)
       return null;
 
-    const credit = Credit.fromRaw(data);
+    const credit = Credit.decode(data);
     credit.coin.hash = hash;
     credit.coin.index = index;
 
@@ -2843,7 +2878,7 @@ class TXDB {
     if (!data)
       return null;
 
-    const coin = Coin.fromRaw(data);
+    const coin = Coin.decode(data);
     coin.hash = prevout.hash;
     coin.index = prevout.index;
 
@@ -2882,7 +2917,7 @@ class TXDB {
 
     coin.height = height;
 
-    b.put(layout.d.build(spent.hash, spent.index), coin.toRaw());
+    b.put(layout.d.build(spent.hash, spent.index), coin.encode());
   }
 
   /**
@@ -2921,7 +2956,7 @@ class TXDB {
     if (!data)
       return new Balance();
 
-    return Balance.fromRaw(-1, data);
+    return Balance.decode(data);
   }
 
   /**
@@ -2936,7 +2971,9 @@ class TXDB {
     if (!data)
       return new Balance(acct);
 
-    return Balance.fromRaw(acct, data);
+    const balance = Balance.decode(data);
+    balance.account = acct;
+    return balance;
   }
 
   /**
@@ -2964,8 +3001,8 @@ class TXDB {
 
       assert(now - wtx.mtime >= age);
 
-      this.logger.debug('Zapping TX: %s (%d)',
-        wtx.tx.txid(), this.wid);
+      this.logger.debug('Zapping TX: %x (%d)',
+        wtx.tx.hash(), this.wid);
 
       await this.remove(wtx.hash);
 
@@ -2996,7 +3033,7 @@ class TXDB {
  * @alias module:wallet.Balance
  */
 
-class Balance {
+class Balance extends bio.Struct {
   /**
    * Create a balance.
    * @constructor
@@ -3004,6 +3041,8 @@ class Balance {
    */
 
   constructor(acct = -1) {
+    super();
+
     assert(typeof acct === 'number');
 
     this.account = acct;
@@ -3037,21 +3076,27 @@ class Balance {
   }
 
   /**
+   * Calculate size.
+   * @returns {Number}
+   */
+
+  getSize() {
+    return 48;
+  }
+
+  /**
    * Serialize balance.
    * @returns {Buffer}
    */
 
-  toRaw() {
-    const bw = bio.write(48);
-
+  write(bw) {
     bw.writeU64(this.tx);
     bw.writeU64(this.coin);
     bw.writeU64(this.unconfirmed);
     bw.writeU64(this.confirmed);
     bw.writeU64(this.ulocked);
     bw.writeU64(this.clocked);
-
-    return bw.render();
+    return bw;
   }
 
   /**
@@ -3061,8 +3106,7 @@ class Balance {
    * @returns {TXDBState}
    */
 
-  fromRaw(data) {
-    const br = bio.read(data);
+  read(br) {
     this.tx = br.readU64();
     this.coin = br.readU64();
     this.unconfirmed = br.readU64();
@@ -3073,23 +3117,12 @@ class Balance {
   }
 
   /**
-   * Instantiate balance from serialized data.
-   * @param {Number} acct
-   * @param {Buffer} data
-   * @returns {TXDBState}
-   */
-
-  static fromRaw(acct, data) {
-    return new this(acct).fromRaw(data);
-  }
-
-  /**
    * Convert balance to a more json-friendly object.
    * @param {Boolean?} minimal
    * @returns {Object}
    */
 
-  toJSON(minimal) {
+  getJSON(minimal) {
     return {
       account: !minimal ? this.account : undefined,
       tx: this.tx,
@@ -3106,7 +3139,7 @@ class Balance {
    * @param {String}
    */
 
-  inspect() {
+  format() {
     return '&lt;Balance'
       + ` tx=${this.tx}`
       + ` coin=${this.coin}`
@@ -3193,7 +3226,7 @@ class BalanceDelta {
  * @property {Boolean} spent
  */
 
-class Credit {
+class Credit extends bio.Struct {
   /**
    * Create a credit.
    * @constructor
@@ -3202,6 +3235,7 @@ class Credit {
    */
 
   constructor(coin, spent) {
+    super();
     this.coin = coin || new Coin();
     this.spent = spent || false;
     this.own = false;
@@ -3213,22 +3247,11 @@ class Credit {
    * @param {Buffer} data
    */
 
-  fromRaw(data) {
-    const br = bio.read(data);
-    this.coin.fromReader(br);
+  read(br) {
+    this.coin.read(br);
     this.spent = br.readU8() === 1;
     this.own = br.readU8() === 1;
     return this;
-  }
-
-  /**
-   * Instantiate credit from serialized data.
-   * @param {Buffer} data
-   * @returns {Credit}
-   */
-
-  static fromRaw(data) {
-    return new this().fromRaw(data);
   }
 
   /**
@@ -3245,13 +3268,11 @@ class Credit {
    * @returns {Buffer}
    */
 
-  toRaw() {
-    const size = this.getSize();
-    const bw = bio.write(size);
-    this.coin.toWriter(bw);
+  write(bw) {
+    this.coin.write(bw);
     bw.writeU8(this.spent ? 1 : 0);
     bw.writeU8(this.own ? 1 : 0);
-    return bw.render();
+    return bw;
   }
 
   /**
@@ -3429,14 +3450,14 @@ class Details {
    * @returns {Object}
    */
 
-  toJSON(network, height) {
+  getJSON(network, height) {
     const fee = this.getFee();
     const rate = this.getRate(fee);
 
     return {
-      hash: this.hash,
+      hash: this.hash.toString('hex'),
       height: this.height,
-      block: this.block ? this.block : null,
+      block: this.block ? this.block.toString('hex') : null,
       time: this.time,
       mtime: this.mtime,
       date: util.date(this.time),
@@ -3452,8 +3473,17 @@ class Details {
       outputs: this.outputs.map((output) => {
         return output.getJSON(network);
       }),
-      tx: this.tx.toRaw().toString('hex')
+      tx: this.tx.toHex()
     };
+  }
+
+  /**
+   * Convert details to a more json-friendly object.
+   * @returns {Object}
+   */
+
+  toJSON() {
+    return this.getJSON();
   }
 }
 
@@ -3513,7 +3543,7 @@ class DetailsMember {
  * @alias module:wallet.BlockRecord
  */
 
-class BlockRecord {
+class BlockRecord extends bio.Struct {
   /**
    * Create a block record.
    * @constructor
@@ -3523,10 +3553,11 @@ class BlockRecord {
    */
 
   constructor(hash, height, time) {
-    this.hash = hash || consensus.NULL_HASH;
+    super();
+    this.hash = hash || consensus.ZERO_HASH;
     this.height = height != null ? height : -1;
     this.time = time || 0;
-    this.hashes = new Set();
+    this.hashes = new BufferSet();
   }
 
   /**
@@ -3560,31 +3591,19 @@ class BlockRecord {
    * @param {Buffer} data
    */
 
-  fromRaw(data) {
-    const br = bio.read(data);
-
-    this.hash = br.readHash('hex');
+  read(br) {
+    this.hash = br.readHash();
     this.height = br.readU32();
     this.time = br.readU32();
 
     const count = br.readU32();
 
     for (let i = 0; i &lt; count; i++) {
-      const hash = br.readHash('hex');
+      const hash = br.readHash();
       this.hashes.add(hash);
     }
 
     return this;
-  }
-
-  /**
-   * Instantiate wallet block from serialized data.
-   * @param {Buffer} data
-   * @returns {BlockRecord}
-   */
-
-  static fromRaw(data) {
-    return new this().fromRaw(data);
   }
 
   /**
@@ -3601,10 +3620,7 @@ class BlockRecord {
    * @returns {Buffer}
    */
 
-  toRaw() {
-    const size = this.getSize();
-    const bw = bio.write(size);
-
+  write(bw) {
     bw.writeHash(this.hash);
     bw.writeU32(this.height);
     bw.writeU32(this.time);
@@ -3614,7 +3630,7 @@ class BlockRecord {
     for (const hash of this.hashes)
       bw.writeHash(hash);
 
-    return bw.render();
+    return bw;
   }
 
   /**
@@ -3623,10 +3639,7 @@ class BlockRecord {
    */
 
   toArray() {
-    const hashes = [];
-    for (const hash of this.hashes)
-      hashes.push(hash);
-    return hashes;
+    return this.hashes.toArray();
   }
 
   /**
@@ -3634,12 +3647,12 @@ class BlockRecord {
    * @returns {Object}
    */
 
-  toJSON() {
+  getJSON() {
     return {
-      hash: this.hash,
+      hash: this.hash.toString('hex'),
       height: this.height,
       time: this.time,
-      hashes: this.toArray()
+      hashes: this.toArray().map(h => h.toString('hex'))
     };
   }
 
@@ -3671,8 +3684,9 @@ class BlockRecord {
  * Blind Bid
  */
 
-class BlindBid {
+class BlindBid extends bio.Struct {
   constructor() {
+    super();
     this.name = EMPTY;
     this.nameHash = consensus.ZERO_HASH;
     this.prevout = new Outpoint();
@@ -3682,27 +3696,28 @@ class BlindBid {
     this.own = false;
   }
 
-  toRaw() {
-    const bw = bio.write(1 + this.name.length + 41);
+  getSize() {
+    return 1 + this.name.length + 41;
+  }
+
+  write(bw) {
     bw.writeU8(this.name.length);
     bw.writeBytes(this.name);
     bw.writeU64(this.lockup);
     bw.writeBytes(this.blind);
     bw.writeU8(this.own ? 1 : 0);
-    return bw.render();
+    return bw;
   }
 
-  static fromRaw(data) {
-    const br = bio.read(data);
-    const bb = new this();
-    bb.name = br.readBytes(br.readU8());
-    bb.lockup = br.readU64();
-    bb.blind = br.readBytes(32);
-    bb.own = br.readU8() === 1;
-    return bb;
+  read(br) {
+    this.name = br.readBytes(br.readU8());
+    this.lockup = br.readU64();
+    this.blind = br.readBytes(32);
+    this.own = br.readU8() === 1;
+    return this;
   }
 
-  toJSON() {
+  getJSON() {
     return {
       name: this.name.toString('ascii'),
       nameHash: this.nameHash.toString('hex'),
@@ -3719,28 +3734,30 @@ class BlindBid {
  * Blind Value
  */
 
-class BlindValue {
+class BlindValue extends bio.Struct {
   constructor() {
+    super();
     this.value = 0;
     this.nonce = consensus.ZERO_HASH;
   }
 
-  toRaw() {
-    const bw = bio.write(40);
+  getSize() {
+    return 40;
+  }
+
+  write(bw) {
     bw.writeU64(this.value);
     bw.writeBytes(this.nonce);
-    return bw.render();
+    return bw;
   }
 
-  static fromRaw(data) {
-    const br = bio.read(data);
-    const bv = new this();
-    bv.value = br.readU64();
-    bv.nonce = br.readBytes(32);
-    return bv;
+  read(br) {
+    this.value = br.readU64();
+    this.nonce = br.readBytes(32);
+    return this;
   }
 
-  toJSON() {
+  getJSON() {
     return {
       value: this.value,
       nonce: this.nonce.toString('hex')
@@ -3752,8 +3769,9 @@ class BlindValue {
  * Bid Reveal
  */
 
-class BidReveal {
+class BidReveal extends bio.Struct {
   constructor() {
+    super();
     this.name = EMPTY;
     this.nameHash = consensus.ZERO_HASH;
     this.prevout = new Outpoint();
@@ -3762,9 +3780,11 @@ class BidReveal {
     this.own = false;
   }
 
-  toRaw() {
-    const bw = bio.write(1 + this.name.length + 13);
+  getSize() {
+    return 1 + this.name.length + 13;
+  }
 
+  write(bw) {
     let height = this.height;
 
     if (height === -1)
@@ -3774,27 +3794,24 @@ class BidReveal {
     bw.writeBytes(this.name);
     bw.writeU64(this.value);
     bw.writeU32(height);
-    bw.writeU8(this.own);
+    bw.writeU8(this.own ? 1 : 0);
 
-    return bw.render();
+    return bw;
   }
 
-  static fromRaw(data) {
-    const br = bio.read(data);
-    const brv = new this();
+  read(br) {
+    this.name = br.readBytes(br.readU8());
+    this.value = br.readU64();
+    this.height = br.readU32();
+    this.own = br.readU8() === 1;
 
-    brv.name = br.readBytes(br.readU8());
-    brv.value = br.readU64();
-    brv.height = br.readU32();
-    brv.own = br.readU8() === 1;
+    if (this.height === 0xffffffff)
+      this.height = -1;
 
-    if (brv.height === 0xffffffff)
-      brv.height = -1;
-
-    return brv;
+    return this;
   }
 
-  toJSON() {
+  getJSON() {
     return {
       name: this.name.toString('ascii'),
       nameHash: this.nameHash.toString('hex'),
@@ -3821,13 +3838,13 @@ module.exports = TXDB;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-btc.html">btc</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsk.html">hsk</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="Auction.html">Auction</a></li><li><a href="AuctionDelta.html">AuctionDelta</a></li><li><a href="AuctionState.html">AuctionState</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-btc.URI.html">URI</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDB.html">NameDB</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 19 2018 21:52:41 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:48 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

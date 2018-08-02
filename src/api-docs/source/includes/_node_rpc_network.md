@@ -12,12 +12,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getconnectioncount
+hsd-cli rpc getconnectioncount
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -59,12 +59,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc ping
+hsd-cli rpc ping
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -108,12 +108,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getpeerinfo
+hsd-cli rpc getpeerinfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -150,7 +150,7 @@ const client = new NodeClient(clientOptions);
     "pingtime": 0.001,
     "minping": 0,
     "version": 70015,
-    "subver": "/hskd:0.0.0/",
+    "subver": "/hsd:0.0.0/",
     "inbound": false,
     "startingheight": 5456,
     "besthash": "43bc66d363025c8953d0920d0bdd5d78e88905687dc0321053ce8f4c6ca0319d",
@@ -195,12 +195,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc addnode $nodeAddr $cmd
+hsd-cli rpc addnode $nodeAddr $cmd
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -261,12 +261,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc disconnectnode $nodeAddr
+hsd-cli rpc disconnectnode $nodeAddr
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -318,12 +318,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getaddednodeinfo $nodeAddr
+hsd-cli rpc getaddednodeinfo $nodeAddr
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -378,12 +378,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getnettotals
+hsd-cli rpc getnettotals
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -431,12 +431,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getnetworkinfo
+hsd-cli rpc getnetworkinfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -459,7 +459,7 @@ const client = new NodeClient(clientOptions);
 ```json
 {
   "version": "0.0.0",
-  "subversion": "/hskd:0.0.0/",
+  "subversion": "/hsd:0.0.0/",
   "protocolversion": 70015,
   "localservices": "00000009",
   "localrelay": true,
@@ -510,12 +510,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc setban $nodeAddr $cmd
+hsd-cli rpc setban $nodeAddr $cmd
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -566,12 +566,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc listbanned
+hsd-cli rpc listbanned
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -622,12 +622,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc clearbanned
+hsd-cli rpc clearbanned
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {

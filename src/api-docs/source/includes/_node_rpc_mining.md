@@ -1,6 +1,6 @@
 # RPC Calls - Mining
 
-*Note: many mining-related RPC calls require `hskd` to be started with the flag `--coinbase-address` designating a comma-separated list of payout addresses, randomly selected during block creation*
+*Note: many mining-related RPC calls require `hsd` to be started with the flag `--coinbase-address` designating a comma-separated list of payout addresses, randomly selected during block creation*
 
 ## getnetworkhashps
 
@@ -23,12 +23,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getnetworkhashps $blocks $height
+hsd-cli rpc getnetworkhashps $blocks $height
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -73,12 +73,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getmininginfo
+hsd-cli rpc getmininginfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -118,7 +118,7 @@ const client = new NodeClient(clientOptions);
 Returns mining info.
 
 *Note: currentblocksize, currentblockweight, currentblocktx, difficulty are returned when there's active work.*
-*generate - is true when `hskd` itself is mining.*
+*generate - is true when `hsd` itself is mining.*
 
 ### Params
 N. | Name | Default |  Description
@@ -139,12 +139,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getwork
+hsd-cli rpc getwork
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -198,15 +198,15 @@ curl $url \
 # Because there is a request timeout set on CLI http requests.
 # without manually adjusting the timeout (or receiving a new transaction on the current
 # network) this call will timeout before the request is complete.
-hsk-cli rpc getworklp
+hsd-cli rpc getworklp
 ```
 
 ```javascript
 // Because there is a request timeout set on CLI http requests.
 // without manually adjusting the timeout (or receiving a new transaction on the current
 // network) this call will timeout before the request is complete.
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -259,12 +259,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getblocktemplate
+hsd-cli rpc getblocktemplate
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -361,12 +361,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc submitblock $blockdata
+hsd-cli rpc submitblock $blockdata
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -411,12 +411,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc verifyblock $blockdata
+hsd-cli rpc verifyblock $blockdata
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -466,12 +466,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc setgenerate $mining $proclimit
+hsd-cli rpc setgenerate $mining $proclimit
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -516,12 +516,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc getgenerate
+hsd-cli rpc getgenerate
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -573,12 +573,12 @@ curl $url \
 ```
 
 ```shell--cli
-hsk-cli rpc generate $numblocks
+hsd-cli rpc generate $numblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
@@ -640,12 +640,12 @@ curl $url \
 
 ```shell--cli
 # Timeout error
-hsk-cli rpc generatetoaddress $numblocks $address
+hsd-cli rpc generatetoaddress $numblocks $address
 ```
 
 ```javascript
-const {NodeClient} = require('hsk-client');
-const {Network} = require('hskd');
+const {NodeClient} = require('hsd-client');
+const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
