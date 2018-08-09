@@ -1,25 +1,21 @@
-## Windows Install Guide
+## Guía de instalación en Windows
 
-The Handshake software suite consists of a full node (`hsd`) and a light
-client (`hnsd`). The full node allows users to register, update, and transfer
-names, resolve names, and make blockchain payments. The light client (SPV node)
-allows users to resolve names without the computing resource requirements of
-running a full node.
+El conjunto de software Handshake consta de un nodo completo (`hsd`) y un cliente ligero (`hnsd`). El nodo completo permite a los usuarios registrar, actualizar y transferir nombres, resolver nombres y realizar pagos en la cadena de bloques. El cliente ligero (nodo SPV) permite a los usuarios resolver nombres sin los requisitos de recursos informáticos de ejecutar un nodo completo.
 
-This guide includes instructions for installing
-[`hsd`](#hsd-installation-instructions) and
+Esta guía incluye instrucciones para instalar
+[`hsd`](#hsd-installation-instructions) y
 [`hnsd`](#hnsd-installation-instructions).
 
->NOTE: the software has not been thoroughly tested on Windows.
+>NOTA: El software no ha sido probado a fondo en windows.
 
 <br/>
 
-## `hsd` Installation Instructions
-#### Install dependencies
+## instrucciones para la instalación de `hsd`
+#### Instalamos dependencias
 - Node / NPM [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
 - OpenSSL Win 64 [http://slproweb.com/products/Win32OpenSSL.html](http://slproweb.com/products/Win32OpenSSL.html)
 
-Python and Windows Build Tools install:
+Instalacion de Python y las herramientas de creación para windows :
 ```bash
 $ npm install --global --production windows-build-tools
 $ npm config set msvs_version 2015 --global
@@ -27,9 +23,9 @@ $ npm config set msvs_version 2015 --global
 
 Cygwin
 
-- Download from [https://cygwin.com/install.html](https://cygwin.com/install.html)
-- Open command prompt by running ‘cmd’
-- Run:
+- Descarga de [https://cygwin.com/install.html](https://cygwin.com/install.html)
+- Abre la línea de comandos ejecutando ‘cmd’
+- Ejecuta:
 ```bash
 cd Downloads
 setup-x86_64.exe ^
@@ -39,28 +35,28 @@ setup-x86_64.exe ^
   --no-desktop ^
   --packages wget,git,automake,autoconf,cygwin32-libtool,libunbound-common,libunbound-devel,libunbound2,nano,libtool,gcc-g++,cygwin32-gcc-g++,make
 ```
->Note: this assumes you use the C: drive
+>Nota: Esto asume que estas usando el disco C:
 
-#### Set Cygwin Path
-- Open command prompt (cmd)
-- Set path:
+#### Asigna Cygwin al Path
+- Abre una línea de comandos (cmd)
+- Asigna el path:
 ```bash
 $ set PATH=%PATH;C:\Cygwin64\bin
 $ setx PATH %PATH;C:\Cygwin64\bin
 ```
->Note: if on 32bit machine, just Cygwin above
+>Nota: si es una máquina de 32bit, sólo Cygwin en lugar 
 
-#### Run bash
+#### Ejecuta bash
 ```bash
 $ bash
 ```
 
-#### Change to home directory
+#### Cambia al directorio home
 ```bash
 $ cd /home
 ```
 
-#### Download and install `hsd`
+#### Descarga e instalación de `hsd`
 ```
 $ git clone git@github.com:handshake-org/hsd.git
 $ cd hsd
@@ -76,21 +72,22 @@ $ mv package bsip
 $ rm *.tgz
 $ cd bcrypto
 ```
-- Go thru and edit package.json in root `hsd/` folder to use file: of the above.
-- Edit binding.gyp: `"<!(bash -c \"python -c 'from __future__ import print_function; import sys; print(sys.byteorder)'\")",`
-- Continue
+- Vaya y edite el package.json en la carpeta raíz `hsd/` para usar el archivo anterior
+
+- Edita binding.gyp: `"<!(bash -c \"python -c 'from __future__ import print_function; import sys; print(sys.byteorder)'\")",`
+- Continúa
 ```
 $ cd ..
 $ cd bsip
 ```
-- Do same to binding.gyp
-- Continue
+- Haz lo mismo con binding.gyp
+- Continúa
 ```
 $ cd ..
 $ cd bstring
 ```
-- Do same to binding.gyp
-- Continue
+- Haz lo mismo con binding.gyp
+- Continúa
 ```
 $ cd ..
 $ cd bcrypto
@@ -99,48 +96,49 @@ $ cd chacha20
 $ mv chacha20.c chacha20_2.c
 $ mv chacha20.h chacha20_2.h
 ```
-- Replace chacha20.h reference in chacha20_2.c to chacha20_2.h
-- Continue
+- Reemplaza la referencia chacha20.h en chacha20_2.c a chacha20_2.h
+- Continúa
 ```
 $ cd ..
 ```
-- Replace chacha20.h reference in chacha20.h to chacha20_2.h and crypt_scrypt.c also needs to change sha256_2.h
-- Continue
+- Reemplaza la referencia chacha20.h en chacha20.h a chacha20_2.h y crypt_scrypt.c también necesita cambiar sha256_2.h
+- Continúa
 ```
 $ cd ..
 ```
-- Replace reference to chacha20/chacha20.c to chacha20/chacha20_2.c in binding.gyp
-- Do the same for blake2b
-- Do the same for sha256 (note: It’s only in binding.gyp and not in the src/sha256.h)
+- Reemplaza la referencia de chacha20/chacha20.c a chacha20/chacha20_2.c en binding.gyp
+- Haz lo mismo para blake2b
+- Haz lo mismo para sha256 (nota: Es solo en binding.gyp y no en src/sha256.h)
 - Continue by going to root /hsd/ folder but make sure you edit package.json to do file: for the above modules.
+- Continúa en la carpeta de root /hsd/ pero asegúrate que editas el package.json para hacer el archivo: para los módulos anteriores
 ```
 $ npm install --production
 $ cd ..
 ```
 
-#### Exit bash and setup mklink
+#### Sal de la terminal y establece mklink
 ```
 $ mklink /D C:\home C:\Cygwin64\home
 ```
 
-#### open bash again and Start (on testnet)
+#### Abre la terminal de nuevo y inicia (en la testnet)
 ```bash
 $ ./hsd/bin/hsd --daemon --no-auth
 ```
 
 <br/>
 
-## `hnsd` Installation Instructions
-#### Download and compile `hnsd`
+## Instrucciones de instalación para `hnsd`
+#### Descarga y compila `hnsd`
 ```bash
 $ git clone git@github.com:handshake-org/hnsd.git
 $ cd hnsd
 $ ./autogen.sh && ./configure --with-network testnet && make
 ```
 
-#### Start `hnsd`
+#### Inicia `hnsd`
 ```
 $ ./hnsd.exe --pool-size=1 --rs-host=127.0.0.1:53
 ```
 
-#### Change Windows DNS Settings to point to 127.0.0.1
+#### Cambia las DNS de windows establécelo en 127.0.0.1
