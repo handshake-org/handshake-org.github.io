@@ -18,7 +18,7 @@ Xcode Command Line Tools, Homebrew, node.js & git
 ```bash
 $ xcode-select --install
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-$ brew install node git
+$ brew install node git unbound
 ```
 
 #### Download and install `hsd`
