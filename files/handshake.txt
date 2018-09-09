@@ -102,7 +102,7 @@ open source community, and ultimately the whole of humanity.
 In order to achieve new games of distribution and a new economy predicated upon
 true gifts over contracted labor, it must be achieved via a self-perpetuating
 and self-interested mechanism which is game-theoretically sound. One of the
-principal of this project is sparking a mechanism whereby individuals have
+principal aims of this project is sparking a mechanism whereby individuals have
 self-interested incentives towards creating decentralized projects as well as a
 wide distribution via gifts. Consequently, its goal is to fulfill the
 self-interested imperative of a return by the principals initiating, developing,
@@ -172,7 +172,7 @@ all possible short names in existence, monopolizing the network. This would
 severely reduce the usefulness as one or a handful of parties monopolize the
 resources. To correctly mitigate this problem, a currency native to the
 blockchain is necessary to create a cost function for the names. When a name is
-auction and sold, the coins are permanently destroyed from the system. Without a
+auctioned and sold, the coins are permanently removed from the system. Without a
 cost, there is no cost to spamming and a single party owning everything. A
 native coin is necessary, as a dollar-pegged coin would depend on an external
 environment and have a trusted 3rd party operate as a gatekeeper to the system,
@@ -191,7 +191,7 @@ decentralized blockchain is ideal.
 
 ## Proof of Work
 
-_Proof of work_[pow] saw its first use in cryptocurrency with the advent
+_Proof of work_[pow] saw its first use in cryptocurrency with the advent of
 Bitcoin[bitcoin]. Bitcoin's PoW function is a further iteration of a specific
 proof-of-work construction known as Hashcash[hashcash]. The use of
 proof-of-work led to the creation of specialized chip hardware intended to
@@ -200,8 +200,8 @@ proof-of-work network is protected, we concede that it does have the capacity
 to enable the existence of hardware monopolies.
 
 However, we submit that this is an acceptable risk due to the benefits
-proof-of-work offers in the way of SPV. Our protocol is not usable in practice
-without proper SPV proofs.
+proof-of-work offers in the way of SPV[spv]. Our protocol is not usable in
+practice without proper SPV proofs.
 
 There is currently no known sufficiently _decentralized_ proof-of-stake system
 in production resilient against fraudulent SPV proofs.
@@ -264,12 +264,12 @@ hardware.
 #### Difficulty Adjustment
 
 Given the prevalence of edge cases such as _timewarp attacks_[timewarp] and
-stalling during abrupt hashpower changes on the Bitcoin retargetting algorithm,
+stalling during abrupt hashpower changes on the Bitcoin retargeting algorithm,
 we sought alternatives.
 
 We examined DigiByte's DigiShield[digishield-1][digishield-2], MegaCoin's
 Kimoto Gravity Well[kimoto-1][kimoto-2], and DarkCoin's Dark Gravity Wave[dgw],
-as potential retargetting algorithms for our protocol.
+as potential retargeting algorithms for our protocol.
 
 Due to the uncertainty of exactly how much mining power will enter the network
 upon launch, and, initially, the added uncertainty of a new PoW algorithm, we
@@ -277,10 +277,10 @@ desired an approach which would retarget on every block. DigiShield seems to
 perform especially well in the case that mining power abruptly enters or exits
 the network.
 
-The formulation of the _Zcash_ retargetting
+The formulation of the _Zcash_ retargeting
 algorithm[zcash-1][zcash-2][zcash-3] is also of particular relevance, given the
 similarities of the protocols' respective PoW functions. Zcash has had success
-with their variation of DigiShield, and as such, our protocol's retargetting is
+with their variation of DigiShield, and as such, our protocol's retargeting is
 more-or-less a faithful reimplementation of the Zcash algorithm.
 
 ## Unspent Transaction Outputs (UTXOs)
@@ -354,8 +354,8 @@ which means that two people can have a different view on the correct certificate
 in adversarial or faulty notaries.
 
 Certificate Transparency[ct] provides a method to ensure committed proofs of
-name records and significant increases the security of the system. It creates a
-method of accountability for failure and rapid detection. This is primarily a
+name records and significantly increases the security of the system. It creates
+a method of accountability for failure and rapid detection. This is primarily a
 detection mechanism in the event of failure of CAs.
 
 ## Provable Data Sets
@@ -412,7 +412,7 @@ by Bram Cohen[merkleset].
 
 Later iterations of our data structure began storing colliding prefix bits on
 internal nodes, resulting in a base-2 merkelized radix tree similar to the
-_Merklix Tree_[merklix-1][merklix-2] proposed by Amaury Séchet.
+_Merklix Tree_[merklix-1][merklix-2] proposed by Amaury SÃ©chet.
 
 As the backbone of our FFMT, we propose one of the two aforementioned data
 structures.
@@ -906,7 +906,7 @@ occur at the output level.
 ## Covenants
 
 _Bitcoin Covenants_, first explored by Maxwell[maxwell-1][maxwell-2] and later
-formally described by Möser et al[covenants], are a form of smart contracts
+formally described by MÃ¶ser et al[covenants], are a form of smart contracts
 that exist on a UTXO-based blockchain such as Bitcoin. The word "covenant"
 itself refers to a legally binding covenant, in which a party agrees to refrain
 from or participate in a certain action in the future. Covenants, at their most
@@ -1618,7 +1618,7 @@ publicly known, conforming SPV nodes can create the appropriate RRSIG records
 in real-time when serving a response. These responses can be cached to avoid
 repetition of expensive signing operations.
 
-While dummy RRSIGs can be created to fool existing recursive resolvers in to
+While dummy RRSIGs can be created to fool existing recursive resolvers into
 validating a complete trust chain, NX proofs present a different challenge. The
 most modern non-existence proof verification currently in DNS is NSEC3[nsec3].
 NX proofs operate by maintaining a sorted linked list of child zones. When an
@@ -1762,7 +1762,7 @@ This child blockchain acts as a DNS zone. With economic incentives as an
 inherent property of this child zone, a name owner is able to sell subdomains
 within their top-level domain.
 
-As Plasma is being research and developed on Ethereum, it is possible to
+As Plasma is being researched and developed on Ethereum, it is possible to
 construct child zones compatible with Ethereum chains as well. A plasma chain
 can verify and commit to third party chains, with compact headers on its own.
 Additionally, use of btcrelay-like[btcrelay] constructions, with validators
@@ -1814,7 +1814,7 @@ to relevant stakeholders
 
 This allocation goes to fund development across various stakeholders who have
 been involved with creation of this project. These coins are used to pay for
-work prior to mainnet launch and is the only source of development funds. A
+work prior to mainnet launch and is the only source of development funds. An
 iterated tit-for-tat game exists whereby there is self-interested benefit for
 giving away value ("the more I give away, the more value I accrue") across
 many projects and development teams emulating this model.
@@ -1907,7 +1907,7 @@ these entities to help the Handshake project in any way and is explicitly an
 obligation-free distribution with no strings attached.
 
 ICANN has been the root namespace for the internet. ICANN (CA, US) is allocated
-2.75% of the total coin supply by the Handshake community. This offer of a gift
+2.75% of the total coin supply by the Handshake community. This offer is a gift
 to the foundation without any expectation of return or assistance.
 
 ENS has developed an alternate naming root (.eth) using a decentralized Ethereum
@@ -1916,7 +1916,7 @@ coin supply to the Root Key Holders (and may be ultimately allocated according
 to their desires to key ENS developers).
 
 Namecoin is also a naming blockchain. Handshake will allocate 0.75% total to
-leading current Namecoin developers. The designated allocators will be split
+leading current Namecoin developers. The designated allocations will be split
 evenly between the Chief Scientist and Lead Application Engineer (coins to be
 allocated according to their desires).
 
@@ -1970,7 +1970,7 @@ the USD.
 Historically, many blockchains have distributed 100\% of the total coin supply
 to Proof-of-Work miners or the overwhelming majority to investors (with none
 going to free and open source developers directly). These miners capture value
-by competitively discover lower operating expense costs with electricity or
+by competitively discovering lower operating expense costs with electricity or
 optimizing computation with better hardware.
 
 Miners receive a block reward for validating the chain correctly. There is no
@@ -2010,14 +2010,14 @@ The blockchain allows for cheap verification, but it does not inherently rally
 people to a change in infrastructure. It is exceptionally costly to build a
 top-down organization of millions in a hierarchy to replace entrenched
 interests, hence a ground-up structure is proposed using gift economies, which
-is only possible with emerging technologies which is capable of accounting value
+is only possible with emerging technologies that are capable of accounting value
 without central authorities (the blockchain), as well as tools for wide-scale
 coordination across millions (internet free and open source communications
 software). Handshake is an open performance by all parties worldwide to
 participate and deliver a new naming system as a gift to wider society.
 
 The Theory of the Firm[natureofthefirm] postulates that organizations exist
-due to transaction costs, it is often cheaper to conduct transactions within an
+due to transaction costs: it is often cheaper to conduct transactions within an
 organization rather than between organizations as intra-organizational goals are
 aligned, rather than inter-organizational goals, hence the high transaction
 costs from due diligence with external parties. Firms become large fundamentally
@@ -2038,7 +2038,7 @@ The purpose of smart contracts[smartcontracts] is that it allows the
 principal to also be the agent, as computation can allow one to read the code
 once and ensure that the code is being followed, significantly reducing
 potential information costs. However, smart contracts do not solve social
-coordination inherently, they merely make it cheap for those whom have already
+coordination inherently, they merely make it cheap for those who have already
 agreed with what is being coordinated.
 
 By constructing a capital structure without obligations (gift economies), method
@@ -2269,3 +2269,4 @@ should be kept in the event transaction formats change.
 [navalblog] https://startupboy.com/2014/03/09/the-bitcoin-model-for-crowdfunding/
 [fatprotocols] http://www.usv.com/blog/fat-protocols
 [primaveradefilippi] https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2725415
+[spv] https://en.wikipedia.org/wiki/Bitcoin_network#Payment_verification
