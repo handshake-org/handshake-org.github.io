@@ -33,7 +33,7 @@ $ npm install --production
 
 #### Start (on testnet)
 ```
-$ ./hsd/bin/hsd --daemon --no-auth
+$ ./bin/hsd --daemon --no-auth
 ```
 
 <br/>
