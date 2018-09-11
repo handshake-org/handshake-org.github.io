@@ -41,7 +41,7 @@ hsd-cli info
 
 Install `hsd-cli` and `hsw-cli` command line tools with the `hs-client` package.
 Included with `hsd` by default, but can be installed separately:
-`npm install -g hsd-client`
+`npm install -g hs-client`
 
 `hsd-cli` params:
 
@@ -70,7 +70,7 @@ api-key: <api-key>
 
 ### hsd.conf and hsw.conf files
 
-These files may contain any of the configuration parameters, and will be interpreted by hsd-client at startup. The node and wallet clients look for their own respective conf files.
+These files may contain any of the configuration parameters, and will be interpreted by hs-client at startup. The node and wallet clients look for their own respective conf files.
 
 [A sample hsd.conf file is included in the code repository](https://github.com/handshake-org/hsd/blob/master/etc/sample.conf)
 
@@ -84,7 +84,7 @@ Some commands might accept additional parameters.
 ## Using Javascript Clients
 
 ```javascript--visible
-const {NodeClient, WalletClient} = require('hsd-client');
+const {NodeClient, WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

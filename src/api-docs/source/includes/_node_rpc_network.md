@@ -16,7 +16,7 @@ hsd-cli rpc getconnectioncount
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -63,7 +63,7 @@ hsd-cli rpc ping
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -112,7 +112,7 @@ hsd-cli rpc getpeerinfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -199,7 +199,7 @@ hsd-cli rpc addnode $nodeAddr $cmd
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -265,7 +265,7 @@ hsd-cli rpc disconnectnode $nodeAddr
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -322,7 +322,7 @@ hsd-cli rpc getaddednodeinfo $nodeAddr
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -382,7 +382,7 @@ hsd-cli rpc getnettotals
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -435,7 +435,7 @@ hsd-cli rpc getnetworkinfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -514,7 +514,7 @@ hsd-cli rpc setban $nodeAddr $cmd
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -570,7 +570,7 @@ hsd-cli rpc listbanned
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -626,7 +626,7 @@ hsd-cli rpc clearbanned
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

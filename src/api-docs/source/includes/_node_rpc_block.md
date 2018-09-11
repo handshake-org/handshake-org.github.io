@@ -13,7 +13,7 @@ hsd-cli rpc getblockchaininfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -78,7 +78,7 @@ hsd-cli rpc getbestblockhash
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -125,7 +125,7 @@ hsd-cli rpc getblockcount
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -184,7 +184,7 @@ hsd-cli rpc getblock $blockhash $verbose $details
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -278,7 +278,7 @@ hsd-cli rpc getblockbyheight $blockheight $verbose $details
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -370,7 +370,7 @@ hsd-cli rpc getblockhash $blockheight
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -428,7 +428,7 @@ hsd-cli rpc getblockheader $blockhash $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -499,7 +499,7 @@ hsd-cli rpc getchaintips
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -555,7 +555,7 @@ hsd-cli rpc getdifficulty
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

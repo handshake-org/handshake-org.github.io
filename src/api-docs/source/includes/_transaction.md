@@ -27,7 +27,7 @@ hsd-cli tx $txhash
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -136,7 +136,7 @@ hsd-cli tx $address
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -253,7 +253,7 @@ No CLI Option.
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

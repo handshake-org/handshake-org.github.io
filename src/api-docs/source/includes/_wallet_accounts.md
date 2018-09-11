@@ -57,7 +57,7 @@ hsw-cli account --id=$id list
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -118,7 +118,7 @@ hsw-cli --id=$id account get $account
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -202,7 +202,7 @@ curl $walleturl/$id/account/$name \
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

@@ -15,7 +15,7 @@ hsd-cli rpc getmempoolinfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -79,7 +79,7 @@ hsd-cli rpc getmempoolancestors $txhash $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -184,7 +184,7 @@ hsd-cli rpc getmempooldescendants $txhash $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -288,7 +288,7 @@ hsd-cli rpc getmempoolentry $txhash
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -362,7 +362,7 @@ hsd-cli rpc getrawmempool $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -458,7 +458,7 @@ hsd-cli rpc prioritisetransaction $txhash $priorityDelta $feeDelta
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -520,7 +520,7 @@ hsd-cli rpc estimatefee $nblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -577,7 +577,7 @@ hsd-cli rpc estimatepriority $nblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -634,7 +634,7 @@ hsd-cli rpc estimatesmartfee $nblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -694,7 +694,7 @@ hsd-cli rpc estimatesmartpriority $nblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

@@ -26,7 +26,7 @@ hsd-cli rpc gettxout $txhash $index $includemempool
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -87,7 +87,7 @@ hsd-cli rpc gettxoutsetinfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -153,7 +153,7 @@ hsd-cli rpc getrawtransaction $txhash $verbose
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -211,7 +211,7 @@ hsd-cli rpc decoderawtransaction $rawtx
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -306,7 +306,7 @@ hsd-cli rpc decodescript $script
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -367,7 +367,7 @@ hsd-cli rpc sendrawtransaction $rawtx
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -432,7 +432,7 @@ hsd-cli rpc createrawtransaction \
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -524,7 +524,7 @@ hsd-cli rpc signrawtransaction $rawtx \
 
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -601,7 +601,7 @@ hsd-cli rpc gettxoutproof '[ "'$txid0'", "'$txid1'" ]'
 
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -660,7 +660,7 @@ hsd-cli rpc verifytxoutproof $proof
 
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

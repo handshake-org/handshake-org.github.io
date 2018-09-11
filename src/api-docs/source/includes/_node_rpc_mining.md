@@ -27,7 +27,7 @@ hsd-cli rpc getnetworkhashps $blocks $height
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -77,7 +77,7 @@ hsd-cli rpc getmininginfo
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -143,7 +143,7 @@ hsd-cli rpc getwork
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -205,7 +205,7 @@ hsd-cli rpc getworklp
 // Because there is a request timeout set on CLI http requests.
 // without manually adjusting the timeout (or receiving a new transaction on the current
 // network) this call will timeout before the request is complete.
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -263,7 +263,7 @@ hsd-cli rpc getblocktemplate
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -365,7 +365,7 @@ hsd-cli rpc submitblock $blockdata
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -415,7 +415,7 @@ hsd-cli rpc verifyblock $blockdata
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -470,7 +470,7 @@ hsd-cli rpc setgenerate $mining $proclimit
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -520,7 +520,7 @@ hsd-cli rpc getgenerate
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -577,7 +577,7 @@ hsd-cli rpc generate $numblocks
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -644,7 +644,7 @@ hsd-cli rpc generatetoaddress $numblocks $address
 ```
 
 ```javascript
-const {NodeClient} = require('hsd-client');
+const {NodeClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

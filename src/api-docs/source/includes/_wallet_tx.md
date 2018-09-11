@@ -20,7 +20,7 @@ curl $walleturl/$id/tx/$hash
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -165,7 +165,7 @@ curl $walleturl/$id/tx/history
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -278,7 +278,7 @@ curl $walleturl/$id/tx/unconfirmed
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -330,7 +330,7 @@ curl $walleturl/$id/tx/range?start=$start'&'end=$end
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

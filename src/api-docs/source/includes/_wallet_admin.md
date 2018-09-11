@@ -37,7 +37,7 @@ hsw-cli rescan $height
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -79,7 +79,7 @@ hsw-cli resend
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -128,7 +128,7 @@ hsw-cli backup $path
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
@@ -169,7 +169,7 @@ hsw-cli wallets
 ```
 
 ```javascript
-const {WalletClient} = require('hsd-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 

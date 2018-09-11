@@ -738,7 +738,7 @@ curl <span class="nv">$url</span>
 <span class="nb">export </span><span class="nv">HSD_API_KEY</span><span class="o">=</span>api-key
 <span class="nb">export </span><span class="nv">HSD_NETWORK</span><span class="o">=</span>regtest
 cli info
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -820,7 +820,7 @@ hsd-cli info
 </code></pre>
 <p>Install <code>hsd-cli</code> and <code>hsw-cli</code> command line tools with the <code>hs-client</code> package.
 Included with <code>hsd</code> by default, but can be installed separately:
-<code>npm install -g hsd-client</code></p>
+<code>npm install -g hs-client</code></p>
 
 <p><code>hsd-cli</code> params:</p>
 <h3 id='general-configuration'>General configuration:</h3>
@@ -871,14 +871,14 @@ network: main
 prefix: ~/.hsd
 api-key: &lt;api-key&gt;
 </code></pre><h3 id='hsd-conf-and-hsw-conf-files'>hsd.conf and hsw.conf files</h3>
-<p>These files may contain any of the configuration parameters, and will be interpreted by hsd-client at startup. The node and wallet clients look for their own respective conf files.</p>
+<p>These files may contain any of the configuration parameters, and will be interpreted by hs-client at startup. The node and wallet clients look for their own respective conf files.</p>
 
 <p><a href="https://github.com/handshake-org/hsd/blob/master/etc/sample.conf">A sample hsd.conf file is included in the code repository</a></p>
 
 <aside class="notice">
 Some commands might accept additional parameters.
 </aside>
-<h2 id='using-javascript-clients'>Using Javascript Clients</h2><pre class="highlight javascript tab-javascript--visible"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">,</span> <span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+<h2 id='using-javascript-clients'>Using Javascript Clients</h2><pre class="highlight javascript tab-javascript--visible"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">,</span> <span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1000,7 +1000,7 @@ Custom port numbers are also configurable by the user.</p>
 </tbody></table>
 <h2 id='get-server-info'>Get server info</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli info
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1064,7 +1064,7 @@ Custom port numbers are also configurable by the user.</p>
 <p>No Params.</p>
 <h2 id='get-mempool-snapshot'>Get mempool snapshot</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/mempool
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli mempool
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1107,7 +1107,7 @@ Custom port numbers are also configurable by the user.</p>
 curl <span class="nv">$url</span>/block/<span class="nv">$blockHeight</span> <span class="c"># by height</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli block <span class="nv">$blockHash</span> <span class="c"># by hash</span>
 hsd-cli block <span class="nv">$blockHeight</span> <span class="c"># by height</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1209,7 +1209,7 @@ hsd-cli block <span class="nv">$blockHeight</span> <span class="c"># by height</
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "tx": "'</span><span class="nv">$tx</span><span class="s1">'" }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli broadcast <span class="nv">$tx</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1269,7 +1269,7 @@ This API call is always available regardless indexing options.
 <span class="nv">index</span><span class="o">=</span>0;
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/coin/<span class="nv">$hash</span>/<span class="nv">$index</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1327,7 +1327,7 @@ This API call is always available regardless indexing options.
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">address</span><span class="o">=</span><span class="s1">'rs1qpu06wprkwleh579mureghcasjhu9uwge6pltn5'</span>;
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/coin/address/<span class="nv">$address</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli coin <span class="nv">$address</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1401,7 +1401,7 @@ This API call is always available regardless indexing options.
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "addresses":[ "'</span><span class="nv">$address0</span><span class="s1">'", "'</span><span class="nv">$address1</span><span class="s1">'" ]}'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>No CLI Option.
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1481,7 +1481,7 @@ Launch the hsd daemon with these arguments:<br>
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">txhash</span><span class="o">=</span><span class="s1">'4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f'</span>;
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/tx/<span class="nv">$txhash</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli tx <span class="nv">$txhash</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1578,7 +1578,7 @@ Launch the hsd daemon with these arguments:<br>
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">address</span><span class="o">=</span><span class="s1">'rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap'</span>;
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/tx/address/<span class="nv">$address</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli tx <span class="nv">$address</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1684,7 +1684,7 @@ Launch the hsd daemon with these arguments:<br>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "addresses":[ "'</span><span class="nv">$address0</span><span class="s1">'", "'</span><span class="nv">$address1</span><span class="s1">'" ]}'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>No CLI Option.
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1823,7 +1823,7 @@ Launch the hsd daemon with these arguments:<br>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "&lt;method&gt;", "params": [...] "id": "some-id" }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc &lt;method&gt; &lt;params&gt;
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1889,7 +1889,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "stop" }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc stop
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1932,7 +1932,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "getinfo" }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getinfo
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -1992,7 +1992,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "getmemoryinfo" }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getmemoryinfo
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2044,7 +2044,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
     "params": [ "none" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc setloglevel none
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2094,7 +2094,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
     "params": [ "'</span><span class="nv">$address</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc validateaddress <span class="nv">$address</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2150,7 +2150,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
     "params": [ '</span><span class="nv">$nrequired</span><span class="s1">', [ "'</span><span class="nv">$pubkey0</span><span class="s1">'", "'</span><span class="nv">$pubkey1</span><span class="s1">'", "'</span><span class="nv">$pubkey2</span><span class="s1">'" ] ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc createmultisig <span class="nv">$nrequired</span> <span class="s1">'[ "'</span><span class="nv">$pubkey0</span><span class="s1">'", "'</span><span class="nv">$pubkey1</span><span class="s1">'", "'</span><span class="nv">$pubkey2</span><span class="s1">'" ]'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2208,7 +2208,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
     "params": [ "'</span><span class="nv">$privkey</span><span class="s1">'", "'</span><span class="nv">$message</span><span class="s1">'"]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc signmessagewithprivkey <span class="nv">$privkey</span> <span class="nv">$message</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2265,7 +2265,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
     "params": [ "'</span><span class="nv">$address</span><span class="s1">'", "'</span><span class="nv">$signature</span><span class="s1">'", "'</span><span class="nv">$message</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc verifymessage <span class="nv">$address</span> <span class="nv">$signature</span> <span class="s2">"</span><span class="nv">$message</span><span class="s2">"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2326,7 +2326,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
     "params": [ '</span><span class="nv">$timestamp</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc setmocktime <span class="nv">$timestamp</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2372,7 +2372,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc pruneblockchain
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2439,7 +2439,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
     "params": [ "'</span><span class="nv">$blockhash</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc invalidateblock <span class="nv">$blockhash</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2486,7 +2486,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "params": [ "'</span><span class="nv">$blockhash</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc reconsiderblock <span class="nv">$blockhash</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2526,7 +2526,7 @@ It will rewind network to blockhash and invalidate it.</p>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "getblockchaininfo" }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getblockchaininfo
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2588,7 +2588,7 @@ It will rewind network to blockhash and invalidate it.</p>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "getbestblockhash" }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getbestblockhash
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2631,7 +2631,7 @@ It will rewind network to blockhash and invalidate it.</p>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "getblockcount" }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getblockcount
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2681,7 +2681,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "params": [ "'</span><span class="nv">$blockhash</span><span class="s1">'", '</span><span class="nv">$verbose</span><span class="s1">', '</span><span class="nv">$details</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getblock <span class="nv">$blockhash</span> <span class="nv">$verbose</span> <span class="nv">$details</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2776,7 +2776,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "params": [ '</span><span class="nv">$blockheight</span><span class="s1">', '</span><span class="nv">$verbose</span><span class="s1">', '</span><span class="nv">$details</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getblockbyheight <span class="nv">$blockheight</span> <span class="nv">$verbose</span> <span class="nv">$details</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2869,7 +2869,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "params": [ '</span><span class="nv">$blockheight</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getblockhash <span class="nv">$blockheight</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2918,7 +2918,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "params": [ "'</span><span class="nv">$blockhash</span><span class="s1">'", '</span><span class="nv">$details</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getblockheader <span class="nv">$blockhash</span> <span class="nv">$verbose</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -2991,7 +2991,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "method": "getchaintips"
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getchaintips
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3044,7 +3044,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "method": "getdifficulty"
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getdifficulty
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3087,7 +3087,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "method": "getmempoolinfo"
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getmempoolinfo
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3142,7 +3142,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "params": [ "'</span><span class="nv">$txhash</span><span class="s1">'", '</span><span class="nv">$verbose</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getmempoolancestors <span class="nv">$txhash</span> <span class="nv">$verbose</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3240,7 +3240,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "params": [ "'</span><span class="nv">$txhash</span><span class="s1">'", '</span><span class="nv">$verbose</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getmempooldescendants <span class="nv">$txhash</span> <span class="nv">$verbose</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3337,7 +3337,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "params": [ "'</span><span class="nv">$txhash</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getmempoolentry <span class="nv">$txhash</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3402,7 +3402,7 @@ It will rewind network to blockhash and invalidate it.</p>
     "params": [ '</span><span class="nv">$verbose</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getrawmempool <span class="nv">$verbose</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3489,7 +3489,7 @@ Or mempool tx list.</p>
     "params": [ "'</span><span class="nv">$txhash</span><span class="s1">'", '</span><span class="nv">$priorityDelta</span><span class="s1">', '</span><span class="nv">$feeDelta</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc prioritisetransaction <span class="nv">$txhash</span> <span class="nv">$priorityDelta</span> <span class="nv">$feeDelta</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3552,7 +3552,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": [ '</span><span class="nv">$nblocks</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc estimatefee <span class="nv">$nblocks</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3600,7 +3600,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": [ '</span><span class="nv">$nblocks</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc estimatepriority <span class="nv">$nblocks</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3648,7 +3648,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": [ '</span><span class="nv">$nblocks</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc estimatesmartfee <span class="nv">$nblocks</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3699,7 +3699,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": [ '</span><span class="nv">$nblocks</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc estimatesmartpriority <span class="nv">$nblocks</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3752,7 +3752,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": [ "'</span><span class="nv">$txhash</span><span class="s1">'", '</span><span class="nv">$index</span><span class="s1">', '</span><span class="nv">$includemempool</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc gettxout <span class="nv">$txhash</span> <span class="nv">$index</span> <span class="nv">$includemempool</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3820,7 +3820,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc gettxoutsetinfo
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3877,7 +3877,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": [ "'</span><span class="nv">$txhash</span><span class="s1">'", '</span><span class="nv">$verbose</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getrawtransaction <span class="nv">$txhash</span> <span class="nv">$verbose</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -3931,7 +3931,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": [ "'</span><span class="nv">$rawtx</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc decoderawtransaction <span class="nv">$rawtx</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4017,7 +4017,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": [ "'</span><span class="nv">$script</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc decodescript <span class="nv">$script</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4070,7 +4070,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
     "params": [ "'</span><span class="nv">$rawtx</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc sendrawtransaction <span class="nv">$rawtx</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4125,7 +4125,7 @@ into accepting Transaction(s) into the block. (even if Priority/Fee doen&#39;t q
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc createrawtransaction <span class="se">\</span>
   <span class="s1">'[{ "txid": "'</span><span class="nv">$txhash</span><span class="s1">'", "vout": '</span><span class="nv">$txindex</span><span class="s1">' }]'</span> <span class="se">\</span>
   <span class="s1">'{ "'</span><span class="nv">$address</span><span class="s1">'": '</span><span class="nv">$amount</span><span class="s1">', "data": "'</span><span class="nv">$data</span><span class="s1">'" }'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4238,7 +4238,7 @@ Amounts are expressed in FULL HNS (not subunits) in all three interface methods.
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc signrawtransaction <span class="nv">$rawtx</span> <span class="se">\</span>
   <span class="s1">'[{ "txid": "'</span><span class="nv">$txhash</span><span class="s1">'", "vout": '</span><span class="nv">$txindex</span><span class="s1">', "scriptPubKey": "'</span><span class="nv">$scriptPubKey</span><span class="s1">'", "amount": '</span><span class="nv">$amount</span><span class="s1">' }]'</span> <span class="se">\</span>
   <span class="s1">'[ "'</span><span class="nv">$privkey</span><span class="s1">'" ]'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4340,7 +4340,7 @@ Amounts are expressed in FULL HNS (not subunits) in all three interface methods.
     "params": [ ["'</span><span class="nv">$txid0</span><span class="s1">'", "'</span><span class="nv">$txid1</span><span class="s1">'"] ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc gettxoutproof <span class="s1">'[ "'</span><span class="nv">$txid0</span><span class="s1">'", "'</span><span class="nv">$txid1</span><span class="s1">'" ]'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4395,7 +4395,7 @@ Returns proof of transaction inclusion (raw MerkleBlock).</p>
     "params": [ "'</span><span class="nv">$proof</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc verifytxoutproof <span class="nv">$proof</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4449,7 +4449,7 @@ Returns proof of transaction inclusion (raw MerkleBlock).</p>
     "params": [ '</span><span class="nv">$blocks</span><span class="s1">', '</span><span class="nv">$height</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getnetworkhashps <span class="nv">$blocks</span> <span class="nv">$height</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4501,7 +4501,7 @@ Returns proof of transaction inclusion (raw MerkleBlock).</p>
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getmininginfo
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4564,7 +4564,7 @@ Returns proof of transaction inclusion (raw MerkleBlock).</p>
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getwork
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4625,7 +4625,7 @@ hsd-cli rpc getworklp
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="c1">// Because there is a request timeout set on CLI http requests.</span>
 <span class="c1">// without manually adjusting the timeout (or receiving a new transaction on the current</span>
 <span class="c1">// network) this call will timeout before the request is complete.</span>
-<span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4680,7 +4680,7 @@ new block has been discovered. So miner can restart mining on new data.</p>
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getblocktemplate
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4773,7 +4773,7 @@ Also validates proposal if <code>mode</code> is specified as <code>proposal</cod
     "params": [ "'</span><span class="nv">$blockdata</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc submitblock <span class="nv">$blockdata</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4816,7 +4816,7 @@ Also validates proposal if <code>mode</code> is specified as <code>proposal</cod
     "params": [ "'</span><span class="nv">$blockdata</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc verifyblock <span class="nv">$blockdata</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4861,7 +4861,7 @@ Also validates proposal if <code>mode</code> is specified as <code>proposal</cod
     "params": [ '</span><span class="nv">$mining</span><span class="s1">', '</span><span class="nv">$proclimit</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc setgenerate <span class="nv">$mining</span> <span class="nv">$proclimit</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4913,7 +4913,7 @@ Also validates proposal if <code>mode</code> is specified as <code>proposal</cod
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getgenerate
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -4957,7 +4957,7 @@ Also validates proposal if <code>mode</code> is specified as <code>proposal</cod
     "params": [ '</span><span class="nv">$numblocks</span><span class="s1">' ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc generate <span class="nv">$numblocks</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5019,7 +5019,7 @@ curl <span class="nv">$url</span> <span class="se">\</span>
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code><span class="c"># Timeout error</span>
 hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv">$address</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5075,7 +5075,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getconnectioncount
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5121,7 +5121,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc ping
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5167,7 +5167,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getpeerinfo
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5243,7 +5243,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": [ "'</span><span class="nv">$nodeAddr</span><span class="s1">'", "'</span><span class="nv">$cmd</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc addnode <span class="nv">$nodeAddr</span> <span class="nv">$cmd</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5317,7 +5317,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": [ "'</span><span class="nv">$nodeAddr</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc disconnectnode <span class="nv">$nodeAddr</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5365,7 +5365,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": [ "'</span><span class="nv">$nodeAddr</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getaddednodeinfo <span class="nv">$nodeAddr</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5422,7 +5422,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getnettotals
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5472,7 +5472,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getnetworkinfo
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5541,7 +5541,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": [ "'</span><span class="nv">$nodeAddr</span><span class="s1">'", "'</span><span class="nv">$cmd</span><span class="s1">'" ]
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc setban <span class="nv">$nodeAddr</span> <span class="nv">$cmd</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5609,7 +5609,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc listbanned
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5662,7 +5662,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
     "params": []
   }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc clearbanned
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5701,8 +5701,8 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <td></td>
 </tr>
 </tbody></table>
-<h1 id='wallet'>Wallet</h1><h2 id='the-wallet-client'>The Wallet Client</h2><pre class="highlight shell tab-shell--cli"><code>npm i -g hsd-client
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+<h1 id='wallet'>Wallet</h1><h2 id='the-wallet-client'>The Wallet Client</h2><pre class="highlight shell tab-shell--cli"><code>npm i -g hs-client
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5718,9 +5718,9 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 
 <span class="kr">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 </code></pre>
-<p>The best way to interact with the wallet API is with the hsw-cli in the <code>hsd-client</code>
-<a href="https://www.npmjs.com/package/hsd-client">package</a>. Installing globally with
-<code>npm i -g hsd-client</code> gives you access to the cli. You can also install locally
+<p>The best way to interact with the wallet API is with the hsw-cli in the <code>hs-client</code>
+<a href="https://www.npmjs.com/package/hs-client">package</a>. Installing globally with
+<code>npm i -g hs-client</code> gives you access to the cli. You can also install locally
 to your project.</p>
 
 <p>Note that when using it in your own program, you will need to explicitly
@@ -5769,7 +5769,7 @@ hsw-cli --network<span class="o">=</span>regtest --id<span class="o">=</span><sp
 <span class="nb">export </span><span class="nv">HSK_API_KEY</span><span class="o">=</span>yoursecret
 <span class="nb">export </span><span class="nv">HSK_NETWORK</span><span class="o">=</span>regtest
 hsw-cli get
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5821,7 +5821,7 @@ hsw-cli get
 
 <p>Note that accounts should not be accessed directly from the public API. They do not have locks which can lead to race conditions during writes.</p>
 <h3 id='wallet-object-vs-wallet-client-object'>wallet object vs wallet client object</h3>
-<p>hsd-client returns a WalletClient object that can perform <a href="#wallet-admin-commands">admin functions</a> without specifying a wallet, and may be useful when managing multiple wallets. WalletClient can also return a wallet object specified by an <code>id</code>. This object performs functions (and may be authorized by a token) specific to that wallet only.</p>
+<p>hs-client returns a WalletClient object that can perform <a href="#wallet-admin-commands">admin functions</a> without specifying a wallet, and may be useful when managing multiple wallets. WalletClient can also return a wallet object specified by an <code>id</code>. This object performs functions (and may be authorized by a token) specific to that wallet only.</p>
 
 <aside class="warning">
 Accounts within the same wallet are all related by deterministic hierarchy. However, wallets are not related to each other in any way. This means that when a wallet seed is backed up, all of its accounts (and their keys) can be derived from that backup. However, each newly created wallet must be backed up separately.
@@ -5959,7 +5959,7 @@ without any authentication barriers. <code>wallet-auth: true</code> requires a w
 <span class="nv">token</span><span class="o">=</span><span class="s1">'17715756779e4a5f7c9b26c48d90a09d276752625430b41b5fcf33cf41aa7615'</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>?token<span class="o">=</span><span class="nv">$token</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli get --token<span class="o">=</span><span class="nv">$token</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -5993,7 +5993,7 @@ The examples in this section demonstrate how to use a wallet token for API acces
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/retoken <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{"passphrase":"'</span><span class="nv">$passphrase</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6029,7 +6029,7 @@ Note: if you happen to lose the returned token, you will not be able to access t
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli get --id<span class="o">=</span><span class="nv">$id</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6094,7 +6094,7 @@ Note: if you happen to lose the returned token, you will not be able to access t
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/master
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli master --id<span class="o">=</span><span class="nv">$id</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6174,7 +6174,7 @@ Once a passphrase has been set for a wallet, the API will not reveal the unencry
 </code></pre><pre class="highlight shell tab-shell--cli"><code><span class="c"># watchOnly defaults to true if --key flag is set</span>
 
 hsw-cli mkwallet <span class="nv">$id</span> --witness<span class="o">=</span><span class="nv">$witness</span> --passphrase<span class="o">=</span><span class="nv">$passphrase</span> --watch<span class="o">=</span><span class="nv">$watchOnly</span> --key<span class="o">=</span><span class="nv">$accountKey</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6253,7 +6253,7 @@ See <a href="#wallet-options">Wallet Options</a> for full list and description o
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/passphrase <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{"old":"'</span><span class="nv">$oldPass</span><span class="s1">'", "passphrase":"'</span><span class="nv">$newPass</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6328,7 +6328,7 @@ curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/send <span c
 <span class="nx">value</span><span class="o">=</span><span class="mi">1000</span>
 <span class="nx">address</span><span class="o">=</span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"</span>
 
-<span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6511,7 +6511,7 @@ curl </span><span class="nv">$walleturl</span><span class="s2">/</span><span cla
 <span class="nx">value</span><span class="o">=</span><span class="mi">5000000</span>
 <span class="nx">address</span><span class="o">=</span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"</span>
 
-<span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6661,7 +6661,7 @@ Watch carefully how values are entered in the examples, all examples send the sa
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/sign <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{"tx": "'</span><span class="nv">$tx</span><span class="s1">'", "passphrase":"'</span><span class="nv">$passphrase</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6776,7 +6776,7 @@ curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/zap <span cl
 <span class="nx">account</span><span class="o">=</span><span class="s2">"default"</span>
 <span class="nx">age</span><span class="o">=</span><span class="mi">259200</span> <span class="c1">// 72 hours</span>
 
-<span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6832,7 +6832,7 @@ curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/zap <span cl
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/unlock <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{"passphrase":"'</span><span class="nv">$pass</span><span class="s1">'", "timeout": '</span><span class="nv">$timeout</span><span class="s1">'}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6881,7 +6881,7 @@ curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/zap <span cl
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli lock --id<span class="o">=</span><span class="nv">$id</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/lock <span class="se">\</span>
   -X POST
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -6924,7 +6924,7 @@ hsw-cli --id<span class="o">=</span><span class="nv">$watchid</span> --account<s
 curl <span class="nv">$walleturl</span>/<span class="nv">$watchid</span>/import <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{"account":"'</span><span class="nv">$account</span><span class="s1">'", "publicKey":"'</span><span class="nv">$pubkey</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7000,7 +7000,7 @@ Note that imported keys do not exist anywhere in the wallet's HD tree. They can 
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/import <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{"account":"'</span><span class="nv">$account</span><span class="s1">'", "address":"'</span><span class="nv">$address</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7050,7 +7050,7 @@ Note that imported keys do not exist anywhere in the wallet's HD tree. They can 
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s2">"primary"</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/block
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli blocks --id<span class="o">=</span><span class="nv">$id</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7093,7 +7093,7 @@ Note that imported keys do not exist anywhere in the wallet's HD tree. They can 
 <span class="nv">height</span><span class="o">=</span>50
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> block <span class="nv">$height</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/block/<span class="nv">$height</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7150,7 +7150,7 @@ Note that imported keys do not exist anywhere in the wallet's HD tree. They can 
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/shared-key <span class="se">\</span>
   -X PUT <span class="se">\</span>
   --data <span class="s1">'{"accountKey": "'</span><span class="nv">$key</span><span class="s1">'", "account": "'</span><span class="nv">$account</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7210,7 +7210,7 @@ Note that since it must be a multisig, the wallet on creation should be set with
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/shared-key <span class="se">\</span>
   -X DELETE <span class="se">\</span>
   --data <span class="s1">'{"accountKey": "'</span><span class="nv">$key</span><span class="s1">'", "account": "'</span><span class="nv">$account</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7269,7 +7269,7 @@ Once a multisig wallet has the right number of keys to create m-of-n addresses, 
 <span class="nv">address</span><span class="o">=</span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> key <span class="nv">$address</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/key/<span class="nv">$address</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7325,7 +7325,7 @@ Once a multisig wallet has the right number of keys to create m-of-n addresses, 
 <span class="nv">address</span><span class="o">=</span><span class="s1">'rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> --passphrase<span class="o">=</span><span class="nv">$passphrase</span> dump <span class="nv">$address</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/wif/<span class="nv">$address</span>?passphrase<span class="o">=</span><span class="nv">$passphrase</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7374,7 +7374,7 @@ Once a multisig wallet has the right number of keys to create m-of-n addresses, 
 <span class="nv">account</span><span class="o">=</span><span class="s2">"default"</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> --account<span class="o">=</span><span class="nv">$account</span> address
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/address -X POST --data <span class="s1">'{"account":"'</span><span class="nv">$account</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7430,7 +7430,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 <span class="nv">account</span><span class="o">=</span><span class="s2">"default"</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> --account<span class="o">=</span><span class="nv">$account</span> change
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/change -X POST --data <span class="s1">'{"account":"'</span><span class="nv">$account</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7485,7 +7485,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 <span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> nested --account<span class="o">=</span><span class="nv">$account</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/nested -X POST --data <span class="s1">'{"account": "'</span><span class="nv">$account</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7538,7 +7538,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 <span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> balance --account<span class="o">=</span><span class="nv">$account</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/balance?account<span class="o">=</span><span class="nv">$account</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7592,7 +7592,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s2">"primary"</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/coin
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> coins
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7652,7 +7652,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 <span class="nv">index</span><span class="o">=</span><span class="s2">"0"</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code><span class="c"># Not Supported in CLI</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/locked/<span class="nv">$hash</span>/<span class="nv">$index</span> -X PUT
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7718,7 +7718,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 <span class="nv">index</span><span class="o">=</span><span class="s2">"0"</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code><span class="c"># Not Supported in CLI</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/locked/<span class="nv">$hash</span>/<span class="nv">$index</span> -X DELETE
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7782,7 +7782,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s2">"primary"</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code><span class="c"># Not supported in CLI</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/locked
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7833,7 +7833,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 
 hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/coin/<span class="nv">$hash</span>/<span class="nv">$index</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7908,7 +7908,7 @@ to all admin requests.</p>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{"height": '</span><span class="nv">$height</span><span class="s1">'}'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli rescan <span class="nv">$height</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7937,7 +7937,7 @@ to all admin requests.</p>
 <h2 id='wallet-resend'>Wallet Resend</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/resend <span class="se">\</span>
 -X POST
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli resend
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7967,7 +7967,7 @@ to all admin requests.</p>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/backup?path<span class="o">=</span><span class="nv">$path</span> <span class="se">\</span>
   -X POST
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli backup <span class="nv">$path</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -7994,7 +7994,7 @@ to all admin requests.</p>
 <p><code>POST /backup?path=/home/user/walletdb-backup.ldb</code></p>
 <h2 id='list-all-wallets'>List all Wallets</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/wallet
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli wallets
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -8032,7 +8032,7 @@ to all admin requests.</p>
 <span class="nb">hash</span><span class="o">=</span><span class="s2">"580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9"</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> tx <span class="nv">$hash</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/tx/<span class="nv">$hash</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -8162,7 +8162,7 @@ to all admin requests.</p>
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> <span class="nb">history</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/tx/history
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -8264,7 +8264,7 @@ to all admin requests.</p>
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> pending
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/tx/unconfirmed
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -8304,7 +8304,7 @@ to all admin requests.</p>
 <span class="nv">end</span><span class="o">=</span><span class="s2">"1527186612"</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code><span class="c"># range not available in CLI</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/tx/range?start<span class="o">=</span><span class="nv">$start</span><span class="s1">'&amp;'</span><span class="nv">end</span><span class="o">=</span><span class="nv">$end</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -8466,7 +8466,7 @@ Accounts within the same wallet are all related by deterministic hierarchy. Howe
 <h2 id='get-wallet-account-list'>Get Wallet Account List</h2><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli account --id<span class="o">=</span><span class="nv">$id</span> list
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -8515,7 +8515,7 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account/<span class="nv">$account</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> account get <span class="nv">$account</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
@@ -8590,7 +8590,7 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account/<span class="nv">$name</span> <span class="se">\</span>
     -X PUT <span class="se">\</span>
     --data <span class="s1">'{"type": "'</span><span class="nv">$type</span><span class="s1">'", "passphrase": "'</span><span class="nv">$passphrase</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd-client'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
