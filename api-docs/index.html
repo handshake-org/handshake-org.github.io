@@ -302,6 +302,33 @@
                   <li>
                     <a href="#post-parameters-rpc" class="toc-h2 toc-link" data-title="RPC Calls - Node">POST Parameters RPC</a>
                   </li>
+                  <li>
+                    <a href="#stop" class="toc-h2 toc-link" data-title="RPC Calls - Node">stop</a>
+                  </li>
+                  <li>
+                    <a href="#getinfo" class="toc-h2 toc-link" data-title="RPC Calls - Node">getinfo</a>
+                  </li>
+                  <li>
+                    <a href="#getmemoryinfo" class="toc-h2 toc-link" data-title="RPC Calls - Node">getmemoryinfo</a>
+                  </li>
+                  <li>
+                    <a href="#setloglevel" class="toc-h2 toc-link" data-title="RPC Calls - Node">setloglevel</a>
+                  </li>
+                  <li>
+                    <a href="#validateaddress" class="toc-h2 toc-link" data-title="RPC Calls - Node">validateaddress</a>
+                  </li>
+                  <li>
+                    <a href="#createmultisig" class="toc-h2 toc-link" data-title="RPC Calls - Node">createmultisig</a>
+                  </li>
+                  <li>
+                    <a href="#signmessagewithprivkey" class="toc-h2 toc-link" data-title="RPC Calls - Node">signmessagewithprivkey</a>
+                  </li>
+                  <li>
+                    <a href="#verifymessage" class="toc-h2 toc-link" data-title="RPC Calls - Node">verifymessage</a>
+                  </li>
+                  <li>
+                    <a href="#setmocktime" class="toc-h2 toc-link" data-title="RPC Calls - Node">setmocktime</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -310,32 +337,31 @@
                   <li>
                     <a href="#getnameinfo" class="toc-h2 toc-link" data-title="RPC Calls - Names">getnameinfo</a>
                   </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#rpc-calls-names" class="toc-h1 toc-link" data-title="RPC Calls - Names">RPC Calls - Names</a>
+              <ul class="toc-list-h2">
                   <li>
-                    <a href="#stop" class="toc-h2 toc-link" data-title="RPC Calls - Names">stop</a>
+                    <a href="#sendopen" class="toc-h2 toc-link" data-title="RPC Calls - Names">sendopen</a>
                   </li>
                   <li>
-                    <a href="#getinfo" class="toc-h2 toc-link" data-title="RPC Calls - Names">getinfo</a>
+                    <a href="#sendbid" class="toc-h2 toc-link" data-title="RPC Calls - Names">sendbid</a>
                   </li>
                   <li>
-                    <a href="#getmemoryinfo" class="toc-h2 toc-link" data-title="RPC Calls - Names">getmemoryinfo</a>
+                    <a href="#getauctioninfo" class="toc-h2 toc-link" data-title="RPC Calls - Names">getauctioninfo</a>
                   </li>
                   <li>
-                    <a href="#setloglevel" class="toc-h2 toc-link" data-title="RPC Calls - Names">setloglevel</a>
+                    <a href="#sendreveal" class="toc-h2 toc-link" data-title="RPC Calls - Names">sendreveal</a>
                   </li>
                   <li>
-                    <a href="#validateaddress" class="toc-h2 toc-link" data-title="RPC Calls - Names">validateaddress</a>
+                    <a href="#sendredeem" class="toc-h2 toc-link" data-title="RPC Calls - Names">sendredeem</a>
                   </li>
                   <li>
-                    <a href="#createmultisig" class="toc-h2 toc-link" data-title="RPC Calls - Names">createmultisig</a>
+                    <a href="#sendupdate" class="toc-h2 toc-link" data-title="RPC Calls - Names">sendupdate</a>
                   </li>
                   <li>
-                    <a href="#signmessagewithprivkey" class="toc-h2 toc-link" data-title="RPC Calls - Names">signmessagewithprivkey</a>
-                  </li>
-                  <li>
-                    <a href="#verifymessage" class="toc-h2 toc-link" data-title="RPC Calls - Names">verifymessage</a>
-                  </li>
-                  <li>
-                    <a href="#setmocktime" class="toc-h2 toc-link" data-title="RPC Calls - Names">setmocktime</a>
+                    <a href="#sendrenewal" class="toc-h2 toc-link" data-title="RPC Calls - Names">sendrenewal</a>
                   </li>
               </ul>
           </li>
@@ -1892,43 +1918,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
 <td><code>int</code> Will be returned with the response (cURL only)</td>
 </tr>
 </tbody></table>
-<h1 id='rpc-calls-names'>RPC Calls - Names</h1><h2 id='getnameinfo'>getnameinfo</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
-  -X POST <span class="se">\</span>
-  --data <span class="s1">'{ "method": "getnameinfo", "params": [&lt;your-name&gt;] }'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getnameinfo  &lt;your-name&gt;
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">clientOptions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">rpcPort</span><span class="p">,</span>
-  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
-<span class="p">}</span>
-
-<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
-
-<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameinfo'</span><span class="p">,</span> <span class="p">[</span> <span class="o">&lt;</span><span class="nx">your</span><span class="o">-</span><span class="nx">name</span><span class="o">&gt;</span> <span class="p">]);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-<span class="p">})();</span>
-</code></pre>
-<blockquote>
-<p>The above cURL command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"reserved"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"week"</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"start"</span><span class="p">:</span><span class="mi">3024</span><span class="w"> 
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"info"</span><span class="p">:</span><span class="kc">null</span><span class="w"> 
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"error"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="kc">null</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre><h2 id='stop'>stop</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/ <span class="se">\</span>
+<h2 id='stop'>stop</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/ <span class="se">\</span>
   -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "stop" }'</span>
@@ -2409,7 +2399,441 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
 <td>timestamp to change to</td>
 </tr>
 </tbody></table>
-<h1 id='rpc-calls-chain'>RPC Calls - Chain</h1><h2 id='pruneblockchain'>pruneblockchain</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
+<h1 id='rpc-calls-names'>RPC Calls - Names</h1><h2 id='getnameinfo'>getnameinfo</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  --data <span class="s1">'{ "method": "getnameinfo", "params": [ '</span>pi<span class="s1">'] }'</span>
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getnameinfo pi
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">clientOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">rpcPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameinfo'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'pi'</span> <span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>getnameinfo returns JSON structured like this: </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"reserved"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w"> 
+      </span><span class="s2">"week"</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"start"</span><span class="p">:</span><span class="mi">3024</span><span class="w"> 
+    </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pi"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"nameHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"512da52b8aba40722262447a53ff36f1ab854a5dd1ea1bf92d0aed18a50ebca9"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CLOSED"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">7203</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"renewal"</span><span class="p">:</span><span class="w"> </span><span class="mi">14636</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"47510cf5ba035cfc97f3e2e6cbe9c06e536fa87e81350343d30f2d021dc1dd36"</span><span class="p">,</span><span class="w"> 
+      </span><span class="s2">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"highest"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000a8030a526567697374657265640477697468086e616d656261736501344765080d0980208120822e696f2f"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"transfer"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"revoked"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"claimed"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"weak"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"stats"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"renewalPeriodStart"</span><span class="p">:</span><span class="w"> </span><span class="mi">14636</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"renewalPeriodEnd"</span><span class="p">:</span><span class="w"> </span><span class="mi">23276</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"blocksUntilExpire"</span><span class="p">:</span><span class="w"> </span><span class="mi">6154</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"daysUntilExpire"</span><span class="p">:</span><span class="w"> </span><span class="mf">21.37</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Returns information on a given name. </p>
+<h3 id='params'>Params</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>Required</td>
+<td>Name you wish to look up</td>
+</tr>
+</tbody></table>
+<h3 id='return-values'>Return values</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>reserved</td>
+<td>Boolean</td>
+<td>true if the name is pre-reserved for it&#39;s existing owner to claim via DNSSEC proof.</td>
+</tr>
+<tr>
+<td>week</td>
+<td>int</td>
+<td>estimated number of weeks after mainnet launch that name will become available (if not reserved)</td>
+</tr>
+<tr>
+<td>start</td>
+<td>int</td>
+<td>exact block number that name will become available for bidding (if not reserved)</td>
+</tr>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>the current auction state of the name (BIDDING, CLOSED)</td>
+</tr>
+<tr>
+<td>height</td>
+<td>int</td>
+<td>block height at which auction closed</td>
+</tr>
+<tr>
+<td>renewal</td>
+<td>int</td>
+<td>block height at which rewnewal period begins</td>
+</tr>
+<tr>
+<td>owner</td>
+<td>int</td>
+<td>UTXO to which the name belongs</td>
+</tr>
+<tr>
+<td>value</td>
+<td>int</td>
+<td>penultimate bid amount, paid by winner</td>
+</tr>
+<tr>
+<td>highest</td>
+<td>int</td>
+<td>highest bid amount, made by winner</td>
+</tr>
+<tr>
+<td>data</td>
+<td>serialized</td>
+<td>the dns record data of the name stored on chain</td>
+</tr>
+<tr>
+<td>transfer</td>
+<td>??</td>
+<td>??</td>
+</tr>
+<tr>
+<td>revoked</td>
+<td>??</td>
+<td>??</td>
+</tr>
+<tr>
+<td>claimed</td>
+<td>boolean</td>
+<td>true if the name was reserved and then unlocked and claimed via DNSSEC proof.</td>
+</tr>
+<tr>
+<td>weak</td>
+<td>??</td>
+<td>??</td>
+</tr>
+</tbody></table>
+<h1 id='rpc-calls-names'>RPC Calls - Names</h1><h2 id='sendopen'>sendopen</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  --data <span class="s1">'{ "method": "sendopen", "params": [ "clevertld" ] }'</span>
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc sendopen clevertld
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">clientOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">rpcPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendopen'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>sendopen returns JSON structured like this: </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+</span><span class="err">branch</span><span class="w"> </span><span class="err">master</span><span class="w">
+ </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"08011cb959cae5bb4765a472a65335c7afaac27a38fb18c6adb28de0ebfa9670"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"witnessHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9be4332d43a53204a8bfefcaeef12a0537b72b970dfb5c1076847d4a2e849897"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"mtime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1536864475</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3f2813634cc5dce6553bc75f9d7d308183ec5a06b0be8beb4a6d0bd78dc631ba"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+       </span><span class="p">},</span><span class="w">
+       </span><span class="s2">"witness"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+         </span><span class="s2">"464150741b5c4f8a6d73bcc7272d48872fe4bc7f87f07a29eab2a977a5b4b94c3d91ee7965f5f58bea2001f973b4cac5338d5bec48b0523f2581d3d49cdf3ff801"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"030312902ef93a76f098f4052e89f6123aabdfa95bb369ddb1bd2680ed57fba938"</span><span class="w">
+       </span><span class="p">],</span><span class="w">
+       </span><span class="s2">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">4294967295</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ts1qfgehgngqhhz8vh0mg9zv0a9ftd35lgmaarpn42"</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ts1qsghg5sdmzqn24wh8slcjz40c7p93829her4let"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OPEN"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+           </span><span class="s2">"a987c9575123c2f7bbef2518ab99f9b09338844049e2bed193192efd4d2e7bc3"</span><span class="p">,</span><span class="w">
+           </span><span class="s2">"00000000"</span><span class="p">,</span><span class="w">
+           </span><span class="s2">"61726561"</span><span class="w">
+         </span><span class="p">]</span><span class="w">
+       </span><span class="p">}</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">4992660</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ts1qdgy8adnmpsleky5e6cmejkt3zat2trgc3q392f"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NONE"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+       </span><span class="p">}</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"locktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00000000013f2813634cc5dce6553bc75f9d7d308183ec5a06b0be8beb4a6d0bd78dc631ba01000000ffffffff0200000000000000000014822e8a41bb1026aabae787f12155f8f04b13a8b7020320a987c9575123c2f7bbef2518ab99f9b09338844049e2bed193192efd4d2e7bc304000000000461726561942e4c0000000000
+ 00146a087eb67b0c3f9b1299d6379959711756a58d180000000000000241464150741b5c4f8a6d73bcc7272d48872fe4bc7f87f07a29eab2a977a5b4b94c3d91ee7965f5f58bea2001f973b4cac5338d5bec48b0523f2581d3d49cdf3ff80121030312902ef93a76f098f4052e89f6123aabdfa95bb369ddb1bd2680ed57fba938"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Once we know the name is available, a sendopen transaction is necessary to start the bidding process.</p>
+<h3 id='params'>Params</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>Required</td>
+<td>The name for which you want to begin bidding (must be available).</td>
+</tr>
+</tbody></table>
+<h2 id='sendbid'>sendbid</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  --data <span class="s1">'{ "method": "sendbid", "params": [ "clevertld", 5, 10 ] }'</span>
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc sendbid clevertld 5 10
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">clientOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">rpcPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendbid'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span> <span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>sendbid returns JSON structured like this: </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3fdf46c5f33bd6b5e638969ba0cf286027611736f41e9c8974b69900cbfca1ee"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"witnessHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"66f0f4d5df22fbc89de7b631297586b948a04a335f52f36806aba9e7f53579e7"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"mtime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1536865252</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eec7a5bfaf5079b9461512901e36097c0a55b6208c814da1d6762caabba634da"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+       </span><span class="p">},</span><span class="w">
+       </span><span class="s2">"witness"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+         </span><span class="s2">"cc882ffb0f255721066ffeae201c3940400f51d867febf36a0d6a297e3277c9c57832ec60eeb9e5fbbb2b4085851b28a05274f56bf1096e12df528083343a0d601"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"035f91fb8083568ee39045fd37b53450c4f1f3326209ff03753052b733d2abae42"</span><span class="w">
+       </span><span class="p">],</span><span class="w">
+       </span><span class="s2">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">4294967295</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ts1qud8mlqe0f2lz7xcd2jdsejyrs4h6ghn8mtxpm0"</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">200000</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ts1qrdzp7ef9kasxjwlnfs7wt0sk9kmdfxl7xz6txd"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BID"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+           </span><span class="s2">"f2e9068ee49346a66066ad4fa31b46a966862f1315fc97766a70cdd901f56481"</span><span class="p">,</span><span class="w">
+           </span><span class="s2">"e0410000"</span><span class="p">,</span><span class="w">
+           </span><span class="s2">"686f6c64"</span><span class="p">,</span><span class="w">
+           </span><span class="s2">"986328f636dd8450f9e0b570e75357ef617703f1cdcd69920ebe91dcd0e75044"</span><span class="w">
+         </span><span class="p">]</span><span class="w">
+       </span><span class="p">}</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">4784620</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ts1qsp8j82jc7yw7y9g2393n78trfq94g20h4lphaf"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NONE"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+       </span><span class="p">}</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"locktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000001eec7a5bfaf5079b9461512901e36097c0a55b6208c814da1d6762caabba634da01000000ffffffff02400d03000000000000141b441f6525b760693bf34c3ce5be162db6d49bfe030420f2e9068ee49346a66066ad4fa31b46a966862f1315fc97766a70cdd901f5648104e041000004686f6c6420986328f636dd84
+ 50f9e0b570e75357ef617703f1cdcd69920ebe91dcd0e75044ec014900000000000014804f23aa58f11de2150a89633f1d63480b5429f70000000000000241cc882ffb0f255721066ffeae201c3940400f51d867febf36a0d6a297e3277c9c57832ec60eeb9e5fbbb2b4085851b28a05274f56bf1096e12df528083343a0d60121035f91fb80
+ 83568ee39045fd37b53450c4f1f3326209ff03753052b733d2abae42"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Once bidding is opened we can place masked bids on a name using sendbid.</p>
+<h3 id='params-2'>Params</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>Required</td>
+<td>The name for which you want to begin bidding (must be available).</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>Required</td>
+<td>Amount of HNS you wish to bid (denominated in HNS, decimal amounts allowed)</td>
+</tr>
+<tr>
+<td>lockup</td>
+<td>Required</td>
+<td>Amount of HNS you wish to lockup to mask your bid. Must be greater than bid amount.</td>
+</tr>
+</tbody></table>
+<h2 id='getauctioninfo'>getauctioninfo</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  --data <span class="s1">'{ "method": "getauctioninfo", "params": [ "clevertld" ] }'</span>
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getauctioninfo clevertld
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">clientOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">rpcPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getauctioninfo'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>getuactioninfo returns JSON structured like this: </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"clevertld"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"nameHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f2e9068ee49346a66066ad4fa31b46a966862f1315fc97766a70cdd901f56481"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BIDDING"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">16864</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"renewal"</span><span class="p">:</span><span class="w"> </span><span class="mi">16864</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000000000000000000000000000000000000000000000000000000000000"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">4294967295</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"highest"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"transfer"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"revoked"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"claimed"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"weak"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"stats"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"bidPeriodStart"</span><span class="p">:</span><span class="w"> </span><span class="mi">16937</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"bidPeriodEnd"</span><span class="p">:</span><span class="w"> </span><span class="mi">17225</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"blocksUntilReveal"</span><span class="p">:</span><span class="w"> </span><span class="mi">79</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hoursUntilReveal"</span><span class="p">:</span><span class="w"> </span><span class="mf">6.58</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"bids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"clevertld"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"nameHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f2e9068ee49346a66066ad4fa31b46a966862f1315fc97766a70cdd901f56481"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3fdf46c5f33bd6b5e638969ba0cf286027611736f41e9c8974b69900cbfca1ee"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"lockup"</span><span class="p">:</span><span class="w"> </span><span class="mi">200000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"blind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"986328f636dd8450f9e0b570e75357ef617703f1cdcd69920ebe91dcd0e75044"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"own"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"clevertld"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"nameHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f2e9068ee49346a66066ad4fa31b46a966862f1315fc97766a70cdd901f56481"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dde9cb868588203add46b6d7b11af475fe5dc9ef778872db5add26603fa683ce"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"lockup"</span><span class="p">:</span><span class="w"> </span><span class="mi">200000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"blind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e6e7963fc01c88ea18a3604e25810b0fb576d2713cee5faec59c3b676973aff0"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"own"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"reveals"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Once bidding is in progress we can monitor the auction using getauctioninfo.</p>
+<h3 id='params-3'>Params</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>Required</td>
+<td>The name for which you want auction info.</td>
+</tr>
+</tbody></table>
+<h2 id='sendreveal'>sendreveal</h2><h2 id='sendredeem'>sendredeem</h2><h2 id='sendupdate'>sendupdate</h2><h2 id='sendrenewal'>sendrenewal</h2><h1 id='rpc-calls-chain'>RPC Calls - Chain</h1><h2 id='pruneblockchain'>pruneblockchain</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{
     "method": "pruneblockchain",
