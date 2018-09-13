@@ -302,32 +302,40 @@
                   <li>
                     <a href="#post-parameters-rpc" class="toc-h2 toc-link" data-title="RPC Calls - Node">POST Parameters RPC</a>
                   </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#rpc-calls-names" class="toc-h1 toc-link" data-title="RPC Calls - Names">RPC Calls - Names</a>
+              <ul class="toc-list-h2">
                   <li>
-                    <a href="#stop" class="toc-h2 toc-link" data-title="RPC Calls - Node">stop</a>
+                    <a href="#getnameinfo" class="toc-h2 toc-link" data-title="RPC Calls - Names">getnameinfo</a>
                   </li>
                   <li>
-                    <a href="#getinfo" class="toc-h2 toc-link" data-title="RPC Calls - Node">getinfo</a>
+                    <a href="#stop" class="toc-h2 toc-link" data-title="RPC Calls - Names">stop</a>
                   </li>
                   <li>
-                    <a href="#getmemoryinfo" class="toc-h2 toc-link" data-title="RPC Calls - Node">getmemoryinfo</a>
+                    <a href="#getinfo" class="toc-h2 toc-link" data-title="RPC Calls - Names">getinfo</a>
                   </li>
                   <li>
-                    <a href="#setloglevel" class="toc-h2 toc-link" data-title="RPC Calls - Node">setloglevel</a>
+                    <a href="#getmemoryinfo" class="toc-h2 toc-link" data-title="RPC Calls - Names">getmemoryinfo</a>
                   </li>
                   <li>
-                    <a href="#validateaddress" class="toc-h2 toc-link" data-title="RPC Calls - Node">validateaddress</a>
+                    <a href="#setloglevel" class="toc-h2 toc-link" data-title="RPC Calls - Names">setloglevel</a>
                   </li>
                   <li>
-                    <a href="#createmultisig" class="toc-h2 toc-link" data-title="RPC Calls - Node">createmultisig</a>
+                    <a href="#validateaddress" class="toc-h2 toc-link" data-title="RPC Calls - Names">validateaddress</a>
                   </li>
                   <li>
-                    <a href="#signmessagewithprivkey" class="toc-h2 toc-link" data-title="RPC Calls - Node">signmessagewithprivkey</a>
+                    <a href="#createmultisig" class="toc-h2 toc-link" data-title="RPC Calls - Names">createmultisig</a>
                   </li>
                   <li>
-                    <a href="#verifymessage" class="toc-h2 toc-link" data-title="RPC Calls - Node">verifymessage</a>
+                    <a href="#signmessagewithprivkey" class="toc-h2 toc-link" data-title="RPC Calls - Names">signmessagewithprivkey</a>
                   </li>
                   <li>
-                    <a href="#setmocktime" class="toc-h2 toc-link" data-title="RPC Calls - Node">setmocktime</a>
+                    <a href="#verifymessage" class="toc-h2 toc-link" data-title="RPC Calls - Names">verifymessage</a>
+                  </li>
+                  <li>
+                    <a href="#setmocktime" class="toc-h2 toc-link" data-title="RPC Calls - Names">setmocktime</a>
                   </li>
               </ul>
           </li>
@@ -1884,7 +1892,43 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
 <td><code>int</code> Will be returned with the response (cURL only)</td>
 </tr>
 </tbody></table>
-<h2 id='stop'>stop</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/ <span class="se">\</span>
+<h1 id='rpc-calls-names'>RPC Calls - Names</h1><h2 id='getnameinfo'>getnameinfo</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  --data <span class="s1">'{ "method": "getnameinfo", "params": [&lt;your-name&gt;] }'</span>
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-cli rpc getnameinfo  &lt;your-name&gt;
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">clientOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">rpcPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameinfo'</span><span class="p">,</span> <span class="p">[</span> <span class="o">&lt;</span><span class="nx">your</span><span class="o">-</span><span class="nx">name</span><span class="o">&gt;</span> <span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>The above cURL command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"reserved"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"week"</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"start"</span><span class="p">:</span><span class="mi">3024</span><span class="w"> 
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"info"</span><span class="p">:</span><span class="kc">null</span><span class="w"> 
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='stop'>stop</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/ <span class="se">\</span>
   -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "stop" }'</span>
