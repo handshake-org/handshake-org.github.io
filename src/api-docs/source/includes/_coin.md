@@ -172,6 +172,12 @@ Parameter | Description
 
 ## Get coins by addresses
 
+<aside class="warning">
+WARNING: this API call is being considered for deprecation. It is known to cause
+node lockup, due to CPU exhaustion, if there are a large number of addresses queried
+or a large number of results found.
+</aside>
+
 ```javascript
 let address0, address1;
 ```
