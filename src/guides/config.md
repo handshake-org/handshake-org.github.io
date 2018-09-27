@@ -87,7 +87,7 @@ Note that certain chain options affect the format and indexing of the chain data
 - `max-inbound`: Max number of inbound connections (default: 30).
 - `seeds`: Custom list of DNS seeds (comma-separated).
 - `host`: Host to listen on (default: 0.0.0.0).
-- `port`: Port to listen on (default: 8333).
+- `port`: Port to listen on (default: 12038 for mainnet).
 - `public-host`: Public host to advertise on network.
 - `public-port`: Public port to advertise on network.
 - `nodes`: List of target nodes to connect to (comma-separated).
@@ -103,7 +103,7 @@ Note that certain chain options affect the format and indexing of the chain data
 ## HTTP
 
 - `http-host`: HTTP host to listen on (default: 127.0.0.1).
-- `http-port`: HTTP port to listen on (default: 8332 for mainnet).
+- `http-port`: HTTP port to listen on (default: 12037 for mainnet).
 - `ssl-cert`: Path to SSL cert.
 - `ssl-key`: Path to SSL key.
 - `service-key`: Service key (used for accessing wallet system only).
@@ -160,7 +160,7 @@ $ BCOIN_NETWORK=testnet BCOIN_HTTP_HOST=0.0.0.0 BCOIN_WALLET_HTTP_HOST=0.0.0.0 B
 - `ssl-key`: Path to SSL key.
 - `ssl-cert`: Path to SSL cert.
 - `http-host`: HTTP host to listen on (default: 127.0.0.1).
-- `http-port`: HTTP port to listen on (default: 8334 for mainnet).
+- `http-port`: HTTP port to listen on (default: 12039 for mainnet).
 - `api-key`: API key (used for accessing all wallet APIs, may be different than API key for node server).
 - `cors`: Enable "Cross-Origin Resource Sharing" HTTP headers (default: false).
 - `no-auth`: Disable auth for API server and wallets (default: false).
