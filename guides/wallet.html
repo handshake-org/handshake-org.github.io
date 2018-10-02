@@ -32,6 +32,7 @@
     <li><a id="guides-config"   href="/guides/config.html">HSD Configuration</a></li>
     <li><a id="guides-claims"   href="/guides/claims.html">Name Claims</a></li>
     <li><a id="guides-auctions"   href="/guides/auctions.html">Name Auctions</a></li>
+    <li><a id="guides-wallet"  class="active"  href="/guides/wallet.html">Wallet Setup</a></li>
   </ul>
   <ul>
     <li><strong>DOCUMENTATION</strong></li>
@@ -55,23 +56,64 @@
    \/__/  
 </pre>
 
-<h2 id="setting-up-your-handshake-wallet">Setting Up Your Handshake Wallet</h2>
-<p>Ready to create your first Handshake wallet?</p>
-<p>To send and recieve HNS coins, you need an address. In Handshake, addresses belong to accounts which belong to wallets.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">wallet</span> -<span class="op">&gt;</span> account -<span class="op">&gt;</span> address</a></code></pre></div>
-<p>Wallets are created through the hsd Wallet API.</p>
-<p>Start by installing running hsd locally. <a href="%5Bhttps://handshake-org.github.io/">Go here for Installation instructions</a>.</p>
-<p>Then download and install <a href="https://github.com/handshake-org/hs-client">hs-client</a> to begin interacting with the wallet API of your hsd node.</p>
+<h2 id="set-up-a-handshake-wallet">Set up a Handshake Wallet</h2>
+<p>To send and recieve HNS coins, bid on names and win auctions, you will need a wallet. <code>hsd</code> supports HD (BIP32) wallets. Each wallet can contain many accounts each of which can have many addresses.</p>
+<pre><code>wallet -&gt; accounts -&gt; addresses</code></pre>
+<p>This is stored in the walletdb of your hsd node. <code>hsd</code> comes with a “primary” wallet and “default” account. Use the hs-client tool to interact with the Wallet API of <code>hsd</code>.</p>
+<p>To begin, install <a href="%5Bhttps://handshake-org.github.io/">hsd</a> and <a href="https://github.com/handshake-org/hs-client">hs-client</a>  <br />
+ <br />
+</p>
+<h3 id="hs-client-interact-with-your-wallet">hs-client: Interact with your wallet</h3>
+<p><code>hs-client</code> comes with four executables. For the Wallet you will want to use <code>hsw-cli</code> and <code>hsw-rpc</code>.  <br />
+ <br />
+</p>
+<ul>
+<li><p><code>hsw-cli</code> - features common to bcoin; wallet creation, sending coins, generating addresses, etc.  <br />
+ <br />
+</p></li>
+<li><p><code>hsw-rpc</code> - features specific to Handshake; bidding on names, updating resource records for a name, transfering names, etc..  <br />
+ <br />
+</p></li>
+</ul>
+<p>Currently all naming-related functionality is only supported by the RPC interface. (hsd-rpc and hsd-cli support node management commands unrelated to the wallet. <a href="https://handshake-org.github.io/api-docs">See more here</a>) Below you will find short intros to both wallet tools.  <br />
+</p>
 <h3 id="hsw-cli">hsw-cli</h3>
-<p>Once installed, the hsw-cli executable contained in hs-client is the best way to interact with the hsd Wallet API. Here are some common and helpful commands to get you started.</p>
-<p>Create a new wallet and encrypt it with a passphrase</p>
+<p>Basic bitcoin-like wallet features</p>
+<p> <br />
+Create a new wallet and encrypt it with a passphrase</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="ex">hsw-cli</span> mkwallet <span class="va">$name</span>-of-wallet --passphrase=<span class="va">$your</span>-passphrase</a></code></pre></div>
-<p>Create a new account in your wallet (this outputs the first sending and receiving addresses)</p>
+<p> <br />
+Create a new account in your wallet (this outputs the first sending and receiving addresses)</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">hsw-cli</span> --id=<span class="va">$name</span>-of-wallet account create <span class="va">$name</span>-of-account</a></code></pre></div>
-<p>Generate a new receiving address for an account</p>
+<p> <br />
+Generate a new receiving address for an account</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="ex">hsw-cli</span> --id=<span class="va">$name</span>-of-wallet --accout=<span class="va">$name</span>-of-account address</a></code></pre></div>
-<p>You are now ready to start sending and receiving HNS using hs-client.</p>
-<p>For complete documentation of the Wallet API, go here https://handshake-org.github.io/api-docs/#wallet</p>
+<p> <br />
+Get the HNS balance of your wallet</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="ex">hsw-cli</span> balance</a></code></pre></div>
+<p> <br />
+List all wallets in your walletdb.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="ex">hsw-cli</span> wallets</a></code></pre></div>
+<p> <br />
+Send HNS coins to an address</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1">$ <span class="ex">hsw-cli</span> send </a></code></pre></div>
+<p> <br />
+</p>
+<h3 id="hsw-rpc">hsw-rpc</h3>
+<p>Handshake Name specific functionality</p>
+<p> <br />
+Get info on the names your wallet is watching</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1">$ <span class="ex">hsw-rpc</span> getnames</a></code></pre></div>
+<p> <br />
+Start bidding process on a name</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1">$ <span class="ex">hsw-rpc</span> sendopen</a></code></pre></div>
+<p> <br />
+Update resource records for a name</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1">$ <span class="ex">hsw-rpc</span> sendupdate clevertld <span class="st">&#39;{&quot;ttl&quot;:172800,&quot;ns&quot;:[&quot;ns1.example.com.@1.2.3.4&quot;]}&#39;</span></a></code></pre></div>
+<p> <br />
+Once are comfortable sending and receiving HNS, querying for nameinfo and auctionstatus, you are ready to bid on a name.</p>
+<p><a href="https://handshake-org.github.io/guides/auctions.html">How to bid on names</a></p>
+<p><a href="https://handshake-org.github.io/api-docs/#wallet">Complete documentation of the Wallet API</a></p>
 <p>NOTE: This is a very simplified guide. For more features, such as importing an existing mnemonic key, consult the full documentation.</p>
 
 <hr/>
