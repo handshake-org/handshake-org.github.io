@@ -56,7 +56,14 @@ The [API Documentation](https://handshake-org.github.io/api-docs/index.html)
 runs on the Open Source [Slate Framework](https://github.com/lord/slate).
 To make an update, fork the repo and make the changes to the appropriate
 markdown in this [file directory](https://github.com/handshake-org/handshake-org.github.io/tree/master/src/api-docs/source/includes/).
-When your PR is merge the new docs will be deployed to the live docs page.
+To use livereload while working on the API docs, use middleman livereload like so:
+``` bash
+$ cd ./handshake-org.github.io/src/api-docs/
+$ bundle install
+$ bundle exec middleman server
+```
+
+When your PR is merged the new docs will be deployed to the live docs page.
 
 ## Guide Contribution Guidelines
 ### Submitting Ideas
