@@ -31,7 +31,7 @@ const client = new NodeClient(clientOptions);
 })();
 ```
 
-> getnameinfo returns JSON structured like this: (info is empty if name has not yet been auctioned).
+> getnameinfo returns JSON structured like this: ("info" is empty if name has not yet been auctioned).
 
 ```json
 {
@@ -85,21 +85,18 @@ Name | Type |  Description
 reserved | Boolean | true if the name is pre-reserved for it's existing owner to claim via DNSSEC proof.
 week | int | estimated number of weeks after mainnet launch that name will become available (if not reserved)
 start | int | exact block number that name will become available for bidding (if not reserved)
-state | string | the current auction state of the name (BIDDING, CLOSED)
+state | string | the current auction state of the name (BIDDING, REVEAL, CLOSED, REVOKED, TRANSFER)
 height | int | block height at which auction closed
 renewal | int | block height at which rewnewal period begins
 owner | int | UTXO to which the name belongs
 value | int | penultimate bid amount, paid by winner
 highest | int | highest bid amount, made by winner
 data | serialized | the dns record data of the name stored on chain
-transfer | ?? | ??
-revoked | ?? | ??
 claimed | boolean | true if the name was reserved and then unlocked and claimed via DNSSEC proof.
-weak | ?? | ??
 
 
 
-## getnames
+## getnames (hsd)
 
 ```shell--cli
 hsd-rpc getnames
@@ -179,7 +176,7 @@ const client = new NodeClient(clientOptions);
 ]
 ```
 
-Returns info for all names that have been opened or claimed. NOTE: this is primarily for debugging on regtest or testnet. It does not yet support pagination.
+Returns info for all names that have been opened or claimed. NOTE: this is primarily for debugging on regtest or testnet. It does not yet support pagination. Note this is different from the `hsw-rpc getnames` which only returns info on the names your wallet is tracking.
 
 
 
@@ -255,7 +252,7 @@ const client = new NodeClient(clientOptions);
 })();
 ```
 
-> getnameresource returns JSON structured like this: (info is empty if name has no stored resource data).
+> getnameresource returns JSON structured like this: ("info" is empty if name has no stored resource data).
 
 ```json
 {

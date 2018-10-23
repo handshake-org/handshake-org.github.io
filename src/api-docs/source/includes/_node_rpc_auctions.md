@@ -3,7 +3,7 @@
 Note, all auction related functionality is available through the RPC interface of the handshake wallet. HTTP is not yet supported.
 
 
-## getnames
+## getnames (hsw)
 
 ```shell--cli
 hsw-rpc getnames
@@ -107,7 +107,7 @@ const client = new NodeClient(clientOptions);
 ]
 ```
 
-Your wallet tracks any name on which you have bid or opened. `getnames` returns info on each.
+Your wallet tracks any name on which you have bid or opened. `getnames` returns info on each. This is different from the `hsd-rpc getnames` call which returns info on all names for which the node has data.
 
 
 ## sendopen
@@ -191,7 +191,7 @@ const client = new NodeClient(clientOptions);
   "hex": "0000000001837b802fbad06cab6c8f789c4745cc56d1498a651a04973c8b3db310d90fec4200000000ffffffff0200000000000000000014b5b4aad6b9e5a76276a0740b8447328f78aacf5102032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04000000000b706f73736962696c69747928bb9a3b000000000014cb8e33e158f5441ddaeed9b9a9587776d1947e970000000000000241cc603c24fd90881b00899751d634fad8cfc67ac1289de2475f5c09117db3037335eb9983d38113be4d7c1895514f7d0ff411d2e72dc3ebb444e811146958ebc6012103b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
 }
 ```
-Once a name is available, a send open transaction starts the opening phase.
+Once a name is available, a sendopen transaction starts the opening phase.
 
 ### Params
 Name | Default |  Description
@@ -260,8 +260,9 @@ const client = new NodeClient(clientOptions);
   "reveals": []
 }
 ```
-Once the open period ends, we can monitor the auction using getauctioninfo. Use hsd-rpc getnameinfo to monitor a name prior to the start of bidding.
-Note, by default your wallet will not track an auction unless you have participated in it in some form (sendopen, sendbid).
+Once the open period ends, we can monitor the auction using `getauctioninfo`. Use `hsd-rpc getnameinfo` to monitor a name prior to the start of bidding.
+
+Note, by default your wallet will not track an auction unless you have participated in some form (sendopen, sendbid).
 
 ### Params
 Name | Default |  Description
@@ -349,7 +350,7 @@ const client = new NodeClient(clientOptions);
   "hex": "00000000015f7892816226f3f753dfd003eea4f565fa699a5b29bafde27b6628b1a296691000000000ffffffff0280969800000000000014946419b0703f520ddc20ecd9f263db551bce9a5503042001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d30700000b706f73736962696c69747920001361beb541240738829f101e842c76b9666d1bc4a87299a8ed6a9d2127ed61cc46023b0000000000146f8c678273a0033de39d6de622941a811a9400e90000000000000241bfab12daf81378ad40c46d037a52ffd4f3374c6f71cd6997b067ea9b498e29ac359cf9b267265f31741b28916a7d3da3021ca60539473d59cef3dc88b25c9e98012103b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
 }
 ```
-Once the open period has ended, we can send bids for the name
+The OPEN period is followed by the BIDDING period. Use `sendbid` to place a bid.
 
 ### Params
 Name | Default |  Description
@@ -527,7 +528,7 @@ const client = new NodeClient(clientOptions);
   "hex": "000000000222ebf77857e063c45dd0656ade0b8c5a29e255fefe55b1905fb799a9d075a55200000000ffffffff85bce02cc5cb8ba9ff4e23d84ce389310f50074a6b9a8b20b8643a56a4cb9f9a00000000ffffffff03808d5b00000000000014d4af1e4a45ea8f06082ceabfddc00431d9bf1c5904032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d3070000205b0e235bdc68fd23cc4877b566831490ea5be1a309af991027c89ff7be6822a8404b4c00000000000014946419b0703f520ddc20ecd9f263db551bce9a5504032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d3070000206cffbc155303695d2d974155bfd1dac48b267b41238a7d7ff4b39d1d23affe2a10bba70000000000001467551625234ec7c3e78264c0d3438dc2b1a4f87f00000000000002415a43e3d1b90e28a550cca1da5950f846f82dc71d2f61b78ca1a4aadfef7d963e30fb33f1866139f02d24470948120e92a35ea3d6f7fa3ab569e9893f9983f868012103b98187d5521400df71917c0cded095e12a0134532e9db36b2f2d5e7958c9ef650241286caf0d7901660c5c6efffede32be2ba4811495c6afdc23ece3f53537aed85f4829e7c47516d15e02456f1efb798e0692a43ca06d96499c01954d2f23ac0a680121023bedd07f6cd16dc2699ec2b2451e2d8004fab99666e8e6dbc7286ed24be01f08"
 }
 ```
-The bidding period is followed by the reveal period, during which bidders must reveal their bids, moving the inputs of their bids into a REVEAL covenant from which they must continue to REDEEM (loser) or REGISTER (winner).
+The BIDDING period is followed by the REVEAL period, during which bidders must reveal their bids, moving the inputs of their bids into a REVEAL covenant from which they must continue to REDEEM (loser) or REGISTER (winner).
 
 ### Params
 Name | Default |  Description
@@ -687,7 +688,7 @@ const client = new NodeClient(clientOptions);
 }
 ```
 
-Upon completion of the bidding period, participants can regain the input of their losing bids with sendredeem.
+The REVEAL period follows the BIDDING period. During this phase, participants regain the input of their losing bids with `sendredeem`.
 
 ### Params
 Name | Default |  Description
@@ -771,13 +772,15 @@ const client = new NodeClient(clientOptions);
 }
 ```
 
-Upon completion of the bidding period, auction winners can claim ownership of the name with sendupdate, which updates the namedata and transfers their winning bid input to a REGISTER output.
+Upon close of the REVEAL period, auction winners claim ownership of the name with `sendupdate`, which updates the namedata and transfers their winning bid input to a REGISTER output.
+
+Furthermore, name owners can use `sendupdate` at any time to update the resource data of their name.
 
 
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name for which you wish to redeem your losing bid.
+  name | Required | The name for which you wish to update resource data (initially creates a REGISTER output).
 
 
 ## sendrenewal
@@ -868,7 +871,7 @@ const client = new NodeClient(clientOptions);
 }
 ```
 
-Users must renew their ownership of a name annually with sendrenewal, creating a RENEW output
+Users must renew their ownership of a name annually with sendrenewal, creating an UPDATE output associated with a recent block hash. There is no cost beyond the base transaction fee.
 
 
 ### Params
@@ -966,9 +969,13 @@ const client = new NodeClient(clientOptions);
 }
 
 ```
-After 48 hours worth of blocks, the owner can redeem the `TRANSFER` output to a `FINALIZE` output.
-To help prevent the theft of names, during this 48 hour window, the owner can redeem the `TRANSFER` to a `REVOKE` output. This renders the name's output forever
-unspendable, and puts the name back up for bidding.
+Should you decide to sell a name or change wallets, use this command to transfer your name to another address. 
+
+Once initiated, there is a 48 hour waiting period (enforced by block height) until the owner can redeem the `TRANSFER` output to a `FINALIZE` output. This 'finalizes' the transfer to the new address.
+
+A TRANSFER can be cancelled using `sendcancel`. 
+
+To help prevent the theft of names, during this 48 hour window, the owner can redeem the `TRANSFER` to a `REVOKE` output. This renders the name's output forever unspendable, and puts the name back up for bidding. This is intended as a last resort in the case of a stolen key.
 
 
 
@@ -1069,9 +1076,9 @@ const client = new NodeClient(clientOptions);
 }
 ```
 
-After 48 hours worth of blocks, the owner can redeem the `TRANSFER` output to a `FINALIZE` output, completing the transfer to the new owner.
-To help prevent the theft of names, during this 48 hour window, the owner can redeem the `TRANSFER` to a `REVOKE` output. This renders the name's output forever
-unspendable, and puts the name back up for bidding.
+After 48 hours worth of blocks, the original owner can redeem the `TRANSFER` output to a `FINALIZE` output, completing the transfer to the new address.
+
+To help prevent the theft of names, during this 48 hour window, the previous owner can redeem the `TRANSFER` to a `REVOKE` output. This renders the name's output forever unspendable, and puts the name back up for bidding. `REVOKE` is intended to be a last-resort option.
 
 
 ### Params
@@ -1169,7 +1176,7 @@ const client = new NodeClient(clientOptions);
 }
 ```
 
-After sending a `TRANSFER` but before sending a `FINALIZE`, the owner can cancel the ownership transfer with `sendcancel`
+After sending a `TRANSFER` but before sending a `FINALIZE`, the owner can cancel the ownership transfer with `sendcancel`. The owner will retain control of the name. This is the recommended means of cancelling a transfer. Not to be confused with a `REVOKE`, which is only to be used in the case of a stolen key.
 
 
 ### Params
@@ -1265,7 +1272,7 @@ const client = new NodeClient(clientOptions);
 }
 ```
 
-While in the `TRANSFER` state, the owner can redeem to a `REVOKE` output. This renders the name's output forever unspendable, and puts the name back up for bidding.
+While in the `TRANSFER` state, the owner can redeem to a `REVOKE` output. This renders the name's output forever unspendable, and puts the name back up for bidding. This is intended as an action of last resort to stop a theft in the case that the owner's key has been compromised. Use `sendcancel` to simply cancel a transfer.
 
 
 ### Params
