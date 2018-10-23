@@ -1,32 +1,31 @@
 ## Seting up a Handshake Wallet 
 
+*This guide is heavily copied from [Wallets and Accounts and Keys, Oh My!](https://bcoin.io/guides/wallets.html) by Daniel McNally with edits specific to Handshake.*
 
+If you're a seasoned bitcoiner, you can probably skim this section or skip straight ahead to the <a href='#examples'> Examples </a>section. Or if you already have a wallet and are looking to buy and manage names on Handshake check out the [Name Auctions Guide](/guides/auctions.html).
+
+But if you're relatively new or just want a refresher, this section will help you understand how wallets actually work.
+
+## The Basics
 `hsd` offers a powerful, modular way to create and manage handshake wallets. In this guide, I'll walk you through the concepts and features you'll need to know about to get started.
-
-### The Basics
-If you're a seasoned bitcoiner, you can probably skim this section or skip straight ahead to the <a href='#examples'> Examples </a>section. But if you're relatively new or just want a refresher, this section will help you understand how wallets actually work.
 
 ### Wallets
 In the most basic sense, a handshake wallet is data that enables you to receive and spend HNS, place bids on names and update resource records for your names. `hsd` implements the latest specifications for structuring wallets that are easy to backup, easy to restore, and that work just as well for a novice making their first transactions as for a business with millions of users.
 
 ### Keys to the Game
-If you want to transact with HNS, you'll need keys. Each handshake address is associated with a particular key, and wallets are made up of many different keys. Keys consist of both a private key and a public key. The private key is required for spending and is extremely sensitive information, while a public key can be used to receive HNS  and monitor a particular address. If you want to learn more about how this works, read up on Public-Key Cryptography.
+If you want to transact with HNS, you'll need keys. Each handshake address is associated with a particular key, and wallets are made up of many different keys. Keys consist of both a private key and a public key. The private key is required for spending and is extremely sensitive information, while a public key can be used to receive HNS and monitor a particular address. If you want to learn more about how this works, read up on Public-Key Cryptography.
 
-### HD vs. Non-HD, you mean like TVs?
-You may have seen references to "HD" wallets and wondered what that means. HD in this context does not mean "high definition," as I assumed it did at first, but rather "hierarchical deterministic." An HD wallet takes a hierarchy of keys in order and makes it so any key in that sequence can be determined by the one before it. This means that if you can produce the first key in the hierarchy, you can then generate a practically unlimited number of subsequent keys. The specification for HD wallets as implemented in `hsd` is defined by [Bitcoin Improvement Proposal (BIP) 32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki).
-
-Non-HD wallets, on the other hand, contain keys that are unrelated to one another. Backing up such a wallet means each key must be preserved individually. Not only is this more cumbersome, but it means that backups can quickly become out of date as new keys are added to the wallet. With an HD wallet, as long as you hold on to the seed - the data needed to recreate the first key - you will be able to recover every other key.
+### HD Wallets
+`hsd` supports "Hierarchical Deterministic" (HD) wallets. An HD wallet creates a tree of keys ordered deterministically beginning from a single seed. An HD wallet can generate a practically unlimited number of subsequent keys. The HD Wallets in `hsd` implement [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) and create new accounts deterministically as specified in [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki).
 
 While `hsd` uses HD wallets, it does allow you to import individual keys into a wallet. This can be a handy feature in certain cases, but it means you'll need to backup any imported keys separately as they will not be recoverable simply by using your seed.
 
-But what exactly is the seed for an HD wallet? It can come in several forms, but `hsd` implements [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) which enables seeds to be represented by a mnemonic made up of a fixed set of common words. This means your seed can be easily spoken, written down, or perhaps even memorized. But be careful! Your seed can be used to recover and spend everything in your HD wallet (except for the aforementioned imported keys), so treat it like you would an actual wallet with cash in it.
+What is the seed for an HD wallet? It can come in several forms, but `hsd` implements [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) which enables seeds to be represented by a mnemonic made up of a fixed set of common words. This means your seed can be easily spoken, written down, or perhaps even memorized. But be careful! Your seed can be used to recover and spend everything in your HD wallet (except for the aforementioned imported keys), so treat it like you would an actual wallet with cash in it.
 
-By default, mnemonics in hsd are made up of twelve words representing 128 bits of entropy. This is a common standard that is far and away beyond what cutting edge computers can hope to crack via brute force. But if you want additional entropy, `hsd` supports up to 512 bits of entropy which makes a 48 word mnemonic.
+To securely generate a menmonic seed, Handshake provides [this tool](https://github.com/handshake-org/faucet-tool) for use on an air-gapped machine.
 
 ### Accounts
 Wallets in `hsd` are partitioned into accounts. When you first create a wallet, a "default" account is created automatically along with it. Accounts can be used to track and manage separate sets of keys all within a single wallet. For example, a business can use accounts to generate distinct addresses for depositors or to segregate customer funds internally.
-
-`hsd` implements [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)  as a method of generating unlimited accounts deterministically. This adds additional dimensions to the hierarchy described above, meaning the same seed that can recover all your keys can also recover all your addresses.
 
 Each account also comes with its own "extended public key," a piece of data that can be used to generate all public keys for that account in deterministic fashion. This means, for instance, that a business can create limitless deposit addresses for its users without having to touch its critical private keys or seed. Remember that public keys can be used for receiving HNS, but not for spending, so a public key falling into the wrong hands will not immediately result in theft.
 
@@ -35,14 +34,11 @@ Speaking of not touching private keys, hsd gives you the option to create wallet
 
 Accounts always inherit the watch only behavior of their parent wallet. In other words, a watch only wallet will have exclusively watch only accounts while a regular wallet will have only regular accounts. Accordingly, you can't import private keys into a watch only wallet or public keys into regular wallets. If you try to mix and match watch only wallets and keys with hsd, you're gonna have a bad time.
 
-
 ### API Authentication
 `hsd` runs as a server and allow you to interact with your wallets via a REST API. It also allows you protect wallets from unauthenticated requests by running the server with the wallet-auth option. Each wallet you create has a token value that must be passed in with each request. Tokens, like accounts and keys, can also be deterministically generated using your HD seed. This means you can change the token on a wallet as often as you'd like.
 
 ### Recovery
-By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of `hsd` or any other software that properly implements BIP33, BIP39, and BIP44, like the Trezor hardware wallet.
-
-*Above borrowed from [Wallets and Accounts and Keys, Oh My!](https://bcoin.io/guides/wallets.html) by Daniel McNally*
+By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of `hsd` or any other software that properly implements BIP33, BIP39, BIP44 and also supports Handshake.
 &nbsp;\
 &nbsp;\
 
@@ -71,31 +67,32 @@ To begin, install [hsd]([https://handshake-org.github.io/) and [hs-client](https
 * `hsd-cli` - hsd node REST API
 &nbsp;\
 
-
 For more info on node commands unrelated to the wallet. [See here](https://handshake-org.github.io/api-docs))
+
 
 Below you will find short intros to both wallet tools `hsw-cli` and `hsw-rpc` Use them for wallet creation, sending coins, generating addresses, bidding on names, updating resource records for a name, transfering names, etc.. 
 &nbsp;\
 
-
 ### Set the network option
 
-You have four choices to chose when setting your `hsd` node's network. The `hs-client` CLI tools also require this option be set for them to know the port with which to connect to your `hsd` node.
+You have three choices when setting your `hsd` node's network. The `hs-client` CLI tools also require this option be set for them to know the port with which to connect to your `hsd` node.
 
 * `regtest` Best for local development work.
 * `testnet` Closest simulation to mainnet. Supported by a network of nodes run by other devs.
 * `mainnet` Live production.
 
-You can set the network for your hsd node with the `--network=` option. Or with `$ export HSD_NETWORK=` 
+You can set the network for your hsd node with the `--network=` option or by setting the environment variable `HSD_NETWORK`.
 Choose 'regtest' for testing out the commands below.
-
 
 ### hsw-cli
 
 &nbsp;\
-Create a new wallet and encrypt it with a passphrase 
+Calling the CLI without any arguments `$ hsw-cli` will output the list of supported commands
+
+&nbsp;\
+Create a new wallet, seed it with a mnemonic phrase and encrypt it with a passphrase.
 ``` bash
-$ hsw-cli mkwallet mynewwallet --passphrase=supersecret
+$ hsw-cli mkwallet <name-of-new-wallet> --mnemonic=<mnemonic-phrase> --passphrase=<passphrase>
 ```
 
 Response JSON:
@@ -117,19 +114,25 @@ Response JSON:
 &nbsp;\
 See that `token`? With it we can do things like query our wallet balance
 ``` bash
-$ hsw-cli balance --id=mynewwallet --token=aef7603ff78c32e267fad434246ce6447d420b81e4798d99cf06c80b57c40765
+$ hsw-cli balance --id=<name-of-wallet> --token=aef7603ff78c32e267fad434246ce6447d420b81e4798d99cf06c80b57c40765
+```
+
+&nbsp;\
+Create a new account
+``` bash
+$ hsw-cli --id=<name-of-wallet> account create <name-of-new-account>
 ```
 
 &nbsp;\
 Generate a new receiving address for an account
 ``` bash
-$ hsw-cli --id=$name-of-wallet --accout=$name-of-account address
+$ hsw-cli --id=<name-of-wallet> --account=<name-of-account> address
 ```
 
 &nbsp;\
 Get the HNS balance of your wallet
 ``` bash
-$ hsw-cli --id=balance
+$ hsw-cli --id=<name-of-wallet> balance
 ```
 
 &nbsp;\
@@ -139,26 +142,54 @@ $ hsw-cli wallets
 ```
 
 &nbsp;\
-Send HNS coins to an address
+List all accounts in a given wallet
 ``` bash
-$ hsw-cli send 
+$ hsw-cli --id=<name-of-wallet> account list
+```
+
+&nbsp;\
+Send HNS coins to an address
+
+*Be careful how you enter values and fee rates!*
+*value and rate are expressed in satoshis when using cURL or Javascript*
+*value and rate are expressed in WHOLE HNS  when using CLI*
+*Watch carefully how values are entered in the examples, all examples send the same amount when executed*
+
+``` bash
+$ hsw-cli send --id=<name-of-wallet> --value=<number of WHOLE HNS> --address=<destination address> --passphrase=<passphrase>
 ```
 &nbsp;\
 
 ### hsw-rpc
-Handshake Name specific functionality
 
 &nbsp;\
 Get info on the names your wallet is watching
 ``` bash
 $ hsw-rpc getnames
 ```
+
 &nbsp;\
+Get info on a wallet.
+``` base
+$ hsw-rpc --id=<name-of-wallet> getwalletinfo
+```
+
+Response JSON
+``` json
+{
+  "walletid": "primary",
+  "walletversion": 6,
+  "balance": 390005.02398,
+  "unconfirmed_balance": 390005.02398,
+  "txcount": 450,
+  "keypoololdest": 0,
+  "keypoolsize": 0,
+  "unlocked_until": 0,
+  "paytxfee": 0
+}
+```
 
 NOTE: This is a very simplified guide. For more features, such as importing an existing mnemonic key, consult the full documentation.
 
 [Complete documentation of the Wallet API](https://handshake-org.github.io/api-docs/#wallet)
-
-
-
 
