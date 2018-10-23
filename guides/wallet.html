@@ -74,6 +74,7 @@
 <p>To securely generate a menmonic seed, Handshake provides <a href="https://github.com/handshake-org/faucet-tool">this tool</a> for use on an air-gapped machine.</p>
 <h3 id="accounts">Accounts</h3>
 <p>Wallets in <code>hsd</code> are partitioned into accounts. When you first create a wallet, a “default” account is created automatically along with it. Accounts can be used to track and manage separate sets of keys all within a single wallet. For example, a business can use accounts to generate distinct addresses for depositors or to segregate customer funds internally.</p>
+<p><code>hsd</code> implements <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">BIP44</a> as a method of generating unlimited accounts deterministically. This adds additional dimensions to the hierarchy described above, meaning the same seed that can recover all your keys can also recover all your addresses.</p>
 <p>Each account also comes with its own “extended public key,” a piece of data that can be used to generate all public keys for that account in deterministic fashion. This means, for instance, that a business can create limitless deposit addresses for its users without having to touch its critical private keys or seed. Remember that public keys can be used for receiving HNS, but not for spending, so a public key falling into the wrong hands will not immediately result in theft.</p>
 <h3 id="watch-only-wallets">Watch Only Wallets</h3>
 <p>Speaking of not touching private keys, hsd gives you the option to create wallets that are “watch only.” Watch only wallets don’t contain any private keys, which means they can’t be used to spend the HNS they receive. However, they work perfectly fine for creating addresses, receiving HNS, and detecting incoming transactions. Using watch only wallets where appropriate reduces the risk of your keys and HNS being stolen and is good security practice.</p>
@@ -81,7 +82,7 @@
 <h3 id="api-authentication">API Authentication</h3>
 <p><code>hsd</code> runs as a server and allow you to interact with your wallets via a REST API. It also allows you protect wallets from unauthenticated requests by running the server with the wallet-auth option. Each wallet you create has a token value that must be passed in with each request. Tokens, like accounts and keys, can also be deterministically generated using your HD seed. This means you can change the token on a wallet as often as you’d like.</p>
 <h3 id="recovery">Recovery</h3>
-<p>By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of <code>hsd</code> or any other software that properly implements BIP33, BIP39, BIP44 and also supports Handshake.  <br />
+<p>By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of <code>hsd</code> or any other software that properly implements BIP33, BIP39, and BIP44, like the Trezor hardware wallet.  <br />
  <br />
 </p>
 <h2 id="examples">
@@ -89,7 +90,6 @@ Examples
 </h2>
 <p>Command line examples against a local <code>hsd</code> server.</p>
 <p>To begin, install <a href="%5Bhttps://handshake-org.github.io/">hsd</a> and <a href="https://github.com/handshake-org/hs-client">hs-client</a>  <br />
- <br />
 </p>
 <h3 id="hs-client-interact-with-your-wallet">hs-client: Interact with your wallet</h3>
 <p><code>hs-client</code> comes with four executables. For the Wallet you will want to use <code>hsw-cli</code> and <code>hsw-rpc</code>.  <br />
@@ -157,26 +157,33 @@ Send HNS coins to an address</p>
 <p><em>Be careful how you enter values and fee rates!</em> <em>value and rate are expressed in satoshis when using cURL or Javascript</em> <em>value and rate are expressed in WHOLE HNS when using CLI</em> <em>Watch carefully how values are entered in the examples, all examples send the same amount when executed</em></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1">$ <span class="ex">hsw-cli</span> send --id=<span class="op">&lt;</span>name-of-wallet<span class="op">&gt;</span> --value=<span class="op">&lt;</span>number of WHOLE HNS<span class="op">&gt;</span> --address=<span class="op">&lt;</span>destination address<span class="op">&gt;</span> --passphrase=<span class="op">&lt;</span>passphrase<span class="op">&gt;</span></a></code></pre></div>
 <p> <br />
-</p>
-<h3 id="hsw-rpc">hsw-rpc</h3>
+Initiate blockchain rescan for walletdb. Necessary after importing a key or wallet. Wallets will be rolled back to the specified block height if provided.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1">$ <span class="ex">hsw-cli</span> rescan --height<span class="op">&lt;</span>block-height<span class="op">&gt;</span></a></code></pre></div>
+<p> <br />
+### hsw-rpc</p>
 <p> <br />
 Get info on the names your wallet is watching</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1">$ <span class="ex">hsw-rpc</span> getnames</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1">$ <span class="ex">hsw-rpc</span> getnames</a></code></pre></div>
 <p> <br />
 Get info on a wallet.</p>
 <pre class="base"><code>$ hsw-rpc --id=&lt;name-of-wallet&gt; getwalletinfo</code></pre>
+<p> <br />
+Get resource data for a name</p>
+<pre class="base"><code>$ hsw-rpc getnameresource &lt;name&gt;</code></pre>
 <p>Response JSON</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="fu">{</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">  <span class="dt">&quot;walletid&quot;</span><span class="fu">:</span> <span class="st">&quot;primary&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">  <span class="dt">&quot;walletversion&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">  <span class="dt">&quot;balance&quot;</span><span class="fu">:</span> <span class="fl">390005.02398</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">  <span class="dt">&quot;unconfirmed_balance&quot;</span><span class="fu">:</span> <span class="fl">390005.02398</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6">  <span class="dt">&quot;txcount&quot;</span><span class="fu">:</span> <span class="dv">450</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">  <span class="dt">&quot;keypoololdest&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">  <span class="dt">&quot;keypoolsize&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9">  <span class="dt">&quot;unlocked_until&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">  <span class="dt">&quot;paytxfee&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="fu">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">  <span class="dt">&quot;walletid&quot;</span><span class="fu">:</span> <span class="st">&quot;primary&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">  <span class="dt">&quot;walletversion&quot;</span><span class="fu">:</span> <span class="dv">6</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">  <span class="dt">&quot;balance&quot;</span><span class="fu">:</span> <span class="fl">390005.02398</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">  <span class="dt">&quot;unconfirmed_balance&quot;</span><span class="fu">:</span> <span class="fl">390005.02398</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">  <span class="dt">&quot;txcount&quot;</span><span class="fu">:</span> <span class="dv">450</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">  <span class="dt">&quot;keypoololdest&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">  <span class="dt">&quot;keypoolsize&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">  <span class="dt">&quot;unlocked_until&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">  <span class="dt">&quot;paytxfee&quot;</span><span class="fu">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="fu">}</span></a></code></pre></div>
+<p> <br />
+</p>
 <p>NOTE: This is a very simplified guide. For more features, such as importing an existing mnemonic key, consult the full documentation.</p>
 <p><a href="https://handshake-org.github.io/api-docs/#wallet">Complete documentation of the Wallet API</a></p>
 

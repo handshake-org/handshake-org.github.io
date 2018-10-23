@@ -27,6 +27,8 @@ To securely generate a menmonic seed, Handshake provides [this tool](https://git
 ### Accounts
 Wallets in `hsd` are partitioned into accounts. When you first create a wallet, a "default" account is created automatically along with it. Accounts can be used to track and manage separate sets of keys all within a single wallet. For example, a business can use accounts to generate distinct addresses for depositors or to segregate customer funds internally.
 
+`hsd` implements [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)  as a method of generating unlimited accounts deterministically. This adds additional dimensions to the hierarchy described above, meaning the same seed that can recover all your keys can also recover all your addresses.
+
 Each account also comes with its own "extended public key," a piece of data that can be used to generate all public keys for that account in deterministic fashion. This means, for instance, that a business can create limitless deposit addresses for its users without having to touch its critical private keys or seed. Remember that public keys can be used for receiving HNS, but not for spending, so a public key falling into the wrong hands will not immediately result in theft.
 
 ### Watch Only Wallets
@@ -34,11 +36,12 @@ Speaking of not touching private keys, hsd gives you the option to create wallet
 
 Accounts always inherit the watch only behavior of their parent wallet. In other words, a watch only wallet will have exclusively watch only accounts while a regular wallet will have only regular accounts. Accordingly, you can't import private keys into a watch only wallet or public keys into regular wallets. If you try to mix and match watch only wallets and keys with hsd, you're gonna have a bad time.
 
+
 ### API Authentication
 `hsd` runs as a server and allow you to interact with your wallets via a REST API. It also allows you protect wallets from unauthenticated requests by running the server with the wallet-auth option. Each wallet you create has a token value that must be passed in with each request. Tokens, like accounts and keys, can also be deterministically generated using your HD seed. This means you can change the token on a wallet as often as you'd like.
 
 ### Recovery
-By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of `hsd` or any other software that properly implements BIP33, BIP39, BIP44 and also supports Handshake.
+By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of `hsd` or any other software that properly implements BIP33, BIP39, and BIP44, like the Trezor hardware wallet.
 &nbsp;\
 &nbsp;\
 
@@ -47,7 +50,6 @@ By using the HD standards mentioned above, hsd allows one to easily restore or t
 Command line examples against a local `hsd` server.
 
 To begin, install [hsd]([https://handshake-org.github.io/) and [hs-client](https://github.com/handshake-org/hs-client)
-&nbsp;\
 &nbsp;\
 
 ### hs-client: Interact with your wallet
@@ -68,7 +70,6 @@ To begin, install [hsd]([https://handshake-org.github.io/) and [hs-client](https
 &nbsp;\
 
 For more info on node commands unrelated to the wallet. [See here](https://handshake-org.github.io/api-docs))
-
 
 Below you will find short intros to both wallet tools `hsw-cli` and `hsw-rpc` Use them for wallet creation, sending coins, generating addresses, bidding on names, updating resource records for a name, transfering names, etc.. 
 &nbsp;\
@@ -158,8 +159,14 @@ Send HNS coins to an address
 ``` bash
 $ hsw-cli send --id=<name-of-wallet> --value=<number of WHOLE HNS> --address=<destination address> --passphrase=<passphrase>
 ```
-&nbsp;\
 
+&nbsp;\
+Initiate blockchain rescan for walletdb. Necessary after importing a key or wallet. Wallets will be rolled back to the specified block height if provided.
+``` bash
+$ hsw-cli rescan --height<block-height>
+```
+
+&nbsp;\
 ### hsw-rpc
 
 &nbsp;\
@@ -173,6 +180,13 @@ Get info on a wallet.
 ``` base
 $ hsw-rpc --id=<name-of-wallet> getwalletinfo
 ```
+
+&nbsp;\
+Get resource data for a name
+``` base
+$ hsw-rpc getnameresource <name>
+```
+
 
 Response JSON
 ``` json
@@ -188,8 +202,8 @@ Response JSON
   "paytxfee": 0
 }
 ```
+&nbsp;\
 
 NOTE: This is a very simplified guide. For more features, such as importing an existing mnemonic key, consult the full documentation.
 
 [Complete documentation of the Wallet API](https://handshake-org.github.io/api-docs/#wallet)
-
