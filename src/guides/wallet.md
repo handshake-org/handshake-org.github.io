@@ -75,9 +75,10 @@ Below you will find short intros to both wallet tools `hsw-cli` and `hsw-rpc` Us
 
 ### Set the network option
 
-You have three choices when setting your `hsd` node's network. The `hs-client` CLI tools also require this option be set for them to know the port with which to connect to your `hsd` node.
+You have four choices when setting your `hsd` node's network. The `hs-client` CLI tools also require this option be set for them to know the port with which to connect to your `hsd` node.
 
-* `regtest` Best for local development work.
+* `regtest` For local development work.
+* `simnet` For testing your own network.
 * `testnet` Closest simulation to mainnet. Supported by a network of nodes run by other devs.
 * `mainnet` Live production.
 
