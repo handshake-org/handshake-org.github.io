@@ -82,7 +82,7 @@
 <h3 id="api-authentication">API Authentication</h3>
 <p><code>hsd</code> runs as a server and allow you to interact with your wallets via a REST API. It also allows you protect wallets from unauthenticated requests by running the server with the wallet-auth option. Each wallet you create has a token value that must be passed in with each request. Tokens, like accounts and keys, can also be deterministically generated using your HD seed. This means you can change the token on a wallet as often as you’d like.</p>
 <h3 id="recovery">Recovery</h3>
-<p>By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of <code>hsd</code> or any other software that properly implements BIP33, BIP39, and BIP44, like the Trezor hardware wallet.  <br />
+<p>By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of <code>hsd</code> or any other software that properly implements BIP33, BIP39, and BIP44 and supports Handshake.  <br />
  <br />
 </p>
 <h2 id="examples">
@@ -158,11 +158,11 @@ Send HNS coins to an address</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1">$ <span class="ex">hsw-cli</span> send --id=<span class="op">&lt;</span>name-of-wallet<span class="op">&gt;</span> --value=<span class="op">&lt;</span>number of WHOLE HNS<span class="op">&gt;</span> --address=<span class="op">&lt;</span>destination address<span class="op">&gt;</span> --passphrase=<span class="op">&lt;</span>passphrase<span class="op">&gt;</span></a></code></pre></div>
 <p> <br />
 Initiate blockchain rescan for walletdb. Necessary after importing a key or wallet. Wallets will be rolled back to the specified block height if provided.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1">$ <span class="ex">hsw-cli</span> rescan --height<span class="op">&lt;</span>block-height<span class="op">&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1">$ <span class="ex">hsw-cli</span> rescan --height=<span class="op">&lt;</span>block-height<span class="op">&gt;</span></a></code></pre></div>
 <p> <br />
 ### hsw-rpc</p>
 <p> <br />
-Get info on the names your wallet is watching</p>
+Get info on all of the names your wallet has interacted with (open, bid, reveal, etc).</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1">$ <span class="ex">hsw-rpc</span> getnames</a></code></pre></div>
 <p> <br />
 Get info on a wallet.</p>
@@ -184,7 +184,7 @@ Get resource data for a name</p>
 <a class="sourceLine" id="cb14-11" data-line-number="11"><span class="fu">}</span></a></code></pre></div>
 <p> <br />
 </p>
-<p>NOTE: This is a very simplified guide. For more features, such as importing an existing mnemonic key, consult the full documentation.</p>
+<p>NOTE: This is a very simplified guide. For more features, such as creating claims, signing transactions and more, consult the full documentation.</p>
 <p><a href="https://handshake-org.github.io/api-docs/#wallet">Complete documentation of the Wallet API</a></p>
 
 <hr/>

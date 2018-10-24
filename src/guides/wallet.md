@@ -36,12 +36,11 @@ Speaking of not touching private keys, hsd gives you the option to create wallet
 
 Accounts always inherit the watch only behavior of their parent wallet. In other words, a watch only wallet will have exclusively watch only accounts while a regular wallet will have only regular accounts. Accordingly, you can't import private keys into a watch only wallet or public keys into regular wallets. If you try to mix and match watch only wallets and keys with hsd, you're gonna have a bad time.
 
-
 ### API Authentication
 `hsd` runs as a server and allow you to interact with your wallets via a REST API. It also allows you protect wallets from unauthenticated requests by running the server with the wallet-auth option. Each wallet you create has a token value that must be passed in with each request. Tokens, like accounts and keys, can also be deterministically generated using your HD seed. This means you can change the token on a wallet as often as you'd like.
 
 ### Recovery
-By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of `hsd` or any other software that properly implements BIP33, BIP39, and BIP44, like the Trezor hardware wallet.
+By using the HD standards mentioned above, hsd allows one to easily restore or transfer their entire wallet to different wallet implementations. By providing just the mnemonic, one can fully recover their wallet to a fresh instance of `hsd` or any other software that properly implements BIP33, BIP39, and BIP44 and supports Handshake.
 &nbsp;\
 &nbsp;\
 
@@ -163,14 +162,14 @@ $ hsw-cli send --id=<name-of-wallet> --value=<number of WHOLE HNS> --address=<de
 &nbsp;\
 Initiate blockchain rescan for walletdb. Necessary after importing a key or wallet. Wallets will be rolled back to the specified block height if provided.
 ``` bash
-$ hsw-cli rescan --height<block-height>
+$ hsw-cli rescan --height=<block-height>
 ```
 
 &nbsp;\
 ### hsw-rpc
 
 &nbsp;\
-Get info on the names your wallet is watching
+Get info on all of the names your wallet has interacted with (open, bid, reveal, etc).
 ``` bash
 $ hsw-rpc getnames
 ```
@@ -204,6 +203,6 @@ Response JSON
 ```
 &nbsp;\
 
-NOTE: This is a very simplified guide. For more features, such as importing an existing mnemonic key, consult the full documentation.
+NOTE: This is a very simplified guide. For more features, such as creating claims, signing transactions and more, consult the full documentation.
 
 [Complete documentation of the Wallet API](https://handshake-org.github.io/api-docs/#wallet)
