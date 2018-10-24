@@ -1,4 +1,4 @@
-# RPC Calls - Auctions
+# Wallet - Auctions
 
 Note, all auction related functionality is available through the RPC interface of the handshake wallet. HTTP is not yet supported.
 

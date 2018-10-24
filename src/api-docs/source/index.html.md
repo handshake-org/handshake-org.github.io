@@ -25,7 +25,9 @@ includes:
   - node_rpc_tx
   - node_rpc_mining
   - node_rpc_network
+  - node_rpc_names
   - wallet
+  - wallet_auctions
   - wallet_admin
   - wallet_tx
   - wallet_accounts

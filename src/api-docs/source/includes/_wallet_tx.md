@@ -1,4 +1,4 @@
-# Wallet Transactions
+# Wallet - Transactions
 
 ## Get Wallet TX Details
 

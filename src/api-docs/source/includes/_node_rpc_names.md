@@ -351,3 +351,179 @@ Type | Description
 'TYPE_EXISTS' | Name exists in trie. Returns array of nodes as proof.
 'TYPE_UNKNOWN' | Some error occured.
 
+
+
+
+
+## createclaim
+
+```shell--cli
+hsd-rpc createclaim nytimes
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('createclaim', [ 'nytimes' ]);
+  console.log(result);
+})();
+```
+
+> createclaim returns the txt record to be signed and added to your name's zone file.
+
+```json
+{
+  "name": "nytimes",
+  "target": "nytimes.com.",
+  "value": 1133774245,
+  "size": 5120,
+  "fee": 25600,
+  "address": "rs1qgm0z8pa6l2zxhapddk9gh00wzhgjjcjfh2drjy",
+  "txt": "hns-regtest:_QBkABRG3iOHuvqEa_QtbYqLve4V0SliSQA"
+}
+
+```
+`createclaim` is for claiming a names in the existing root zone or the Alexa top 100k. These names are reserved and can be claimed by publishing a DNSSEC ownership proof -- a cryptographic proof that you own the name on ICANN's system.
+
+The command returns the TXT record to be signed and added to your name's zone file. It includes a commitment to the handshake address you  want the name to be associated with, along with the fee that you are willing to pay the miner to mine our claim. This TXT record must be added to our name's zone file and signed. See [How to Claim a Name](https://handshake-org.github.io/guides/claims.html) for a more detailed guide.
+
+
+### Params
+Name | Default |  Description
+--------- | --------- | --------- | -----------
+name | Required | the reserved name for which you want to create a claim
+
+
+## sendclaim
+
+```shell--cli
+hsd-rpc sendclaim nytimes
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('sendclaim', [ 'nytimes' ]);
+  console.log(result);
+})();
+```
+
+> sendclaim broadcasts your ownership proof.
+
+```json
+```
+
+Once our proof is published on the DNS layer, we can use `sendclaim` to crawl the relevant zones and create the proof.
+
+`sendclaim` will create and broadcast the proof to all of your peers, ultimately ending up in a miner's mempool. Your claim should be mined within 5-20 minutes. Once mined, you must wait several blocks before your claim is considered "mature". 
+
+See the [README](https://github.com/handshake-org/hsd) for hsd or the [Name Claims](https://handshake-org.github.io/guides/claims.html) guide for more.
+
+### Params
+Name | Default |  Description
+--------- | --------- | --------- | -----------
+name | Required | name for which you wish to broadcast your ownership proof
+
+## sendrawclaim
+
+```shell--cli
+hsd-rpc sendrawclaim <hex-string>
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('sendrawclaim', [ 'hex-string' ]);
+  console.log(result);
+})();
+```
+
+> send rawclaim allows you to publish your claim directly
+
+```json
+```
+
+If you already have DNSSEC setup, you can avoid publishing a TXT record publicly by creating the proof locally. This requires that you have direct access to your zone-signing keys. The private keys themselves must be stored in BIND's private key format and naming convention. 
+
+See the [README](https://github.com/handshake-org/hsd) for hsd or the [Name Claims](https://handshake-org.github.io/guides/claims.html) guide for more.
+
+
+### Params
+Name | Default |  Description
+--------- | --------- | --------- | -----------
+claim | Required | raw serialized hex-string
+
+
+## grindname
+
+```shell--cli
+hsd-rpc grindname 12
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('getnameresource', [ 12 ]);
+  console.log(result);
+})();
+```
+
+> grindname returns a randomly derived available name
+
+```json
+girnktqvqn
+```
+
+Grind a rolled-out available name.
+
+### Params
+Name | Default |  Description
+--------- | --------- | --------- | -----------
+length | 10 | length of name to generate
+
+
+

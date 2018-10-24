@@ -1,4 +1,4 @@
-# Wallet Accounts
+# Wallet - Accounts
 ## Account Object
 > An account object looks like this:
 
