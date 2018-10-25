@@ -5,7 +5,7 @@
 ```shell--curl
 curl $url \
   -X POST \
-  --data '{ "method": "getnameinfo", "params": [ 'pi'] }'
+  --data '{ "method": "getnameinfo", "params": [ '$name'] }'
 ```
 
 ```shell--cli
@@ -26,7 +26,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnameinfo', [ 'pi' ]);
+  const result = await client.execute('getnameinfo', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -183,7 +183,7 @@ Returns info for all names that have been opened or claimed. NOTE: this is prima
 ## getnamebyhash
 
 ```shell--cli
-hsd-rpc getnamebyhash 92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec
+hsd-rpc getnamebyhash $namehash
 ```
 
 ```javascript
@@ -200,7 +200,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnamebyhash', [ '92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec' ]);
+  const result = await client.execute('getnamebyhash', [ '$namehash' ]);
   console.log(result);
 })();
 ```
@@ -230,7 +230,7 @@ name | String
 ## getnameresource
 
 ```shell--cli
-hsd-rpc getnameresource clevertld
+hsd-rpc getnameresource $name
 ```
 
 ```javascript
@@ -247,7 +247,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnameresource', [ 'clevertld' ]);
+  const result = await client.execute('getnameresource', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -277,7 +277,7 @@ name | Required | name for resource records.
 ## getnameproof
 
 ```shell--cli
-hsd-rpc getnameproof clevertld
+hsd-rpc getnameproof $name
 ```
 
 ```javascript
@@ -294,7 +294,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnameproof', [ 'clevertld' ]);
+  const result = await client.execute('getnameproof', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -358,7 +358,7 @@ Type | Description
 ## createclaim
 
 ```shell--cli
-hsd-rpc createclaim nytimes
+hsd-rpc createclaim $name
 ```
 
 ```javascript
@@ -375,12 +375,12 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('createclaim', [ 'nytimes' ]);
+  const result = await client.execute('createclaim', [ '$name' ]);
   console.log(result);
 })();
 ```
 
-> createclaim returns the txt record to be signed and added to your name's zone file.
+> createclaim returns the txt record to be signed and added to your name's zone file (using nytimes as example).
 
 ```json
 {
@@ -408,7 +408,7 @@ name | Required | the reserved name for which you want to create a claim
 ## sendclaim
 
 ```shell--cli
-hsd-rpc sendclaim nytimes
+hsd-rpc sendclaim $name
 ```
 
 ```javascript
@@ -425,7 +425,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendclaim', [ 'nytimes' ]);
+  const result = await client.execute('sendclaim', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -490,7 +490,7 @@ claim | Required | raw serialized hex-string
 ## grindname
 
 ```shell--cli
-hsd-rpc grindname 12
+hsd-rpc grindname $length
 ```
 
 ```javascript
@@ -507,7 +507,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnameresource', [ 12 ]);
+  const result = await client.execute('getnameresource', [ $length ]);
   console.log(result);
 })();
 ```

@@ -112,14 +112,8 @@ Your wallet tracks any name on which you have bid or opened. `getnames` returns 
 
 ## sendopen
 
-```shell--curl
-curl $url \
-  -X POST \
-  --data '{ "method": "sendopen", "params": [ "clevertld" ] }'
-```
-
 ```shell--cli
-hsw-rpc sendopen clevertld
+hsw-rpc sendopen $name
 ```
 
 ```javascript
@@ -136,7 +130,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendopen', [ 'clevertld' ]);
+  const result = await client.execute('sendopen', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -201,14 +195,8 @@ name | Required | The name for which you want to begin bidding (must be availabl
 
 ## getauctioninfo
 
-```shell--curl
-curl $url \
-  -X POST \
-  --data '{ "method": "getauctioninfo", "params": [ "clevertld" ] }'
-```
-
 ```shell--cli
-hsw-rpc getauctioninfo clevertld
+hsw-rpc getauctioninfo $name
 ```
 
 ```javascript
@@ -225,7 +213,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getauctioninfo', [ 'clevertld' ]);
+  const result = await client.execute('getauctioninfo', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -271,14 +259,8 @@ name | Required | The name for which you want auction info.
 
 ## sendbid
 
-```shell--curl
-curl $url \
-  -X POST \
-  --data '{ "method": "sendbid", "params": [ "clevertld", 5, 10 ] }'
-```
-
 ```shell--cli
-hsw-rpc sendbid clevertld 5 10
+hsw-rpc sendbid $name $amount $lockup
 ```
 
 ```javascript
@@ -295,7 +277,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendbid', [ 'clevertld', 5, 10 ]);
+  const result = await client.execute('sendbid', [ '$name', $amount, $lockup ]);
   console.log(result);
 })();
 ```
@@ -424,14 +406,8 @@ none
 
 ## sendreveal
 
-```shell--curl
-curl $url \
-  -X POST \
-  --data '{ "method": "sendbid", "params": [ "clevertld", 5, 10 ] }'
-```
-
 ```shell--cli
-hsw-rpc sendreveal clevertld
+hsw-rpc sendreveal $name
 ```
 
 ```javascript
@@ -448,7 +424,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendreveal', [ 'clevertld' ]);
+  const result = await client.execute('sendreveal', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -597,14 +573,8 @@ none
 
 ## sendredeem
 
-```shell--curl
-curl $url \
-  -X POST \
-  --data '{ "method": "sendredeem", "params": [ "clevertld" ] }'
-```
-
 ```shell--cli
-hsw-rpc sendredeem clevertld
+hsw-rpc sendredeem $name
 ```
 
 ```javascript
@@ -621,7 +591,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendredeem', [ 'clevertld' ]);
+  const result = await client.execute('sendredeem', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -699,7 +669,7 @@ name | Required | The name for which you wish to redeem your losing bid.
 ## sendupdate
 
 ```shell--cli
-hsw-rpc sendupdate clevertld '{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}'
+hsw-rpc sendupdate $name '{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}'
 ```
 
 ```javascript
@@ -716,7 +686,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendupdate', [ clevertld, '{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}' ]);
+  const result = await client.execute('sendupdate', [ $name, '{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}' ]);
   console.log(result);
 })();
 ```
@@ -786,7 +756,7 @@ Name | Default |  Description
 ## sendrenewal
 
 ```shell--cli
-hsw-rpc sendrenewal clevertld
+hsw-rpc sendrenewal $name
 ```
 
 ```javascript
@@ -803,7 +773,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendrenewal', [ 'clevertld' ]);
+  const result = await client.execute('sendrenewal', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -883,7 +853,7 @@ name | Required | The name for which you wish to renew your ownership.
 ## sendtransfer
 
 ```shell--cli
-hsw-rpc sendtransfer clevertld
+hsw-rpc sendtransfer $name $address
 ```
 
 ```javascript
@@ -900,7 +870,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendtransfer', [ 'clevertld' ]);
+  const result = await client.execute('sendtransfer', [ '$name', '$address' ]);
   console.log(result);
 })();
 ```
@@ -989,7 +959,7 @@ address | Required | The address to which you wish to transfer ownership of name
 ## sendfinalize
 
 ```shell--cli
-hsw-rpc sendfinalize clevertld
+hsw-rpc sendfinalize $name
 ```
 
 ```javascript
@@ -1006,7 +976,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendfinalize', [ 'clevertld' ]);
+  const result = await client.execute('sendfinalize', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -1085,13 +1055,12 @@ To help prevent the theft of names, during this 48 hour window, the previous own
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | The name whose transfer you wish to finalize
-address | Required | The address to which you wish to finalize ownership of name.
 
 
 ## sendcancel
 
 ```shell--cli
-hsw-rpc sendcancel clevertld
+hsw-rpc sendcancel $name
 ```
 
 ```javascript
@@ -1108,7 +1077,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendcancel', [ 'clevertld' ]);
+  const result = await client.execute('sendcancel', [ '$name' ]);
   console.log(result);
 })();
 ```
@@ -1188,7 +1157,7 @@ name | Required | The name whose transfer you wish to cancel.
 ## sendrevoke
 
 ```shell--cli
-hsw-rpc sendrevoke clevertld
+hsw-rpc sendrevoke $name
 ```
 
 ```javascript
@@ -1205,7 +1174,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendrevoke', [ 'clevertld' ]);
+  const result = await client.execute('sendrevoke', [ '$name' ]);
   console.log(result);
 })();
 ```
