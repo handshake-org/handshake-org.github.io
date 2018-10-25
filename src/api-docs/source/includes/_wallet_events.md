@@ -1,4 +1,4 @@
-# Wallet Events
+# Wallet - Events
 
 ## Using Wallet Sockets
 Wallet events use the socket.io protocol.

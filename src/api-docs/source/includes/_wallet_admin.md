@@ -1,4 +1,4 @@
-# Wallet Admin Commands
+# Wallet - Admin Commands
 
 ```shell--curl
 curl http://x:api-key@127.0.0.1:14039 # will access admin functions for regtest (port 14039) wallets
