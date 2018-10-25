@@ -1250,6 +1250,60 @@ Name | Default |  Description
 name | Required | The name whose transfer you wish to revoke
 
 
+## importnonce
+
+```shell--cli
+hsw-rpc importnonce $name $address $bid-value
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('importnonce', [ '$name', '$address', '$bid-value' ]);
+  console.log(result);
+})();
+```
+
+> importnonce deterministically regenerate's a bid's nonce
+
+```json
+```
+
+Deterministically regenerate a bid's nonce.
+
+### Params
+Name | Default |  Description
+--------- | --------- | ---------
+name | Required | The name for the bid
+address | Required | The address submitting the bid
+bid-value | Required | The value of the bid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
