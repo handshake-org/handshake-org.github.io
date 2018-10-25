@@ -660,6 +660,40 @@
               </ul>
           </li>
           <li>
+            <a href="#wallet-admin-commands" class="toc-h1 toc-link" data-title="Wallet - Admin Commands">Wallet - Admin Commands</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#wallet-rescan" class="toc-h2 toc-link" data-title="Wallet - Admin Commands">Wallet Rescan</a>
+                  </li>
+                  <li>
+                    <a href="#wallet-resend" class="toc-h2 toc-link" data-title="Wallet - Admin Commands">Wallet Resend</a>
+                  </li>
+                  <li>
+                    <a href="#wallet-backup" class="toc-h2 toc-link" data-title="Wallet - Admin Commands">Wallet Backup</a>
+                  </li>
+                  <li>
+                    <a href="#list-all-wallets" class="toc-h2 toc-link" data-title="Wallet - Admin Commands">List all Wallets</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#wallet-accounts" class="toc-h1 toc-link" data-title="Wallet - Accounts">Wallet - Accounts</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#account-object" class="toc-h2 toc-link" data-title="Wallet - Accounts">Account Object</a>
+                  </li>
+                  <li>
+                    <a href="#get-wallet-account-list" class="toc-h2 toc-link" data-title="Wallet - Accounts">Get Wallet Account List</a>
+                  </li>
+                  <li>
+                    <a href="#get-account-information" class="toc-h2 toc-link" data-title="Wallet - Accounts">Get Account Information</a>
+                  </li>
+                  <li>
+                    <a href="#create-new-wallet-account" class="toc-h2 toc-link" data-title="Wallet - Accounts">Create new wallet account</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#wallet-auctions" class="toc-h1 toc-link" data-title="Wallet - Auctions">Wallet - Auctions</a>
               <ul class="toc-list-h2">
                   <li>
@@ -704,22 +738,8 @@
                   <li>
                     <a href="#sendrevoke" class="toc-h2 toc-link" data-title="Wallet - Auctions">sendrevoke</a>
                   </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#wallet-admin-commands" class="toc-h1 toc-link" data-title="Wallet - Admin Commands">Wallet - Admin Commands</a>
-              <ul class="toc-list-h2">
                   <li>
-                    <a href="#wallet-rescan" class="toc-h2 toc-link" data-title="Wallet - Admin Commands">Wallet Rescan</a>
-                  </li>
-                  <li>
-                    <a href="#wallet-resend" class="toc-h2 toc-link" data-title="Wallet - Admin Commands">Wallet Resend</a>
-                  </li>
-                  <li>
-                    <a href="#wallet-backup" class="toc-h2 toc-link" data-title="Wallet - Admin Commands">Wallet Backup</a>
-                  </li>
-                  <li>
-                    <a href="#list-all-wallets" class="toc-h2 toc-link" data-title="Wallet - Admin Commands">List all Wallets</a>
+                    <a href="#importnonce" class="toc-h2 toc-link" data-title="Wallet - Auctions">importnonce</a>
                   </li>
               </ul>
           </li>
@@ -740,23 +760,6 @@
                   </li>
                   <li>
                     <a href="#get-range-of-transactions" class="toc-h2 toc-link" data-title="Wallet - Transactions">Get Range of Transactions</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#wallet-accounts" class="toc-h1 toc-link" data-title="Wallet - Accounts">Wallet - Accounts</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#account-object" class="toc-h2 toc-link" data-title="Wallet - Accounts">Account Object</a>
-                  </li>
-                  <li>
-                    <a href="#get-wallet-account-list" class="toc-h2 toc-link" data-title="Wallet - Accounts">Get Wallet Account List</a>
-                  </li>
-                  <li>
-                    <a href="#get-account-information" class="toc-h2 toc-link" data-title="Wallet - Accounts">Get Account Information</a>
-                  </li>
-                  <li>
-                    <a href="#create-new-wallet-account" class="toc-h2 toc-link" data-title="Wallet - Accounts">Create new wallet account</a>
                   </li>
               </ul>
           </li>
@@ -1472,7 +1475,13 @@ This API call is always available regardless indexing options.
 <td>handshake address</td>
 </tr>
 </tbody></table>
-<h2 id='get-coins-by-addresses'>Get coins by addresses</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">address0</span><span class="p">,</span> <span class="nx">address1</span><span class="p">;</span>
+<h2 id='get-coins-by-addresses'>Get coins by addresses</h2>
+<aside class="warning">
+WARNING: this API call is being considered for deprecation. It is known to cause
+node lockup, due to CPU exhaustion, if there are a large number of addresses queried
+or a large number of results found.
+</aside>
+<pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">address0</span><span class="p">,</span> <span class="nx">address1</span><span class="p">;</span>
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">address0</span><span class="o">=</span><span class="s1">'rs1qpu06wprkwleh579mureghcasjhu9uwge6pltn5'</span>;
 <span class="nv">address1</span><span class="o">=</span><span class="s1">'rs1qcxuurryemelaj64k6rswn8x9aa8nd9nafa47ag'</span>;
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span>/coin/address <span class="se">\</span>
@@ -1755,7 +1764,13 @@ Launch the hsd daemon with these arguments:<br>
 <td>Handshake address.</td>
 </tr>
 </tbody></table>
-<h2 id='get-tx-by-addresses'>Get tx by addresses</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">address0</span><span class="p">,</span> <span class="nx">address1</span><span class="p">;</span>
+<h2 id='get-tx-by-addresses'>Get tx by addresses</h2>
+<aside class="warning">
+WARNING: this API call is being considered for deprecation. It is known to cause
+node lockup, due to CPU exhaustion, if there are a large number of addresses queried
+or a large number of results found.
+</aside>
+<pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">address0</span><span class="p">,</span> <span class="nx">address1</span><span class="p">;</span>
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">address0</span><span class="o">=</span><span class="s1">'rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap'</span>;
 <span class="nv">address1</span><span class="o">=</span><span class="s1">'rs1qx38r5mjzlxfus9yx7nhx3mrg00sv75xc5mksk5'</span>;
 </code></pre><pre class="highlight shell tab-shell--curl"><code> curl <span class="nv">$url</span>/tx/address <span class="se">\</span>
@@ -5782,7 +5797,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 </tbody></table>
 <h1 id='rpc-calls-names'>RPC Calls - Names</h1><h2 id='getnameinfo'>getnameinfo</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
   -X POST <span class="se">\</span>
-  --data <span class="s1">'{ "method": "getnameinfo", "params": [ '</span>pi<span class="s1">'] }'</span>
+  --data <span class="s1">'{ "method": "getnameinfo", "params": [ '</span><span class="nv">$name</span><span class="s1">'] }'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-rpc getnameinfo pi
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
@@ -5797,7 +5812,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameinfo'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'pi'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameinfo'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -5993,7 +6008,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
 <p>Returns info for all names that have been opened or claimed. NOTE: this is primarily for debugging on regtest or testnet. It does not yet support pagination. Note this is different from the <code>hsw-rpc getnames</code> which only returns info on the names your wallet is tracking.</p>
-<h2 id='getnamebyhash'>getnamebyhash</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc getnamebyhash 92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec
+<h2 id='getnamebyhash'>getnamebyhash</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc getnamebyhash <span class="nv">$namehash</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -6007,7 +6022,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnamebyhash'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnamebyhash'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$namehash'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -6047,7 +6062,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <td></td>
 </tr>
 </tbody></table>
-<h2 id='getnameresource'>getnameresource</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc getnameresource clevertld
+<h2 id='getnameresource'>getnameresource</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc getnameresource <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -6061,7 +6076,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameresource'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameresource'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -6092,7 +6107,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <td>name for resource records.</td>
 </tr>
 </tbody></table>
-<h2 id='getnameproof'>getnameproof</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc getnameproof clevertld
+<h2 id='getnameproof'>getnameproof</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc getnameproof <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -6106,7 +6121,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameproof'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameproof'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -6185,7 +6200,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <td>Some error occured.</td>
 </tr>
 </tbody></table>
-<h2 id='createclaim'>createclaim</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc createclaim nytimes
+<h2 id='createclaim'>createclaim</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc createclaim <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -6199,12 +6214,12 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'createclaim'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'nytimes'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'createclaim'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
 <blockquote>
-<p>createclaim returns the txt record to be signed and added to your name&#39;s zone file.</p>
+<p>createclaim returns the txt record to be signed and added to your name&#39;s zone file (using nytimes as example).</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nytimes"</span><span class="p">,</span><span class="w">
@@ -6234,7 +6249,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <td>the reserved name for which you want to create a claim</td>
 </tr>
 </tbody></table>
-<h2 id='sendclaim'>sendclaim</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc sendclaim nytimes
+<h2 id='sendclaim'>sendclaim</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc sendclaim <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -6248,7 +6263,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendclaim'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'nytimes'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendclaim'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -6314,7 +6329,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <td>raw serialized hex-string</td>
 </tr>
 </tbody></table>
-<h2 id='grindname'>grindname</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc grindname 12
+<h2 id='grindname'>grindname</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc grindname <span class="nv">$length</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -6328,7 +6343,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameresource'</span><span class="p">,</span> <span class="p">[</span> <span class="mi">12</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getnameresource'</span><span class="p">,</span> <span class="p">[</span> <span class="nx">$length</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -8539,6 +8554,396 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>index of the output in the transaction being referenced</td>
 </tr>
 </tbody></table>
+<h1 id='wallet-admin-commands'>Wallet - Admin Commands</h1><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039 <span class="c"># will access admin functions for regtest (port 14039) wallets</span>
+
+<span class="c"># examples in these docs will use an environment variable:</span>
+<span class="nv">walletadminurl</span><span class="o">=</span>http://x:api-key@127.0.0.1:14039/
+curl <span class="nv">$walletadminurl</span>/&lt;METHOD&gt;
+</code></pre>
+<p>Admin commands are simply commands no specific to any particular wallet, and may
+impact all wallets on the system.</p>
+
+<p>Additional security is available by specifying <code>admin-token</code> in your configuration
+if <code>wallet-auth</code> is also enabled. If <code>admin-token</code> is specified, add <code>?token=</code>
+to all admin requests.</p>
+
+<p>This is highly recommended, especially on production instances.</p>
+<h2 id='wallet-rescan'>Wallet Rescan</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">height</span><span class="p">;</span>
+</code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">height</span><span class="o">=</span>50
+</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/rescan <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  --data <span class="s1">'{"height": '</span><span class="nv">$height</span><span class="s1">'}'</span>
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli rescan <span class="nv">$height</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">rescan</span><span class="p">(</span><span class="nx">height</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+
+</code></pre>
+<blockquote>
+<p>Response Body:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Initiates a blockchain rescan for the walletdb. Wallets will be rolled back to the specified height (transactions above this height will be unconfirmed).</p>
+<h3 id='example-http-request'>Example HTTP Request</h3>
+<p><code>POST /rescan?height=50</code></p>
+<h2 id='wallet-resend'>Wallet Resend</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/resend <span class="se">\</span>
+-X POST
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli resend
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">resend</span><span class="p">();</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>Response Body:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">    </span><span class="p">{</span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Rebroadcast all pending transactions in all wallets.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>POST /resend</code></p>
+<h2 id='wallet-backup'>Wallet Backup</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">path</span><span class="p">;</span>
+</code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">path</span><span class="o">=</span><span class="s1">'/home/user/walletdb-backup.ldb'</span>
+</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/backup?path<span class="o">=</span><span class="nv">$path</span> <span class="se">\</span>
+  -X POST
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli backup <span class="nv">$path</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">backup</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>Response Body:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Safely backup the wallet database to specified path (creates a clone of the database).</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>POST /backup?path=/home/user/walletdb-backup.ldb</code></p>
+<h2 id='list-all-wallets'>List all Wallets</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/wallet
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli wallets
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">getWallets</span><span class="p">();</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>Sample Response Body:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="s2">"primary"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"newWallet"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"multisig1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"multisig2"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"watchonly1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"multisig3"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"witness1"</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>List all wallet IDs. Returns an array of strings.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>GET /wallet</code></p>
+<h1 id='wallet-accounts'>Wallet - Accounts</h1><h2 id='account-object'>Account Object</h2>
+<blockquote>
+<p>An account object looks like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"initialized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"watchOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pubkeyhash"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"accountIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"receiveDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"changeDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lookahead"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"receiveAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qy9uplxpt5cur32rw3zmyf8e7tp87w8slly2fms"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"changeAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q30ppv5gyrwpy4wyk0v6uzawxygdtvrpux8yrg2"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"accountKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpubKBAXPkng2Zk4FTt7GwatsRAivjckuySyYydDXhcDFKvvQXN4wDvMtazgTAzq7gHA4ZcyXJp5VoYE8AcacXc1AgNmrnJt1YuAkbovBRSJ4Fuo"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="s2">"balance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"unconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">2499997200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">2500000000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"lockedUnconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"lockedConfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Represents a BIP44 Account belonging to a Wallet.
+Note that this object does not enforce locks. Any method that does a write is internal API only and will lead to race conditions if used elsewhere.</p>
+
+<p>From the <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">BIP44 Specification</a>:</p>
+
+<p><em>This level splits the key space into independent user identities, so the wallet never mixes the coins across different accounts.</em>
+        <em>Users can use these accounts to organize the funds in the same fashion as bank accounts; for donation purposes (where all addresses are considered public), for saving purposes, for common expenses etc.</em>
+        <em>Accounts are numbered from index 0 in sequentially increasing manner. This number is used as child index in BIP32 derivation.</em>
+        <em>Hardened derivation is used at this level.</em></p>
+
+<aside class="warning">
+Accounts within the same wallet are all related by deterministic hierarchy. However, wallets are not related to each other in any way. This means that when a wallet seed is backed up, all of its accounts (and their keys) can be derived from that backup. However, each newly created wallet must be backed up separately.
+</aside>
+<h2 id='get-wallet-account-list'>Get Wallet Account List</h2><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
+</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli account --id<span class="o">=</span><span class="nv">$id</span> list
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getAccounts</span><span class="p">();</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>Sample response:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="s2">"default"</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>List all account names (array indices map directly to bip44 account indices) associated with a specific wallet id.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>GET /wallet/:id/account</code></p>
+
+<table><thead>
+<tr>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id <br> <em>string</em></td>
+<td>id of wallet you would like to retrieve the account list for</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+Note that command defaults to primary (default) wallet if no wallet id is passed
+</aside>
+<h2 id='get-account-information'>Get Account Information</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">account</span><span class="p">;</span>
+</code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
+<span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
+</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account/<span class="nv">$account</span>
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> account get <span class="nv">$account</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getAccount</span><span class="p">(</span><span class="nx">account</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>Sample response:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"initialized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"witness"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"watchOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pubkeyhash"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"accountIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"receiveDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"changeDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"nestedDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lookahead"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"receiveAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RLY9z6PCB3fggt36mnfA75jESRtvkALKX5"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"changeAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RPSppa2YUzTK5jWWZ7k74NfMEJtnNKn4vs"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"nestedAddress"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"accountKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpubKBBuJXusEYaDdxTwH1nPYRXQnd3XgLAFfNYxVhjrtvLAkDAXaps1nURZVmWuFsXK8RBXiDQu7grCBv6fRtQxgPH3FkKe4UQV7F2sfNBK47sA"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="s2">"balance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">505</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">501</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"unconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">1339989996774</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">1339989999000</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get account info.</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET /wallet/:id/account/:account</code></p>
+
+<table><thead>
+<tr>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id <br> <em>string</em></td>
+<td>id of wallet you would like to query</td>
+</tr>
+<tr>
+<td>account <br> <em>string</em></td>
+<td>id of account you would to retrieve information for</td>
+</tr>
+</tbody></table>
+<h2 id='create-new-wallet-account'>Create new wallet account</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">passphrase</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">type</span><span class="p">;</span>
+</code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
+<span class="nv">passphrase</span><span class="o">=</span><span class="s1">'secret123'</span>
+<span class="nv">name</span><span class="o">=</span><span class="s1">'menace'</span>
+<span class="nb">type</span><span class="o">=</span><span class="s1">'multisig'</span>
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> account create --name<span class="o">=</span><span class="nv">$name</span> --type<span class="o">=</span><span class="nv">$type</span> --passphrase<span class="o">=</span><span class="nv">$passphrase</span> 
+</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account/<span class="nv">$name</span> <span class="se">\</span>
+    -X PUT <span class="se">\</span>
+    --data <span class="s1">'{"type": "'</span><span class="nv">$type</span><span class="s1">'", "passphrase": "'</span><span class="nv">$passphrase</span><span class="s1">'"}'</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span><span class="na">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span> <span class="na">type</span><span class="p">:</span> <span class="nx">type</span><span class="p">,</span> <span class="na">passphrase</span><span class="p">:</span> <span class="nx">passphrase</span><span class="p">}</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">createAccount</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>Sample response:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"null"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"initialized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"watchOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pubkeyhash"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"accountIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"receiveDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"changeDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lookahead"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"receiveAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qnkc22uz2hp9qz8tphyqy8ujftmz0zstrwn6lju"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"changeAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qk6me5r699v24jn4u9jhdwxg4cykn2akr89g59p"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"accountKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpubKBAXPkng2Zk4FX87zf5LehvNn7Hy5P4eVwKp58YZ1CV7uZwgbDd1PHPKuyj7UTnvzFMMziK2kGtqMpZaKa6zUUM7YBsUB6pzQtojUFM4dnQM"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="s2">"balance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"unconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"lockedUnconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"lockedConfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Create account with specified account name.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>PUT /wallet/:id/account/:name</code></p>
+<h3 id='options-object'>Options object</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name <br> <em>string</em></td>
+<td>name to give the account. Option can be <code>account</code> or <code>name</code></td>
+</tr>
+<tr>
+<td>witness <br> <em>bool</em></td>
+<td>whether or not to act as segregated witness wallet account</td>
+</tr>
+<tr>
+<td>accountKey <br> <em>string</em></td>
+<td>the extended public key for the account. This is ignored for non watch only wallets. Watch only accounts can&#39;t accept private keys for import (or sign transactions)</td>
+</tr>
+<tr>
+<td>type <br> <em>string</em></td>
+<td>what type of wallet to make it (&#39;multisig&#39;, &#39;pubkeyhash&#39;)</td>
+</tr>
+<tr>
+<td>m <br> <em>int</em></td>
+<td>for multisig accounts, what to make <code>m</code> in m-of-n</td>
+</tr>
+<tr>
+<td>n <br> <em>int</em></td>
+<td>for multisig accounts, what to make the <code>n</code> in m-of-n</td>
+</tr>
+</tbody></table>
 <h1 id='wallet-auctions'>Wallet - Auctions</h1>
 <p>Note, all auction related functionality is available through the RPC interface of the handshake wallet. HTTP is not yet supported.</p>
 <h2 id='getnames-hsw'>getnames (hsw)</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc getnames
@@ -8638,10 +9043,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
 <p>Your wallet tracks any name on which you have bid or opened. <code>getnames</code> returns info on each. This is different from the <code>hsd-rpc getnames</code> call which returns info on all names for which the node has data.</p>
-<h2 id='sendopen'>sendopen</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
-  -X POST <span class="se">\</span>
-  --data <span class="s1">'{ "method": "sendopen", "params": [ "clevertld" ] }'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendopen clevertld
+<h2 id='sendopen'>sendopen</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendopen <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -8655,7 +9057,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendopen'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendopen'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -8724,10 +9126,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>The name for which you want to begin bidding (must be available).</td>
 </tr>
 </tbody></table>
-<h2 id='getauctioninfo'>getauctioninfo</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
-  -X POST <span class="se">\</span>
-  --data <span class="s1">'{ "method": "getauctioninfo", "params": [ "clevertld" ] }'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc getauctioninfo clevertld
+<h2 id='getauctioninfo'>getauctioninfo</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc getauctioninfo <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -8741,7 +9140,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getauctioninfo'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getauctioninfo'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -8792,10 +9191,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>The name for which you want auction info.</td>
 </tr>
 </tbody></table>
-<h2 id='sendbid'>sendbid</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
-  -X POST <span class="se">\</span>
-  --data <span class="s1">'{ "method": "sendbid", "params": [ "clevertld", 5, 10 ] }'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendbid clevertld 5 10
+<h2 id='sendbid'>sendbid</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendbid <span class="nv">$name</span> <span class="nv">$amount</span> <span class="nv">$lockup</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -8809,7 +9205,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendbid'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendbid'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span><span class="p">,</span> <span class="nx">$amount</span><span class="p">,</span> <span class="nx">$lockup</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -8941,10 +9337,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <p>getbids returns a list of all the bids placed by your wallet.</p>
 <h3 id='params-4'>Params</h3>
 <p>none</p>
-<h2 id='sendreveal'>sendreveal</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
-  -X POST <span class="se">\</span>
-  --data <span class="s1">'{ "method": "sendbid", "params": [ "clevertld", 5, 10 ] }'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendreveal clevertld
+<h2 id='sendreveal'>sendreveal</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendreveal <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -8958,7 +9351,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendreveal'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendreveal'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -9101,10 +9494,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <p>getreveals returns all the reveal transactions sent by the wallet.</p>
 <h3 id='params-6'>Params</h3>
 <p>none</p>
-<h2 id='sendredeem'>sendredeem</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
-  -X POST <span class="se">\</span>
-  --data <span class="s1">'{ "method": "sendredeem", "params": [ "clevertld" ] }'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendredeem clevertld
+<h2 id='sendredeem'>sendredeem</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendredeem <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -9118,7 +9508,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendredeem'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendredeem'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -9198,7 +9588,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>The name for which you wish to redeem your losing bid.</td>
 </tr>
 </tbody></table>
-<h2 id='sendupdate'>sendupdate</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendupdate clevertld <span class="s1">'{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}'</span>
+<h2 id='sendupdate'>sendupdate</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendupdate <span class="nv">$name</span> <span class="s1">'{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}'</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -9212,7 +9602,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendupdate'</span><span class="p">,</span> <span class="p">[</span> <span class="nx">clevertld</span><span class="p">,</span> <span class="s1">'{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendupdate'</span><span class="p">,</span> <span class="p">[</span> <span class="nx">$name</span><span class="p">,</span> <span class="s1">'{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -9284,7 +9674,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>The name for which you wish to update resource data (initially creates a REGISTER output).</td>
 </tr>
 </tbody></table>
-<h2 id='sendrenewal'>sendrenewal</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendrenewal clevertld
+<h2 id='sendrenewal'>sendrenewal</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendrenewal <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -9298,7 +9688,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendrenewal'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendrenewal'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -9379,7 +9769,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>The name for which you wish to renew your ownership.</td>
 </tr>
 </tbody></table>
-<h2 id='sendtransfer'>sendtransfer</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendtransfer clevertld
+<h2 id='sendtransfer'>sendtransfer</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendtransfer <span class="nv">$name</span> <span class="nv">$address</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -9393,7 +9783,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendtransfer'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendtransfer'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span><span class="p">,</span> <span class="s1">'$address'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -9487,7 +9877,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>The address to which you wish to transfer ownership of name.</td>
 </tr>
 </tbody></table>
-<h2 id='sendfinalize'>sendfinalize</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendfinalize clevertld
+<h2 id='sendfinalize'>sendfinalize</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendfinalize <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -9501,7 +9891,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendfinalize'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendfinalize'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -9585,13 +9975,8 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>Required</td>
 <td>The name whose transfer you wish to finalize</td>
 </tr>
-<tr>
-<td>address</td>
-<td>Required</td>
-<td>The address to which you wish to finalize ownership of name.</td>
-</tr>
 </tbody></table>
-<h2 id='sendcancel'>sendcancel</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendcancel clevertld
+<h2 id='sendcancel'>sendcancel</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendcancel <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -9605,7 +9990,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendcancel'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendcancel'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -9686,7 +10071,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>The name whose transfer you wish to cancel.</td>
 </tr>
 </tbody></table>
-<h2 id='sendrevoke'>sendrevoke</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendrevoke clevertld
+<h2 id='sendrevoke'>sendrevoke</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc sendrevoke <span class="nv">$name</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -9700,7 +10085,7 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendrevoke'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'clevertld'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendrevoke'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -9780,145 +10165,53 @@ hsd-cli coin <span class="nv">$hash</span> <span class="nv">$index</span>
 <td>The name whose transfer you wish to revoke</td>
 </tr>
 </tbody></table>
-<h1 id='wallet-admin-commands'>Wallet - Admin Commands</h1><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039 <span class="c"># will access admin functions for regtest (port 14039) wallets</span>
-
-<span class="c"># examples in these docs will use an environment variable:</span>
-<span class="nv">walletadminurl</span><span class="o">=</span>http://x:api-key@127.0.0.1:14039/
-curl <span class="nv">$walletadminurl</span>/&lt;METHOD&gt;
-</code></pre>
-<p>Admin commands are simply commands no specific to any particular wallet, and may
-impact all wallets on the system.</p>
-
-<p>Additional security is available by specifying <code>admin-token</code> in your configuration
-if <code>wallet-auth</code> is also enabled. If <code>admin-token</code> is specified, add <code>?token=</code>
-to all admin requests.</p>
-
-<p>This is highly recommended, especially on production instances.</p>
-<h2 id='wallet-rescan'>Wallet Rescan</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">height</span><span class="p">;</span>
-</code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">height</span><span class="o">=</span>50
-</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/rescan <span class="se">\</span>
-  -X POST <span class="se">\</span>
-  --data <span class="s1">'{"height": '</span><span class="nv">$height</span><span class="s1">'}'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli rescan <span class="nv">$height</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<h2 id='importnonce'>importnonce</h2><pre class="highlight shell tab-shell--cli"><code>hsw-rpc importnonce <span class="nv">$name</span> <span class="nv">$address</span> <span class="nv">$bid</span>-value
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+<span class="kr">const</span> <span class="nx">clientOptions</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">rpcPort</span><span class="p">,</span>
   <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
 <span class="p">}</span>
 
-<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">rescan</span><span class="p">(</span><span class="nx">height</span><span class="p">);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-<span class="p">})();</span>
-
-</code></pre>
-<blockquote>
-<p>Response Body:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Initiates a blockchain rescan for the walletdb. Wallets will be rolled back to the specified height (transactions above this height will be unconfirmed).</p>
-<h3 id='example-http-request'>Example HTTP Request</h3>
-<p><code>POST /rescan?height=50</code></p>
-<h2 id='wallet-resend'>Wallet Resend</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/resend <span class="se">\</span>
--X POST
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli resend
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
-  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
-<span class="p">}</span>
-
-<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
-
-<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">resend</span><span class="p">();</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'importnonce'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'$name'</span><span class="p">,</span> <span class="s1">'$address'</span><span class="p">,</span> <span class="s1">'$bid-value'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
 <blockquote>
-<p>Response Body:</p>
+<p>importnonce deterministically regenerate&#39;s a bid&#39;s nonce</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="w">    </span><span class="p">{</span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Rebroadcast all pending transactions in all wallets.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>POST /resend</code></p>
-<h2 id='wallet-backup'>Wallet Backup</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">path</span><span class="p">;</span>
-</code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">path</span><span class="o">=</span><span class="s1">'/home/user/walletdb-backup.ldb'</span>
-</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/backup?path<span class="o">=</span><span class="nv">$path</span> <span class="se">\</span>
-  -X POST
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli backup <span class="nv">$path</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
-  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
-<span class="p">}</span>
-
-<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
-
-<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">backup</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-<span class="p">})();</span>
-</code></pre>
-<blockquote>
-<p>Response Body:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Safely backup the wallet database to specified path (creates a clone of the database).</p>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>POST /backup?path=/home/user/walletdb-backup.ldb</code></p>
-<h2 id='list-all-wallets'>List all Wallets</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletadminurl</span>/wallet
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli wallets
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
-  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
-<span class="p">}</span>
-
-<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
-
-<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">getWallets</span><span class="p">();</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-<span class="p">})();</span>
-</code></pre>
-<blockquote>
-<p>Sample Response Body:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="s2">"primary"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"newWallet"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"multisig1"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"multisig2"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"watchonly1"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"multisig3"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"witness1"</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>List all wallet IDs. Returns an array of strings.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>GET /wallet</code></p>
+<pre class="highlight json tab-json"><code></code></pre>
+<p>Deterministically regenerate a bid&#39;s nonce.</p>
+<h3 id='params-14'>Params</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>Required</td>
+<td>The name for the bid</td>
+</tr>
+<tr>
+<td>address</td>
+<td>Required</td>
+<td>The address submitting the bid</td>
+</tr>
+<tr>
+<td>bid-value</td>
+<td>Required</td>
+<td>The value of the bid</td>
+</tr>
+</tbody></table>
 <h1 id='wallet-transactions'>Wallet - Transactions</h1><h2 id='get-wallet-tx-details'>Get Wallet TX Details</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">hash</span>
 </code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s2">"primary"</span>
 <span class="nb">hash</span><span class="o">=</span><span class="s2">"580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9"</span>
@@ -10313,257 +10606,6 @@ Get last N wallet transactions.
 ### HTTP Request
 
 `GET /wallet/:id/tx/last` -->
-<h1 id='wallet-accounts'>Wallet - Accounts</h1><h2 id='account-object'>Account Object</h2>
-<blockquote>
-<p>An account object looks like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"initialized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"watchOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pubkeyhash"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"accountIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"receiveDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"changeDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"lookahead"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"receiveAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qy9uplxpt5cur32rw3zmyf8e7tp87w8slly2fms"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"changeAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q30ppv5gyrwpy4wyk0v6uzawxygdtvrpux8yrg2"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"accountKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpubKBAXPkng2Zk4FTt7GwatsRAivjckuySyYydDXhcDFKvvQXN4wDvMtazgTAzq7gHA4ZcyXJp5VoYE8AcacXc1AgNmrnJt1YuAkbovBRSJ4Fuo"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-  </span><span class="s2">"balance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"unconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">2499997200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">2500000000</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"lockedUnconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"lockedConfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Represents a BIP44 Account belonging to a Wallet.
-Note that this object does not enforce locks. Any method that does a write is internal API only and will lead to race conditions if used elsewhere.</p>
-
-<p>From the <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">BIP44 Specification</a>:</p>
-
-<p><em>This level splits the key space into independent user identities, so the wallet never mixes the coins across different accounts.</em>
-        <em>Users can use these accounts to organize the funds in the same fashion as bank accounts; for donation purposes (where all addresses are considered public), for saving purposes, for common expenses etc.</em>
-        <em>Accounts are numbered from index 0 in sequentially increasing manner. This number is used as child index in BIP32 derivation.</em>
-        <em>Hardened derivation is used at this level.</em></p>
-
-<aside class="warning">
-Accounts within the same wallet are all related by deterministic hierarchy. However, wallets are not related to each other in any way. This means that when a wallet seed is backed up, all of its accounts (and their keys) can be derived from that backup. However, each newly created wallet must be backed up separately.
-</aside>
-<h2 id='get-wallet-account-list'>Get Wallet Account List</h2><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
-</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli account --id<span class="o">=</span><span class="nv">$id</span> list
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
-  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
-<span class="p">}</span>
-
-<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-
-<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getAccounts</span><span class="p">();</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-<span class="p">})();</span>
-</code></pre>
-<blockquote>
-<p>Sample response:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="s2">"default"</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>List all account names (array indices map directly to bip44 account indices) associated with a specific wallet id.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET /wallet/:id/account</code></p>
-
-<table><thead>
-<tr>
-<th>Parameters</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id <br> <em>string</em></td>
-<td>id of wallet you would like to retrieve the account list for</td>
-</tr>
-</tbody></table>
-
-<aside class="notice">
-Note that command defaults to primary (default) wallet if no wallet id is passed
-</aside>
-<h2 id='get-account-information'>Get Account Information</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">account</span><span class="p">;</span>
-</code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
-<span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
-</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account/<span class="nv">$account</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> account get <span class="nv">$account</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
-  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
-<span class="p">}</span>
-
-<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-
-<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getAccount</span><span class="p">(</span><span class="nx">account</span><span class="p">);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-<span class="p">})();</span>
-</code></pre>
-<blockquote>
-<p>Sample response:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"initialized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"witness"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"watchOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pubkeyhash"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"accountIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"receiveDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"changeDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"nestedDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"lookahead"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"receiveAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RLY9z6PCB3fggt36mnfA75jESRtvkALKX5"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"changeAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RPSppa2YUzTK5jWWZ7k74NfMEJtnNKn4vs"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"nestedAddress"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"accountKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpubKBBuJXusEYaDdxTwH1nPYRXQnd3XgLAFfNYxVhjrtvLAkDAXaps1nURZVmWuFsXK8RBXiDQu7grCBv6fRtQxgPH3FkKe4UQV7F2sfNBK47sA"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-  </span><span class="s2">"balance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">505</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">501</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"unconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">1339989996774</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">1339989999000</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Get account info.</p>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET /wallet/:id/account/:account</code></p>
-
-<table><thead>
-<tr>
-<th>Parameters</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id <br> <em>string</em></td>
-<td>id of wallet you would like to query</td>
-</tr>
-<tr>
-<td>account <br> <em>string</em></td>
-<td>id of account you would to retrieve information for</td>
-</tr>
-</tbody></table>
-<h2 id='create-new-wallet-account'>Create new wallet account</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">passphrase</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">type</span><span class="p">;</span>
-</code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'primary'</span>
-<span class="nv">passphrase</span><span class="o">=</span><span class="s1">'secret123'</span>
-<span class="nv">name</span><span class="o">=</span><span class="s1">'menace'</span>
-<span class="nb">type</span><span class="o">=</span><span class="s1">'multisig'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> account create --name<span class="o">=</span><span class="nv">$name</span> --type<span class="o">=</span><span class="nv">$type</span> --passphrase<span class="o">=</span><span class="nv">$passphrase</span> 
-</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account/<span class="nv">$name</span> <span class="se">\</span>
-    -X PUT <span class="se">\</span>
-    --data <span class="s1">'{"type": "'</span><span class="nv">$type</span><span class="s1">'", "passphrase": "'</span><span class="nv">$passphrase</span><span class="s1">'"}'</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
-  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
-<span class="p">}</span>
-
-<span class="kr">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span><span class="na">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span> <span class="na">type</span><span class="p">:</span> <span class="nx">type</span><span class="p">,</span> <span class="na">passphrase</span><span class="p">:</span> <span class="nx">passphrase</span><span class="p">}</span>
-
-<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">createAccount</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-<span class="p">})();</span>
-</code></pre>
-<blockquote>
-<p>Sample response:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"null"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"initialized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"watchOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pubkeyhash"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"accountIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"receiveDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"changeDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"lookahead"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"receiveAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qnkc22uz2hp9qz8tphyqy8ujftmz0zstrwn6lju"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"changeAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qk6me5r699v24jn4u9jhdwxg4cykn2akr89g59p"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"accountKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpubKBAXPkng2Zk4FX87zf5LehvNn7Hy5P4eVwKp58YZ1CV7uZwgbDd1PHPKuyj7UTnvzFMMziK2kGtqMpZaKa6zUUM7YBsUB6pzQtojUFM4dnQM"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-  </span><span class="s2">"balance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"unconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"lockedUnconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"lockedConfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Create account with specified account name.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>PUT /wallet/:id/account/:name</code></p>
-<h3 id='options-object'>Options object</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>name <br> <em>string</em></td>
-<td>name to give the account. Option can be <code>account</code> or <code>name</code></td>
-</tr>
-<tr>
-<td>witness <br> <em>bool</em></td>
-<td>whether or not to act as segregated witness wallet account</td>
-</tr>
-<tr>
-<td>accountKey <br> <em>string</em></td>
-<td>the extended public key for the account. This is ignored for non watch only wallets. Watch only accounts can&#39;t accept private keys for import (or sign transactions)</td>
-</tr>
-<tr>
-<td>type <br> <em>string</em></td>
-<td>what type of wallet to make it (&#39;multisig&#39;, &#39;pubkeyhash&#39;)</td>
-</tr>
-<tr>
-<td>m <br> <em>int</em></td>
-<td>for multisig accounts, what to make <code>m</code> in m-of-n</td>
-</tr>
-<tr>
-<td>n <br> <em>int</em></td>
-<td>for multisig accounts, what to make the <code>n</code> in m-of-n</td>
-</tr>
-</tbody></table>
 <h1 id='wallet-events'>Wallet - Events</h1><h2 id='using-wallet-sockets'>Using Wallet Sockets</h2>
 <p>Wallet events use the socket.io protocol.</p>
 
