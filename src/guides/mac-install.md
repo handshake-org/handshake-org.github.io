@@ -23,7 +23,7 @@ $ brew install node git
 
 #### Download and install `hsd`
 ```bash
-$ git clone git@github.com:handshake-org/hsd.git
+$ git clone https://github.com/handshake-org/hsd.git
 $ cd hsd
 $ npm install --production
 ```
@@ -43,7 +43,7 @@ $ brew install git automake autoconf libtool unbound
 
 #### Download and compile `hnsd`
 ```bash
-$ git clone git@github.com:handshake-org/hnsd.git
+$ git clone https://github.com/handshake-org/hnsd.git
 $ cd hnsd
 $ ./autogen.sh && ./configure --with-network=testnet && make
 ```
