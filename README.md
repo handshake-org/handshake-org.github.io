@@ -49,7 +49,7 @@ $ npm install -g http-server
 $ http-server -p 8080
 ```
 
-The site will run at [http://locahost:8080](http://localhost:8080).
+The site will run at [http://localhost:8080](http://localhost:8080).
 
 ## Updating API Docs
 The [API Documentation](https://handshake-org.github.io/api-docs/index.html)
