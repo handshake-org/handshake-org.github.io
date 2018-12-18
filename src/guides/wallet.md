@@ -87,14 +87,20 @@ Choose 'regtest' for testing out the commands below.
 
 ### hsw-cli
 
-&nbsp;\
 Calling the CLI without any arguments `$ hsw-cli` will output the list of supported commands
 
 &nbsp;\
-Create a new wallet, seed it with a mnemonic phrase and encrypt it with a passphrase.
+Create a new wallet. The passphrase is optional and is used to encrypt the wallet. There is no passphrase recovery here. Loss of the passphrase means loss of the wallet.
+``` bash
+$ hsw-cli mkwallet <name-of-new-wallet> --passphrase=<passphrase>
+```
+
+&nbsp;\
+Create a new wallet from a mnemonic seed phrase. By importing an existing seed phrase you gain control of any previous wallets seeded from that phrase. Passphrase optional.
 ``` bash
 $ hsw-cli mkwallet <name-of-new-wallet> --mnemonic=<mnemonic-phrase> --passphrase=<passphrase>
 ```
+
 
 Response JSON:
 ``` json
