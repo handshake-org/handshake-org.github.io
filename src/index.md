@@ -42,6 +42,9 @@ Handshake utilizes a utility coin system for name registration.
 Handshake depends on the free and open source community to take ownership
 and decentralize the system [https://handshake.org](https://handshake.org).
 
+### Logo Assets
+Multiple PDF, PNG & SVG assets as well as a .sketch file can be found here: [https://handshake-org.github.io/src/logos/logos.zip](https://handshake-org.github.io/src/logos/logos.zip).
+
 ### Mailing List
 
 You can subscribe to the GNU Mailman mailing list by e-mailing ‘subscribe’
