@@ -31,7 +31,9 @@ includes:
   - wallet_accounts
   - wallet_auctions
   - wallet_tx
-  - wallet_events
+  - sockets
+  - node_sockets
+  - wallet_sockets
   - errors
 
 search: true
