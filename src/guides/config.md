@@ -137,7 +137,7 @@ $ ./bin/hsd --network=testnet --http-host=0.0.0.0 --wallet-http-host=0.0.0.0 --w
 
 Example using ENV:
 ```bash
-$ BCOIN_NETWORK=testnet BCOIN_HTTP_HOST=0.0.0.0 BCOIN_WALLET_HTTP_HOST=0.0.0.0 BCOIN_WALLET_API_KEY=hunter2 BCOIN_WALLET_WALLET_AUTH=true ./bin/hsd
+$ HSD_NETWORK=testnet HSD_HTTP_HOST=0.0.0.0 HSD_WALLET_HTTP_HOST=0.0.0.0 HSD_WALLET_API_KEY=hunter2 HSD_WALLET_WALLET_AUTH=true ./bin/hsd
 ```
 
 ### hsd client:
