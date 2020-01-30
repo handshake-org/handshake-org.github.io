@@ -60,7 +60,7 @@ $ cd /home
 
 #### Descarga e instalación de `hsd`
 ```
-$ git clone git@github.com:handshake-org/hsd.git
+$ git clone https://github.com/handshake-org/hsd
 $ cd hsd
 $ npm pack bsip
 $ npm pack mrmr
@@ -133,7 +133,7 @@ $ ./hsd/bin/hsd --daemon --no-auth
 ## Instrucciones de instalación para `hnsd`
 #### Descarga y compila `hnsd`
 ```bash
-$ git clone git@github.com:handshake-org/hnsd.git
+$ git clone https://github.com/handshake-org/hnsd
 $ cd hnsd
 $ ./autogen.sh && ./configure --with-network testnet && make
 ```

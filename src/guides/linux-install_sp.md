@@ -22,7 +22,7 @@ $ sudo apt install nodejs git
 
 #### Descargamos e instalamos `hsd`
 ```
-$ git clone git@github.com:handshake-org/hsd.git
+$ git clone https://github.com/handshake-org/hsd
 $ cd hsd
 $ npm install --production
 ```
@@ -43,7 +43,7 @@ $ sudo apt install automake autoconf libtool unbound libunbound-dev
 
 #### Descargamos y compilamos `hnsd`
 ```
-git clone git@github.com:handshake-org/hnsd.git
+git clone https://github.com/handshake-org/hnsd
 cd hnsd
 ./autogen.sh && ./configure --with-network && make
 ```
