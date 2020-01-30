@@ -465,9 +465,7 @@ id <br> _string_ | named id of the wallet whose info you would like to retrieve
 
 ```javascript
 let id, passphrase, witness, watchOnly, accountKey;
-```
 
-```shell--vars
 id='newWallet'
 passphrase='secret456'
 witness=false
@@ -476,15 +474,27 @@ accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTR
 ```
 
 ```shell--curl
+id='newWallet'
+passphrase='secret456'
+witness=false
+watchOnly=true
+accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
+
 curl $walleturl/$id \
   -X PUT \
   --data '{"witness":'$witness', "passphrase":"'$passphrase'", "watchOnly": '$watchOnly', "accountKey":"'$accountKey'"}'
 ```
 
 ```shell--cli
+id='newWallet'
+passphrase='secret456'
+witness=false
+watch=true
+key='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
+
 # watchOnly defaults to true if --key flag is set
 
-hsw-cli mkwallet $id --witness=$witness --passphrase=$passphrase --watch=$watchOnly --key=$accountKey
+hsw-cli mkwallet $id --witness=$witness --passphrase=$passphrase --watch=$watch --key=$key
 ```
 
 ```javascript
