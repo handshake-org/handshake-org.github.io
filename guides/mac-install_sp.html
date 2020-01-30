@@ -23,7 +23,7 @@
 <nav><div class="wrapper">
   <ul>
     <li><strong>INSTALL</strong></li>
-    <li><a id="install-mac"  class="active"  href="/guides/mac-install.html">macOS</a></li>
+    <li><a id="install-mac"   href="/guides/mac-install.html">macOS</a></li>
     <li><a id="install-linux"   href="/guides/linux-install.html">Linux</a></li>
     <li><a id="install-win"   href="/guides/win-install.html">Windows</a></li>
   </ul>
@@ -58,45 +58,45 @@
    \/__/  
 </pre>
 
-<h1 id="macos-install-guide">macOS Install Guide</h1>
-<p>The Handshake software suite consists of a full node (<code>hsd</code>) and a light client (<code>hnsd</code>). The full node allows users to register, update, and transfer names, resolve names, and make blockchain payments. The light client (SPV node) allows users to resolve names without the computing resource requirements of running a full node.</p>
-<p>This guide includes instructions for installing <a href="#hsd-installation-instructions"><code>hsd</code></a> and <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
-<p>Check <a href="https://github.com/handshake-org/hsd#install">the repository</a> for updates.</p>
+<h1 id="guía-de-instalación-para-macos">Guía de instalación para macOS</h1>
+<p>El conjunto de software Handshake consta de un nodo completo (<code>hsd</code>) y un cliente ligero (<code>hnsd</code>). El nodo completo permite a los usuarios registrar, actualizar y transferir nombres, resolver nombres y realizar pagos en la cadena de bloques. El cliente ligero (nodo SPV) permite a los usuarios resolver nombres sin los requisitos de recursos informáticos de ejecutar un nodo completo.</p>
+<p>Esta guía incluye instrucciones para instalar <a href="#hsd-installation-instructions"><code>hsd</code></a> y <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
+<p>Consulte <a href="https://github.com/handshake-org/hsd#install">el repositorio</a> para obtener actualizaciones.</p>
 <p><br/></p>
-<h2 id="hsd-installation-instructions"><code>hsd</code> Installation Instructions</h2>
-<h4 id="install-dependencies">Install dependencies</h4>
-<p>Xcode Command Line Tools, Homebrew, node.js (&gt;= v10) &amp; git</p>
+<h2 id="instrucciones-para-la-instalación-de-hsd">Instrucciones para la instalación de <code>hsd</code></h2>
+<h4 id="instalamos-dependencias">Instalamos dependencias</h4>
+<p>Herramientas de línea de comandos de Xcode, Homebrew, node.js (&gt;= v10) y git</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">xcode-select</span> --install</span>
 <span id="cb1-2"><a href="#cb1-2"></a>$ <span class="ex">/usr/bin/ruby</span> -e <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="va">)</span><span class="st">&quot;</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a>$ <span class="ex">brew</span> install node git</span></code></pre></div>
-<h4 id="download-and-install-hsd">Download and install <code>hsd</code></h4>
+<h4 id="descarga-e-instalación-de-hsd">Descarga e instalación de <code>hsd</code></h4>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hsd</span>
 <span id="cb2-2"><a href="#cb2-2"></a>$ <span class="bu">cd</span> hsd</span>
 <span id="cb2-3"><a href="#cb2-3"></a>$ <span class="ex">npm</span> install --production</span></code></pre></div>
-<h4 id="start-on-testnet">Start (on testnet)</h4>
+<h4 id="inicio-en-la-testnet">Inicio (en la testnet)</h4>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="ex">./hsd/bin/hsd</span> --daemon --no-auth</span></code></pre></div>
 <p><br/></p>
-<h2 id="hnsd-installation-instructions"><code>hnsd</code> Installation Instructions</h2>
-<h4 id="install-dependencies-1">Install dependencies</h4>
+<h2 id="instrucciones-de-instalación-para-hnsd">Instrucciones de instalación para <code>hnsd</code></h2>
+<h4 id="instalamos-dependencias-1">Instalamos dependencias</h4>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="ex">brew</span> install git automake autoconf libtool unbound</span></code></pre></div>
-<h4 id="download-and-compile-hnsd">Download and compile <code>hnsd</code></h4>
+<h4 id="descarga-y-compilación-de-hnsd">Descarga y compilación de <code>hnsd</code></h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</span>
 <span id="cb5-2"><a href="#cb5-2"></a>$ <span class="bu">cd</span> hnsd</span>
 <span id="cb5-3"><a href="#cb5-3"></a>$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=testnet <span class="kw">&amp;&amp;</span> <span class="fu">make</span></span></code></pre></div>
-<h4 id="start-hnsd">Start <code>hnsd</code></h4>
+<h4 id="inicio-de-hnsd">Inicio de <code>hnsd</code></h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="fu">sudo</span> ./hnsd --pool-size=1 --rs-host=127.0.0.1:53</span></code></pre></div>
-<h4 id="configure-nameserver-settings">Configure nameserver settings</h4>
+<h4 id="configurar-las-opciones-del-nombre-del-servidores">Configurar las opciones del nombre del servidores</h4>
 <ul>
-<li>Open “System Preferences” on the panel/dock.</li>
-<li>Select “Network”.</li>
-<li>Select “Advanced”.</li>
-<li>Select “DNS”.</li>
-<li>Remove all nameservers and add a single server: “127.0.0.1”.</li>
+<li>Abrimos “System Preferences” en el panel/dock.</li>
+<li>Seleccionamos “Network”.</li>
+<li>Seleccionamos “Advanced”.</li>
+<li>Seleccionamos “DNS”</li>
+<li>Eliminamos todos los nombres de servidores y añadimos un único servidor: “127.0.0.1”</li>
 </ul>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>
-<a href="https://github.com/handshake-org/handshake-org.github.io/blob/master/src/guides/mac-install.md">https://github.com/handshake-org/handshake-org.github.io/blob/master/src/guides/mac-install.md</a>
+<a href="https://github.com/handshake-org/handshake-org.github.io/blob/master/src/guides/mac-install_sp.md">https://github.com/handshake-org/handshake-org.github.io/blob/master/src/guides/mac-install_sp.md</a>
 </section>
 </main>
 
