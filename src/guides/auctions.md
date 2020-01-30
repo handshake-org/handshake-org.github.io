@@ -43,19 +43,23 @@ $ hsw-cli rpc getnameinfo handshake
 $ hsw-cli rpc getauctioninfo handshake
 ```
 
-If we end up losing, we can redeem our money from the covenant with
-`$ hsw-cli rpc sendredeem handshake`.
+If we end up losing, we can redeem our money from the covenant.
+
+```
+$ hsw-cli rpc sendredeem handshake
+```
 
 If we won, we can now register and update the name using `sendupdate`.
 
 ``` bash
 $ hsw-cli rpc sendupdate handshake \
-  '{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}'
+ '{"records": [{"type": "GLUE4", "ns": "ns1.handshake.", "address": "1.2.3.4"}]}'
 ```
 
-Note that the `ns` field's `domain@ip` format symbolizes glue.
+Formatting examples for each record type are
+[listed here.](https://github.com/handshake-org/hsd/blob/6afb72bb42cb05d52835eb36bf8ae3f9fbf9f3e0/test/resource-test.js#L9-L46)
 
-Expiration on testnet is around 30 days, so be sure to send a renewal soon!
+Renewals on mainnet are required within about two years!
 
 ``` bash
 $ hsw-cli rpc sendrenewal handshake
