@@ -181,18 +181,17 @@ Options are used for wallet creation. None are required.
 Name | Type | Default | Description
 ---------- | ----------- | -------------- | -------------
 id | String |  | Wallet ID (used for storage)
-master | HDPrivateKey | | Master HD key. If not present, it will be generated
-witness | Boolean | `false` | Whether to use witness programs
-watchOnly | Boolean | `false` |
-accountKey | String | | The extended public key for the primary account in the new wallet. This value is ignored if `watchOnly` is `false`
-accountIndex | Number | `0` | The BIP44 [account index](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#Account)
-receiveDepth | Number | | The index of the _next_ receiving address
-changeDepth | Number | | The index of the _next_ change address
 type | String | `'pubkeyhash'` |Type of wallet (pubkeyhash, multisig)
-compressed | Boolean | `true` | Whether to use compressed public keys
+master | HDPrivateKey | | Master HD key. If not present, it will be generated
+mnemonic | String | | A mnemonic phrase to use to instantiate an hd private key. One will be generated if none provided
 m | Number | `1` | m value for multisig (`m-of-n`)
 n | Number | `1` | n value for multisig (`m-of-n`)
-mnemonic | String | | A mnemonic phrase to use to instantiate an hd private key. One will be generated if none provided
+passphrase | String | | A strong passphrase used to encrypt the wallet
+watchOnly | Boolean | `false` | (`watch` for CLI)
+accountKey | String | | The extended public key for the primary account in the new wallet. This value is ignored if `watchOnly` is `false` <br> (`key` for CLI)
+accountDepth* | Number | `0` | The index of the _next_ [BIP44 account index](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#Account)
+
+_(*) options are only available in Javascript usage, not CLI or curl_
 
 
 ## Wallet Auth
