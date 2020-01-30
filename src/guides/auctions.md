@@ -57,7 +57,7 @@ $ hsw-cli rpc sendupdate handshake \
 ```
 
 Formatting examples for each record type are
-[listed here.](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/test/resource-test.js#L10-L50)
+[listed here.](https://github.com/handshake-org/hsd/blob/6afb72bb42cb05d52835eb36bf8ae3f9fbf9f3e0/test/resource-test.js#L9-L46)
 
 Renewals on mainnet are required within about two years!
 
