@@ -76,7 +76,7 @@ $ cd bcrypto
 ```
 - Vaya y edite el package.json en la carpeta raíz `hsd/` para usar el archivo anterior
 
-- Edita binding.gyp: `"<!(bash -c \"python -c 'from __future__ import print_function; import sys; print(sys.byteorder)'\")",`
+- Edita binding.gyp: `"<!(bash -c \"python -c \"from __future__ import print_function; import sys; print(sys.byteorder)\"\")",`
 - Continúa
 ```
 $ cd ..
