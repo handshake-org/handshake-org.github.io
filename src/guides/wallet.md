@@ -166,7 +166,6 @@ Initiate blockchain rescan for walletdb. Necessary after importing a key or wall
 $ hsw-cli rescan --height=<block-height>
 ```
 
-&nbsp;\
 ### hsw-rpc
 
 &nbsp;\
