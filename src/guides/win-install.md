@@ -79,7 +79,7 @@ $ rm *.tgz
 $ cd bcrypto
 ```
 - Go thru and edit package.json in root `hsd/` folder to use file: of the above.
-- Edit binding.gyp: `"<!(bash -c \"python -c 'from __future__ import print_function; import sys; print(sys.byteorder)'\")",`
+- Edit binding.gyp: `"<!(bash -c \"python -c \"from __future__ import print_function; import sys; print(sys.byteorder)\"\")",`
 - Continue
 ```
 $ cd ..
