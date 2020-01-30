@@ -6,11 +6,13 @@ Esta guía incluye instrucciones para instalar
 [`hsd`](#hsd-installation-instructions) y
 [`hnsd`](#hnsd-installation-instructions).
 
+Consulte [el repositorio](https://github.com/handshake-org/hsd#install) para obtener actualizaciones.
+
 <br/>
 
 ## Instrucciones para la instalación de `hsd`
 #### Instalamos dependencias
-Herramientas de línea de comandos de Xcode, Homebrew, node.js y git
+Herramientas de línea de comandos de Xcode, Homebrew, node.js (>= v10) y git
 ```bash
 $ xcode-select --install
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

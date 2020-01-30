@@ -14,11 +14,13 @@ This guide includes instructions for installing
 proper package manager for your OS. The BSDs and Solaris have not been tested yet,
 but should work in theory.
 
+Check [the repository](https://github.com/handshake-org/hsd#install) for updates.
+
 <br/>
 
 ## `hsd` Installation Instructions
 #### Install dependencies
-- node.js
+- node.js (>= v10)
 - git
 ```
 $ sudo apt install nodejs git

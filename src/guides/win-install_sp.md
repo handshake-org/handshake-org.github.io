@@ -8,11 +8,13 @@ Esta guía incluye instrucciones para instalar
 
 >NOTA: El software no ha sido probado a fondo en windows.
 
+Consulte [el repositorio](https://github.com/handshake-org/hsd#install) para obtener actualizaciones.
+
 <br/>
 
 ## instrucciones para la instalación de `hsd`
 #### Instalamos dependencias
-- Node / NPM [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
+- Node.js (>= v10) / NPM [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
 - OpenSSL Win 64 [http://slproweb.com/products/Win32OpenSSL.html](http://slproweb.com/products/Win32OpenSSL.html)
 
 Instalacion de Python y las herramientas de creación para windows :

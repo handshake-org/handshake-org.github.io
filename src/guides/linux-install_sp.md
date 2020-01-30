@@ -8,11 +8,13 @@ Esta guía incluye instrucciones para la instalación de
 
 > Nota: Las instrucciones son específicas para Debian/Ubuntu. Asegúrese de usar el gestor de paquetes adecuado para su sistema operativo. BSDs y Solaris aún no han sido probados, pero en teoría, debería funcionar.
 
+Consulte [el repositorio](https://github.com/handshake-org/hsd#install) para obtener actualizaciones.
+
 <br/>
 
 ## Instrucciones de instalación de `hsd`
 #### Instalamos dependencias
-- node.js
+- node.js (>= v10)
 - git
 ```
 $ sudo apt install nodejs git
