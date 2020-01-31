@@ -205,12 +205,14 @@ after the soft fork activates. Reserved names can be re-claimed
 
 #### KSK-2010 Soft Fork
 
-Currently the DNSSEC chain of signatures can be rooted by either one of ICANN's key-signing-keys:
-KSK-2010, and KSK-2017. The older key
-[has already been revoked](https://www.icann.org/news/blog/icann-is-revoking-the-old-key-signing-key-this-week)
-and its use may be prohibited by the Handshake blockchain. Another
-[soft fork is in place](https://github.com/handshake-org/hsd/blob/acd80f114f92e56fdf1c27f176bfde3ec25aabee/lib/blockchain/chain.js#L608-L616)
-to prohibit use of KSK-2010 when the community agrees it is necessary.
+When the Handshake whitepaper was written, one of the systemic vulnerabilities considered
+was the revocation or compromise of ICANN's 2010 key-signing-key. Earlier versions of the
+software included a soft-forkable rule that would prohibit reserved name claims with
+DNSSEC proofs rooted by KSK-2010. Since then, ICANN has
+[provably revoked](https://github.com/handshake-org/hsd/issues/351)
+the 2010 key, and the soft fork
+[was removed](https://github.com/handshake-org/hsd/commit/609af67780c03a5d6f9a566079a46182e405112b).
+KSK-2017 is now the only root zone key allowed in Claims on Handshake.
 
 ### Name rollout
 
