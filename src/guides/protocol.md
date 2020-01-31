@@ -18,14 +18,14 @@ Links reference the `hsd` codebase at the time of writing, just before main net 
 [4000000 Weight Units](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/protocol/consensus.js#L176)
 
 - Hash algorithm:
-[BLAKE2b](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/mining/mine.js#L31-L46)
+[BLAKE2b + SHA3](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/mining/mine.js#L31-L46)
 
 - Hashes in Handshake are
 [Big-Endian](https://github.com/handshake-org/hsd/commit/add3235d5b0de380257a6d069ca19ba717b60db4).
 
 - Segregated Witness: Handshake is 100% SegWit, with witness commitment in the block header.
 
-- Block headers: Handshake block headers are 236 bytes and
+- Block headers: Handshake block headers are 256 bytes and
 [commit to several tree roots:](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/primitives/abstractblock.js#L446-L465)
 
   - merkle: Base transaction data
