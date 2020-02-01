@@ -33,9 +33,9 @@ $ cd hsd
 $ npm install --production
 ```
 
-#### Start (on testnet)
+#### Start (on mainnet)
 ```
-$ ./bin/hsd --daemon --no-auth
+$ ./bin/hsd
 ```
 
 <br/>
@@ -51,7 +51,7 @@ $ sudo apt install automake autoconf libtool unbound libunbound-dev
 ```
 git clone https://github.com/handshake-org/hnsd
 cd hnsd
-./autogen.sh && ./configure --with-network && make
+./autogen.sh && ./configure --with-network=main && make
 ```
 
 #### Start `hnsd`

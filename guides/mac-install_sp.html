@@ -73,8 +73,8 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="fu">git</span> clone https://github.com/handshake-org/hsd</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">$ <span class="bu">cd</span> hsd</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">$ <span class="ex">npm</span> install --production</a></code></pre></div>
-<h4 id="inicio-en-la-testnet">Inicio (en la testnet)</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">./hsd/bin/hsd</span> --daemon --no-auth</a></code></pre></div>
+<h4 id="inicio-en-la-mainnet">Inicio (en la mainnet)</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">./bin/hsd</span></a></code></pre></div>
 <p><br/></p>
 <h2 id="instrucciones-de-instalación-para-hnsd">Instrucciones de instalación para <code>hnsd</code></h2>
 <h4 id="instalamos-dependencias-1">Instalamos dependencias</h4>
@@ -82,7 +82,7 @@
 <h4 id="descarga-y-compilación-de-hnsd">Descarga y compilación de <code>hnsd</code></h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">$ <span class="bu">cd</span> hnsd</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=testnet <span class="kw">&amp;&amp;</span> <span class="fu">make</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-3" data-line-number="3">$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=main <span class="kw">&amp;&amp;</span> <span class="fu">make</span></a></code></pre></div>
 <h4 id="inicio-de-hnsd">Inicio de <code>hnsd</code></h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="fu">sudo</span> ./hnsd --pool-size=1 --rs-host=127.0.0.1:53</a></code></pre></div>
 <h4 id="configurar-las-opciones-del-nombre-del-servidores">Configurar las opciones del nombre del servidores</h4>

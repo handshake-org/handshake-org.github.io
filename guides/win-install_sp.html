@@ -163,14 +163,14 @@ $ mv chacha20.h chacha20_2.h</code></pre>
 $ cd ..</code></pre>
 <h4 id="sal-de-la-terminal-y-establece-mklink">Sal de la terminal y establece mklink</h4>
 <pre><code>$ mklink /D C:\home C:\Cygwin64\home</code></pre>
-<h4 id="abre-la-terminal-de-nuevo-y-inicia-en-la-testnet">Abre la terminal de nuevo y inicia (en la testnet)</h4>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">./hsd/bin/hsd</span> --daemon --no-auth</a></code></pre></div>
+<h4 id="abre-la-terminal-de-nuevo-y-inicia-en-la-mainnet">Abre la terminal de nuevo y inicia (en la mainnet)</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">./bin/hsd</span></a></code></pre></div>
 <p><br/></p>
 <h2 id="instrucciones-de-instalación-para-hnsd">Instrucciones de instalación para <code>hnsd</code></h2>
 <h4 id="descarga-y-compila-hnsd">Descarga y compila <code>hnsd</code></h4>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">$ <span class="bu">cd</span> hnsd</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network testnet <span class="kw">&amp;&amp;</span> <span class="fu">make</span></a></code></pre></div>
+<a class="sourceLine" id="cb15-3" data-line-number="3">$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=main <span class="kw">&amp;&amp;</span> <span class="fu">make</span></a></code></pre></div>
 <h4 id="inicia-hnsd">Inicia <code>hnsd</code></h4>
 <pre><code>$ ./hnsd.exe --pool-size=1 --rs-host=127.0.0.1:53</code></pre>
 <h4 id="cambia-las-dns-de-windows-establécelo-en-127.0.0.1">Cambia las DNS de windows establécelo en 127.0.0.1</h4>

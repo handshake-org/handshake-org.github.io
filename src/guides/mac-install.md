@@ -30,9 +30,9 @@ $ cd hsd
 $ npm install --production
 ```
 
-#### Start (on testnet)
+#### Start (on mainnet)
 ```bash
-$ ./hsd/bin/hsd --daemon --no-auth
+$ ./bin/hsd
 ```
 
 <br/>
@@ -47,7 +47,7 @@ $ brew install git automake autoconf libtool unbound
 ```bash
 $ git clone https://github.com/handshake-org/hnsd
 $ cd hnsd
-$ ./autogen.sh && ./configure --with-network=testnet && make
+$ ./autogen.sh && ./configure --with-network=main && make
 ```
 
 #### Start `hnsd`

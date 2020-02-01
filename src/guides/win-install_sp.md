@@ -123,9 +123,9 @@ $ cd ..
 $ mklink /D C:\home C:\Cygwin64\home
 ```
 
-#### Abre la terminal de nuevo y inicia (en la testnet)
+#### Abre la terminal de nuevo y inicia (en la mainnet)
 ```bash
-$ ./hsd/bin/hsd --daemon --no-auth
+$ ./bin/hsd
 ```
 
 <br/>
@@ -135,7 +135,7 @@ $ ./hsd/bin/hsd --daemon --no-auth
 ```bash
 $ git clone https://github.com/handshake-org/hnsd
 $ cd hnsd
-$ ./autogen.sh && ./configure --with-network testnet && make
+$ ./autogen.sh && ./configure --with-network=main && make
 ```
 
 #### Inicia `hnsd`

@@ -77,8 +77,8 @@
 <pre><code>$ git clone https://github.com/handshake-org/hsd
 $ cd hsd
 $ npm install --production</code></pre>
-<h4 id="inicio-en-la-testnet">Inicio (en la testnet)</h4>
-<pre><code>$ ./hsd/bin/hsd --daemon --no-auth</code></pre>
+<h4 id="inicio-en-la-mainnet">Inicio (en la mainnet)</h4>
+<pre><code>$ ./bin/hsd</code></pre>
 <p><br/></p>
 <h2 id="instrucciones-de-instalación-para-hnsd">Instrucciones de instalación para <code>hnsd</code></h2>
 <h4 id="instalamos-dependencias-1">Instalamos dependencias</h4>
@@ -89,7 +89,7 @@ $ npm install --production</code></pre>
 <h4 id="descargamos-y-compilamos-hnsd">Descargamos y compilamos <code>hnsd</code></h4>
 <pre><code>git clone https://github.com/handshake-org/hnsd
 cd hnsd
-./autogen.sh &amp;&amp; ./configure --with-network &amp;&amp; make</code></pre>
+./autogen.sh &amp;&amp; ./configure --with-network=main &amp;&amp; make</code></pre>
 <h4 id="iniciamos-hnsd">iniciamos <code>hnsd</code></h4>
 <pre><code>sudo setcap &#39;cap_net_bind_service=+ep&#39; /path/to/hnsd
 ./hnsd --pool-size=1 --rs-host=127.0.0.1:53</code></pre>

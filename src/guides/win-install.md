@@ -125,9 +125,9 @@ $ cd ..
 $ mklink /D C:\home C:\Cygwin64\home
 ```
 
-#### open bash again and Start (on testnet)
+#### open bash again and Start (on mainnet)
 ```bash
-$ ./hsd/bin/hsd --daemon --no-auth
+$ ./bin/hsd
 ```
 
 <br/>
@@ -137,7 +137,7 @@ $ ./hsd/bin/hsd --daemon --no-auth
 ```bash
 $ git clone https://github.com/handshake-org/hnsd
 $ cd hnsd
-$ ./autogen.sh && ./configure --with-network testnet && make
+$ ./autogen.sh && ./configure --with-network=main && make
 ```
 
 #### Start `hnsd`
