@@ -61,7 +61,7 @@
 <h2 id="hsd-configuration">HSD Configuration</h2>
 <p>By default, the mainnet hsd config files will reside in <code>~/.hsd/hsd.conf</code> and <code>~/.hsd/hsw.conf</code>. Any parameter passed to hsd at startup will have precedence over the config file. Even if you are just running <code>hs-client</code> without hsd installed (to access a remote server, for example) the configuration files would still reside in <code>~/.hsd/</code></p>
 <p>For example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">hsd</span> --network=regtest --api-key=menace --daemon</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">hsd</span> --network=regtest --api-key=menace --daemon</a></code></pre></div>
 <p>…will read the config file at <code>~/.hsd/regtest/hsd.conf</code> and ignore any <code>network</code> or <code>api-key</code> parameters listed in that file.</p>
 <p>All hsd configuration options work in the config file, CLI arguments, process environment, and in the constructor parameters when instantiating new <code>node</code> objects in JavaScript. Each method has slightly different formatting. Note specifically the usage of hyphens and capital letters. See the examples below:</p>
 <table>
@@ -96,7 +96,7 @@
 </table>
 <h2 id="datadirprefix">Datadir/Prefix</h2>
 <p>The hsd datadir is determined by the <code>prefix</code> option. The following example wiil create a datadir of <code>~/.hsd_spv</code>, containing a chain database, wallet database and log file.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="ex">hsd</span> --prefix ~/.hsd_spv --spv</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="ex">hsd</span> --prefix ~/.hsd_spv --spv</a></code></pre></div>
 <h2 id="common-options">Common Options</h2>
 <ul>
 <li><code>config</code>: Points to a custom config file, not in the prefix directory.</li>
@@ -179,9 +179,9 @@ wallet-auth: true
 api-key: hunter2
 http-host: 0.0.0.0</code></pre>
 <p>Example using CLI options:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="ex">./bin/hsd</span> --network=testnet --http-host=0.0.0.0 --wallet-http-host=0.0.0.0 --wallet-api-key=hunter2 --wallet-wallet-auth=true</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="ex">./bin/hsd</span> --network=testnet --http-host=0.0.0.0 --wallet-http-host=0.0.0.0 --wallet-api-key=hunter2 --wallet-wallet-auth=true</a></code></pre></div>
 <p>Example using ENV:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="va">HSD_NETWORK=</span>testnet <span class="va">HSD_HTTP_HOST=</span>0.0.0.0 <span class="va">HSD_WALLET_HTTP_HOST=</span>0.0.0.0 <span class="va">HSD_WALLET_API_KEY=</span>hunter2 <span class="va">HSD_WALLET_WALLET_AUTH=</span>true <span class="ex">./bin/hsd</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="va">HSD_NETWORK=</span>testnet <span class="va">HSD_HTTP_HOST=</span>0.0.0.0 <span class="va">HSD_WALLET_HTTP_HOST=</span>0.0.0.0 <span class="va">HSD_WALLET_API_KEY=</span>hunter2 <span class="va">HSD_WALLET_WALLET_AUTH=</span>true <span class="ex">./bin/hsd</span></a></code></pre></div>
 <h3 id="hsd-client">hsd client:</h3>
 <ul>
 <li><code>node-host</code>: Location of hsd node HTTP server (default: localhost).</li>

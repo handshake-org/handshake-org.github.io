@@ -69,25 +69,25 @@
 <h2 id="instrucciones-para-la-instalación-de-hsd">instrucciones para la instalación de <code>hsd</code></h2>
 <h4 id="instalamos-dependencias">Instalamos dependencias</h4>
 <ul>
-<li>Node.js (&gt;= v10) / NPM <a href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a></li>
-<li>OpenSSL Win 64 <a href="http://slproweb.com/products/Win32OpenSSL.html">http://slproweb.com/products/Win32OpenSSL.html</a></li>
+<li>Node.js (&gt;= v10) / NPM <a href="https://nodejs.org/en/download/" class="uri">https://nodejs.org/en/download/</a></li>
+<li>OpenSSL Win 64 <a href="http://slproweb.com/products/Win32OpenSSL.html" class="uri">http://slproweb.com/products/Win32OpenSSL.html</a></li>
 </ul>
 <p>Instalacion de Python y las herramientas de creación para windows :</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">npm</span> install --global --production windows-build-tools</span>
-<span id="cb1-2"><a href="#cb1-2"></a>$ <span class="ex">npm</span> config set msvs_version 2015 --global</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="ex">npm</span> install --global --production windows-build-tools</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">$ <span class="ex">npm</span> config set msvs_version 2015 --global</a></code></pre></div>
 <p>Cygwin</p>
 <ul>
-<li>Descarga de <a href="https://cygwin.com/install.html">https://cygwin.com/install.html</a></li>
+<li>Descarga de <a href="https://cygwin.com/install.html" class="uri">https://cygwin.com/install.html</a></li>
 <li>Abre la línea de comandos ejecutando ‘cmd’</li>
 <li>Ejecuta:</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="bu">cd</span> Downloads</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="ex">setup-x86_64.exe</span> ^</span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="ex">--root</span> C:\Cygwin64<span class="dt">\ </span>^</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="ex">--site</span> http://cygwin.mirror.constant.com ^</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="ex">--quiet-mode</span> ^</span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="ex">--no-desktop</span> ^</span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="ex">--packages</span> wget,git,automake,autoconf,cygwin32-libtool,libunbound-common,libunbound-devel,libunbound2,nano,libtool,gcc-g++,cygwin32-gcc-g++,make</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="bu">cd</span> Downloads</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="ex">setup-x86_64.exe</span> ^</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="ex">--root</span> C:\Cygwin64<span class="dt">\ </span>^</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="ex">--site</span> http://cygwin.mirror.constant.com ^</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="ex">--quiet-mode</span> ^</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="ex">--no-desktop</span> ^</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="ex">--packages</span> wget,git,automake,autoconf,cygwin32-libtool,libunbound-common,libunbound-devel,libunbound2,nano,libtool,gcc-g++,cygwin32-gcc-g++,make</a></code></pre></div>
 <blockquote>
 <p>Nota: Esto asume que estas usando el disco C:</p>
 </blockquote>
@@ -96,15 +96,15 @@
 <li>Abre una línea de comandos (cmd)</li>
 <li>Asigna el path:</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="kw">set</span> <span class="va">PATH=</span><span class="ex">%PATH</span><span class="kw">;</span><span class="ex">C</span>:\Cygwin64\bin</span>
-<span id="cb3-2"><a href="#cb3-2"></a>$ <span class="ex">setx</span> PATH %PATH<span class="kw">;</span><span class="ex">C</span>:\Cygwin64\bin</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="kw">set</span> <span class="va">PATH=</span><span class="ex">%PATH</span><span class="kw">;</span><span class="ex">C</span>:\Cygwin64\bin</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">$ <span class="ex">setx</span> PATH %PATH<span class="kw">;</span><span class="ex">C</span>:\Cygwin64\bin</a></code></pre></div>
 <blockquote>
 <p>Nota: si es una máquina de 32bit, sólo Cygwin en lugar</p>
 </blockquote>
 <h4 id="ejecuta-bash">Ejecuta bash</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="fu">bash</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="fu">bash</span></a></code></pre></div>
 <h4 id="cambia-al-directorio-home">Cambia al directorio home</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="bu">cd</span> /home</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="bu">cd</span> /home</a></code></pre></div>
 <h4 id="descarga-e-instalación-de-hsd">Descarga e instalación de <code>hsd</code></h4>
 <pre><code>$ git clone https://github.com/handshake-org/hsd
 $ cd hsd
@@ -121,8 +121,8 @@ $ rm *.tgz
 $ cd bcrypto</code></pre>
 <ul>
 <li><p>Vaya y edite el package.json en la carpeta raíz <code>hsd/</code> para usar el archivo anterior</p></li>
-<li><p>Edita binding.gyp: <code>"&lt;!(bash -c \"python -c \"from __future__ import print_function; import sys; print(sys.byteorder)\"\")",</code></p></li>
-<li><p>Continúa</p></li>
+<li>Edita binding.gyp: <code>&quot;&lt;!(bash -c \&quot;python -c \&quot;from __future__ import print_function; import sys; print(sys.byteorder)\&quot;\&quot;)&quot;,</code></li>
+<li>Continúa</li>
 </ul>
 <pre><code>$ cd ..
 $ cd bsip</code></pre>
@@ -164,13 +164,13 @@ $ cd ..</code></pre>
 <h4 id="sal-de-la-terminal-y-establece-mklink">Sal de la terminal y establece mklink</h4>
 <pre><code>$ mklink /D C:\home C:\Cygwin64\home</code></pre>
 <h4 id="abre-la-terminal-de-nuevo-y-inicia-en-la-testnet">Abre la terminal de nuevo y inicia (en la testnet)</h4>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a>$ <span class="ex">./hsd/bin/hsd</span> --daemon --no-auth</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">./hsd/bin/hsd</span> --daemon --no-auth</a></code></pre></div>
 <p><br/></p>
 <h2 id="instrucciones-de-instalación-para-hnsd">Instrucciones de instalación para <code>hnsd</code></h2>
 <h4 id="descarga-y-compila-hnsd">Descarga y compila <code>hnsd</code></h4>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</span>
-<span id="cb15-2"><a href="#cb15-2"></a>$ <span class="bu">cd</span> hnsd</span>
-<span id="cb15-3"><a href="#cb15-3"></a>$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network testnet <span class="kw">&amp;&amp;</span> <span class="fu">make</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">$ <span class="bu">cd</span> hnsd</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network testnet <span class="kw">&amp;&amp;</span> <span class="fu">make</span></a></code></pre></div>
 <h4 id="inicia-hnsd">Inicia <code>hnsd</code></h4>
 <pre><code>$ ./hnsd.exe --pool-size=1 --rs-host=127.0.0.1:53</code></pre>
 <h4 id="cambia-las-dns-de-windows-establécelo-en-127.0.0.1">Cambia las DNS de windows establécelo en 127.0.0.1</h4>
