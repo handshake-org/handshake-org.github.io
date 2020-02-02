@@ -25,7 +25,7 @@ Links reference the `hsd` codebase at the time of writing, just before main net 
 
 - Segregated Witness: Handshake is 100% SegWit, with witness commitment in the block header.
 
-- Block headers: Handshake block headers are 256 bytes and
+- Block headers: Handshake block headers are 236 bytes and
 [commit to several tree roots:](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/primitives/abstractblock.js#L446-L465)
 
   - merkle: Base transaction data

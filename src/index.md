@@ -24,18 +24,6 @@ decentralized open platform owned by the commons.
 The latest source code is available on
 [GitHub](https://github.com/handshake-org) under the [MIT license](https://opensource.org/licenses/mit-license.php).
 
-### Security Audit
-
-The protocol and implementation are being audited by a team led by
-[Dr. Matthew Green](https://isi.jhu.edu/~mgreen/) of John Hopkins University.
-Dr. Green has previously led audits on the [libsodium](https://www.privateinternetaccess.com/blog/2017/08/libsodium-v1-0-12-and-v1-0-13-security-assessment/)
-crypto library and the [Truecrypt](https://blog.cryptographyengineering.com/2015/04/02/truecrypt-report/)
-disk encryption project. He is also a co-author of both the
-[ Zerocoin ](http://zerocoin.org/talks_and_press) and
-[ Zerocash ](http://zerocash-project.org/paper) papers. He is also a research scientist for the
-[Zcash Company](https://z.cash/) and shares his thoughts on cryptographic
-engineering on his [blog](https://blog.cryptographyengineering.com/).
-
 ### Coins
 
 Handshake utilizes a utility coin system for name registration.

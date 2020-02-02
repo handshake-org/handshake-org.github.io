@@ -12,10 +12,6 @@ Al instalar y/o contribuir con Handshake, estamos participando en una plataforma
 
 El último código fuente está disponible en [GitHub](https://github.com/handshake-org) bajo la [licencia MIT](https://opensource.org/licenses/mit-license.php).
 
-### Auditoría de seguridad
-
-El protocolo y la implementación están siendo auditados por un equipo dirigido por el [Dr. Matthew Green](https://isi.jhu.edu/~mgreen/) de la universidad John Hopkins. El Dr.Green ha dirigido anteriormente auditorias en la biblioteca criptográfica [libsodium](https://www.privateinternetaccess.com/blog/2017/08/libsodium-v1-0-12-and-v1-0-13-security-assessment/) y el proyecto de encriptación de discos [Truecrypt](https://blog.cryptographyengineering.com/2015/04/02/truecrypt-report/). Es coautor de los documentos [ Zerocoin ](http://zerocoin.org/talks_and_press) y [ Zerocash ](http://zerocash-project.org/paper). También es investigador científico de la compañía [Zcash Company](https://z.cash/) y comparte sus ideas sobre ingenieria criptográfica en su [blog](https://blog.cryptographyengineering.com/).
-
 ### Monedas
 
 Handshake utiliza un sistema de utilidad de monedas para el registro de nombres. Handshake depende de la comunidad libre y de código abierto para asumir la propiedad y descentralizar el sistema [https://handshake.org](https://handshake.org).
