@@ -68,7 +68,7 @@
 <li><p>Hash algorithm: <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/mining/mine.js#L31-L46">BLAKE2b + SHA3</a></p></li>
 <li><p>Hashes in Handshake are <a href="https://github.com/handshake-org/hsd/commit/add3235d5b0de380257a6d069ca19ba717b60db4">Big-Endian</a>.</p></li>
 <li><p>Segregated Witness: Handshake is 100% SegWit, with witness commitment in the block header.</p></li>
-<li><p>Block headers: Handshake block headers are 256 bytes and <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/primitives/abstractblock.js#L446-L465">commit to several tree roots:</a></p>
+<li><p>Block headers: Handshake block headers are 236 bytes and <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/primitives/abstractblock.js#L446-L465">commit to several tree roots:</a></p>
 <ul>
 <li><p>merkle: Base transaction data</p></li>
 <li><p>witness: Transaction witness data</p></li>

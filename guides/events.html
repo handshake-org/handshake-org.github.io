@@ -60,47 +60,47 @@
 
 <h2 id="events-and-sockets">Events and Sockets</h2>
 <p>To listen for and react to events in hsd, a listener must be added in the runtime script. If you are running a full node (for example) you might already be familiar with <a href="https://github.com/handshake-org/hsd/blob/master/bin/node">the hsd full node launch script</a>, which instantiates a <code>FullNode</code> object, adds a wallet, and begins the connection and synchronization process. The script ends with an <code>async</code> function that actually starts these processes, and this is a good place to add event listeners. <a href="#events-directory">Using the table below</a> you can discover which object needs to be listened <code>on</code> for each event type. Notice that because the wallet is added as a plugin, its object hierarchy path is a little… awkward :-)</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">// Based on https://github.com/handshake-org/hsd/blob/master/bin/node</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">(<span class="at">async</span> () <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">  await <span class="va">node</span>.<span class="at">ensure</span>()<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">  await <span class="va">node</span>.<span class="at">open</span>()<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">  await <span class="va">node</span>.<span class="at">connect</span>()<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">  <span class="va">node</span>.<span class="at">startSync</span>()<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="co">// add event listeners after everything is open, connected, and started</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">  <span class="co">// NODE</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">  <span class="va">node</span>.<span class="at">on</span>(<span class="st">&#39;tx&#39;</span><span class="op">,</span> (details) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- node tx -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">  <span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">  </a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">  <span class="va">node</span>.<span class="at">on</span>(<span class="st">&#39;block&#39;</span><span class="op">,</span> (details) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- node block -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">  <span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20">  <span class="co">// MEMPOOL</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">  <span class="va">node</span>.<span class="va">mempool</span>.<span class="at">on</span>(<span class="st">&#39;confirmed&#39;</span><span class="op">,</span> (details) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- mempool confirmed -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">  <span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25">  <span class="co">// WALLET</span></a>
-<a class="sourceLine" id="cb1-26" data-line-number="26">  <span class="va">node</span>.<span class="va">plugins</span>.<span class="va">walletdb</span>.<span class="va">wdb</span>.<span class="at">on</span>(<span class="st">&#39;balance&#39;</span><span class="op">,</span> (details) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- wallet balance -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</a>
-<a class="sourceLine" id="cb1-28" data-line-number="28">  <span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb1-30" data-line-number="30">  <span class="va">node</span>.<span class="va">plugins</span>.<span class="va">walletdb</span>.<span class="va">wdb</span>.<span class="at">on</span>(<span class="st">&#39;confirmed&#39;</span><span class="op">,</span> (details) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-31" data-line-number="31">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- wallet confirmed -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</a>
-<a class="sourceLine" id="cb1-32" data-line-number="32">  <span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-33" data-line-number="33"></a>
-<a class="sourceLine" id="cb1-34" data-line-number="34">  <span class="va">node</span>.<span class="va">plugins</span>.<span class="va">walletdb</span>.<span class="va">wdb</span>.<span class="at">on</span>(<span class="st">&#39;address&#39;</span><span class="op">,</span> (details) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-35" data-line-number="35">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- wallet address -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</a>
-<a class="sourceLine" id="cb1-36" data-line-number="36">  <span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-37" data-line-number="37"></a>
-<a class="sourceLine" id="cb1-38" data-line-number="38"><span class="op">}</span>)().<span class="at">catch</span>((err) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-39" data-line-number="39">  <span class="va">console</span>.<span class="at">error</span>(<span class="va">err</span>.<span class="at">stack</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-40" data-line-number="40">  <span class="va">process</span>.<span class="at">exit</span>(<span class="dv">1</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">// Based on https://github.com/handshake-org/hsd/blob/master/bin/node</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="cf">await</span> <span class="va">node</span>.<span class="at">ensure</span>()<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="cf">await</span> <span class="va">node</span>.<span class="at">open</span>()<span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="cf">await</span> <span class="va">node</span>.<span class="at">connect</span>()<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="va">node</span>.<span class="at">startSync</span>()<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="co">// add event listeners after everything is open, connected, and started</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a>  <span class="co">// NODE</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>  <span class="va">node</span>.<span class="at">on</span>(<span class="st">&#39;tx&#39;</span><span class="op">,</span> (details) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- node tx -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</span>
+<span id="cb1-14"><a href="#cb1-14"></a>  <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>  </span>
+<span id="cb1-16"><a href="#cb1-16"></a>  <span class="va">node</span>.<span class="at">on</span>(<span class="st">&#39;block&#39;</span><span class="op">,</span> (details) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- node block -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</span>
+<span id="cb1-18"><a href="#cb1-18"></a>  <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a></span>
+<span id="cb1-20"><a href="#cb1-20"></a>  <span class="co">// MEMPOOL</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>  <span class="va">node</span>.<span class="va">mempool</span>.<span class="at">on</span>(<span class="st">&#39;confirmed&#39;</span><span class="op">,</span> (details) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- mempool confirmed -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</span>
+<span id="cb1-23"><a href="#cb1-23"></a>  <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a>  <span class="co">// WALLET</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>  <span class="va">node</span>.<span class="va">plugins</span>.<span class="va">walletdb</span>.<span class="va">wdb</span>.<span class="at">on</span>(<span class="st">&#39;balance&#39;</span><span class="op">,</span> (details) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- wallet balance -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</span>
+<span id="cb1-28"><a href="#cb1-28"></a>  <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a></span>
+<span id="cb1-30"><a href="#cb1-30"></a>  <span class="va">node</span>.<span class="va">plugins</span>.<span class="va">walletdb</span>.<span class="va">wdb</span>.<span class="at">on</span>(<span class="st">&#39;confirmed&#39;</span><span class="op">,</span> (details) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb1-31"><a href="#cb1-31"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- wallet confirmed -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</span>
+<span id="cb1-32"><a href="#cb1-32"></a>  <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a></span>
+<span id="cb1-34"><a href="#cb1-34"></a>  <span class="va">node</span>.<span class="va">plugins</span>.<span class="va">walletdb</span>.<span class="va">wdb</span>.<span class="at">on</span>(<span class="st">&#39;address&#39;</span><span class="op">,</span> (details) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb1-35"><a href="#cb1-35"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39; -- wallet address -- </span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> details)</span>
+<span id="cb1-36"><a href="#cb1-36"></a>  <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb1-37"><a href="#cb1-37"></a></span>
+<span id="cb1-38"><a href="#cb1-38"></a><span class="op">}</span>)().<span class="at">catch</span>((err) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb1-39"><a href="#cb1-39"></a>  <span class="va">console</span>.<span class="at">error</span>(<span class="va">err</span>.<span class="at">stack</span>)<span class="op">;</span></span>
+<span id="cb1-40"><a href="#cb1-40"></a>  <span class="va">process</span>.<span class="at">exit</span>(<span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-41"><a href="#cb1-41"></a><span class="op">}</span>)<span class="op">;</span></span></code></pre></div>
 <h2 id="events-directory">Events Directory</h2>
 <p>This list is comprehensive for all Handshake transaction, wallet, and blockchain activity. Events regarding errors, socket connections and peer connections have been omitted for clarity. Notice that certain methods emit the same events but with different return objects, and not all re-emitters return everything they receive.</p>
 <table>
@@ -275,102 +275,102 @@
 <p>Websocket connections in hsd are handled by two servers, one for <code>Node</code> and one for <code>Wallet</code>. Those servers each have child objects such as <code>Chain</code>, <code>Mempool</code>, <code>Pool</code>, and <code>WalletDB</code>, and relay events from them out the socket. To receive an event, the socket client must watch a channel (such as <code>chain</code>, <code>mempool</code>, or <code>auth</code>) or join a wallet (which would be user-defined like <code>primary</code>, <code>hot-wallet</code>, or <code>multisig1</code>). All wallets can be joined at once by joining <code>'*'</code>.</p>
 <h3 id="listen-for-socket-events-with-bsock">Listen for Socket Events with bsock</h3>
 <p>To make a socket connection to hsd, you need to run a websocket client. Luckily the bcoin and hsd developers have developed <a href="https://github.com/bcoin-org/bsock">bsock</a>, a minimal websocket-only implementation of the socket.io protocol. By default, bsock listens on <code>localhost</code>, and you only need to pass it a port number to connect to one of the hsd servers. The example below illustrates how to establish the socket connection, authenticate with your user-defined <a href="https://handshake-org.github.io/api-docs/#authentication">API key</a> and then send and receive events! <a href="#socket-events-directory">See the tables below for a complete list of calls and events available in hsd.</a></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">// bsock-example.js</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">const</span> bsock <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;bsock&#39;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">const</span> <span class="op">{</span>Network<span class="op">,</span> ChainEntry<span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;hsd&#39;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">const</span> network <span class="op">=</span> <span class="va">Network</span>.<span class="at">get</span>(<span class="st">&#39;regtest&#39;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="kw">const</span> apiKey <span class="op">=</span> <span class="st">&#39;api-key&#39;</span><span class="op">;</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">nodeSocket <span class="op">=</span> <span class="va">bsock</span>.<span class="at">connect</span>(<span class="va">network</span>.<span class="at">rpcPort</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">walletSocket <span class="op">=</span> <span class="va">bsock</span>.<span class="at">connect</span>(<span class="va">network</span>.<span class="at">walletPort</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="va">nodeSocket</span>.<span class="at">on</span>(<span class="st">&#39;connect&#39;</span><span class="op">,</span> <span class="at">async</span> (e) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">  <span class="cf">try</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Connect event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> e)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">    <span class="co">// `auth` must be called before any other actions</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Attempting auth:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> await <span class="va">nodeSocket</span>.<span class="at">call</span>(<span class="st">&#39;auth&#39;</span><span class="op">,</span> apiKey))<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">    <span class="co">// `watch chain` subscirbes us to chain events like `block`</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Attempting watch chain:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> await <span class="va">nodeSocket</span>.<span class="at">call</span>(<span class="st">&#39;watch chain&#39;</span>))<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">    <span class="co">// Some calls simply request information from the server like an http request</span></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Attempting get tip:&#39;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">    <span class="kw">const</span> tip <span class="op">=</span> await <span class="va">nodeSocket</span>.<span class="at">call</span>(<span class="st">&#39;get tip&#39;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24">    <span class="va">console</span>.<span class="at">log</span>(<span class="va">ChainEntry</span>.<span class="at">from</span>(tip))<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26">  <span class="op">}</span> <span class="cf">catch</span> (e) <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Connection Error:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> e)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28">  <span class="op">}</span> </a>
-<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="co">// listen for new blocks</span></a>
-<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="va">nodeSocket</span>.<span class="at">bind</span>(<span class="st">&#39;chain connect&#39;</span><span class="op">,</span> (raw<span class="op">,</span> txs) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-33" data-line-number="33">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Chain Connect Event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="va">ChainEntry</span>.<span class="at">fromRaw</span>(raw))<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb2-36" data-line-number="36"><span class="va">walletSocket</span>.<span class="at">on</span>(<span class="st">&#39;connect&#39;</span><span class="op">,</span> <span class="at">async</span> (e) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-37" data-line-number="37">  <span class="cf">try</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-38" data-line-number="38">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Connect event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> e)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-39" data-line-number="39"></a>
-<a class="sourceLine" id="cb2-40" data-line-number="40">    <span class="co">// `auth` is required before proceeding</span></a>
-<a class="sourceLine" id="cb2-41" data-line-number="41">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Attempting auth:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> await <span class="va">walletSocket</span>.<span class="at">call</span>(<span class="st">&#39;auth&#39;</span><span class="op">,</span> apiKey))<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb2-43" data-line-number="43">    <span class="co">// here we join all wallets, but we could also just join `primary` or any other wallet</span></a>
-<a class="sourceLine" id="cb2-44" data-line-number="44">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Attempting join *:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> await <span class="va">walletSocket</span>.<span class="at">call</span>(<span class="st">&#39;join&#39;</span><span class="op">,</span> <span class="st">&#39;*&#39;</span>))<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-45" data-line-number="45"></a>
-<a class="sourceLine" id="cb2-46" data-line-number="46">  <span class="op">}</span> <span class="cf">catch</span> (e) <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-47" data-line-number="47">    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Connection Error:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> e)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-48" data-line-number="48">  <span class="op">}</span> </a>
-<a class="sourceLine" id="cb2-49" data-line-number="49"><span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-50" data-line-number="50"></a>
-<a class="sourceLine" id="cb2-51" data-line-number="51"><span class="co">// listen for new wallet transactions</span></a>
-<a class="sourceLine" id="cb2-52" data-line-number="52"><span class="va">walletSocket</span>.<span class="at">bind</span>(<span class="st">&#39;tx&#39;</span><span class="op">,</span> (wallet<span class="op">,</span> tx) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-53" data-line-number="53">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - TX Event -- wallet:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> wallet)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-54" data-line-number="54">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - TX Event -- tx:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> tx)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-55" data-line-number="55"><span class="op">}</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-56" data-line-number="56"></a>
-<a class="sourceLine" id="cb2-57" data-line-number="57"><span class="co">// listen for new address events</span></a>
-<a class="sourceLine" id="cb2-58" data-line-number="58"><span class="co">// (only fired when current account address receives a transaction)</span></a>
-<a class="sourceLine" id="cb2-59" data-line-number="59"><span class="va">walletSocket</span>.<span class="at">bind</span>(<span class="st">&#39;address&#39;</span><span class="op">,</span> (wallet<span class="op">,</span> json) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-60" data-line-number="60">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Address Event -- wallet:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> wallet)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-61" data-line-number="61">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Address Event -- json:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> json)<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-62" data-line-number="62"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">// bsock-example.js</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">const</span> bsock <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;bsock&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">const</span> <span class="op">{</span>Network<span class="op">,</span> ChainEntry<span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;hsd&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="kw">const</span> network <span class="op">=</span> <span class="va">Network</span>.<span class="at">get</span>(<span class="st">&#39;regtest&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">const</span> apiKey <span class="op">=</span> <span class="st">&#39;api-key&#39;</span><span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a>nodeSocket <span class="op">=</span> <span class="va">bsock</span>.<span class="at">connect</span>(<span class="va">network</span>.<span class="at">rpcPort</span>)<span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>walletSocket <span class="op">=</span> <span class="va">bsock</span>.<span class="at">connect</span>(<span class="va">network</span>.<span class="at">walletPort</span>)<span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="va">nodeSocket</span>.<span class="at">on</span>(<span class="st">&#39;connect&#39;</span><span class="op">,</span> <span class="kw">async</span> (e) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Connect event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> e)<span class="op">;</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a>    <span class="co">// `auth` must be called before any other actions</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Attempting auth:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="cf">await</span> <span class="va">nodeSocket</span>.<span class="at">call</span>(<span class="st">&#39;auth&#39;</span><span class="op">,</span> apiKey))<span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a></span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="co">// `watch chain` subscirbes us to chain events like `block`</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Attempting watch chain:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="cf">await</span> <span class="va">nodeSocket</span>.<span class="at">call</span>(<span class="st">&#39;watch chain&#39;</span>))<span class="op">;</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a></span>
+<span id="cb2-21"><a href="#cb2-21"></a>    <span class="co">// Some calls simply request information from the server like an http request</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Attempting get tip:&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a>    <span class="kw">const</span> tip <span class="op">=</span> <span class="cf">await</span> <span class="va">nodeSocket</span>.<span class="at">call</span>(<span class="st">&#39;get tip&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="va">ChainEntry</span>.<span class="at">from</span>(tip))<span class="op">;</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a></span>
+<span id="cb2-26"><a href="#cb2-26"></a>  <span class="op">}</span> <span class="cf">catch</span> (e) <span class="op">{</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Connection Error:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> e)<span class="op">;</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a>  <span class="op">}</span> </span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a></span>
+<span id="cb2-31"><a href="#cb2-31"></a><span class="co">// listen for new blocks</span></span>
+<span id="cb2-32"><a href="#cb2-32"></a><span class="va">nodeSocket</span>.<span class="at">bind</span>(<span class="st">&#39;chain connect&#39;</span><span class="op">,</span> (raw<span class="op">,</span> txs) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb2-33"><a href="#cb2-33"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Chain Connect Event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="va">ChainEntry</span>.<span class="at">fromRaw</span>(raw))<span class="op">;</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a><span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a></span>
+<span id="cb2-36"><a href="#cb2-36"></a><span class="va">walletSocket</span>.<span class="at">on</span>(<span class="st">&#39;connect&#39;</span><span class="op">,</span> <span class="kw">async</span> (e) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb2-37"><a href="#cb2-37"></a>  <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Connect event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> e)<span class="op">;</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a></span>
+<span id="cb2-40"><a href="#cb2-40"></a>    <span class="co">// `auth` is required before proceeding</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Attempting auth:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="cf">await</span> <span class="va">walletSocket</span>.<span class="at">call</span>(<span class="st">&#39;auth&#39;</span><span class="op">,</span> apiKey))<span class="op">;</span></span>
+<span id="cb2-42"><a href="#cb2-42"></a></span>
+<span id="cb2-43"><a href="#cb2-43"></a>    <span class="co">// here we join all wallets, but we could also just join `primary` or any other wallet</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Attempting join *:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="cf">await</span> <span class="va">walletSocket</span>.<span class="at">call</span>(<span class="st">&#39;join&#39;</span><span class="op">,</span> <span class="st">&#39;*&#39;</span>))<span class="op">;</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a></span>
+<span id="cb2-46"><a href="#cb2-46"></a>  <span class="op">}</span> <span class="cf">catch</span> (e) <span class="op">{</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Connection Error:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> e)<span class="op">;</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a>  <span class="op">}</span> </span>
+<span id="cb2-49"><a href="#cb2-49"></a><span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a></span>
+<span id="cb2-51"><a href="#cb2-51"></a><span class="co">// listen for new wallet transactions</span></span>
+<span id="cb2-52"><a href="#cb2-52"></a><span class="va">walletSocket</span>.<span class="at">bind</span>(<span class="st">&#39;tx&#39;</span><span class="op">,</span> (wallet<span class="op">,</span> tx) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb2-53"><a href="#cb2-53"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - TX Event -- wallet:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> wallet)<span class="op">;</span></span>
+<span id="cb2-54"><a href="#cb2-54"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - TX Event -- tx:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> tx)<span class="op">;</span></span>
+<span id="cb2-55"><a href="#cb2-55"></a><span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb2-56"><a href="#cb2-56"></a></span>
+<span id="cb2-57"><a href="#cb2-57"></a><span class="co">// listen for new address events</span></span>
+<span id="cb2-58"><a href="#cb2-58"></a><span class="co">// (only fired when current account address receives a transaction)</span></span>
+<span id="cb2-59"><a href="#cb2-59"></a><span class="va">walletSocket</span>.<span class="at">bind</span>(<span class="st">&#39;address&#39;</span><span class="op">,</span> (wallet<span class="op">,</span> json) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb2-60"><a href="#cb2-60"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Address Event -- wallet:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> wallet)<span class="op">;</span></span>
+<span id="cb2-61"><a href="#cb2-61"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Wallet - Address Event -- json:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> json)<span class="op">;</span></span>
+<span id="cb2-62"><a href="#cb2-62"></a><span class="op">}</span>)<span class="op">;</span></span></code></pre></div>
 <p>To see this script in action, first start hsd however you usually do:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ex">hsd</span> --daemon --network=regtest</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">hsd</span> --daemon --network=regtest</span></code></pre></div>
 <p>Run the script (this is where the event output will be printed):</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ex">node</span> bsock-example.js</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">node</span> bsock-example.js</span></code></pre></div>
 <p>Then, in a separate terminal window, run some commands to trigger the events!</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ex">hsd-cli</span> rpc generatetoaddress 1  rs1qyep4stuujjkdfv483nfse53vvgtfuqr9z6v4cm</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">hsd-cli</span> rpc generatetoaddress 1  rs1qyep4stuujjkdfv483nfse53vvgtfuqr9z6v4cm</span></code></pre></div>
 <h3 id="sockets-made-easy-hs-client">Sockets made easy: hs-client</h3>
 <p><code>bsock</code> is a great low-level library for dealing with sockets, but we also have <a href="https://github.com/handshake-org/hs-client">hs-client</a> which simplifies both socket and regular http connections. A simple one-line command in the terminal can listen to all wallet events and print all the returned data:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ex">hsw-cli</span> listen</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">hsw-cli</span> listen</span></code></pre></div>
 <p><code>hs-client</code> can also be used in a script to listen for events. If you’re already familiar with the <a href="https://handshake-org.github.io/api-docs">hsd-cli API</a> this will look very familiar. Here’s part of the script above re-written using <code>hs-client</code> instead of <code>bsock</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">const</span> <span class="op">{</span>NodeClient<span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;hs-client&#39;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">const</span> <span class="op">{</span>Network<span class="op">,</span> ChainEntry<span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;hsd&#39;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw">const</span> network <span class="op">=</span> <span class="va">Network</span>.<span class="at">get</span>(<span class="st">&#39;regtest&#39;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw">const</span> clientOptions <span class="op">=</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">  <span class="dt">network</span><span class="op">:</span> <span class="va">network</span>.<span class="at">type</span><span class="op">,</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">  <span class="dt">port</span><span class="op">:</span> <span class="va">network</span>.<span class="at">rpcPort</span><span class="op">,</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">  <span class="dt">apiKey</span><span class="op">:</span> <span class="st">&#39;api-key&#39;</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="op">}</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="kw">const</span> client <span class="op">=</span> <span class="kw">new</span> <span class="at">NodeClient</span>(clientOptions)<span class="op">;</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12">(<span class="at">async</span> () <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">  <span class="co">// bclient handles the connection, the auth, and the channel subscriptions</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14">  await <span class="va">client</span>.<span class="at">open</span>()<span class="op">;</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16">  <span class="co">// use socket connection to request data</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17">  <span class="kw">const</span> tip <span class="op">=</span> await <span class="va">client</span>.<span class="at">getTip</span>()<span class="op">;</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18">  <span class="va">console</span>.<span class="at">log</span>(tip)<span class="op">;</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="op">}</span>)()<span class="op">;</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">// listen for new blocks</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="va">client</span>.<span class="at">bind</span>(<span class="st">&#39;chain connect&#39;</span><span class="op">,</span> (raw) <span class="op">=&gt;</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23">  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Chain Connect Event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="va">ChainEntry</span>.<span class="at">fromRaw</span>(raw))<span class="op">;</span></a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">const</span> <span class="op">{</span>NodeClient<span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;hs-client&#39;</span>)<span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">const</span> <span class="op">{</span>Network<span class="op">,</span> ChainEntry<span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;hsd&#39;</span>)<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">const</span> network <span class="op">=</span> <span class="va">Network</span>.<span class="at">get</span>(<span class="st">&#39;regtest&#39;</span>)<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="kw">const</span> clientOptions <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="dt">network</span><span class="op">:</span> <span class="va">network</span>.<span class="at">type</span><span class="op">,</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>  <span class="dt">port</span><span class="op">:</span> <span class="va">network</span>.<span class="at">rpcPort</span><span class="op">,</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>  <span class="dt">apiKey</span><span class="op">:</span> <span class="st">&#39;api-key&#39;</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="op">}</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="kw">const</span> client <span class="op">=</span> <span class="kw">new</span> <span class="at">NodeClient</span>(clientOptions)<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a></span>
+<span id="cb7-12"><a href="#cb7-12"></a>(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>  <span class="co">// bclient handles the connection, the auth, and the channel subscriptions</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>  <span class="cf">await</span> <span class="va">client</span>.<span class="at">open</span>()<span class="op">;</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a></span>
+<span id="cb7-16"><a href="#cb7-16"></a>  <span class="co">// use socket connection to request data</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a>  <span class="kw">const</span> tip <span class="op">=</span> <span class="cf">await</span> <span class="va">client</span>.<span class="at">getTip</span>()<span class="op">;</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>  <span class="va">console</span>.<span class="at">log</span>(tip)<span class="op">;</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="op">}</span>)()<span class="op">;</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a></span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="co">// listen for new blocks</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="va">client</span>.<span class="at">bind</span>(<span class="st">&#39;chain connect&#39;</span><span class="op">,</span> (raw) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Chain Connect Event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="va">ChainEntry</span>.<span class="at">fromRaw</span>(raw))<span class="op">;</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="op">}</span>)<span class="op">;</span></span></code></pre></div>
 <h2 id="socket-events-directory">Socket Events Directory</h2>
 <h3 id="wallet">Wallet</h3>
 <p>All wallet events are emitted by a <code>WalletDB</code> object, which may have been triggered by its parent <code>TXDB</code> or <code>Wallet</code>. The socket emits the event along with the wallet ID, and the same “Returns” as listed above.</p>

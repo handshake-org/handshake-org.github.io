@@ -66,25 +66,25 @@
 <h2 id="hsd-installation-instructions"><code>hsd</code> Installation Instructions</h2>
 <h4 id="install-dependencies">Install dependencies</h4>
 <p>Xcode Command Line Tools, Homebrew, node.js (&gt;= v10) &amp; git</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="ex">xcode-select</span> --install</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">$ <span class="ex">/usr/bin/ruby</span> -e <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="va">)</span><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">$ <span class="ex">brew</span> install node git</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">xcode-select</span> --install</span>
+<span id="cb1-2"><a href="#cb1-2"></a>$ <span class="ex">/usr/bin/ruby</span> -e <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>$ <span class="ex">brew</span> install node git</span></code></pre></div>
 <h4 id="download-and-install-hsd">Download and install <code>hsd</code></h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="fu">git</span> clone https://github.com/handshake-org/hsd</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">$ <span class="bu">cd</span> hsd</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">$ <span class="ex">npm</span> install --production</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hsd</span>
+<span id="cb2-2"><a href="#cb2-2"></a>$ <span class="bu">cd</span> hsd</span>
+<span id="cb2-3"><a href="#cb2-3"></a>$ <span class="ex">npm</span> install --production</span></code></pre></div>
 <h4 id="start-on-mainnet">Start (on mainnet)</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">./bin/hsd</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="ex">./bin/hsd</span></span></code></pre></div>
 <p><br/></p>
 <h2 id="hnsd-installation-instructions"><code>hnsd</code> Installation Instructions</h2>
 <h4 id="install-dependencies-1">Install dependencies</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="ex">brew</span> install git automake autoconf libtool unbound</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="ex">brew</span> install git automake autoconf libtool unbound</span></code></pre></div>
 <h4 id="download-and-compile-hnsd">Download and compile <code>hnsd</code></h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">$ <span class="bu">cd</span> hnsd</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=main <span class="kw">&amp;&amp;</span> <span class="fu">make</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</span>
+<span id="cb5-2"><a href="#cb5-2"></a>$ <span class="bu">cd</span> hnsd</span>
+<span id="cb5-3"><a href="#cb5-3"></a>$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=main <span class="kw">&amp;&amp;</span> <span class="fu">make</span></span></code></pre></div>
 <h4 id="start-hnsd">Start <code>hnsd</code></h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="fu">sudo</span> ./hnsd --pool-size=1 --rs-host=127.0.0.1:53</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="fu">sudo</span> ./hnsd --pool-size=1 --rs-host=127.0.0.1:53</span></code></pre></div>
 <h4 id="configure-nameserver-settings">Configure nameserver settings</h4>
 <ul>
 <li>Open “System Preferences” on the panel/dock.</li>
