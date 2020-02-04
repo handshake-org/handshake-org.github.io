@@ -327,6 +327,61 @@ Parameter | Description
 tx | transaction hash
 
 
+## Estimate fee
+```javascript
+let blocks;
+```
+
+```shell--vars
+blocks=3
+```
+
+```shell--curl
+curl $url/fee?blocks=$blocks
+```
+
+```shell--cli
+hsd-cli fee $blocks
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.estimateFee(blocks);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "rate": 13795
+}
+```
+
+Estimate the fee required (in Dollarydoos per kB) for a transaction to be confirmed by the network within a targeted number of blocks (default 1).
+
+### HTTP Request
+`GET /fee`
+
+### GET Parameters
+Parameter | Description
+--------- | -----------
+blocks | Number of blocks to target confirmation
+
+
 ## Reset blockchain
 ```javascript
 let height;
