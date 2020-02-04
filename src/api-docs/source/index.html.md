@@ -43,7 +43,7 @@ search: true
 
 Welcome to the hsd API!
 
-The default hsd HTTP server listens on port (`12037` for main, `13037` for testnet, `14037` for regtest, and `15037` for simnet). It exposes a REST JSON, as well as a JSON-RPC api.
+The default hsd HTTP server listens on port (`12037` for main, `13037` for testnet, `14037` for regtest, and `15037` for simnet). It exposes a REST JSON, as well as a JSON-RPC API.
 
 # Authentication
 ## Auth
@@ -90,8 +90,20 @@ const client = new NodeClient(clientOptions);
 
 Auth is accomplished via HTTP Basic Auth, using your node's API key.
 
+
 <aside class="notice">
-You must replace <code>api-key</code> with your personal API key.
+You must replace <code>api-key</code> with your own, strong API key.<br>
+<br>
+A good way to generate a strong key is to use the <code>bcrypto</code> module that is installed as a 
+dependency for <code>hsd</code>. From your hsd directory (or anywhere, if <code>bcrypto</code> is installed globally), run:<br>
+<code>node -e "bcrypto=require('bcrypto'); console.log(bcrypto.random.randomBytes(32).toString('hex'))"</code><br>
+Which will generate and output a securley random, 32-byte hex string.<br>
+This string could be saved in <code>hsd.conf</code> to persist over restarts, or it may be passed to hsd
+at launch (for example):<br>
+<code>hsd --api-key=92ded8555d6f04e440ba540f2221349cbf799c454f7e08d3f16577d3e0127b0e</code><br>
+<br>
+For more information about <code>hsd.conf</code> and other launch parameters, see this
+<a href="https://handshake-org.github.io/guides/config.html">hsd Configuration Guide</a>.
 </aside>
 
 <aside class="warning">
