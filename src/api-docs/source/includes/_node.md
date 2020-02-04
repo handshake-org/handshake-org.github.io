@@ -325,3 +325,65 @@ Broadcast a transaction by adding it to the node's mempool. If mempool verificat
 Parameter | Description
 --------- | -----------
 tx | transaction hash
+
+
+## Reset blockchain
+```javascript
+let height;
+```
+
+```shell--vars
+height=1000;
+```
+
+```shell--curl
+curl $url/reset \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  --data '{ "height": '$height' }'
+```
+
+```shell--cli
+hsd-cli reset $height
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.reset(height);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+Triggers a hard-reset of the blockchain. All blocks are disconnected from the tip
+down to the provided height. Indexes and Chain Entries are removed. Useful for
+"rescanning" an SPV wallet. Since there are no blocks stored on disk, the only
+way to rescan the blockchain is to re-request [merkle]blocks from peers.
+
+### HTTP Request
+`POST /reset`
+
+### POST Parameters (JSON)
+Parameter | Description
+--------- | -----------
+height | block height to reset chain to 
+
