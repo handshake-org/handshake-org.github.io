@@ -33,9 +33,9 @@ Only thing to keep in mind is authentication, which is described in the ["Authen
 hsd-cli --network=regtest info
 hsd-cli info --network=regtest
 
-# Or use environment variables (Starting with HSK_)
-export HSK_NETWORK=regtest
-export HSK_API_KEY=$YOUR-API-KEY
+# Or use environment variables (Starting with HSD_)
+export HSD_NETWORK=regtest
+export HSD_API_KEY=$YOUR-API-KEY
 hsd-cli info
 ```
 

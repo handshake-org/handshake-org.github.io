@@ -68,8 +68,8 @@ curl $walleturl/$id
 hsw-cli --network=regtest --id=$id get
 
 # ...or you can use environment variables. The default `id` is `primary`:
-export HSK_API_KEY=yoursecret
-export HSK_NETWORK=regtest
+export HSD_API_KEY=yoursecret
+export HSD_NETWORK=regtest
 hsw-cli get
 ```
 
