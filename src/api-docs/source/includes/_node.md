@@ -6,18 +6,18 @@ Complete list of commands:
 
 Command     				|cURL method	| Description
 ----------------------------|---------------|------------
-`/`							| `GET`			| get info
-`/coin/address/:address`	| `GET`			| UTXO by address
-`/coin/:hash/:index`		| `GET`			| UTXO by txid
-`/coin/address`				| `POST`		| Bulk read UTXOs
-`/tx/:hash`					| `GET`			| TX by hash
-`/tx/address/:address`		| `GET`			| TX by address
-`/tx/address`				| `POST`		| Bulk read TXs
-`/block/:block`				| `GET`			| Block by hash or height
-`/mempool`					| `GET`			| Mempool snapshot
-`/broadcast`				| `POST`		| Broadcast TX
-`/fee`						| `GET`			| Estimate fee
-`/reset`					| `POST`		| Reset chain to specific height
+[`/`](#get-server-info)							| `GET`			| get info
+[`/coin/address/:address`](#get-coins-by-address)	| `GET`			| UTXO by address
+[`/coin/:hash/:index`](#get-coin-by-outpoint)		| `GET`			| UTXO by txid
+[`/coin/address`](#get-coins-by-addresses)				| `POST`		| Bulk read UTXOs
+[`/tx/:hash`](#get-tx-by-txhash)				| `GET`			| TX by hash
+[`/tx/address/:address`](#get-tx-by-address)		| `GET`			| TX by address
+[`/tx/address`](#get-tx-by-addresses)				| `POST`		| Bulk read TXs
+[`/block/:block`](#get-block-by-hash-or-height)			| `GET`			| Block by hash or height
+[`/mempool`](#get-mempool-snapshot)					| `GET`			| Mempool snapshot
+[`/broadcast`](#broadcast-transaction)				| `POST`		| Broadcast TX
+[`/fee`](#estimate-fee)						| `GET`			| Estimate fee
+[`/reset`](#reset-blockchain)					| `POST`		| Reset chain to specific height
 
 
 
