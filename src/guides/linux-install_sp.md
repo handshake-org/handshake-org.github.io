@@ -1,4 +1,4 @@
-# Linux Install Guide
+## Linux Install Guide
 
 El conjunto de software Handshake consta de un nodo completo (`hsd`) y un cliente ligero (`hnsd`). El nodo completo permite a los usuarios registrar, actualizar y transferir nombres, resolver nombres y realizar pagos en la cadena de bloques. El cliente ligero (nodo SPV) permite a los usuarios resolver nombres sin los requisitos de recursos informáticos de ejecutar un nodo completo.
 
