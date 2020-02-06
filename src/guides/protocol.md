@@ -131,11 +131,13 @@ can still be changed.
 | `REGISTER`, `UPDATE`, `RENEW`, `TRANSFER`, `FINALIZE` | `RENEW` | _Renew name ownership before expiration_ |
 | `REGISTER`, `UPDATE`, `RENEW`, `FINALIZE` | `TRANSFER` | _Initiate ownership transfer to new Handshake address_ |
 | `TRANSFER` | `FINALIZE` | _Confirm ownership to new Handshake address_ |
-| `REGISTER`, `UPDATE`, `RENEW`, `TRANSFER`, `FINALIZE`  | `REVOKE` | [_Permanently burn name._](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/covenants/rules.js#L1361-L1364) _Used when a key is compromised_ |
+| `REGISTER`, `UPDATE`, `RENEW`, `TRANSFER`, `FINALIZE`  | `REVOKE` | [_burn name._](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/covenants/rules.js#L1361-L1364) _Used when a key is compromised_ |
 
 Transfers are locked for
 [about two days](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/protocol/networks.js#L319)
 before `FINALIZE` is allowed. At any point during that phase, the original owner can `REVOKE`.
+A revoked name can be re-opened with a new auction after it expires, but the current
+chain of ownership is terminated.
 
 Names must be renewed within
 [two years](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/protocol/networks.js#L267)
