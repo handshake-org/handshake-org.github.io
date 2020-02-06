@@ -114,6 +114,7 @@ Custom port numbers are also configurable by the user.
 Config    | Type                         | Description
 --------- | -----------                  | -----------
 network   | _string_ | Network to use: `main`, `testnet`, `regtest`
-port      | _int_                          | hsd socket port (specific for each network)
+port      | _int_                          | hsd socket port (defaults specific for each network)
+host      | _string_ | hsd API host URI (defaults to 127.0.0.1)
 apiKey    | _string_                       | API secret
 
