@@ -505,7 +505,7 @@ const client = new NodeClient(clientOptions);
 }
 ```
 
-Estimate the fee required (in Dollarydoos per kB) for a transaction to be confirmed by the network within a targeted number of blocks (default 1).
+Estimate the fee required (in dollarydoos per kB) for a transaction to be confirmed by the network within a targeted number of blocks (default 1).
 
 ### HTTP Request
 `GET /fee`
