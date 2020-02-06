@@ -58,7 +58,7 @@
    \/__/  
 </pre>
 
-<h1 id="guía-de-instalación-para-macos">Guía de instalación para macOS</h1>
+<h2 id="guía-de-instalación-para-macos">Guía de instalación para macOS</h2>
 <p>El conjunto de software Handshake consta de un nodo completo (<code>hsd</code>) y un cliente ligero (<code>hnsd</code>). El nodo completo permite a los usuarios registrar, actualizar y transferir nombres, resolver nombres y realizar pagos en la cadena de bloques. El cliente ligero (nodo SPV) permite a los usuarios resolver nombres sin los requisitos de recursos informáticos de ejecutar un nodo completo.</p>
 <p>Esta guía incluye instrucciones para instalar <a href="#hsd-installation-instructions"><code>hsd</code></a> y <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
 <p>Consulte <a href="https://github.com/handshake-org/hsd#install">el repositorio</a> para obtener actualizaciones.</p>
@@ -66,25 +66,25 @@
 <h2 id="instrucciones-para-la-instalación-de-hsd">Instrucciones para la instalación de <code>hsd</code></h2>
 <h4 id="instalamos-dependencias">Instalamos dependencias</h4>
 <p>Herramientas de línea de comandos de Xcode, Homebrew, node.js (&gt;= v10) y git</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">xcode-select</span> --install</span>
-<span id="cb1-2"><a href="#cb1-2"></a>$ <span class="ex">/usr/bin/ruby</span> -e <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="va">)</span><span class="st">&quot;</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>$ <span class="ex">brew</span> install node git</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="ex">xcode-select</span> --install</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">$ <span class="ex">/usr/bin/ruby</span> -e <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="va">)</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">$ <span class="ex">brew</span> install node git</a></code></pre></div>
 <h4 id="descarga-e-instalación-de-hsd">Descarga e instalación de <code>hsd</code></h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hsd</span>
-<span id="cb2-2"><a href="#cb2-2"></a>$ <span class="bu">cd</span> hsd</span>
-<span id="cb2-3"><a href="#cb2-3"></a>$ <span class="ex">npm</span> install --production</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="fu">git</span> clone https://github.com/handshake-org/hsd</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">$ <span class="bu">cd</span> hsd</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">$ <span class="ex">npm</span> install --production</a></code></pre></div>
 <h4 id="inicio-en-la-mainnet">Inicio (en la mainnet)</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="ex">./bin/hsd</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">./bin/hsd</span></a></code></pre></div>
 <p><br/></p>
 <h2 id="instrucciones-de-instalación-para-hnsd">Instrucciones de instalación para <code>hnsd</code></h2>
 <h4 id="instalamos-dependencias-1">Instalamos dependencias</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="ex">brew</span> install git automake autoconf libtool unbound</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="ex">brew</span> install git automake autoconf libtool unbound</a></code></pre></div>
 <h4 id="descarga-y-compilación-de-hnsd">Descarga y compilación de <code>hnsd</code></h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</span>
-<span id="cb5-2"><a href="#cb5-2"></a>$ <span class="bu">cd</span> hnsd</span>
-<span id="cb5-3"><a href="#cb5-3"></a>$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=main <span class="kw">&amp;&amp;</span> <span class="fu">make</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">$ <span class="bu">cd</span> hnsd</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=main <span class="kw">&amp;&amp;</span> <span class="fu">make</span></a></code></pre></div>
 <h4 id="inicio-de-hnsd">Inicio de <code>hnsd</code></h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="fu">sudo</span> ./hnsd --pool-size=1 --rs-host=127.0.0.1:53</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="fu">sudo</span> ./hnsd --pool-size=1 --rs-host=127.0.0.1:53</a></code></pre></div>
 <h4 id="configurar-las-opciones-del-nombre-del-servidores">Configurar las opciones del nombre del servidores</h4>
 <ul>
 <li>Abrimos “System Preferences” en el panel/dock.</li>
