@@ -592,7 +592,7 @@ const wallet = walletClient.wallet(id);
 ]
 ```
 
-List all bids for all names known to the wallet.
+List all reveals for all names known to the wallet.
 
 ### HTTP Request
 
@@ -672,7 +672,7 @@ const wallet = walletClient.wallet(id);
 ]
 ```
 
-List the bids for a specific name known to the wallet.
+List the reveals for a specific name known to the wallet.
 
 ### HTTP Request
 
@@ -736,17 +736,17 @@ const wallet = walletClient.wallet(id);
 }
 ```
 
-List all bids for all names known to the wallet.
+Get the data resource associated with a name.
 
 ### HTTP Request
 
-`GET /wallet/:id/reveal`
+`GET /wallet/:id/resource`
 
 
 Parameters | Description
 ---------- | -----------
 id <br> _string_ | id of wallet you would like to retrieve the reveals list for
-own <br> _bool_ | true: only show reveals owned by this wallet<br>false: show all reveals for each name (default)
+name <br> _string_ | the name to get the resource of
 
 
 ## Get Nonce for Bid
@@ -1171,7 +1171,7 @@ const options = {passphrase, name, broadcast, sign};
 
 Create, sign, and send a name REVEAL. If multiple bids were placed on a name,
 all bids will be revealed by this transaction. If no value is passed in for `name`,
-all bids for all names in the wallet will be sent.
+all reveals for all names in the wallet will be sent.
 
 ### HTTP Request
 

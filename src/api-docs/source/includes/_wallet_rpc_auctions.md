@@ -187,7 +187,7 @@ Once a name is available, a sendopen transaction starts the opening phase.
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name for which you want to begin bidding (must be available).
+name | Required | The name for which you want to open bidding (must be available).
 
 
 ## getauctioninfo
