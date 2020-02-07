@@ -411,6 +411,7 @@ txhash='b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb3';
 txindex=0;
 amount=1;
 address='rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap';
+data='deadbeef';
 ```
 
 ```shell--curl
@@ -457,7 +458,7 @@ const client = new NodeClient(clientOptions);
 > The above command returns JSON "result" like this:
 
 ```json
-"0100000001e8d187daf94405848c2446bde3689be4ebc93dd103748e388b7c7655660d690e0100000000ffffffff02608a0e24010000001976a914c1325e8fb60bd71d23532c39b4c9e743a2cc764988ac0000000000000000026a0000000000"
+"0000000001b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb300000000ffffffff0240420f00000000000014f0d9374a2ce80c377187f4bc6c68993c561cb136000000000000000000001f04deadbeef00000000000000"
 ```
 
 <aside class="info">
@@ -490,7 +491,7 @@ let rawtx, txhash, txindex, scriptPubKey, amount, privkey;
 ```
 
 ```shell--vars
-rawtx='0000000001b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb30000000000ffffffff0240420f00000000000014f0d9374a2ce80c377187f4bc6c68993c561cb13600000000000000000000ff00000000000000';
+rawtx='0000000001b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb300000000ffffffff0240420f00000000000014f0d9374a2ce80c377187f4bc6c68993c561cb136000000000000000000001f04deadbeef00000000000000';
 txhash='b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb3';
 txindex=0;
 address='rs1q7qumafugfglg268djelwr7ps4l2uh2vsdpfnuc';
@@ -509,7 +510,7 @@ curl $url \
         "txid": "'$txhash'",
         "vout": '$txindex',
         "address": "'$address'",
-        "amount": "'$amount'"
+        "amount": '$amount'
       }],
       [ "'$privkey'" ]
     ]
@@ -518,7 +519,7 @@ curl $url \
 
 ```shell--cli
 hsd-cli rpc signrawtransaction $rawtx \
-  '[{ "txid": "'$txhash'", "vout": '$txindex', "scriptPubKey": "'$scriptPubKey'", "amount": '$amount' }]' \
+  '[{ "txid": "'$txhash'", "vout": '$txindex', "address": "'$address'", "amount": '$amount' }]' \
   '[ "'$privkey'" ]'
 ```
 
@@ -541,7 +542,7 @@ const client = new NodeClient(clientOptions);
     [{
       txid: txhash,
       vout: txindex,
-      scriptPubKey: scriptPubKey,
+      address: address,
       amount: amount
     }],
     [ privkey ]
@@ -554,7 +555,7 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "hex": "0100000001e8d187daf94405848c2446bde3689be4ebc93dd103748e388b7c7655660d690e010000006a47304402205088870d469e5a878c54186e971cdc59d4e0c74f1c88709f584590ba76a9b97002202b4810a122fc4977e5a77c80dc68d4ffa73d22dbf385e46241dda6bddfd7993901210284a937f256393b3ba686556e90bd000706600bdbee4169abd092f392689307d2ffffffff02608a0e24010000001976a914c1325e8fb60bd71d23532c39b4c9e743a2cc764988ac0000000000000000026a0000000000",
+  "hex": "0000000001b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb300000000ffffffff0240420f00000000000014f0d9374a2ce80c377187f4bc6c68993c561cb136000000000000000000001f04deadbeef0000000000000241b04faee027f8d4f2b5b3f30446624d46aee82406df161095118e2f587a117d2146ab4fbd90734ab1a339f4813e62cf1723993cbad5bcdfe9d1beda453fc822d9012102deb957b2e4ebb246e1ecb27a4dc7d142504e70a420adb3cf40f9fb5d3928fdf9",
   "complete": true
 }
 ```
