@@ -78,7 +78,7 @@ List the states of all names known to the wallet.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to retrieve the name list for
+id <br> _string_ | wallet id
 
 
 ## Get Wallet Name
@@ -157,8 +157,8 @@ List the status of a single name known to the wallet.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to query
-name <br> _string_ | name to query wallet for
+id <br> _string_ | wallet id
+name <br> _string_ | name
 
 
 ## Get Wallet Auctions
@@ -265,7 +265,7 @@ List the states of all auctions known to the wallet.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to retrieve the auction list for
+id <br> _string_ | wallet id
 
 
 ## Get Wallet Auction by Name
@@ -371,8 +371,8 @@ List the states of all auctions known to the wallet.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to retrieve the auction list for
-name <br> _string_ | specific name to get auction details
+id <br> _string_ | wallet id
+name <br> _string_ | name
 
 
 ## Get Wallet Bids
@@ -440,8 +440,8 @@ List all bids for all names known to the wallet.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to retrieve the bids list for
-own <br> _bool_ | true: only show bids owned by this wallet<br>false: show all bids for each name (default) 
+id <br> _string_ | wallet id
+own <br> _bool_ | whether to only show bids from this wallet
 
 
 ## Get Wallet Bids by Name
@@ -521,9 +521,9 @@ List the bids for a specific name known to the wallet.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to retrieve the bids list for
-name <br> _string_ | name to list bids for
-own <br> _bool_ | true: only show bids owned by this wallet<br>false: show all bids for this name (default) 
+id <br> _string_ | wallet id
+name <br> _string_ | name
+own <br> _bool_ | whether to only show bids from this wallet
 
 
 ## Get Wallet Reveals
@@ -601,8 +601,8 @@ List all reveals for all names known to the wallet.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to retrieve the reveals list for
-own <br> _bool_ | true: only show reveals owned by this wallet<br>false: show all reveals for each name (default)
+id <br> _string_ | wallet id
+own <br> _bool_ |  whether to only show reveals from this wallet
 
 
 ## Get Wallet Reveals by Name
@@ -681,9 +681,9 @@ List the reveals for a specific name known to the wallet.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to retrieve the reveals list for
-name <br> _string_ | name to list reveals for
-own <br> _bool_ | true: only show reveals owned by this wallet<br>false: show all reveals for this name (default)
+id <br> _string_ | wallet id
+name <br> _string_ | name
+own <br> _bool_ | whether to only show reveals from this wallet
 
 
 ## Get Wallet Resource by Name
@@ -745,8 +745,8 @@ Get the data resource associated with a name.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to retrieve the reveals list for
-name <br> _string_ | the name to get the resource of
+id <br> _string_ | wallet id
+name <br> _string_ | name
 
 
 ## Get Nonce for Bid
@@ -814,11 +814,10 @@ starting the process in the background.
 
 Parameters | Description
 ---------- | -----------
-id <br> _string_ | id of wallet you would like to retrieve the reveals list for
-name <br> _string_ | name to bid on
+id <br> _string_ | wallet id
+name <br> _string_ | name
 bid <br> _float_ | value of bid to blind
 address <br> _string_ | address controlling bid
-</aside>
 
 
 ## Send OPEN
@@ -928,6 +927,7 @@ Create, sign, and send a name OPEN.
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name to OPEN
 sign <br> _bool_ | whether to sign the transaction
@@ -1046,12 +1046,13 @@ Create, sign, and send a name BID.
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name to BID on
 sign <br> _bool_ | whether to sign the transaction
 broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
 bid <br> _int_ | value (in dollarydoos) to bid for name
-lockup <br> _int_ | value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value.
+lockup <br> _int_ | value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value
 
 
 ## Send REVEAL
@@ -1180,6 +1181,7 @@ all reveals for all names in the wallet will be sent.
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name to REVEAL bids for (or `null` for all names)
 sign <br> _bool_ | whether to sign the transaction
@@ -1322,6 +1324,7 @@ all qualifying bids are redeemed.
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name to REDEEM bids for (or `null` for all names)
 sign <br> _bool_ | whether to sign the transaction
@@ -1460,6 +1463,7 @@ associated with a given name.
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name to REDEEM bids for (or `null` for all names)
 sign <br> _bool_ | whether to sign the transaction
@@ -1638,6 +1642,7 @@ Create, sign, and send a RENEW.
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name to RENEW
 sign <br> _bool_ | whether to sign the transaction
@@ -1766,6 +1771,7 @@ Create, sign, and send a TRANSFER.
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name to TRANSFER
 sign <br> _bool_ | whether to sign the transaction
@@ -1896,6 +1902,7 @@ already in progress.
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name in transferred state to cancel transfer for
 sign <br> _bool_ | whether to sign the transaction
@@ -2025,6 +2032,7 @@ Create, sign, and send a FINALIZE.
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name in transferred state to finalize transfer for
 sign <br> _bool_ | whether to sign the transaction
@@ -2154,6 +2162,7 @@ updates or transfers. The name can be reopened with a new auction after a set ti
 ### Post Parameters
 Parameter | Description
 --------- | ------------------
+id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
 name <br> _string_  | name in transferred state to revoke transfer for
 sign <br> _bool_ | whether to sign the transaction
