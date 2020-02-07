@@ -190,11 +190,11 @@
 <tr class="odd">
 <td><code>REGISTER</code>, <code>UPDATE</code>, <code>RENEW</code>, <code>TRANSFER</code>, <code>FINALIZE</code></td>
 <td><code>REVOKE</code></td>
-<td><a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/covenants/rules.js#L1361-L1364"><em>Permanently burn name.</em></a> <em>Used when a key is compromised</em></td>
+<td><a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/covenants/rules.js#L1361-L1364"><em>burn name.</em></a> <em>Used when a key is compromised</em></td>
 </tr>
 </tbody>
 </table>
-<p>Transfers are locked for <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/protocol/networks.js#L319">about two days</a> before <code>FINALIZE</code> is allowed. At any point during that phase, the original owner can <code>REVOKE</code>.</p>
+<p>Transfers are locked for <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/protocol/networks.js#L319">about two days</a> before <code>FINALIZE</code> is allowed. At any point during that phase, the original owner can <code>REVOKE</code>. A revoked name can be re-opened with a new auction after it expires, but the current chain of ownership is terminated.</p>
 <p>Names must be renewed within <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/protocol/networks.js#L267">two years</a> or they become available for new auctions again.</p>
 <p>When a name is updated with either <code>REGISTER</code> or <code>UPDATE</code>, the new resource is stored in a <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/blockchain/chaindb.js#L1848">temporary data structure in the chain database.</a> Every 36 blocks (about 6 hours) this cache is <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/blockchain/chaindb.js#L1851-L1872">committed to the urkel tree</a>.</p>
 <p>From the <a href="https://handshake.org/files/handshake.txt">whitepaper</a>:</p>
