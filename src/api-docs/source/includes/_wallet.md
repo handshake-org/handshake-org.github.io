@@ -46,6 +46,103 @@ regtest   | 14039
 simnet    | 15039
 
 
+## Configuration
+Persistent configuration can be added to `hsw.conf` in your `prefix` directory.
+Same directory has `hsd.conf` for the node server.
+
+> Example Configuration:
+
+```shell--vars
+network: regtest
+wallet-auth: true
+api-key: api-key
+http-host: 0.0.0.0
+```
+
+<aside class="notice">
+It is highly recommended to always use <code>wallet-auth</code> and to set a unique <code>api-key</code>,
+even for local development or local wallets. Without <code>wallet-auth: true</code> other applications
+on your system could theoretically access your wallet through the HTTP server
+without any authentication barriers. <code>wallet-auth: true</code> requires a wallet's token to be submitted with every request.
+</aside>
+
+
+## Wallet Authentication
+> The following samples return a wallet object using a wallet token
+
+```javascript
+let token, id;
+```
+
+```shell--vars
+id='primary'
+token='17715756779e4a5f7c9b26c48d90a09d276752625430b41b5fcf33cf41aa7615'
+```
+
+```shell--curl
+curl $walleturl/$id?token=$token
+```
+
+```shell--cli
+hsw-cli get --token=$token
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id, token);
+
+(async () => {
+  const result = await wallet.getInfo();
+  console.log(result);
+})();
+```
+
+There are three levels of authentication for the hsd wallet API server:
+
+### 1. API Key
+
+The API key is set either in `hsw.conf` or with the argument `--api-key=` at launch.
+When set, the API key is required (using [HTTP Basic Authorization](https://en.wikipedia.org/wiki/Basic_access_authentication))
+to access ALL endpoints, otherwise a `401 Unauthorized` error is returned.
+See the section on [node API server authentication](#authentication) for tips on creating a strong key.
+
+### 2. Wallet tokens
+
+Every individual wallet has its own security token, which is a 32 byte hash calculated from the wallet master key:
+
+`SHA256(m/44' Private Key | tokenDepth)`
+
+A wallet is always created with a corresponding token. Even watch-only wallets will have a master private key,
+used just for this purpose. The token is returned when a wallet is created, or from the [wallet info](#get-wallet-info)
+API endpoint (which is restricted to `admin` access, see next subsection). When `wallet-auth` is set to `true`,
+the token must be sent in the query string or JSON body for any requests regarding that wallet.
+Requests with incorrect tokens are rejected with a `403 Forbidden` error.
+
+### 3. Wallet admin token
+
+The admin token is set by the user in `hsw.conf`, with the launch argument `hsd --wallet-admin-token=`
+or, if running `hs-wallet` as a separate server, just `hs-wallet --admin-token=`.
+It is required to be a 32 byte hex string. Like the individual wallet tokens, it is only required when
+`wallet-auth: true`, and must be included in the query string or JSON body. Requests sent with an
+admin token automatically overrides individual wallet tokens, and can therefore access all wallets.
+
+The admin token also enables access to extra API endpoints outlined in [Wallet Admin Commands](#wallet-admin-commands).
+
+<aside class="warning">
+The examples in this section demonstrate how to use a wallet token for API access, which is recommended. However, for clarity, further examples in these docs will omit the token requirement.
+</aside>
+
+
 ## The WalletDB and Object
 ```javascript
 let id;
@@ -68,8 +165,8 @@ curl $walleturl/$id
 hsw-cli --network=regtest --id=$id get
 
 # ...or you can use environment variables. The default `id` is `primary`:
-export HSK_API_KEY=yoursecret
-export HSK_NETWORK=regtest
+export HSD_API_KEY=yoursecret
+export HSD_NETWORK=regtest
 hsw-cli get
 ```
 
@@ -133,51 +230,108 @@ Note that accounts should not be accessed directly from the public API. They do 
 
 hs-client returns a WalletClient object that can perform [admin functions](#wallet-admin-commands) without specifying a wallet, and may be useful when managing multiple wallets. WalletClient can also return a wallet object specified by an <code>id</code>. This object performs functions (and may be authorized by a token) specific to that wallet only.
 
-
 <aside class="warning">
 Accounts within the same wallet are all related by deterministic hierarchy. However, wallets are not related to each other in any way. This means that when a wallet seed is backed up, all of its accounts (and their keys) can be derived from that backup. However, each newly created wallet must be backed up separately.
 </aside>
 
-## Configuration
-Persistent configuration can be added to `hsw.conf` in your `prefix` directory.
-Same directory has `hsd.conf` for the node server.
+## Create A Wallet
 
-> Example Configuration:
+```javascript
+let id, passphrase, witness, watchOnly, accountKey;
 
-```shell--vars
-network: regtest
-wallet-auth: true
-api-key: api-key
-http-host: 0.0.0.0
+id='newWallet'
+passphrase='secret456'
+witness=false
+watchOnly=true
+accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
 ```
 
-<aside class="notice">
-It is highly recommended to always use <code>wallet-auth</code> and to set a unique <code>api-key</code>,
-even for local development or local wallets. Without <code>wallet-auth: true</code> other applications
-on your system could theoretically access your wallet through the HTTP server
-without any authentication barriers. <code>wallet-auth: true</code> requires a wallet's token to be submitted with every request.
-</aside>
+```shell--curl
+id='newWallet'
+passphrase='secret456'
+witness=false
+watchOnly=true
+accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
 
-## Wallet Options
-> Wallet options object will look something like this:
+curl $walleturl/$id \
+  -X PUT \
+  --data '{"witness":'$witness', "passphrase":"'$passphrase'", "watchOnly": '$watchOnly', "accountKey":"'$accountKey'"}'
+```
+
+```shell--cli
+id='newWallet'
+passphrase='secret456'
+witness=false
+watch=true
+key='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
+
+# watchOnly defaults to true if --key flag is set
+
+hsw-cli mkwallet $id --witness=$witness --passphrase=$passphrase --watch=$watch --key=$key
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+
+const options = {
+  passphrase: passphrase,
+  witness: witness,
+  watchOnly: watchOnly,
+  accountKey: accountKey
+};
+
+(async() => {
+  const result = await walletClient.createWallet(id, options);
+  console.log(result);
+})();
+```
+
+> Sample response:
 
 ```json
 {
-  "id": "walletId",
-  "witness": true,
-  "watchOnly": false,
-  "accountKey": "rpubKB4S62xohva5NNbR3a3e84ybBb6E5AszR713RHzUrefCrbmqYuSEhvC2Reehdzz6v9vu6xN3XuMuFEC57esDUu38Af1ZZFgFydot9Zzs4ixT",
-  "accountIndex": 1,
-  "type": "pubkeyhash"
-  "m": 1,
-  "n": 1,
-  "keys": [],
-  "mnemonic": "differ trigger sight sun undo fine sheriff mountain prison remove fantasy arm"
+  "network": "regtest",
+  "wid": 2,
+  "id": "newWallet",
+  "watchOnly": true,
+  "accountDepth": 1,
+  "token": "21b728d8f9e4d909349cf0c8f1e4e74fd45b180103cb7f1885a197d04012ba08",
+  "tokenDepth": 0,
+  "master": {
+    "encrypted": true,
+    "until": 1527181467,
+    "iv": "53effaf192a346b40b08a52dac0658ce",
+    "algorithm": "pbkdf2",
+    "n": 50000,
+    "r": 0,
+    "p": 0
+  },
+  "balance": {
+    "tx": 0,
+    "coin": 0,
+    "unconfirmed": 0,
+    "confirmed": 0
+  }
 }
 ```
-Options are used for wallet creation. None are required.
 
-### Options Object
+Create a new wallet with a specified ID.
+
+### HTTP Request
+
+`PUT /wallet/:id`
+
+### Parameters:
 Name | Type | Default | Description
 ---------- | ----------- | -------------- | -------------
 id | String |  | Wallet ID (used for storage)
@@ -193,56 +347,6 @@ accountDepth* | Number | `0` | The index of the _next_ [BIP44 account index](htt
 
 _(*) options are only available in Javascript usage, not CLI or curl_
 
-
-## Wallet Auth
-> The following samples return a wallet object using a wallet token
-
-```javascript
-let token, id;
-```
-
-```shell--vars
-id='primary'
-token='17715756779e4a5f7c9b26c48d90a09d276752625430b41b5fcf33cf41aa7615'
-```
-
-```shell--curl
-curl $walleturl/$id?token=$token
-```
-
-```shell--cli
-hsw-cli get --token=$token
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const walletOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const walletClient = new WalletClient(walletOptions);
-const wallet = walletClient.wallet(id, token);
-
-(async () => {
-  const result = await wallet.getInfo();
-  console.log(result);
-})();
-```
-
-Individual wallets have their own api keys, referred to internally as "tokens" (a 32 byte hash - calculated as `HASH256(m/44'->ec-private-key|tokenDepth)`).
-
-A wallet is always created with a corresponding token. When using API endpoints
-for a specific wallet, the token must be sent back in the query string or JSON
-body.
-
-<aside class="warning">
-The examples in this section demonstrate how to use a wallet token for API access, which is recommended. However, for clarity, further examples in these docs will omit the token requirement. 
-</aside>
 
 ## Reset Authentication Token
 ```javascript
@@ -460,111 +564,6 @@ Once a passphrase has been set for a wallet, the API will not reveal the unencry
 Parameters | Description
 ---------- | -----------
 id <br> _string_ | named id of the wallet whose info you would like to retrieve
-
-## Create A Wallet
-
-```javascript
-let id, passphrase, witness, watchOnly, accountKey;
-
-id='newWallet'
-passphrase='secret456'
-witness=false
-watchOnly=true
-accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
-```
-
-```shell--curl
-id='newWallet'
-passphrase='secret456'
-witness=false
-watchOnly=true
-accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
-
-curl $walleturl/$id \
-  -X PUT \
-  --data '{"witness":'$witness', "passphrase":"'$passphrase'", "watchOnly": '$watchOnly', "accountKey":"'$accountKey'"}'
-```
-
-```shell--cli
-id='newWallet'
-passphrase='secret456'
-witness=false
-watch=true
-key='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
-
-# watchOnly defaults to true if --key flag is set
-
-hsw-cli mkwallet $id --witness=$witness --passphrase=$passphrase --watch=$watch --key=$key
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const walletOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const walletClient = new WalletClient(walletOptions);
-
-const options = {
-  passphrase: passphrase,
-  witness: witness,
-  watchOnly: watchOnly,
-  accountKey: accountKey
-};
-
-(async() => {
-  const result = await walletClient.createWallet(id, options);
-  console.log(result);
-})();
-```
-
-> Sample response:
-
-```json
-{
-  "network": "regtest",
-  "wid": 2,
-  "id": "newWallet",
-  "watchOnly": true,
-  "accountDepth": 1,
-  "token": "21b728d8f9e4d909349cf0c8f1e4e74fd45b180103cb7f1885a197d04012ba08",
-  "tokenDepth": 0,
-  "master": {
-    "encrypted": true,
-    "until": 1527181467,
-    "iv": "53effaf192a346b40b08a52dac0658ce",
-    "algorithm": "pbkdf2",
-    "n": 50000,
-    "r": 0,
-    "p": 0
-  },
-  "balance": {
-    "tx": 0,
-    "coin": 0,
-    "unconfirmed": 0,
-    "confirmed": 0
-  }
-}
-```
-
-Create a new wallet with a specified ID.
-
-### HTTP Request
-
-`PUT /wallet/:id`
-
-Parameters | Description
----------- | -----------
-id <br> _string_ | id of wallet you would like to create
-
-<aside class="notice">
-See <a href="#wallet-options">Wallet Options</a> for full list and description of possible options that can be passed
-</aside>
 
 
 ## Change Passphrase

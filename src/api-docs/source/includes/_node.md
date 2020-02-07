@@ -6,18 +6,21 @@ Complete list of commands:
 
 Command     				|cURL method	| Description
 ----------------------------|---------------|------------
-`/`							| `GET`			| get info
-`/coin/address/:address`	| `GET`			| UTXO by address
-`/coin/:hash/:index`		| `GET`			| UTXO by txid
-`/coin/address`				| `POST`		| Bulk read UTXOs
-`/tx/:hash`					| `GET`			| TX by hash
-`/tx/address/:address`		| `GET`			| TX by address
-`/tx/address`				| `POST`		| Bulk read TXs
-`/block/:block`				| `GET`			| Block by hash or height
-`/mempool`					| `GET`			| Mempool snapshot
-`/broadcast`				| `POST`		| Broadcast TX
-`/fee`						| `GET`			| Estimate fee
-`/reset`					| `POST`		| Reset chain to specific height
+[`/`](#get-server-info)							| `GET`			| get info
+[`/coin/address/:address`](#get-coins-by-address)	| `GET`			| UTXO by address
+[`/coin/:hash/:index`](#get-coin-by-outpoint)		| `GET`			| UTXO by txid
+[`/coin/address`](#get-coins-by-addresses)				| `POST`		| Bulk read UTXOs
+[`/tx/:hash`](#get-tx-by-txhash)				| `GET`			| TX by hash
+[`/tx/address/:address`](#get-tx-by-address)		| `GET`			| TX by address
+[`/tx/address`](#get-tx-by-addresses)				| `POST`		| Bulk read TXs
+[`/block/:block`](#get-block-by-hash-or-height)			| `GET`			| Block by hash or height
+[`/mempool`](#get-mempool-snapshot)					| `GET`			| Mempool snapshot
+[`/mempool/invalid`](#get-mempool-rejects-filter)         | `GET`     | Mempool rejects filter
+[`/mempool/invalid/:hash`](#test-mempool-rejects-filter)         | `GET`     | Test mempool rejects filter
+[`/broadcast`](#broadcast-transaction)				| `POST`		| Broadcast TX
+[`/claim`](#broadcast-claim)        | `POST`    | Broadcast Claim
+[`/fee`](#estimate-fee)						| `GET`			| Estimate fee
+[`/reset`](#reset-blockchain)					| `POST`		| Reset chain to specific height
 
 
 
@@ -151,6 +154,80 @@ Get mempool snapshot (array of json txs).
 No Params.
 
 
+## Get mempool rejects filter
+
+```shell--curl
+curl $url/mempool/invalid
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+// no JS client function available
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "items": 161750,
+  "size": 5175951,
+  "entries": 0,
+  "n": 20,
+  "limit": 60000,
+  "tweak": 3433901487
+}
+```
+
+Get mempool rejects filter (a Bloom filter used to store rejected TX hashes).
+
+### HTTP Request
+`GET /mempool/invalid`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+verbose | _(bool)_ Returns entire Bloom Filter in `filter` property, hex-encoded.
+
+
+## Test mempool rejects filter
+
+```shell--curl
+hash=8e4c9756fef2ad10375f360e0560fcc7587eb5223ddf8cd7c7e06e60a1140b15
+curl $url/mempool/invalid/$hash
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+// no JS client function available
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "invalid": false
+}
+```
+
+Test a TX hash against the mempool rejects filter.
+
+### HTTP Request
+`GET /mempool/invalid/:hash`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:hash | Transaction hash
+
+
 ## Get block by hash or height
 
 ```javascript
@@ -268,7 +345,6 @@ Parameter | Description
 :blockhashOrHeight | Hash or Height of block
 
 
-
 ## Broadcast transaction
 ```javascript
 let tx;
@@ -324,4 +400,179 @@ Broadcast a transaction by adding it to the node's mempool. If mempool verificat
 ### POST Parameters (JSON)
 Parameter | Description
 --------- | -----------
-tx | transaction hash
+tx | raw transaction in hex
+
+
+## Broadcast claim
+```javascript
+let claim;
+```
+
+```shell--vars
+claim='310d030300003000010002a30001080101030803010001acffb409bcc939f...';
+```
+
+```shell--curl
+curl $url/claim \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  --data '{ "claim": "'$claim'" }'
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.broadcastClaim(claim);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+Broadcast a claim by adding it to the node's mempool.
+
+### HTTP Request
+`POST /claim`
+
+### POST Parameters (JSON)
+Parameter | Description
+--------- | -----------
+claim | raw claim in hex
+
+
+## Estimate fee
+```javascript
+let blocks;
+```
+
+```shell--vars
+blocks=3
+```
+
+```shell--curl
+curl $url/fee?blocks=$blocks
+```
+
+```shell--cli
+hsd-cli fee $blocks
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.estimateFee(blocks);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "rate": 13795
+}
+```
+
+Estimate the fee required (in dollarydoos per kB) for a transaction to be confirmed by the network within a targeted number of blocks (default 1).
+
+### HTTP Request
+`GET /fee`
+
+### GET Parameters
+Parameter | Description
+--------- | -----------
+blocks | Number of blocks to target confirmation
+
+
+## Reset blockchain
+```javascript
+let height;
+```
+
+```shell--vars
+height=1000;
+```
+
+```shell--curl
+curl $url/reset \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  --data '{ "height": '$height' }'
+```
+
+```shell--cli
+hsd-cli reset $height
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.reset(height);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+Triggers a hard-reset of the blockchain. All blocks are disconnected from the tip
+down to the provided height. Indexes and Chain Entries are removed. Useful for
+"rescanning" an SPV wallet. Since there are no blocks stored on disk, the only
+way to rescan the blockchain is to re-request [merkle]blocks from peers.
+
+### HTTP Request
+`POST /reset`
+
+### POST Parameters (JSON)
+Parameter | Description
+--------- | -----------
+height | block height to reset chain to 
+

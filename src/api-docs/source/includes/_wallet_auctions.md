@@ -1,7 +1,4 @@
-# Wallet - Auctions
-
-Note, all auction related functionality is available through the RPC interface of the handshake wallet. HTTP is not yet supported.
-
+# RPC Calls - Wallet Auctions
 
 ## getnames (hsw)
 
@@ -10,17 +7,17 @@ hsw-rpc getnames
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('getnames');
@@ -117,17 +114,17 @@ hsw-rpc sendopen $name
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('sendopen', [ '$name' ]);
@@ -200,17 +197,17 @@ hsw-rpc getauctioninfo $name
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('getauctioninfo', [ '$name' ]);
@@ -264,17 +261,17 @@ hsw-rpc sendbid $name $amount $lockup
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('sendbid', [ '$name', $amount, $lockup ]);
@@ -350,17 +347,17 @@ hsw-rpc getbids
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('getbids');
@@ -411,17 +408,17 @@ hsw-rpc sendreveal $name
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('sendreveal', [ '$name' ]);
@@ -520,17 +517,17 @@ hsw-rpc getreveals
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('getreveals');
@@ -578,17 +575,17 @@ hsw-rpc sendredeem $name
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('sendredeem', [ '$name' ]);
@@ -669,24 +666,30 @@ name | Required | The name for which you wish to redeem your losing bid.
 ## sendupdate
 
 ```shell--cli
-hsw-rpc sendupdate $name '{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}'
+hsw-rpc sendupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}'
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendupdate', [ $name, '{"ttl":172800,"ns":["ns1.example.com.@1.2.3.4"]}' ]);
+  const result = await client.execute(
+    'sendupdate',
+    [
+      name,
+      {records: [ {type: "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}
+    ]
+  );
   console.log(result);
 })();
 ```
@@ -694,42 +697,41 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "hash": "4f97d4cba95e8e35c6e5bb370fe2d6df8718061364321bfc8d8e04706120b850",
-  "witnessHash": "faeb2ddbd55a52d4d94dbbc9f283133633d71bb183db694c5011437b9d299e03",
-  "mtime": 1537460403,
+  "hash": "70a7bb8a015514934344590330bac7b2ed3adf716a41c3ead54fff83271e4462",
+  "witnessHash": "9826b176811030b992c913ff2b9c7ac540216f97d9ea97a12aa170238ff1176d",
+  "mtime": 1580945169,
   "version": 0,
   "inputs": [
     {
       "prevout": {
-        "hash": "e8f576a85d87adffeef7a9bfbf79cf8782750592911f095fe39dd9fa1e73b650",
+        "hash": "fba2b7020060ef7da7d0fb016e0e6fc7eefe6472521da6d1e096c3508154b97f",
         "index": 0
       },
       "witness": [
-        "5959b1a1b0b35a8b2ef4d23d15ffad676c44fa6856631822521e31dbb312ec617884a8d6c14a3ac6233d7a9ba7a2d37d9b4599b09dea4aa468dbe0df8ec47a4c01",
-        "03b98187d5521400df71917c0cded095e12a0134532e9db36b2f2d5e7958c9ef65"
+        "fda534512d04e56628d786a5d25a60f96a55462a5879b8f0c57941a3e89f33546d69a04b4fa035d856bd7dad9f089646fa937864d85bdddbea22478fac835ffe01",
+        "031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c88"
       ],
       "sequence": 4294967295,
-      "address": "rs1q6jh3ujj9a28svzpva2lamsqyx8vm78zer8rfyp"
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3"
     }
   ],
   "outputs": [
     {
-      "value": 5000000,
-      "address": "rs1q6jh3ujj9a28svzpva2lamsqyx8vm78zer8rfyp",
+      "value": 1234000,
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3",
       "covenant": {
-        "type": 6,
-        "action": "REGISTER",
+        "type": 7,
+        "action": "UPDATE",
         "items": [
-          "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
-          "d3070000",
-          "00000000",
-          "d11b18aff135aca0f37ce4ea97455dea6106cd5d9ffbddd19cc1b9d03e81d282"
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "e3040000",
+          "0001036e7331076578616d706c6503636f6d00"
         ]
       }
     },
     {
-      "value": 995680,
-      "address": "rs1qreyhx7wu7a38pmcaeumgmygtfvn8tleuq85vks",
+      "value": 2000000880,
+      "address": "rs1qvnzn8krtydw39stqx0a0cwdly68tyus88r0qkt",
       "covenant": {
         "type": 0,
         "action": "NONE",
@@ -738,7 +740,7 @@ const client = new NodeClient(clientOptions);
     }
   ],
   "locktime": 0,
-  "hex": "0000000001e8f576a85d87adffeef7a9bfbf79cf8782750592911f095fe39dd9fa1e73b65000000000ffffffff02404b4c00000000000014d4af1e4a45ea8f06082ceabfddc00431d9bf1c5906042001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d3070000040000000020d11b18aff135aca0f37ce4ea97455dea6106cd5d9ffbddd19cc1b9d03e81d28260310f000000000000141e497379dcf76270ef1dcf368d910b4b2675ff3c00000000000002415959b1a1b0b35a8b2ef4d23d15ffad676c44fa6856631822521e31dbb312ec617884a8d6c14a3ac6233d7a9ba7a2d37d9b4599b09dea4aa468dbe0df8ec47a4c012103b98187d5521400df71917c0cded095e12a0134532e9db36b2f2d5e7958c9ef65"
+  "hex": "0000000002fba2b7020060ef7da7d0fb016e0e6fc7eefe6472521da6d1e096c3508154b97f00000000ffffffff4ce418e3fa835b63a5c93397c807cd07fd711501c7840163a9ca660cb4c0b10900000000ffffffff0250d412000000000000141b8f66a6b3cdc3ddd5502dfdaf007cc2038c7004070320e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e3040000130001036e7331076578616d706c6503636f6d007097357700000000001464c533d86b235d12c16033fafc39bf268eb272070000000000000241fda534512d04e56628d786a5d25a60f96a55462a5879b8f0c57941a3e89f33546d69a04b4fa035d856bd7dad9f089646fa937864d85bdddbea22478fac835ffe0121031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c880241f6d7da1c9d3a8dd87c5c8b1726399f5f41396f5143f8bf4db50ccc4c7c1506c62c5b7ccb1ded95a7de110c38110d5aa72bbee3c0a04d07683e639bbddb2899dd012102737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
 }
 ```
 
@@ -746,6 +748,7 @@ Upon close of the REVEAL period, auction winners claim ownership of the name wit
 
 Furthermore, name owners can use `sendupdate` at any time to update the resource data of their name.
 
+See the [Resource Object section](#resource-object) for details on formatting the name resource data.
 
 ### Params
 Name | Default |  Description
@@ -760,17 +763,17 @@ hsw-rpc sendrenewal $name
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('sendrenewal', [ '$name' ]);
@@ -857,17 +860,17 @@ hsw-rpc sendtransfer $name $address
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('sendtransfer', [ '$name', '$address' ]);
@@ -963,17 +966,17 @@ hsw-rpc sendfinalize $name
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('sendfinalize', [ '$name' ]);
@@ -1064,17 +1067,17 @@ hsw-rpc sendcancel $name
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('sendcancel', [ '$name' ]);
@@ -1161,17 +1164,17 @@ hsw-rpc sendrevoke $name
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('sendrevoke', [ '$name' ]);
@@ -1257,17 +1260,17 @@ hsw-rpc importnonce $name $address $bid-value
 ```
 
 ```javascript
-const {NodeClient} = require('hs-client');
+const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
   network: network.type,
-  port: network.rpcPort,
+  port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new NodeClient(clientOptions);
+const client = new WalletClient(clientOptions);
 
 (async () => {
   const result = await client.execute('importnonce', [ '$name', '$address', '$bid-value' ]);
