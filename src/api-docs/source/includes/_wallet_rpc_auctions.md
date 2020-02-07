@@ -187,7 +187,7 @@ Once a name is available, a sendopen transaction starts the opening phase.
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name for which you want to open bidding (must be available).
+name | Required | name to open bidding on
 
 
 ## getauctioninfo
@@ -252,7 +252,7 @@ Note, by default your wallet will not track an auction unless you have participa
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name for which you want auction info.
+name | Required | name to get auction info of
 
 ## sendbid
 
@@ -334,9 +334,9 @@ The OPEN period is followed by the BIDDING period. Use `sendbid` to place a bid.
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name for which you want to begin bidding (must be available).
-amount | Required | Amount of HNS you wish to bid (denominated in HNS, decimal amounts allowed)
-lockup | Required | Amount of HNS you wish to lockup to mask your bid. Must be greater than bid amount.
+name | Required | name to bid on
+amount | Required | amount to bid (in HNS)
+lockup | Required | amount to lock up to blind your bid (must be greater than bid amount)
 
 
 ## getbids
@@ -506,7 +506,7 @@ The BIDDING period is followed by the REVEAL period, during which bidders must r
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name for which you wish to reveal your bid
+name | Required | name to reveal bid for (`null` for all names)
 
 
 
@@ -567,6 +567,7 @@ getreveals returns all the reveal transactions sent by the wallet.
 
 ### Params
 none
+
 
 ## sendredeem
 
@@ -660,7 +661,7 @@ The REVEAL period follows the BIDDING period. During this phase, participants re
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name for which you wish to redeem your losing bid.
+name | Required | name to redeem a losing bid for (`null` for all names)
 
 
 ## sendupdate
@@ -753,7 +754,8 @@ See the [Resource Object section](#resource-object) for details on formatting th
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-  name | Required | The name for which you wish to update resource data (initially creates a REGISTER output).
+name | Required | name to update the data for
+data | Required | JSON-encoded resource
 
 
 ## sendrenewal
@@ -850,7 +852,7 @@ Users must renew their ownership of a name annually with sendrenewal, creating a
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name for which you wish to renew your ownership.
+name | Required | name to renew ownership of
 
 
 ## sendtransfer
@@ -955,8 +957,8 @@ To help prevent the theft of names, during this 48 hour window, the owner can re
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name you wish to transfer
-address | Required | The address to which you wish to transfer ownership of name.
+name | Required | name to transfer
+address | Required | address to transfer name ownership to
 
 
 ## sendfinalize
@@ -1057,7 +1059,7 @@ To help prevent the theft of names, during this 48 hour window, the previous own
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name whose transfer you wish to finalize
+name | Required | name to finalize
 
 
 ## sendcancel
@@ -1154,7 +1156,7 @@ After sending a `TRANSFER` but before sending a `FINALIZE`, the owner can cancel
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name whose transfer you wish to cancel.
+name | Required | name to cancel the in-progress transfer of
 
 
 ## sendrevoke
@@ -1250,7 +1252,7 @@ While in the `TRANSFER` state, the owner can redeem to a `REVOKE` output. This r
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name whose transfer you wish to revoke
+name | Required | name to revoke the in-progress transfer of
 
 
 ## importnonce
@@ -1273,7 +1275,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('importnonce', [ '$name', '$address', '$bid-value' ]);
+  const result = await client.execute('importnonce', [ '$name', '$address', '$bid' ]);
   console.log(result);
 })();
 ```
@@ -1288,6 +1290,6 @@ Deterministically regenerate a bid's nonce.
 ### Params
 Name | Default |  Description
 --------- | --------- | ---------
-name | Required | The name for the bid
-address | Required | The address submitting the bid
-bid-value | Required | The value of the bid
+name | Required | name to bid on
+address | Required | address submitting the bid
+value | Required | value of the bid (in HNS)
