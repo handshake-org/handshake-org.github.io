@@ -1,5 +1,6 @@
 # RPC Calls - Wallet Auctions
 
+
 ## getnames (hsw)
 
 ```shell--cli
@@ -107,6 +108,196 @@ const client = new WalletClient(clientOptions);
 Your wallet tracks any name on which you have bid or opened. `getnames` returns info on each. This is different from the `hsd-rpc getnames` call which returns info on all names for which the node has data.
 
 
+## getauctioninfo
+
+```shell--vars
+name='possibility'
+```
+
+```shell--cli
+hsw-rpc getauctioninfo $name
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const client = new WalletClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('getauctioninfo', [ name ]);
+  console.log(result);
+})();
+```
+
+> getauctioninfo returns JSON structured like this: 
+
+```json
+{
+  "name": "possibility",
+  "nameHash": "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
+  "state": "OPENING",
+  "height": 2003,
+  "renewal": 2003,
+  "owner": {
+    "hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "index": 4294967295
+  },
+  "value": 0,
+  "highest": 0,
+  "data": "",
+  "transfer": 0,
+  "revoked": 0,
+  "claimed": false,
+  "weak": false,
+  "stats": {
+    "openPeriodStart": 2003,
+    "openPeriodEnd": 2014,
+    "blocksUntilBidding": 10,
+    "hoursUntilBidding": 0.83
+  },
+  "bids": [],
+  "reveals": []
+}
+```
+Once the open period begins, we can monitor the auction using `getauctioninfo`. Use `hsd-rpc getnameinfo` to monitor a name prior to the start of bidding.
+
+Note, by default your wallet will not track an auction unless you have participated in some form (sendopen, sendbid).
+
+### Params
+Name | Default |  Description
+--------- | --------- | ---------
+name | Required | name to get auction info of
+
+
+## getbids
+
+
+```shell--cli
+hsw-rpc getbids
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const client = new WalletClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('getbids');
+  console.log(result);
+})();
+```
+> getbids returns JSON structured like this: 
+
+```json
+[
+  {
+    "name": "why",
+    "nameHash": "27b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a4",
+    "prevout": {
+      "hash": "044aef8c1e61a3975bfa75dc9d6e1b19ce231ffcc019f97049543b2e12a692a6",
+      "index": 0
+    },
+    "value": 3000000,
+    "lockup": 4000000,
+    "blind": "0ddd08f20581b7adadf881b80c5d044b17cf6b1965bf4c56815cca390d9c41db",
+    "own": true
+  },
+  {
+    "name": "trees",
+    "nameHash": "92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec",
+    "prevout": {
+      "hash": "9ae840429110809efde0f0743178ce2f66d021a3c9c875f486293f132e37151f",
+      "index": 0
+    },
+    "value": 5000000,
+    "lockup": 10000000,
+    "blind": "a0943b12aa57ec0b3e6371be5b75cc895d0f78a7c5367c065bd388aebe6051a5",
+    "own": true
+  }
+]
+
+```
+getbids returns a list of all the bids placed by your wallet.
+
+### Params
+none
+
+
+## getreveals
+
+```shell--cli
+hsw-rpc getreveals
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const client = new WalletClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('getreveals');
+  console.log(result);
+})();
+```
+
+> getreveals returns JSON structured like this: 
+
+```json
+[
+   {
+    "name": "why",
+    "nameHash": "27b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a4",
+    "prevout": {
+      "hash": "e3f45c48985a0722a8a124065af972be05356a6be124263f4b86590da0e61e36",
+      "index": 0
+    },
+    "value": 3000000,
+    "height": 211,
+    "own": true
+  },
+  {
+    "name": "trees",
+    "nameHash": "92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec",
+    "prevout": {
+      "hash": "bd64231b5c28ad6b2b9c463900856676c67beedeb6e3a9e94cf6a1d8563bcba3",
+      "index": 0
+    },
+    "value": 5000000,
+    "height": 89,
+    "own": true
+  }
+]
+```
+getreveals returns all the reveal transactions sent by the wallet.
+
+### Params
+none
+
+
 ## sendopen
 
 ```shell--vars
@@ -192,75 +383,6 @@ Once a name is available, a sendopen transaction starts the opening phase.
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to open bidding on
-
-
-## getauctioninfo
-
-```shell--vars
-name='possibility'
-```
-
-```shell--cli
-hsw-rpc getauctioninfo $name
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('getauctioninfo', [ name ]);
-  console.log(result);
-})();
-```
-
-> getauctioninfo returns JSON structured like this: 
-
-```json
-{
-  "name": "possibility",
-  "nameHash": "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
-  "state": "OPENING",
-  "height": 2003,
-  "renewal": 2003,
-  "owner": {
-    "hash": "0000000000000000000000000000000000000000000000000000000000000000",
-    "index": 4294967295
-  },
-  "value": 0,
-  "highest": 0,
-  "data": "",
-  "transfer": 0,
-  "revoked": 0,
-  "claimed": false,
-  "weak": false,
-  "stats": {
-    "openPeriodStart": 2003,
-    "openPeriodEnd": 2014,
-    "blocksUntilBidding": 10,
-    "hoursUntilBidding": 0.83
-  },
-  "bids": [],
-  "reveals": []
-}
-```
-Once the open period begins, we can monitor the auction using `getauctioninfo`. Use `hsd-rpc getnameinfo` to monitor a name prior to the start of bidding.
-
-Note, by default your wallet will not track an auction unless you have participated in some form (sendopen, sendbid).
-
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | name to get auction info of
 
 
 ## sendbid
@@ -352,68 +474,6 @@ Name | Default |  Description
 name | Required | name to bid on
 amount | Required | amount to bid (in HNS)
 lockup | Required | amount to lock up to blind your bid (must be greater than bid amount)
-
-
-## getbids
-
-
-```shell--cli
-hsw-rpc getbids
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('getbids');
-  console.log(result);
-})();
-```
-> getbids returns JSON structured like this: 
-
-```json
-[
-  {
-    "name": "why",
-    "nameHash": "27b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a4",
-    "prevout": {
-      "hash": "044aef8c1e61a3975bfa75dc9d6e1b19ce231ffcc019f97049543b2e12a692a6",
-      "index": 0
-    },
-    "value": 3000000,
-    "lockup": 4000000,
-    "blind": "0ddd08f20581b7adadf881b80c5d044b17cf6b1965bf4c56815cca390d9c41db",
-    "own": true
-  },
-  {
-    "name": "trees",
-    "nameHash": "92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec",
-    "prevout": {
-      "hash": "9ae840429110809efde0f0743178ce2f66d021a3c9c875f486293f132e37151f",
-      "index": 0
-    },
-    "value": 5000000,
-    "lockup": 10000000,
-    "blind": "a0943b12aa57ec0b3e6371be5b75cc895d0f78a7c5367c065bd388aebe6051a5",
-    "own": true
-  }
-]
-
-```
-getbids returns a list of all the bids placed by your wallet.
-
-### Params
-none
 
 
 ## sendreveal
@@ -528,66 +588,6 @@ Name | Default |  Description
 name | Required | name to reveal bid for (`null` for all names)
 
 
-
-## getreveals
-
-```shell--cli
-hsw-rpc getreveals
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('getreveals');
-  console.log(result);
-})();
-```
-
-> getreveals returns JSON structured like this: 
-
-```json
-[
-   {
-    "name": "why",
-    "nameHash": "27b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a4",
-    "prevout": {
-      "hash": "e3f45c48985a0722a8a124065af972be05356a6be124263f4b86590da0e61e36",
-      "index": 0
-    },
-    "value": 3000000,
-    "height": 211,
-    "own": true
-  },
-  {
-    "name": "trees",
-    "nameHash": "92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec",
-    "prevout": {
-      "hash": "bd64231b5c28ad6b2b9c463900856676c67beedeb6e3a9e94cf6a1d8563bcba3",
-      "index": 0
-    },
-    "value": 5000000,
-    "height": 89,
-    "own": true
-  }
-]
-```
-getreveals returns all the reveal transactions sent by the wallet.
-
-### Params
-none
-
-
 ## sendredeem
 
 ```shell--vars
@@ -682,7 +682,6 @@ const client = new WalletClient(clientOptions);
 After the REVEAL period, the auction is CLOSED. The value locked up by losing bids
 can be spent using a REDEEM covenant like any other coin. The winning bid can not
 be redeemed.
-
 
 ### Params
 Name | Default |  Description
