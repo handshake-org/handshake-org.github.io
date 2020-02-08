@@ -109,6 +109,10 @@ Your wallet tracks any name on which you have bid or opened. `getnames` returns 
 
 ## sendopen
 
+```shell--vars
+name='possibility'
+```
+
 ```shell--cli
 hsw-rpc sendopen $name
 ```
@@ -127,7 +131,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendopen', [ '$name' ]);
+  const result = await client.execute('sendopen', [ name ]);
   console.log(result);
 })();
 ```
@@ -192,6 +196,10 @@ name | Required | name to open bidding on
 
 ## getauctioninfo
 
+```shell--vars
+name='possibility'
+```
+
 ```shell--cli
 hsw-rpc getauctioninfo $name
 ```
@@ -210,7 +218,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getauctioninfo', [ '$name' ]);
+  const result = await client.execute('getauctioninfo', [ name ]);
   console.log(result);
 })();
 ```
@@ -257,6 +265,12 @@ name | Required | name to get auction info of
 
 ## sendbid
 
+```shell--vars
+name='possibility'
+amount=5.000000
+lockup=10.000000
+```
+
 ```shell--cli
 hsw-rpc sendbid $name $amount $lockup
 ```
@@ -275,7 +289,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendbid', [ '$name', $amount, $lockup ]);
+  const result = await client.execute('sendbid', [ name, amount, lockup ]);
   console.log(result);
 })();
 ```
@@ -404,6 +418,10 @@ none
 
 ## sendreveal
 
+```shell--vars
+name='possibility'
+```
+
 ```shell--cli
 hsw-rpc sendreveal $name
 ```
@@ -422,7 +440,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendreveal', [ '$name' ]);
+  const result = await client.execute('sendreveal', [ name ]);
   console.log(result);
 })();
 ```
@@ -572,6 +590,10 @@ none
 
 ## sendredeem
 
+```shell--vars
+name='possibility'
+```
+
 ```shell--cli
 hsw-rpc sendredeem $name
 ```
@@ -590,7 +612,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendredeem', [ '$name' ]);
+  const result = await client.execute('sendredeem', [ name ]);
   console.log(result);
 })();
 ```
@@ -669,6 +691,10 @@ name | Required | name to redeem a losing bid for (`null` for all names)
 
 
 ## sendupdate
+
+```shell--vars
+name='possibility'
+```
 
 ```shell--cli
 hsw-rpc sendupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}'
@@ -783,7 +809,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendrenewal', [ '$name' ]);
+  const result = await client.execute('sendrenewal', [ name ]);
   console.log(result);
 })();
 ```
@@ -865,6 +891,11 @@ name | Required | name to renew ownership of
 
 ## sendtransfer
 
+```shell--vars
+name='possibility'
+address='rs1qhrnda3ct3237e6hl0vyh4tz2e90wvaxnmdldfq'
+```
+
 ```shell--cli
 hsw-rpc sendtransfer $name $address
 ```
@@ -883,7 +914,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendtransfer', [ '$name', '$address' ]);
+  const result = await client.execute('sendtransfer', [ name, address ]);
   console.log(result);
 })();
 ```
@@ -968,6 +999,10 @@ address | Required | address to transfer name ownership to
 
 ## sendfinalize
 
+```shell--vars
+name='possibility'
+```
+
 ```shell--cli
 hsw-rpc sendfinalize $name
 ```
@@ -986,7 +1021,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendfinalize', [ '$name' ]);
+  const result = await client.execute('sendfinalize', [ name ]);
   console.log(result);
 })();
 ```
@@ -1067,6 +1102,10 @@ name | Required | name to finalize
 
 ## sendcancel
 
+```shell--vars
+name='possibility'
+```
+
 ```shell--cli
 hsw-rpc sendcancel $name
 ```
@@ -1085,7 +1124,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendcancel', [ '$name' ]);
+  const result = await client.execute('sendcancel', [ name ]);
   console.log(result);
 })();
 ```
@@ -1165,6 +1204,10 @@ name | Required | name to cancel the in-progress transfer of
 
 ## sendrevoke
 
+```shell--vars
+name='possibility'
+```
+
 ```shell--cli
 hsw-rpc sendrevoke $name
 ```
@@ -1183,7 +1226,7 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendrevoke', [ '$name' ]);
+  const result = await client.execute('sendrevoke', [ name ]);
   console.log(result);
 })();
 ```
@@ -1262,6 +1305,12 @@ name | Required | name to revoke the in-progress transfer of
 
 ## importnonce
 
+```shell--vars
+name='possibility'
+address='rs1qhrnda3ct3237e6hl0vyh4tz2e90wvaxnmdldfq'
+bid=1.123456
+```
+
 ```shell--cli
 hsw-rpc importnonce $name $address $bid
 ```
@@ -1280,12 +1329,12 @@ const clientOptions = {
 const client = new WalletClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('importnonce', [ '$name', '$address', '$bid' ]);
+  const result = await client.execute('importnonce', [ name, address, bid ]);
   console.log(result);
 })();
 ```
 
-> importnonce deterministically regenerate's a bid's nonce
+> importnonce deterministically regenerates a bid's nonce
 
 ```
 064802bfe52159d6c744625b17b887834d26dcc04605190fb82e4b41862adf60
