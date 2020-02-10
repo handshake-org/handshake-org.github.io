@@ -29,8 +29,9 @@ includes:
   - wallet
   - wallet_admin
   - wallet_accounts
-  - wallet_auctions
   - wallet_tx
+  - wallet_auctions
+  - wallet_rpc_auctions
   - sockets
   - node_sockets
   - wallet_sockets

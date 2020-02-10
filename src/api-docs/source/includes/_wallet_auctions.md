@@ -1,9 +1,18 @@
-# RPC Calls - Wallet Auctions
+# Wallet - Auctions
 
-## getnames (hsw)
+
+## Get Wallet Names
+
+```shell--vars
+id='primary'
+```
+
+```shell--curl
+curl $walleturl/$id/name
+```
 
 ```shell--cli
-hsw-rpc getnames
+> no CLI command available
 ```
 
 ```javascript
@@ -11,106 +20,80 @@ const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
-const clientOptions = {
+const walletOptions = {
   network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new WalletClient(clientOptions);
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
 
 (async () => {
-  const result = await client.execute('getnames');
+  const result = await wallet.getNames();
   console.log(result);
 })();
 ```
 
-> getnames returns JSON structured like this: 
+> Sample response:
 
 ```json
 [
   {
-    "name": "why",
-    "nameHash": "27b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a4",
-    "state": "CLOSED",
-    "height": 189,
-    "renewal": 398,
+    "name": "handshake",
+    "nameHash": "3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6",
+    "state": "BIDDING",
+    "height": 245,
+    "renewal": 245,
     "owner": {
-      "hash": "7bd7c709e5d5e5cc2382f45daad29d280641bf9d1fdf5f88efb6a1809b16a01b",
-      "index": 0
-    },
-    "value": 1000000,
-    "highest": 3000000,
-    "data": "00000000",
-    "transfer": 0,
-    "revoked": 0,
-    "claimed": false,
-    "weak": false,
-    "stats": {
-      "renewalPeriodStart": 398,
-      "renewalPeriodEnd": 10398,
-      "blocksUntilExpire": 9917,
-      "daysUntilExpire": 34.43
-    }
-  },
-  {
-    "name": "trees",
-    "nameHash": "92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec",
-    "state": "CLOSED",
-    "height": 67,
-    "renewal": 276,
-    "owner": {
-      "hash": "5d04759a92c5d3bd4ef6856ebcde45cd5ce4e8563a6377d9edac5161014940c9",
-      "index": 0
-    },
-    "value": 5000000,
-    "highest": 20000000,
-    "data": "000a8c000906036e7331076578616d706c6503636f6d00010203040000000000000000000000000000000000",
-    "transfer": 0,
-    "revoked": 0,
-    "claimed": false,
-    "weak": false,
-    "stats": {
-      "renewalPeriodStart": 276,
-      "renewalPeriodEnd": 10276,
-      "blocksUntilExpire": 9795,
-      "daysUntilExpire": 34.01
-    }
-  },
-  {
-    "name": "tba",
-    "nameHash": "a73f93785b1fc9b1973579cf2b3f1a08a832d462a5e8ad6e5ec75883ccd90f50",
-    "state": "CLOSED",
-    "height": 434,
-    "renewal": 477,
-    "owner": {
-      "hash": "ded558796b20bead377c618c76641de0560dc4323a4b24d4131e7434d3077509",
-      "index": 0
+      "hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "index": 4294967295
     },
     "value": 0,
-    "highest": 1000000,
-    "data": "00000000",
+    "highest": 0,
+    "data": "",
     "transfer": 0,
     "revoked": 0,
-    "claimed": false,
+    "claimed": 0,
+    "renewals": 0,
+    "registered": false,
+    "expired": false,
     "weak": false,
     "stats": {
-      "renewalPeriodStart": 477,
-      "renewalPeriodEnd": 10477,
-      "blocksUntilExpire": 9996,
-      "daysUntilExpire": 34.71
+      "bidPeriodStart": 251,
+      "bidPeriodEnd": 256,
+      "blocksUntilReveal": 2,
+      "hoursUntilReveal": 0.33
     }
-  },
+  }
 ]
 ```
 
-Your wallet tracks any name on which you have bid or opened. `getnames` returns info on each. This is different from the `hsd-rpc getnames` call which returns info on all names for which the node has data.
+List the states of all names known to the wallet.
+
+### HTTP Request
+
+`GET /wallet/:id/name`
 
 
-## sendopen
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+
+
+## Get Wallet Name
+
+```shell--vars
+id='primary'
+name='handshake'
+```
+
+```shell--curl
+curl $walleturl/$id/name/$name
+```
 
 ```shell--cli
-hsw-rpc sendopen $name
+> no CLI command available
 ```
 
 ```javascript
@@ -118,112 +101,30 @@ const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
-const clientOptions = {
+const walletOptions = {
   network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new WalletClient(clientOptions);
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
 
 (async () => {
-  const result = await client.execute('sendopen', [ '$name' ]);
+  const result = await wallet.getName(name);
   console.log(result);
 })();
 ```
 
-> sendopen returns JSON structured like this: 
+> Sample response:
 
 ```json
 {
-  "hash": "05ba8ab476f41213613813ebc63a14d7154857efc9a19b7e181852ab19c05e82",
-  "witnessHash": "6afe4493d6b68d855db9685380ea6316a9d4b48212e584cbf383dccf1acbf94b",
-  "mtime": 1537401957,
-  "version": 0,
-  "inputs": [
-    {
-      "prevout": {
-        "hash": "837b802fbad06cab6c8f789c4745cc56d1498a651a04973c8b3db310d90fec42",
-        "index": 0
-      },
-      "witness": [
-        "cc603c24fd90881b00899751d634fad8cfc67ac1289de2475f5c09117db3037335eb9983d38113be4d7c1895514f7d0ff411d2e72dc3ebb444e811146958ebc601",
-        "03b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1q9jd8fgq8xa0drggyd6azggpeslacdzx5gr04ss"
-    }
-  ],
-  "outputs": [
-    {
-      "value": 0,
-      "address": "rs1qkk62444euknkya4qws9cg3ej3au24n635n4qye",
-      "covenant": {
-        "type": 2,
-        "action": "OPEN",
-        "items": [
-          "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
-          "00000000",
-          "706f73736962696c697479"
-        ]
-      }
-    },
-    {
-      "value": 999996200,
-      "address": "rs1qew8r8c2c74zpmkhwmxu6jkrhwmgegl5h6cfaz3",
-      "covenant": {
-        "type": 0,
-        "action": "NONE",
-        "items": []
-      }
-    }
-  ],
-  "locktime": 0,
-  "hex": "0000000001837b802fbad06cab6c8f789c4745cc56d1498a651a04973c8b3db310d90fec4200000000ffffffff0200000000000000000014b5b4aad6b9e5a76276a0740b8447328f78aacf5102032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04000000000b706f73736962696c69747928bb9a3b000000000014cb8e33e158f5441ddaeed9b9a9587776d1947e970000000000000241cc603c24fd90881b00899751d634fad8cfc67ac1289de2475f5c09117db3037335eb9983d38113be4d7c1895514f7d0ff411d2e72dc3ebb444e811146958ebc6012103b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
-}
-```
-Once a name is available, a sendopen transaction starts the opening phase.
-
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name for which you want to begin bidding (must be available).
-
-
-## getauctioninfo
-
-```shell--cli
-hsw-rpc getauctioninfo $name
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('getauctioninfo', [ '$name' ]);
-  console.log(result);
-})();
-```
-
-> getauctioninfo returns JSON structured like this: 
-
-```json
-{
-  "name": "possibility",
-  "nameHash": "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
-  "state": "OPENING",
-  "height": 2003,
-  "renewal": 2003,
+  "name": "handshake",
+  "nameHash": "3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6",
+  "state": "BIDDING",
+  "height": 245,
+  "renewal": 245,
   "owner": {
     "hash": "0000000000000000000000000000000000000000000000000000000000000000",
     "index": 4294967295
@@ -233,31 +134,45 @@ const client = new WalletClient(clientOptions);
   "data": "",
   "transfer": 0,
   "revoked": 0,
-  "claimed": false,
+  "claimed": 0,
+  "renewals": 0,
+  "registered": false,
+  "expired": false,
   "weak": false,
   "stats": {
-    "openPeriodStart": 2003,
-    "openPeriodEnd": 2014,
-    "blocksUntilBidding": 10,
-    "hoursUntilBidding": 0.83
-  },
-  "bids": [],
-  "reveals": []
+    "bidPeriodStart": 251,
+    "bidPeriodEnd": 256,
+    "blocksUntilReveal": 2,
+    "hoursUntilReveal": 0.33
+  }
 }
 ```
-Once the open period ends, we can monitor the auction using `getauctioninfo`. Use `hsd-rpc getnameinfo` to monitor a name prior to the start of bidding.
 
-Note, by default your wallet will not track an auction unless you have participated in some form (sendopen, sendbid).
+List the status of a single name known to the wallet.
 
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name for which you want auction info.
+### HTTP Request
 
-## sendbid
+`GET /wallet/:id/name/:name`
+
+
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+name <br> _string_ | name
+
+
+## Get Wallet Auctions
+
+```shell--vars
+id='primary'
+```
+
+```shell--curl
+curl $walleturl/$id/auction
+```
 
 ```shell--cli
-hsw-rpc sendbid $name $amount $lockup
+> no CLI command available
 ```
 
 ```javascript
@@ -265,59 +180,851 @@ const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
-const clientOptions = {
+const walletOptions = {
   network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new WalletClient(clientOptions);
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
 
 (async () => {
-  const result = await client.execute('sendbid', [ '$name', $amount, $lockup ]);
+  const result = await wallet.getAuctions();
   console.log(result);
 })();
 ```
-> sendbid returns JSON structured like this: 
+
+> Sample response:
+
+```json
+[
+  {
+    "name": "easyhandshake",
+    "nameHash": "7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324",
+    "state": "CLOSED",
+    "height": 105,
+    "renewal": 135,
+    "owner": {
+      "hash": "b87a69556f924735876acb57c2ef46ff9c5a044ab61e5f0566ecc9357107a67e",
+      "index": 0
+    },
+    "value": 0,
+    "highest": 1000000,
+    "data": "00060114737076206e6f646520696e2062726f7773657221",
+    "transfer": 0,
+    "revoked": 0,
+    "claimed": 0,
+    "renewals": 0,
+    "registered": true,
+    "expired": false,
+    "weak": false,
+    "stats": {
+      "renewalPeriodStart": 135,
+      "renewalPeriodEnd": 5135,
+      "blocksUntilExpire": 4881,
+      "daysUntilExpire": 33.9
+    },
+    "bids": [
+      {
+        "name": "easyhandshake",
+        "nameHash": "7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324",
+        "prevout": {
+          "hash": "0702d5f7cf4afd626189c1f8362676a5e7b7edfa5110d256a57185f32a3d12e1",
+          "index": 0
+        },
+        "value": 1000000,
+        "lockup": 2000000,
+        "blind": "3d694cb7529caae741b6e70db09a0102c61813420b161cee65fb657e116d1f5b",
+        "own": true
+      }
+    ],
+    "reveals": [
+      {
+        "name": "easyhandshake",
+        "nameHash": "7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324",
+        "prevout": {
+          "hash": "10f18571b6b7af1f256ebe74d5da06d792da91ceb7f3f93302c0d216e1f899b8",
+          "index": 0
+        },
+        "value": 1000000,
+        "height": 125,
+        "own": true
+      }
+    ]
+  }
+]
+```
+
+List the states of all auctions known to the wallet.
+
+### HTTP Request
+
+`GET /wallet/:id/auction`
+
+
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+
+
+## Get Wallet Auction by Name
+
+```shell--vars
+id='primary'
+name='handshake'
+```
+
+```shell--curl
+curl $walleturl/$id/auction/$name
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+(async () => {
+  const result = await wallet.getAuctionByName(name);
+  console.log(result);
+})();
+```
+
+> Sample response:
 
 ```json
 {
-  "hash": "85bce02cc5cb8ba9ff4e23d84ce389310f50074a6b9a8b20b8643a56a4cb9f9a",
-  "witnessHash": "78a33edde952c80dd05476afe1e5e6e0a942484feb914e8ecf4c4b66329940a9",
-  "mtime": 1537402434,
+  "name": "handshake",
+  "nameHash": "7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324",
+  "state": "CLOSED",
+  "height": 105,
+  "renewal": 135,
+  "owner": {
+    "hash": "b87a69556f924735876acb57c2ef46ff9c5a044ab61e5f0566ecc9357107a67e",
+    "index": 0
+  },
+  "value": 0,
+  "highest": 1000000,
+  "data": "00060114737076206e6f646520696e2062726f7773657221",
+  "transfer": 0,
+  "revoked": 0,
+  "claimed": 0,
+  "renewals": 0,
+  "registered": true,
+  "expired": false,
+  "weak": false,
+  "stats": {
+    "renewalPeriodStart": 135,
+    "renewalPeriodEnd": 5135,
+    "blocksUntilExpire": 4881,
+    "daysUntilExpire": 33.9
+  },
+  "bids": [
+    {
+      "name": "handshake",
+      "nameHash": "7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324",
+      "prevout": {
+        "hash": "0702d5f7cf4afd626189c1f8362676a5e7b7edfa5110d256a57185f32a3d12e1",
+        "index": 0
+      },
+      "value": 1000000,
+      "lockup": 2000000,
+      "blind": "3d694cb7529caae741b6e70db09a0102c61813420b161cee65fb657e116d1f5b",
+      "own": true
+    }
+  ],
+  "reveals": [
+    {
+      "name": "handshake",
+      "nameHash": "7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324",
+      "prevout": {
+        "hash": "10f18571b6b7af1f256ebe74d5da06d792da91ceb7f3f93302c0d216e1f899b8",
+        "index": 0
+      },
+      "value": 1000000,
+      "height": 125,
+      "own": true
+    }
+  ]
+}
+```
+
+List the states of all auctions known to the wallet.
+
+### HTTP Request
+
+`GET /wallet/:id/auction/:name`
+
+
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+name <br> _string_ | name
+
+
+## Get Wallet Bids
+
+```shell--vars
+id='primary'
+own=true
+```
+
+```shell--curl
+curl $walleturl/$id/bid?own=$own
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const options = {own};
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+(async () => {
+  const result = await wallet.getBids(options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+[
+  {
+    "name": "easyhandshake",
+    "nameHash": "7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324",
+    "prevout": {
+      "hash": "0702d5f7cf4afd626189c1f8362676a5e7b7edfa5110d256a57185f32a3d12e1",
+      "index": 0
+    },
+    "value": 1000000,
+    "lockup": 2000000,
+    "blind": "3d694cb7529caae741b6e70db09a0102c61813420b161cee65fb657e116d1f5b",
+    "own": true
+  }
+]
+```
+
+List all bids for all names known to the wallet.
+
+### HTTP Request
+
+`GET /wallet/:id/bid`
+
+
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+own <br> _bool_ | whether to only show bids from this wallet
+
+
+## Get Wallet Bids by Name
+
+```shell--vars
+id='primary'
+name='handshake'
+own=false
+```
+
+```shell--curl
+curl $walleturl/$id/bid/$name?own=$own
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const options = {own};
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+(async () => {
+  const result = await wallet.getBidsByName(name, options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+[
+  {
+    "name": "handshake",
+    "nameHash": "7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324",
+    "prevout": {
+      "hash": "0702d5f7cf4afd626189c1f8362676a5e7b7edfa5110d256a57185f32a3d12e1",
+      "index": 0
+    },
+    "value": 1000000,
+    "lockup": 2000000,
+    "blind": "3d694cb7529caae741b6e70db09a0102c61813420b161cee65fb657e116d1f5b",
+    "own": true
+  },
+  {
+    "name": "handshake",
+    "nameHash": "3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6",
+    "prevout": {
+      "hash": "b8ba9dfc78bdf0f0b1bf67abb9244af0b73c58a9c5bb79b98b72d14cf98c5c08",
+      "index": 0
+    },
+    "lockup": 20000000,
+    "blind": "47e8cf3dacfe6aeb14187ebd52f25c55c6f63fd24fed666c676c8ada0b132c10",
+    "own": false
+  }
+]
+```
+
+List the bids for a specific name known to the wallet.
+
+### HTTP Request
+
+`GET /wallet/:id/bid/:name`
+
+
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+name <br> _string_ | name
+own <br> _bool_ | whether to only show bids from this wallet
+
+
+## Get Wallet Reveals
+
+```shell--vars
+id='primary'
+own=false
+```
+
+```shell--curl
+curl $walleturl/$id/reveal?own=$own
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const options = {own};
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+(async () => {
+  const result = await wallet.getReveals(options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+[
+  {
+    "name": "handshake",
+    "nameHash": "3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6",
+    "prevout": {
+      "hash": "6b90495db28d71bc96ad6211d87b78ab6a3b548b702a98f3149e41c3a0892140",
+      "index": 0
+    },
+    "value": 1000000,
+    "height": 221,
+    "own": true
+  },
+  {
+    "name": "handshake",
+    "nameHash": "3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6",
+    "prevout": {
+      "hash": "d8acd574cba75c32f5e671fad2adf7cc93854303be02212fe8628a727229d610",
+      "index": 0
+    },
+    "value": 10000000,
+    "height": 221,
+    "own": false
+  }
+]
+```
+
+List all reveals for all names known to the wallet.
+
+### HTTP Request
+
+`GET /wallet/:id/reveal`
+
+
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+own <br> _bool_ |  whether to only show reveals from this wallet
+
+
+## Get Wallet Reveals by Name
+
+```shell--vars
+id='primary'
+name='handshake'
+own=false
+```
+
+```shell--curl
+curl $walleturl/$id/reveal/$name?own=$own
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const options = {own};
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+(async () => {
+  const result = await wallet.getRevealsByName(name, options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+[
+  {
+    "name": "handshake",
+    "nameHash": "3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6",
+    "prevout": {
+      "hash": "6b90495db28d71bc96ad6211d87b78ab6a3b548b702a98f3149e41c3a0892140",
+      "index": 0
+    },
+    "value": 1000000,
+    "height": 221,
+    "own": true
+  },
+  {
+    "name": "handshake",
+    "nameHash": "3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6",
+    "prevout": {
+      "hash": "d8acd574cba75c32f5e671fad2adf7cc93854303be02212fe8628a727229d610",
+      "index": 0
+    },
+    "value": 10000000,
+    "height": 221,
+    "own": false
+  }
+]
+```
+
+List the reveals for a specific name known to the wallet.
+
+### HTTP Request
+
+`GET /wallet/:id/reveal/:name`
+
+
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+name <br> _string_ | name
+own <br> _bool_ | whether to only show reveals from this wallet
+
+
+## Get Wallet Resource by Name
+
+```shell--vars
+id='primary'
+name='handshake'
+```
+
+```shell--curl
+curl $walleturl/$id/resource/$name
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+(async () => {
+  const result = await wallet.getResource(name);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "records": [
+    {
+      "type": "TXT",
+      "txt": [
+        "A decentralized DNS root zone!"
+      ]
+    }
+  ]
+}
+```
+
+Get the data resource associated with a name.
+
+### HTTP Request
+
+`GET /wallet/:id/resource`
+
+
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+name <br> _string_ | name
+
+
+## Get Nonce for Bid
+
+```shell--vars
+id='primary'
+name='handshake'
+bid=2000000
+address='rs1q3qavv25ye6zsntszsj4awvq7gr4akq59k9y8hw'
+```
+
+```shell--curl
+curl "$walleturl/$id/nonce/$name?address=$address&bid=$bid"
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const options = {address, bid};
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+(async () => {
+  const result = await wallet.getNonce(name, options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "address": "rs1q3qavv25ye6zsntszsj4awvq7gr4akq59k9y8hw",
+  "blind": "4c20a52be340636137e703db9031e0d3ab0fbc503c5b97463a814665595ed71f",
+  "nonce": "69bbe132244d91b9fd13019f372e7dc79e487c44b126a226b39c8c287c15aff5",
+  "bid": 1,
+  "name": "handshake",
+  "nameHash": "3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6"
+}
+```
+
+Deterministically generate a nonce to blind a bid.
+
+Note that since multiple parameters are expected in the URL and therefore a `&`
+must be used, the URL is wrapped in double-quotes to prevent the shell from
+starting the process in the background.
+
+### HTTP Request
+
+`GET /wallet/:id/nonce/:name`
+
+
+Parameters | Description
+---------- | -----------
+id <br> _string_ | wallet id
+name <br> _string_ | name
+bid <br> _float_ | value of bid to blind
+address <br> _string_ | address controlling bid
+
+
+## Send OPEN
+
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+```
+
+```shell--curl
+curl $walleturl/$id/open \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign'
+  }'
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcast, sign};
+
+(async () => {
+  const result = await wallet.createOpen(options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "hash": "6901ec5576eb618e012058e62b34a0883c3832e1324ac9942bb5852e8a2e4a1f",
+  "witnessHash": "2391068a2a3082468e77934973bdb9f18fab33437074428946d78443a2519d84",
+  "mtime": 1580940345,
   "version": 0,
   "inputs": [
     {
       "prevout": {
-        "hash": "5f7892816226f3f753dfd003eea4f565fa699a5b29bafde27b6628b1a2966910",
-        "index": 0
+        "hash": "a94415c789656239cf7fe2f642215c2d51814f09dad5486058bbb09a0be2084f",
+        "index": 1
       },
       "witness": [
-        "bfab12daf81378ad40c46d037a52ffd4f3374c6f71cd6997b067ea9b498e29ac359cf9b267265f31741b28916a7d3da3021ca60539473d59cef3dc88b25c9e9801",
-        "03b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
+        "87ac7546878c9cbd4258d024698020d37b642150fec20c8950a1e26cfa06f0e70d4c882f2de05129c6c1c601ae5a89bd6874bea03dfeca8e89435b0fc44f151e01",
+        "03c66829e94b4644a3d5481e192af62e5b0e0eb91cd78d45594c9c59e1a5b16360"
       ],
       "sequence": 4294967295,
-      "address": "rs1q9jd8fgq8xa0drggyd6azggpeslacdzx5gr04ss"
+      "address": "rs1q9k8ktktnrfsr8p677gfxgkf5g45x7vzez7egqv"
     }
   ],
   "outputs": [
     {
-      "value": 10000000,
-      "address": "rs1qj3jpnvrs8afqmhpqanvlyc7m25duaxj4txaru5",
+      "value": 0,
+      "address": "rs1qx2wrlhtwg0exsa4sm3u7d7pz7ah3yld374jwd5",
+      "covenant": {
+        "type": 2,
+        "action": "OPEN",
+        "items": [
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "00000000",
+          "6272656164"
+        ]
+      }
+    },
+    {
+      "value": 2000010260,
+      "address": "rs1q30pw3zmgkktlr58fsycyuta3szgz0ldwnrg2wf",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    }
+  ],
+  "locktime": 0,
+  "hex": "0000000001a94415c789656239cf7fe2f642215c2d51814f09dad5486058bbb09a0be2084f01000000ffffffff0200000000000000000014329c3fdd6e43f26876b0dc79e6f822f76f127db1020320e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a040000000005627265616414bc35770000000000148bc2e88b68b597f1d0e981304e2fb1809027fdae000000000000024187ac7546878c9cbd4258d024698020d37b642150fec20c8950a1e26cfa06f0e70d4c882f2de05129c6c1c601ae5a89bd6874bea03dfeca8e89435b0fc44f151e012103c66829e94b4644a3d5481e192af62e5b0e0eb91cd78d45594c9c59e1a5b16360"
+}
+```
+
+Create, sign, and send a name OPEN.
+
+### HTTP Request
+
+`POST /wallet/:id/open`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name to OPEN
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+
+
+## Send BID
+
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+bid=1234000
+lockup=4567000
+```
+
+```shell--curl
+curl $walleturl/$id/bid \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign',
+    "bid":'$bid',
+    "lockup":'$lockup'
+  }'
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcast, sign, bid, lockup};
+
+(async () => {
+  const result = await wallet.createBid(options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "hash": "5f86ba9b968a872b079947314c789735c2ad52eefc54e726d7e9e6b7fdf9a566",
+  "witnessHash": "9e39c91a3dd9c0eaa352ed277d42f4f53920c4f89dce671389c0683586b70c2f",
+  "mtime": 1580940435,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "d69f3282a74ef79755a22e01fed308ebad77bf62a3a55434d22761a010ffb04f",
+        "index": 1
+      },
+      "witness": [
+        "872456ed9c7da4105840b626690a793be881506866b2dca894b1a165dd528cc608cd03eee1cd46c3ce61accfa2da0cf31bfa3734f54ef693aaa8e480dc25277501",
+        "03c25f5b28395ef101a38da38094e29bf57c3c618ffaef4e1c2a532efca9798722"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qgw8df4vh4wg9w0le3xe7dv4ypq75h5fa0qst5v"
+    }
+  ],
+  "outputs": [
+    {
+      "value": 4567000,
+      "address": "rs1qrx9matjmly5l6cnz4ed7ujxcy9tf4cfcl0szeg",
       "covenant": {
         "type": 3,
         "action": "BID",
         "items": [
-          "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
-          "d3070000",
-          "706f73736962696c697479",
-          "001361beb541240738829f101e842c76b9666d1bc4a87299a8ed6a9d2127ed61"
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "e3040000",
+          "6272656164",
+          "135333369e5d91671cafe97904663692546d10b8ded8cd7662480074fd2f1ab0"
         ]
       }
     },
     {
-      "value": 990004940,
-      "address": "rs1qd7xx0qnn5qpnmcuadhnz99q6sydfgq8fvg6e4v",
+      "value": 1995440140,
+      "address": "rs1qn4r8xq7pfyhmf0z2rja38kgrpmavdufd03jfn5",
       "covenant": {
         "type": 0,
         "action": "NONE",
@@ -326,24 +1033,51 @@ const client = new WalletClient(clientOptions);
     }
   ],
   "locktime": 0,
-  "hex": "00000000015f7892816226f3f753dfd003eea4f565fa699a5b29bafde27b6628b1a296691000000000ffffffff0280969800000000000014946419b0703f520ddc20ecd9f263db551bce9a5503042001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d30700000b706f73736962696c69747920001361beb541240738829f101e842c76b9666d1bc4a87299a8ed6a9d2127ed61cc46023b0000000000146f8c678273a0033de39d6de622941a811a9400e90000000000000241bfab12daf81378ad40c46d037a52ffd4f3374c6f71cd6997b067ea9b498e29ac359cf9b267265f31741b28916a7d3da3021ca60539473d59cef3dc88b25c9e98012103b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
+  "hex": "0000000001d69f3282a74ef79755a22e01fed308ebad77bf62a3a55434d22761a010ffb04f01000000ffffffff02d8af4500000000000014198bbeae5bf929fd6262ae5bee48d821569ae138030420e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e304000005627265616420135333369e5d91671cafe97904663692546d10b8ded8cd7662480074fd2f1ab00c00f0760000000000149d467303c1492fb4bc4a1cbb13d9030efac6f12d0000000000000241872456ed9c7da4105840b626690a793be881506866b2dca894b1a165dd528cc608cd03eee1cd46c3ce61accfa2da0cf31bfa3734f54ef693aaa8e480dc252775012103c25f5b28395ef101a38da38094e29bf57c3c618ffaef4e1c2a532efca9798722"
 }
 ```
-The OPEN period is followed by the BIDDING period. Use `sendbid` to place a bid.
 
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name for which you want to begin bidding (must be available).
-amount | Required | Amount of HNS you wish to bid (denominated in HNS, decimal amounts allowed)
-lockup | Required | Amount of HNS you wish to lockup to mask your bid. Must be greater than bid amount.
+Create, sign, and send a name BID.
+
+### HTTP Request
+
+`POST /wallet/:id/bid`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name to BID on
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+bid <br> _int_ | value (in dollarydoos) to bid for name
+lockup <br> _int_ | value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value
 
 
-## getbids
+## Send REVEAL
 
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+```
+
+```shell--curl
+curl $walleturl/$id/reveal \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign'
+  }'
+```
 
 ```shell--cli
-hsw-rpc getbids
+> no CLI command available
 ```
 
 ```javascript
@@ -351,169 +1085,132 @@ const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
-const clientOptions = {
+const walletOptions = {
   network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new WalletClient(clientOptions);
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcast, sign};
 
 (async () => {
-  const result = await client.execute('getbids');
-  console.log(result);
-})();
-```
-> getbids returns JSON structured like this: 
-
-```json
-[
-  {
-    "name": "why",
-    "nameHash": "27b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a4",
-    "prevout": {
-      "hash": "044aef8c1e61a3975bfa75dc9d6e1b19ce231ffcc019f97049543b2e12a692a6",
-      "index": 0
-    },
-    "value": 3000000,
-    "lockup": 4000000,
-    "blind": "0ddd08f20581b7adadf881b80c5d044b17cf6b1965bf4c56815cca390d9c41db",
-    "own": true
-  },
-  {
-    "name": "trees",
-    "nameHash": "92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec",
-    "prevout": {
-      "hash": "9ae840429110809efde0f0743178ce2f66d021a3c9c875f486293f132e37151f",
-      "index": 0
-    },
-    "value": 5000000,
-    "lockup": 10000000,
-    "blind": "a0943b12aa57ec0b3e6371be5b75cc895d0f78a7c5367c065bd388aebe6051a5",
-    "own": true
-  }
-]
-
-```
-getbids returns a list of all the bids placed by your wallet.
-
-### Params
-none
-
-
-## sendreveal
-
-```shell--cli
-hsw-rpc sendreveal $name
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('sendreveal', [ '$name' ]);
+  const result = await wallet.createReveal(options);
   console.log(result);
 })();
 ```
 
-> sendreveal returns JSON structured like this: 
+> Sample response:
 
 ```json
 {
-  "hash": "e8f576a85d87adffeef7a9bfbf79cf8782750592911f095fe39dd9fa1e73b650",
-  "witnessHash": "9f3458a6e1d32c9aad971cb52792f106f9f9a0a640a597098e98b47befe31be6",
-  "mtime": 1537403274,
-  "version": 0,
+  "hash": "f2a58686813a66621f8a814c9cabf59a76342914ff56a0f44260a44ce095eadd",
+  "height": -1,
+  "block": null,
+  "time": 0,
+  "mtime": 1580941108,
+  "date": "1970-01-01T00:00:00Z",
+  "mdate": "2020-02-05T22:18:28Z",
+  "size": 530,
+  "virtualSize": 379,
+  "fee": 7600,
+  "rate": 20052,
+  "confirmations": 0,
   "inputs": [
     {
-      "prevout": {
-        "hash": "22ebf77857e063c45dd0656ade0b8c5a29e255fefe55b1905fb799a9d075a552",
-        "index": 0
-      },
-      "witness": [
-        "5a43e3d1b90e28a550cca1da5950f846f82dc71d2f61b78ca1a4aadfef7d963e30fb33f1866139f02d24470948120e92a35ea3d6f7fa3ab569e9893f9983f86801",
-        "03b98187d5521400df71917c0cded095e12a0134532e9db36b2f2d5e7958c9ef65"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1q6jh3ujj9a28svzpva2lamsqyx8vm78zer8rfyp"
-    },
-    {
-      "prevout": {
-        "hash": "85bce02cc5cb8ba9ff4e23d84ce389310f50074a6b9a8b20b8643a56a4cb9f9a",
-        "index": 0
-      },
-      "witness": [
-        "286caf0d7901660c5c6efffede32be2ba4811495c6afdc23ece3f53537aed85f4829e7c47516d15e02456f1efb798e0692a43ca06d96499c01954d2f23ac0a6801",
-        "023bedd07f6cd16dc2699ec2b2451e2d8004fab99666e8e6dbc7286ed24be01f08"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1qj3jpnvrs8afqmhpqanvlyc7m25duaxj4txaru5"
+      "value": 4567000,
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3",
+      "path": {
+        "name": "default",
+        "account": 0,
+        "change": false,
+        "derivation": "m/0'/0/10"
+      }
     }
   ],
   "outputs": [
     {
-      "value": 6000000,
-      "address": "rs1q6jh3ujj9a28svzpva2lamsqyx8vm78zer8rfyp",
+      "value": 1234000,
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3",
       "covenant": {
         "type": 4,
         "action": "REVEAL",
         "items": [
-          "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
-          "d3070000",
-          "5b0e235bdc68fd23cc4877b566831490ea5be1a309af991027c89ff7be6822a8"
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "e3040000",
+          "5254fd6ae23148c8efbb4cb013c8d1c1048e412165632861f47535060c174736"
         ]
+      },
+      "path": {
+        "name": "default",
+        "account": 0,
+        "change": false,
+        "derivation": "m/0'/0/10"
       }
     },
     {
-      "value": 5000000,
-      "address": "rs1qj3jpnvrs8afqmhpqanvlyc7m25duaxj4txaru5",
-      "covenant": {
-        "type": 4,
-        "action": "REVEAL",
-        "items": [
-          "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
-          "d3070000",
-          "6cffbc155303695d2d974155bfd1dac48b267b41238a7d7ff4b39d1d23affe2a"
-        ]
-      }
-    },
-    {
-      "value": 10992400,
-      "address": "rs1qva23vffrfmru8euzvnqdxsudc2c6f7rlk4fszz",
+      "value": 6658400,
+      "address": "rs1qmchpnu3ktztqhlkk9ydkehd6qldemd9prvgvrp",
       "covenant": {
         "type": 0,
         "action": "NONE",
         "items": []
+      },
+      "path": {
+        "name": "default",
+        "account": 0,
+        "change": true,
+        "derivation": "m/0'/1/10"
       }
     }
   ],
-  "locktime": 0,
-  "hex": "000000000222ebf77857e063c45dd0656ade0b8c5a29e255fefe55b1905fb799a9d075a55200000000ffffffff85bce02cc5cb8ba9ff4e23d84ce389310f50074a6b9a8b20b8643a56a4cb9f9a00000000ffffffff03808d5b00000000000014d4af1e4a45ea8f06082ceabfddc00431d9bf1c5904032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d3070000205b0e235bdc68fd23cc4877b566831490ea5be1a309af991027c89ff7be6822a8404b4c00000000000014946419b0703f520ddc20ecd9f263db551bce9a5504032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d3070000206cffbc155303695d2d974155bfd1dac48b267b41238a7d7ff4b39d1d23affe2a10bba70000000000001467551625234ec7c3e78264c0d3438dc2b1a4f87f00000000000002415a43e3d1b90e28a550cca1da5950f846f82dc71d2f61b78ca1a4aadfef7d963e30fb33f1866139f02d24470948120e92a35ea3d6f7fa3ab569e9893f9983f868012103b98187d5521400df71917c0cded095e12a0134532e9db36b2f2d5e7958c9ef650241286caf0d7901660c5c6efffede32be2ba4811495c6afdc23ece3f53537aed85f4829e7c47516d15e02456f1efb798e0692a43ca06d96499c01954d2f23ac0a680121023bedd07f6cd16dc2699ec2b2451e2d8004fab99666e8e6dbc7286ed24be01f08"
+  "tx": "00000000021d9b7b7d829fa307f602d0c4057a6d733ccfca06c622ecf2456149c5c3da915600000000ffffffff5f86ba9b968a872b079947314c789735c2ad52eefc54e726d7e9e6b7fdf9a56600000000ffffffff0350d412000000000000141b8f66a6b3cdc3ddd5502dfdaf007cc2038c7004040320e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e3040000205254fd6ae23148c8efbb4cb013c8d1c1048e412165632861f47535060c17473650d41200000000000014198bbeae5bf929fd6262ae5bee48d821569ae138040320e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e304000020707bc55fdeb283cdc2114d3de30ed8bf7d4946eb589cf2239160566fb3683d8a60996500000000000014de2e19f23658960bfed6291b6cddba07db9db4a10000000000000241867a6e0d151fdc689eae00932b101af381ef99a19fc3535e740e6f3baca63b5b45db61413c7130b45ef546beda84f46f8adda8944d6dbae251c82062e17333da0121031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c88024181532acdd7b591eed4e62c6123d14cfefbb11723c855728d3012286210536bb4192a58622dbd66cd3d876f14a906d2a04d1053247340b9985c2f0fa2c85004a7012102fcd5c0914405f04b12c5936c50642fb2cb10a6262dd2dd8ca243e26cbc984ead"
 }
 ```
-The BIDDING period is followed by the REVEAL period, during which bidders must reveal their bids, moving the inputs of their bids into a REVEAL covenant from which they must continue to REDEEM (loser) or REGISTER (winner).
 
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name for which you wish to reveal your bid
+Create, sign, and send a name REVEAL. If multiple bids were placed on a name,
+all bids will be revealed by this transaction. If no value is passed in for `name`,
+all reveals for all names in the wallet will be sent.
+
+### HTTP Request
+
+`POST /wallet/:id/reveal`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name to REVEAL bids for (or `null` for all names)
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
 
 
+## Send REDEEM
 
-## getreveals
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+```
+
+```shell--curl
+curl $walleturl/$id/redeem \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign'
+  }'
+```
 
 ```shell--cli
-hsw-rpc getreveals
+> no CLI command available
 ```
 
 ```javascript
@@ -521,128 +1218,227 @@ const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
-const clientOptions = {
+const walletOptions = {
   network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new WalletClient(clientOptions);
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcast, sign};
 
 (async () => {
-  const result = await client.execute('getreveals');
+  const result = await wallet.createRedeem(options);
   console.log(result);
 })();
 ```
 
-> getreveals returns JSON structured like this: 
-
-```json
-[
-   {
-    "name": "why",
-    "nameHash": "27b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a4",
-    "prevout": {
-      "hash": "e3f45c48985a0722a8a124065af972be05356a6be124263f4b86590da0e61e36",
-      "index": 0
-    },
-    "value": 3000000,
-    "height": 211,
-    "own": true
-  },
-  {
-    "name": "trees",
-    "nameHash": "92ec68524dbcc44bc3ff4847ed45e3a86789009d862499ce558c793498413cec",
-    "prevout": {
-      "hash": "bd64231b5c28ad6b2b9c463900856676c67beedeb6e3a9e94cf6a1d8563bcba3",
-      "index": 0
-    },
-    "value": 5000000,
-    "height": 89,
-    "own": true
-  }
-]
-```
-getreveals returns all the reveal transactions sent by the wallet.
-
-### Params
-none
-
-## sendredeem
-
-```shell--cli
-hsw-rpc sendredeem $name
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('sendredeem', [ '$name' ]);
-  console.log(result);
-})();
-```
-
-> sendredeem returns JSON structured like this: 
+> Sample response:
 
 ```json
 {
-  "hash": "eca1bae09d78312f1f3177eafcde9f48c8d933f807cc276a9224003aba922018",
-  "witnessHash": "f883350cefade0671380fdce71b88996d2a49be30bfd7e3ebb02020e097efe51",
-  "mtime": 1537224055,
-  "version": 0,
+  "hash": "9cc3c9f665ad79563667f74864bcfdfe280f9f3a2df4ee02d427b8dea34fe388",
+  "height": -1,
+  "block": null,
+  "time": 0,
+  "mtime": 1580942277,
+  "date": "1970-01-01T00:00:00Z",
+  "mdate": "2020-02-05T22:37:57Z",
+  "size": 394,
+  "virtualSize": 243,
+  "fee": 4880,
+  "rate": 20082,
+  "confirmations": 0,
   "inputs": [
     {
-      "prevout": {
-        "hash": "76ad90abcde417d41d017b8d15b6980a804405aff72537c5cb99eb61a60cfee0",
-        "index": 0
-      },
-      "witness": [
-        "c5af2d7cee71f3079ec24d4e20387388ec44f6617b068e86a495f0b5649f99e916618d25be6d04a038071de074429bd4dbeda021916fc98e4a5a7c0a4e03ca2801",
-        "0329d8c1750b74815e568f2c57ac5492a8e93b3b919334025d37c239b466988590"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1q79u92rxyaxejj3rqyu0kxhzaydxk4ruendeu42"
+      "value": 1234000,
+      "address": "rs1qrx9matjmly5l6cnz4ed7ujxcy9tf4cfcl0szeg",
+      "path": {
+        "name": "default",
+        "account": 0,
+        "change": false,
+        "derivation": "m/0'/0/9"
+      }
     },
     {
-      "prevout": {
-        "hash": "00c61039848c77220ecafdef2e189c30093ae086c5ed5fce473bd1ec0d0f37fd",
-        "index": 0
-      },
-      "witness": [
-        "264a2153120ae936dd1dd75a0d2174089158b99e77f10db34253ed87216a76de13baa857f0ae5e1c77ac85f0402d74cd3d3154cfafe06e59e07b15c6958c5b4101",
-        "020eb07bca66b10617ffb17fe298a104a21789f4990cedee84577f66fe69656458"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1q0n93g7979gflgq680daemzx8slfg0tqreasrnf"
+      "value": 2000010260,
+      "address": "rs1q30pw3zmgkktlr58fsycyuta3szgz0ldwnrg2wf",
+      "path": {
+        "name": "default",
+        "account": 0,
+        "change": true,
+        "derivation": "m/0'/1/7"
+      }
     }
   ],
   "outputs": [
     {
-      "value": 2000000,
-      "address": "rs1q79u92rxyaxejj3rqyu0kxhzaydxk4ruendeu42",
+      "value": 1234000,
+      "address": "rs1qrx9matjmly5l6cnz4ed7ujxcy9tf4cfcl0szeg",
       "covenant": {
         "type": 5,
         "action": "REDEEM",
         "items": [
-          "a761e2b31b2a10714810b3cb439b1ffe347a1019af1932db7e8ac4c62a34224a",
-          "0c000000"
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "e3040000"
+        ]
+      },
+      "path": {
+        "name": "default",
+        "account": 0,
+        "change": false,
+        "derivation": "m/0'/0/9"
+      }
+    },
+    {
+      "value": 2000005380,
+      "address": "rs1qtw3nhk8t5waujzwm5vh4ylkp0ytjamnx0efu8s",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      },
+      "path": {
+        "name": "default",
+        "account": 0,
+        "change": true,
+        "derivation": "m/0'/1/11"
+      }
+    }
+  ],
+  "tx": "0000000002f2a58686813a66621f8a814c9cabf59a76342914ff56a0f44260a44ce095eadd01000000ffffffff6901ec5576eb618e012058e62b34a0883c3832e1324ac9942bb5852e8a2e4a1f01000000ffffffff0250d41200000000000014198bbeae5bf929fd6262ae5bee48d821569ae138050220e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e304000004a935770000000000145ba33bd8eba3bbc909dba32f527ec179172eee660000000000000241bd37183812b9ae232e2b1400eea3b36afa420c8eb1c2a7c54402f88b61fb2680733da29697a0713bf7a3cc2f5176ed2d6f957fa8988d6c952d32443cf49a8ce9012102fcd5c0914405f04b12c5936c50642fb2cb10a6262dd2dd8ca243e26cbc984ead0241a33f7b362d9c0fb94c75c37d795ab6ab6e2566288cb278a1cb275d35f9e454f351c805c2c74cc9ff278694169a8b818d41d04488daf534f4223a803fc13eac0e012102b87379bf21a7a8b19edcbd4826406e7880e7f6352bd9068de57c8f7d7d2a7703"
+}
+```
+
+Create, sign, and send a REDEEM. This transaction sweeps the value from losing
+bids back into the wallet. If multiple bids (and reveals) were placed on a name,
+all losing bids will be redeemed by this transaction. If no value is passed in for `name`,
+all qualifying bids are redeemed.
+
+### HTTP Request
+
+`POST /wallet/:id/redeem`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name to REDEEM bids for (or `null` for all names)
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+
+
+## Send UPDATE
+
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+type='TXT'
+key='txt'
+value='Bread is a delicious food.'
+```
+
+```shell--curl
+curl $walleturl/$id/update \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign',
+    "data": {"records": [ {"type": "'$type'", "'$key'": ["'"$value"'"]} ]}
+  }'
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const data = {records: []};
+const record = {type};
+record[key] = [value];
+data.records.push(record);
+
+const options = {passphrase, name, broadcast, sign, data};
+
+(async () => {
+  const result = await wallet.createUpdate(options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "hash": "31da65987a9b1573e4d051a07ec9e3d3845c649cba64c5789566369ba6ac9cbc",
+  "witnessHash": "87d283aa0a863ca3f0d913f4b11281d8315e166c73a5cb46c19f94d721aefc43",
+  "mtime": 1580943569,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "f2a58686813a66621f8a814c9cabf59a76342914ff56a0f44260a44ce095eadd",
+        "index": 0
+      },
+      "witness": [
+        "aab532bcd307bea84d7abb7926f598a9d63ac503cac8e416c7683ef71032e932133735464a92f7dc1f697a9a40b0f4cb13c4a5db0114b6a961de0cf924dac2a401",
+        "031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c88"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3"
+    },
+    {
+      "prevout": {
+        "hash": "ed85504acb5e5005fe07567d17a5d2bd8c30a235ad15eb114f64e75fff172bbb",
+        "index": 0
+      },
+      "witness": [
+        "7948b87e5e42a4276bfbc548b0a23e3a01388a6158bfd872fc413fb1a8313ca023dcdcd6f28e2d97b542fe28c303dc2f861b1d4c8e41b5d99973e02a22ff1fc701",
+        "02737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1q3qm3e6sxd0mzax54jx6p3th0p2adzxdx2tm3zl"
+    }
+  ],
+  "outputs": [
+    {
+      "value": 1234000,
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3",
+      "covenant": {
+        "type": 6,
+        "action": "REGISTER",
+        "items": [
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "e3040000",
+          "0006011a427265616420697320612064656c6963696f757320666f6f642e",
+          "71e4ac7bd9a9eebe6aaaa99e8e08d10c8f2c184774feb844b6a180f8f7bba7ae"
         ]
       }
     },
     {
-      "value": 1000000720,
-      "address": "rs1qx7yfyscwrwjw86spx88wdhgnj7ljkrxjmljx6j",
+      "value": 2000002520,
+      "address": "rs1qzgvngp7jtluup39rc2atfp6q3g2vuklj6qfrtq",
       "covenant": {
         "type": 0,
         "action": "NONE",
@@ -651,22 +1447,105 @@ const client = new WalletClient(clientOptions);
     }
   ],
   "locktime": 0,
-  "hex": "000000000276ad90abcde417d41d017b8d15b6980a804405aff72537c5cb99eb61a60cfee000000000ffffffff00c61039848c77220ecafdef2e189c30093ae086c5ed5fce473bd1ec0d0f37fd00000000ffffffff0280841e00000000000014f178550cc4e9b3294460271f635c5d234d6a8f99050220a761e2b31b2a10714810b3cb439b1ffe347a1019af1932db7e8ac4c62a34224a040c000000d0cc9a3b000000000014378892430e1ba4e3ea0131cee6dd1397bf2b0cd20000000000000241c5af2d7cee71f3079ec24d4e20387388ec44f6617b068e86a495f0b5649f99e916618d25be6d04a038071de074429bd4dbeda021916fc98e4a5a7c0a4e03ca2801210329d8c1750b74815e568f2c57ac5492a8e93b3b919334025d37c239b4669885900241264a2153120ae936dd1dd75a0d2174089158b99e77f10db34253ed87216a76de13baa857f0ae5e1c77ac85f0402d74cd3d3154cfafe06e59e07b15c6958c5b410121020eb07bca66b10617ffb17fe298a104a21789f4990cedee84577f66fe69656458"
+  "hex": "0000000002f2a58686813a66621f8a814c9cabf59a76342914ff56a0f44260a44ce095eadd00000000ffffffffed85504acb5e5005fe07567d17a5d2bd8c30a235ad15eb114f64e75fff172bbb00000000ffffffff0250d412000000000000141b8f66a6b3cdc3ddd5502dfdaf007cc2038c7004060420e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e30400001e0006011a427265616420697320612064656c6963696f757320666f6f642e2071e4ac7bd9a9eebe6aaaa99e8e08d10c8f2c184774feb844b6a180f8f7bba7aed89d357700000000001412193407d25ff9c0c4a3c2bab487408a14ce5bf20000000000000241aab532bcd307bea84d7abb7926f598a9d63ac503cac8e416c7683ef71032e932133735464a92f7dc1f697a9a40b0f4cb13c4a5db0114b6a961de0cf924dac2a40121031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c8802417948b87e5e42a4276bfbc548b0a23e3a01388a6158bfd872fc413fb1a8313ca023dcdcd6f28e2d97b542fe28c303dc2f861b1d4c8e41b5d99973e02a22ff1fc7012102737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
 }
 ```
 
-The REVEAL period follows the BIDDING period. During this phase, participants regain the input of their losing bids with `sendredeem`.
+Create, sign, and send an UPDATE. This transaction updates the resource data
+associated with a given name.
 
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name for which you wish to redeem your losing bid.
+<aside>Note: Due to behavior of some shells like bash, if your TXT value contains spaces you may need to add additional quotes like this: <code>"'"$value"'"</code></aside>
+
+### HTTP Request
+
+`POST /wallet/:id/redeem`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name to REDEEM bids for (or `null` for all names)
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+data <br> _object_ | JSON object containing an array of DNS records (see next section)
 
 
-## sendupdate
+## Resource Object
+
+The resource object must contain one property `records`, which is an array
+of record objects. Each record object must have a property `type` which defines the DNS
+record type. Depending on the type, the record object may have various additional properties.
+
+
+```
+// Example of a valid resource object
+// containing examples of all available record types:
+
+{
+  records: [
+    {
+      type: 'DS',
+      keyTag: 57355,
+      algorithm: 8, // RSASHA256
+      digestType: 2, // SHA256
+      digest:
+        '95a57c3bab7849dbcddf7c72ada71a88146b141110318ca5be672057e865c3e2'
+    },
+    {
+      type: 'NS',
+      ns: 'ns1.hns.'
+    },
+    {
+      type: 'GLUE4',
+      ns: 'ns2.hns.',
+      address: '127.0.0.1'
+    },
+    {
+      type: 'GLUE6',
+      ns: 'ns2.hns.',
+      address: '::1'
+    },
+    {
+      type: 'SYNTH4',
+      address: '127.0.0.2'
+    },
+    {
+      type: 'SYNTH6',
+      address: '::2'
+    },
+    {
+      type: 'TXT',
+      txt: ['hello world']
+    }
+  ]
+}
+```
+
+
+## Send RENEW
+
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+```
+
+```shell--curl
+curl $walleturl/$id/renewal \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign'
+  }'
+```
 
 ```shell--cli
-hsw-rpc sendupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}'
+> no CLI command available
 ```
 
 ```javascript
@@ -674,45 +1553,311 @@ const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
-const clientOptions = {
+const walletOptions = {
   network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new WalletClient(clientOptions);
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcast};
 
 (async () => {
-  const result = await client.execute(
-    'sendupdate',
-    [
-      name,
-      {records: [ {type: "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}
-    ]
-  );
+  const result = await wallet.createRenewal(options);
   console.log(result);
 })();
 ```
-> sendupdate returns JSON structured like this: 
+
+> Sample response:
 
 ```json
 {
-  "hash": "70a7bb8a015514934344590330bac7b2ed3adf716a41c3ead54fff83271e4462",
-  "witnessHash": "9826b176811030b992c913ff2b9c7ac540216f97d9ea97a12aa170238ff1176d",
-  "mtime": 1580945169,
+  "hash": "1e198eea5803646f58ccc74f2cd5a69942907f18d1c4fa6d5069920eda1634a4",
+  "witnessHash": "78ca00baa443912e03aa5b32fa59b03b80e34d1aff94602b211b9fa58e03e4d2",
+  "mtime": 1580995594,
   "version": 0,
   "inputs": [
     {
       "prevout": {
-        "hash": "fba2b7020060ef7da7d0fb016e0e6fc7eefe6472521da6d1e096c3508154b97f",
+        "hash": "78ff6f7d974006bb6ab02631b09bd4896a3ebf000d23696562e7f07445ac7c0e",
         "index": 0
       },
       "witness": [
-        "fda534512d04e56628d786a5d25a60f96a55462a5879b8f0c57941a3e89f33546d69a04b4fa035d856bd7dad9f089646fa937864d85bdddbea22478fac835ffe01",
+        "b599baa320a7118e600a26d26a1c89dcb8742b22a31953e57c1452914ccbdda23d727e894b4abfb250f1826f4e5c0393176c55cc521ffeae0b02477e84fbd58601",
         "031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c88"
       ],
       "sequence": 4294967295,
       "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3"
+    },
+    {
+      "prevout": {
+        "hash": "9cc3c9f665ad79563667f74864bcfdfe280f9f3a2df4ee02d427b8dea34fe388",
+        "index": 1
+      },
+      "witness": [
+        "8404a9d05c8baeb00a98f43b3aa332cc2be733ec53f226e2778f685b3b99b4f723877957e9db731ff86c2c0efe49edd85ba8c299e17005079612a0c4d6319f9901",
+        "02f231291526e240e57ee2552cea5b8f7ac78f49cabbadb859930f9c4fb4316009"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qtw3nhk8t5waujzwm5vh4ylkp0ytjamnx0efu8s"
+    }
+  ],
+  "outputs": [
+    {
+      "value": 1234000,
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3",
+      "covenant": {
+        "type": 8,
+        "action": "RENEW",
+        "items": [
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "e3040000",
+          "31008b4f5f79c4fa4de0766d9c5be5a49e0b39e18dc5a8701325e4b66611e07c"
+        ]
+      }
+    },
+    {
+      "value": 1999999840,
+      "address": "rs1qfepqfvsshhlq0555lsxvu6xetzydzaxxs6cvhe",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    }
+  ],
+  "locktime": 0,
+  "hex": "000000000278ff6f7d974006bb6ab02631b09bd4896a3ebf000d23696562e7f07445ac7c0e00000000ffffffff9cc3c9f665ad79563667f74864bcfdfe280f9f3a2df4ee02d427b8dea34fe38801000000ffffffff0250d412000000000000141b8f66a6b3cdc3ddd5502dfdaf007cc2038c7004080320e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e30400002031008b4f5f79c4fa4de0766d9c5be5a49e0b39e18dc5a8701325e4b66611e07c609335770000000000144e4204b210bdfe07d294fc0cce68d95888d174c60000000000000241b599baa320a7118e600a26d26a1c89dcb8742b22a31953e57c1452914ccbdda23d727e894b4abfb250f1826f4e5c0393176c55cc521ffeae0b02477e84fbd5860121031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c8802418404a9d05c8baeb00a98f43b3aa332cc2be733ec53f226e2778f685b3b99b4f723877957e9db731ff86c2c0efe49edd85ba8c299e17005079612a0c4d6319f99012102f231291526e240e57ee2552cea5b8f7ac78f49cabbadb859930f9c4fb4316009"
+}
+```
+
+Create, sign, and send a RENEW.
+
+### HTTP Request
+
+`POST /wallet/:id/renew`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name to RENEW
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+
+
+## Send TRANSFER
+
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+address='rs1qe4tnr7zhx95uvfw220k7eh9ke0rtducpp3hgjc'
+```
+
+```shell--curl
+curl $walleturl/$id/transfer \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign',
+    "address":"'$address'"
+  }'
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcast, address};
+
+(async () => {
+  const result = await wallet.createTransfer(options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "hash": "b5d3c0caaa14913c15cf219095c23feb0b6b7fa2327428d377da2bb21044045e",
+  "witnessHash": "6d88b3910c047ca69d0a8a833ba17888dc31f8111d5da59e9db5978499607e6e",
+  "mtime": 1580995968,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "0b90f30f05e1073e5a34426eea244e66eaa0878b3d065b45cad9a5247dd36425",
+        "index": 0
+      },
+      "witness": [
+        "ea9ca5c0d619fa548f51384c443d01e34099ba2d590a2f5b9b334d35d1c1fc3e6e739b4f9a9c415c43cd70aa567d4cd820a7a91d0f76164838a9e0967ffdabad01",
+        "031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c88"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3"
+    },
+    {
+      "prevout": {
+        "hash": "29d8311eebb36fcb64cc2c5094120ba966feb494b277763abdba0d6766668166",
+        "index": 0
+      },
+      "witness": [
+        "57c79c840a1a62f74129a18da6d648999c61c2a270a660851815d5bc48729380612a08d7a8a3f7608f351a2a7a0dfa858cd2f951f6868b902617dd2d61ba8e9801",
+        "02737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1q3qm3e6sxd0mzax54jx6p3th0p2adzxdx2tm3zl"
+    }
+  ],
+  "outputs": [
+    {
+      "value": 1234000,
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3",
+      "covenant": {
+        "type": 9,
+        "action": "TRANSFER",
+        "items": [
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "e3040000",
+          "00",
+          "cd5731f8573169c625ca53edecdcb6cbc6b6f301"
+        ]
+      }
+    },
+    {
+      "value": 2000000200,
+      "address": "rs1q5w4jvv9rkv3w2tdvegzmdv3a7gzucefc45xqsw",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    }
+  ],
+  "locktime": 0,
+  "hex": "00000000020b90f30f05e1073e5a34426eea244e66eaa0878b3d065b45cad9a5247dd3642500000000ffffffff29d8311eebb36fcb64cc2c5094120ba966feb494b277763abdba0d676666816600000000ffffffff0250d412000000000000141b8f66a6b3cdc3ddd5502dfdaf007cc2038c7004090420e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e3040000010014cd5731f8573169c625ca53edecdcb6cbc6b6f301c8943577000000000014a3ab2630a3b322e52dacca05b6b23df205cc65380000000000000241ea9ca5c0d619fa548f51384c443d01e34099ba2d590a2f5b9b334d35d1c1fc3e6e739b4f9a9c415c43cd70aa567d4cd820a7a91d0f76164838a9e0967ffdabad0121031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c88024157c79c840a1a62f74129a18da6d648999c61c2a270a660851815d5bc48729380612a08d7a8a3f7608f351a2a7a0dfa858cd2f951f6868b902617dd2d61ba8e98012102737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
+}
+```
+
+Create, sign, and send a TRANSFER.
+
+### HTTP Request
+
+`POST /wallet/:id/transfer`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name to TRANSFER
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+address <br> _string_  | address to transfer name ownership to
+
+
+## Cancel TRANSFER
+
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+```
+
+```shell--curl
+curl $walleturl/$id/cancel \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign'
+  }'
+```
+
+```shell--cli
+> no CLI command available
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcast};
+
+(async () => {
+  const result = await wallet.createCancel(options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "hash": "c67f89be56413deef37c07a38450e3bb0098f179abc30281bb55e5656039a64e",
+  "witnessHash": "b4feded954a6371bb6e7e6699f842643e2387403612ebe1690c54d25e89532ec",
+  "mtime": 1580996955,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "b5d3c0caaa14913c15cf219095c23feb0b6b7fa2327428d377da2bb21044045e",
+        "index": 0
+      },
+      "witness": [
+        "59698c78326150a7ba75e769d6c127ade0849127d89730c48c50d44684f4553a43f938b5dc70ee275f9d9290ef6225468c0ab5fb0bcb6609257cec0c0053bbcb01",
+        "031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c88"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3"
+    },
+    {
+      "prevout": {
+        "hash": "76eb16e8b65826f0d411c3b78a5c2c349fde4d363b9818232eb0be48e3d108c3",
+        "index": 0
+      },
+      "witness": [
+        "51f2b83295fafbbdaf2b239cf347dae2182f318b8ddef6e075497cd9e50a486d465ddd934acd7630d93568db0602014bc6304f0f62bc9f51e293d9cf0b4cea4601",
+        "02737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1q3qm3e6sxd0mzax54jx6p3th0p2adzxdx2tm3zl"
     }
   ],
   "outputs": [
@@ -725,417 +1870,13 @@ const client = new WalletClient(clientOptions);
         "items": [
           "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
           "e3040000",
-          "0001036e7331076578616d706c6503636f6d00"
-        ]
-      }
-    },
-    {
-      "value": 2000000880,
-      "address": "rs1qvnzn8krtydw39stqx0a0cwdly68tyus88r0qkt",
-      "covenant": {
-        "type": 0,
-        "action": "NONE",
-        "items": []
-      }
-    }
-  ],
-  "locktime": 0,
-  "hex": "0000000002fba2b7020060ef7da7d0fb016e0e6fc7eefe6472521da6d1e096c3508154b97f00000000ffffffff4ce418e3fa835b63a5c93397c807cd07fd711501c7840163a9ca660cb4c0b10900000000ffffffff0250d412000000000000141b8f66a6b3cdc3ddd5502dfdaf007cc2038c7004070320e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e3040000130001036e7331076578616d706c6503636f6d007097357700000000001464c533d86b235d12c16033fafc39bf268eb272070000000000000241fda534512d04e56628d786a5d25a60f96a55462a5879b8f0c57941a3e89f33546d69a04b4fa035d856bd7dad9f089646fa937864d85bdddbea22478fac835ffe0121031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c880241f6d7da1c9d3a8dd87c5c8b1726399f5f41396f5143f8bf4db50ccc4c7c1506c62c5b7ccb1ded95a7de110c38110d5aa72bbee3c0a04d07683e639bbddb2899dd012102737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
-}
-```
-
-Upon close of the REVEAL period, auction winners claim ownership of the name with `sendupdate`, which updates the namedata and transfers their winning bid input to a REGISTER output.
-
-Furthermore, name owners can use `sendupdate` at any time to update the resource data of their name.
-
-See the [Resource Object section](#resource-object) for details on formatting the name resource data.
-
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-  name | Required | The name for which you wish to update resource data (initially creates a REGISTER output).
-
-
-## sendrenewal
-
-```shell--cli
-hsw-rpc sendrenewal $name
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('sendrenewal', [ '$name' ]);
-  console.log(result);
-})();
-```
-
-> sendrenewal returns JSON structured like this: 
-
-```json
-{
-  "hash": "9903a0083675a01b325ed01154bc36714591f5854eb9cc307d611b50a8507240",
-  "witnessHash": "1b0707f8b7e04d880afd134a17ea6564c4e6ee71b0151694315e5701bd8d1827",
-  "mtime": 1537461760,
-  "version": 0,
-  "inputs": [
-    {
-      "prevout": {
-        "hash": "d3b7fbb819ecc817cacb17458d946dacbc4b4501e730d8022f2ab079ad40bdac",
-        "index": 0
-      },
-      "witness": [
-        "d9438712c602f69bf9129f5ec49d9b7b4dd0c7a46328d7037723fd3a5454ca245262e90836173832ca9a5616fd1f7271ea0eb0c65a0fbabfbe1e72ebf8aef0e101",
-        "03b98187d5521400df71917c0cded095e12a0134532e9db36b2f2d5e7958c9ef65"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1q6jh3ujj9a28svzpva2lamsqyx8vm78zer8rfyp"
-    },
-    {
-      "prevout": {
-        "hash": "069fe62ea77e0ca1705eb3c5cdff19ea419868243d7f41b18d9af6f78221e152",
-        "index": 0
-      },
-      "witness": [
-        "f9ed8ffd9e73a13dbb5a411071ff7a14ff54e084a59d9831a6a28e94781b253d513cc52cee51d644249c045d68ec0a1d0812399549ca3cf6c3b185c3ae669a1301",
-        "03b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1q9jd8fgq8xa0drggyd6azggpeslacdzx5gr04ss"
-    }
-  ],
-  "outputs": [
-    {
-      "value": 5000000,
-      "address": "rs1q6jh3ujj9a28svzpva2lamsqyx8vm78zer8rfyp",
-      "covenant": {
-        "type": 8,
-        "action": "RENEW",
-        "items": [
-          "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
-          "d3070000",
-          "40e9f4c63507c0e05b44b5944dac4dbed3603a330dda2691067e17079fa8b5b3"
-        ]
-      }
-    },
-    {
-      "value": 1000003100,
-      "address": "rs1qc4hu9nh28nea6wz0p9sla70lzzxcyas3mshnv3",
-      "covenant": {
-        "type": 0,
-        "action": "NONE",
-        "items": []
-      }
-    }
-  ],
-  "locktime": 0,
-  "hex": "0000000002d3b7fbb819ecc817cacb17458d946dacbc4b4501e730d8022f2ab079ad40bdac00000000ffffffff069fe62ea77e0ca1705eb3c5cdff19ea419868243d7f41b18d9af6f78221e15200000000ffffffff02404b4c00000000000014d4af1e4a45ea8f06082ceabfddc00431d9bf1c5908032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d30700002040e9f4c63507c0e05b44b5944dac4dbed3603a330dda2691067e17079fa8b5b31cd69a3b000000000014c56fc2ceea3cf3dd384f0961fef9ff108d8276110000000000000241d9438712c602f69bf9129f5ec49d9b7b4dd0c7a46328d7037723fd3a5454ca245262e90836173832ca9a5616fd1f7271ea0eb0c65a0fbabfbe1e72ebf8aef0e1012103b98187d5521400df71917c0cded095e12a0134532e9db36b2f2d5e7958c9ef650241f9ed8ffd9e73a13dbb5a411071ff7a14ff54e084a59d9831a6a28e94781b253d513cc52cee51d644249c045d68ec0a1d0812399549ca3cf6c3b185c3ae669a13012103b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
-}
-```
-
-Users must renew their ownership of a name annually with sendrenewal, creating an UPDATE output associated with a recent block hash. There is no cost beyond the base transaction fee.
-
-
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name for which you wish to renew your ownership.
-
-
-## sendtransfer
-
-```shell--cli
-hsw-rpc sendtransfer $name $address
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('sendtransfer', [ '$name', '$address' ]);
-  console.log(result);
-})();
-```
-
-> sendtransfer returns JSON structured like this: 
-
-```json
-{
-  "hash": "c7fc96fa1b865a6139286b29626edf00ff286cb242c5fc65b3a78e0db1613a04",
-  "witnessHash": "909d816d51471d0706eb3b2fb697bfdd8a8a77bab7965fc8dca595971d79d68a",
-  "mtime": 1538011636,
-  "version": 0,
-  "inputs": [
-    {
-      "prevout": {
-        "hash": "d90af01fda660069d6a83f857a5779d099ff342d0e6a2a0a3f869e70b9bcf334",
-        "index": 0
-      },
-      "witness": [
-        "26ae1f8b5886b458b0e68571195d69270f1ea574d6c94c69c8720389247543fe3ac23705fe10e1eec520ca567cb2836d5ba444e1aae1f8c884047b14873a186901",
-        "02896c8c128f86f155e61b74aced241304dd7f94feee6510d22f70e1d1b6e42fff"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1qucar8syx0dt32nms6kh63y0xcgsa747jaexn40"
-    },
-    {
-      "prevout": {
-        "hash": "d90af01fda660069d6a83f857a5779d099ff342d0e6a2a0a3f869e70b9bcf334",
-        "index": 1
-      },
-      "witness": [
-        "9c8df6c7719a21f042dc6779fde9fd3cc208316b703b64e78685795d79cfc0db790c989055c6c0a83c34e95f8f8c68264a69a1c9b8399fa78c5983e9616ee0e201",
-        "0287b251961dba18b138ff59e692024c0962c355cd328c78de0fb2176739209f88"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1qx40lfr2q8wknz3mxr4zknc44e3n88qm65y9vag"
-    }
-  ],
-  "outputs": [
-    {
-      "value": 3000000,
-      "address": "rs1qucar8syx0dt32nms6kh63y0xcgsa747jaexn40",
-      "covenant": {
-        "type": 9,
-        "action": "TRANSFER",
-        "items": [
-          "08141335637fff1366102f06f2f7d7ac306e5d85c6d8e0f979c765db6a9ec894",
-          "8b000000",
-          "00",
-          "ba1889638506b69aa1b4b6c5c867c09345d8a7c1"
-        ]
-      }
-    },
-    {
-      "value": 1000004320,
-      "address": "rs1qvylezfasshnad0v55403n6prttueaam6t4vt3t",
-      "covenant": {
-        "type": 0,
-        "action": "NONE",
-        "items": []
-      }
-    }
-  ],
-  "locktime": 0,
-  "hex": "0000000002d90af01fda660069d6a83f857a5779d099ff342d0e6a2a0a3f869e70b9bcf33400000000ffffffffd90af01fda660069d6a83f857a5779d099ff342d0e6a2a0a3f869e70b9bcf33401000000ffffffff02c0c62d00000000000014e63a33c0867b57154f70d5afa891e6c221df57d209042008141335637fff1366102f06f2f7d7ac306e5d85c6d8e0f979c765db6a9ec894048b000000010014ba1889638506b69aa1b4b6c5c867c09345d8a7c1e0da9a3b000000000014613f9127b085e7d6bd94a55f19e8235af99ef77a000000000000024126ae1f8b5886b458b0e68571195d69270f1ea574d6c94c69c8720389247543fe3ac23705fe10e1eec520ca567cb2836d5ba444e1aae1f8c884047b14873a1869012102896c8c128f86f155e61b74aced241304dd7f94feee6510d22f70e1d1b6e42fff02419c8df6c7719a21f042dc6779fde9fd3cc208316b703b64e78685795d79cfc0db790c989055c6c0a83c34e95f8f8c68264a69a1c9b8399fa78c5983e9616ee0e201210287b251961dba18b138ff59e692024c0962c355cd328c78de0fb2176739209f88"
-}
-
-```
-Should you decide to sell a name or change wallets, use this command to transfer your name to another address. 
-
-Once initiated, there is a 48 hour waiting period (enforced by block height) until the owner can redeem the `TRANSFER` output to a `FINALIZE` output. This 'finalizes' the transfer to the new address.
-
-A TRANSFER can be cancelled using `sendcancel`. 
-
-To help prevent the theft of names, during this 48 hour window, the owner can redeem the `TRANSFER` to a `REVOKE` output. This renders the name's output forever unspendable, and puts the name back up for bidding. This is intended as a last resort in the case of a stolen key.
-
-
-
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name you wish to transfer
-address | Required | The address to which you wish to transfer ownership of name.
-
-
-## sendfinalize
-
-```shell--cli
-hsw-rpc sendfinalize $name
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('sendfinalize', [ '$name' ]);
-  console.log(result);
-})();
-```
-
-> sendfinalize returns JSON structured like this: 
-
-```json
-{
-  "hash": "6f82bf94fdc12794aeac0a99e2428dbf0456f3ab15624129f898c505a1deb26d",
-  "witnessHash": "cd4487c4d19924f5d58d828327e97eff5c1051a3a8cfaf3380af054960407fee",
-  "mtime": 1538012719,
-  "version": 0,
-  "inputs": [
-    {
-      "prevout": {
-        "hash": "e3c2874727805184562b3bbe7ebea8a23646eb045c36d69449ae236d3242dbc4",
-        "index": 0
-      },
-      "witness": [
-        "54fdde711cd3e0ce60e33a9db4c66b7a097c899dd39c8c3ba81905391bfcfd594afe4121e679985c6b8343635a595dcb4be50eadba66857550d0e16b25c20aaf01",
-        "035e3c18b9a34de4c6a0be3a51f293d9cdd634cb85351e5c6b0152e7b292ce34a5"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1qwyssp6plp4qhqag6yejd2ywp4s8dg4dcgzsj7g"
-    },
-    {
-      "prevout": {
-        "hash": "0a50562585e67f3e5754c57ed5a94c893f047a06d9efba3b5b29f69903b54a56",
-        "index": 0
-      },
-      "witness": [
-        "200c11b6e091df0230a95a62264a30f0f674d572d82c638430c64ecfaadef15f20425fcb44ade602107314cfeea954714bbff2fde43dad370ecc90a0b4ca176901",
-        "03fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1qj6340u3vv0vqe0uyjjlnlvqaljv07nydvdz2jv"
-    }
-  ],
-  "outputs": [
-    {
-      "value": 1000000,
-      "address": "rs1qhgvgjcu9q6mf4gd5kmzuse7qjdza3f7pm8gnmh",
-      "covenant": {
-        "type": 10,
-        "action": "FINALIZE",
-        "items": [
-          "27b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a4",
-          "bd000000",
-          "776879",
-          "00",
-          "3addb4abe0cc60dad8dcd25688883c62c328c025095d26125b8ff9005cc0823b"
-        ]
-      }
-    },
-    {
-      "value": 1000003540,
-      "address": "rs1q5y4lfnlvdvewe6wxfqzscv4j4l008fey82txyz",
-      "covenant": {
-        "type": 0,
-        "action": "NONE",
-        "items": []
-      }
-    }
-  ],
-  "locktime": 0,
-  "hex": "0000000002e3c2874727805184562b3bbe7ebea8a23646eb045c36d69449ae236d3242dbc400000000ffffffff0a50562585e67f3e5754c57ed5a94c893f047a06d9efba3b5b29f69903b54a5600000000ffffffff0240420f00000000000014ba1889638506b69aa1b4b6c5c867c09345d8a7c10a052027b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a404bd000000037768790100203addb4abe0cc60dad8dcd25688883c62c328c025095d26125b8ff9005cc0823bd4d79a3b000000000014a12bf4cfec6b32ece9c648050c32b2afdef3a724000000000000024154fdde711cd3e0ce60e33a9db4c66b7a097c899dd39c8c3ba81905391bfcfd594afe4121e679985c6b8343635a595dcb4be50eadba66857550d0e16b25c20aaf0121035e3c18b9a34de4c6a0be3a51f293d9cdd634cb85351e5c6b0152e7b292ce34a50241200c11b6e091df0230a95a62264a30f0f674d572d82c638430c64ecfaadef15f20425fcb44ade602107314cfeea954714bbff2fde43dad370ecc90a0b4ca1769012103fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
-}
-```
-
-After 48 hours worth of blocks, the original owner can redeem the `TRANSFER` output to a `FINALIZE` output, completing the transfer to the new address.
-
-To help prevent the theft of names, during this 48 hour window, the previous owner can redeem the `TRANSFER` to a `REVOKE` output. This renders the name's output forever unspendable, and puts the name back up for bidding. `REVOKE` is intended to be a last-resort option.
-
-
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name whose transfer you wish to finalize
-
-
-## sendcancel
-
-```shell--cli
-hsw-rpc sendcancel $name
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const client = new WalletClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('sendcancel', [ '$name' ]);
-  console.log(result);
-})();
-```
-
-> sendcancel returns JSON structured like this: 
-
-```json
-{
-  "hash": "7bd7c709e5d5e5cc2382f45daad29d280641bf9d1fdf5f88efb6a1809b16a01b",
-  "witnessHash": "244ccd42d9c20e783b4249959b75aef2601ec2ef7edd4d527342644fcd0b04a4",
-  "mtime": 1538022969,
-  "version": 0,
-  "inputs": [
-    {
-      "prevout": {
-        "hash": "40694cc1ffbe6009d15446258aea876e74392f46be0844d5a67cf50e0b419ed6",
-        "index": 0
-      },
-      "witness": [
-        "f2511d7c5dd174773ab1dc9023f5a1a26e70f324b345eb31f5093394633faf8b5b84ccd1fb6bd8db661cf7ab6aaca02bda34acad47e15db9cfc666e517a536c601",
-        "023341e7b9a5dbd22050d71fed525a1380096bb947b7f79f17828eb8b81546e3df"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1qgaxr4vg3y00ctlnyszy9hx36n7cxycfc6h59f3"
-    },
-    {
-      "prevout": {
-        "hash": "aa24214cb776499cc0aa40d6c05d31bd0327b7639149f9766d7e22d184ec858b",
-        "index": 0
-      },
-      "witness": [
-        "6816716ef14e9dfaebfb1b74d80ed00b839d86a5d77f99bb935d67d0b4a2bff5628e2c5fb6ca4ad34535355ad197e4162d7a2a09a9147805bd24d351dbfb7cec01",
-        "03fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
-      ],
-      "sequence": 4294967295,
-      "address": "rs1qj6340u3vv0vqe0uyjjlnlvqaljv07nydvdz2jv"
-    }
-  ],
-  "outputs": [
-    {
-      "value": 1000000,
-      "address": "rs1qgaxr4vg3y00ctlnyszy9hx36n7cxycfc6h59f3",
-      "covenant": {
-        "type": 7,
-        "action": "UPDATE",
-        "items": [
-          "27b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a4",
-          "bd000000",
           ""
         ]
       }
     },
     {
-      "value": 1000000440,
-      "address": "rs1qrm0fu5axhfeclqacw6maxsshzx9vcm9lecaj67",
+      "value": 2000000440,
+      "address": "rs1qp7ru55hjw96llagrhcjvznurra4tw60ucg409y",
       "covenant": {
         "type": 0,
         "action": "NONE",
@@ -1144,23 +1885,53 @@ const client = new WalletClient(clientOptions);
     }
   ],
   "locktime": 0,
-  "hex": "000000000240694cc1ffbe6009d15446258aea876e74392f46be0844d5a67cf50e0b419ed600000000ffffffffaa24214cb776499cc0aa40d6c05d31bd0327b7639149f9766d7e22d184ec858b00000000ffffffff0240420f00000000000014474c3ab11123df85fe6480885b9a3a9fb062613807032027b118c11562ebb2b11d94bbc1f23f3d78daea533766d929d39b580a2d37d4a404bd00000000b8cb9a3b0000000000141ede9e53a6ba738f83b876b7d34217118acc6cbf0000000000000241f2511d7c5dd174773ab1dc9023f5a1a26e70f324b345eb31f5093394633faf8b5b84ccd1fb6bd8db661cf7ab6aaca02bda34acad47e15db9cfc666e517a536c60121023341e7b9a5dbd22050d71fed525a1380096bb947b7f79f17828eb8b81546e3df02416816716ef14e9dfaebfb1b74d80ed00b839d86a5d77f99bb935d67d0b4a2bff5628e2c5fb6ca4ad34535355ad197e4162d7a2a09a9147805bd24d351dbfb7cec012103fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
+  "hex": "0000000002b5d3c0caaa14913c15cf219095c23feb0b6b7fa2327428d377da2bb21044045e00000000ffffffff76eb16e8b65826f0d411c3b78a5c2c349fde4d363b9818232eb0be48e3d108c300000000ffffffff0250d412000000000000141b8f66a6b3cdc3ddd5502dfdaf007cc2038c7004070320e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e304000000b89535770000000000140f87ca52f27175fff503be24c14f831f6ab769fc000000000000024159698c78326150a7ba75e769d6c127ade0849127d89730c48c50d44684f4553a43f938b5dc70ee275f9d9290ef6225468c0ab5fb0bcb6609257cec0c0053bbcb0121031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c88024151f2b83295fafbbdaf2b239cf347dae2182f318b8ddef6e075497cd9e50a486d465ddd934acd7630d93568db0602014bc6304f0f62bc9f51e293d9cf0b4cea46012102737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
 }
 ```
 
-After sending a `TRANSFER` but before sending a `FINALIZE`, the owner can cancel the ownership transfer with `sendcancel`. The owner will retain control of the name. This is the recommended means of cancelling a transfer. Not to be confused with a `REVOKE`, which is only to be used in the case of a stolen key.
+Create, sign, and send a transaction that cancels a TRANSFER.
+
+This transaction is not a unique covenant type, but spends from a TRANSFER to an
+UPDATE covenant (with an empty resource object) in order to cancel a transfer
+already in progress.
+
+### HTTP Request
+
+`POST /wallet/:id/cancel`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name in transferred state to cancel transfer for
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
 
 
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name whose transfer you wish to cancel.
+## Send FINALIZE
 
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+```
 
-## sendrevoke
+```shell--curl
+curl $walleturl/$id/finalize \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign'
+  }'
+```
 
 ```shell--cli
-hsw-rpc sendrevoke $name
+> no CLI command available
 ```
 
 ```javascript
@@ -1168,70 +1939,78 @@ const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
-const clientOptions = {
+const walletOptions = {
   network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new WalletClient(clientOptions);
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcast};
 
 (async () => {
-  const result = await client.execute('sendrevoke', [ '$name' ]);
+  const result = await wallet.createFinalize(options);
   console.log(result);
 })();
 ```
 
-> sendrevoke returns JSON structured like this: 
+> Sample response:
 
 ```json
 {
-  "hash": "fb7761c46161c736853f56d1be41e76ff8f004b7a4b5f096b880221544ee99f8",
-  "witnessHash": "2fc85765999cd443f660b8af1c44e86d755ad706f8cb9f21632eaebc165ec9c0",
-  "mtime": 1538011729,
+  "hash": "164e610fc166fc26ac426c54924fc0b6b25e74523f57bec3f064f23b36e3e4c9",
+  "witnessHash": "df5c9c4a7f4f1f02df1d28ab5a6040bdb13161bb674f14eeaa790080e265fb92",
+  "mtime": 1580997210,
   "version": 0,
   "inputs": [
     {
       "prevout": {
-        "hash": "c7fc96fa1b865a6139286b29626edf00ff286cb242c5fc65b3a78e0db1613a04",
+        "hash": "3f650357a4de12f4d6b764f13ccfd473ab56d4390b6afb71941a429dc4b8cfc4",
         "index": 0
       },
       "witness": [
-        "078cf39beab769eb3331b00c1d6c92f152883fcd3ee62f54c69db5b33dd2919d568e52f89ac1d3cd0cb88cba6e88b703a872d61d7a953886bb4b8dce4938e33e01",
-        "02896c8c128f86f155e61b74aced241304dd7f94feee6510d22f70e1d1b6e42fff"
+        "183b5de76722cf361c3cb1b509f537b9fafdab25d724e1d8f37db75c77684496208cbaca9ac59362ab70ef16d483f7371a28a231272c8e481f1af99fe931e48a01",
+        "031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c88"
       ],
       "sequence": 4294967295,
-      "address": "rs1qucar8syx0dt32nms6kh63y0xcgsa747jaexn40"
+      "address": "rs1qrw8kdf4nehpam42s9h767qrucgpccuqyk5y9j3"
     },
     {
       "prevout": {
-        "hash": "5e0a26e6ba89dfafd7cd5436ddd5c26180f8619dd8dfebfe27459c4b4ac2093f",
+        "hash": "de7a5680851d3b3bb4509d2559ebd1d61f61e0ca6eaae82225c4c5c4b8e89d1a",
         "index": 0
       },
       "witness": [
-        "cf4ce38d371515c47bc51d28476adc288bcd06d39a1d1acf85bc6d39fd88799d578768e873263723e4012f181f071dcde145998107f1d37ad476b6c594cf7de401",
-        "03fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
+        "db8152812f0b5db8c94663020019806c6b441a0ff8d5ab9c01a1aca2ac4a98a70a90a6fff5ccda93fe80c39a6dd04c7119635b908ccefcd91cb0d5e18af97a7b01",
+        "02737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
       ],
       "sequence": 4294967295,
-      "address": "rs1qj6340u3vv0vqe0uyjjlnlvqaljv07nydvdz2jv"
+      "address": "rs1q3qm3e6sxd0mzax54jx6p3th0p2adzxdx2tm3zl"
     }
   ],
   "outputs": [
     {
-      "value": 3000000,
-      "address": "rs1qucar8syx0dt32nms6kh63y0xcgsa747jaexn40",
+      "value": 1234000,
+      "address": "rs1qe4tnr7zhx95uvfw220k7eh9ke0rtducpp3hgjc",
       "covenant": {
-        "type": 11,
-        "action": "REVOKE",
+        "type": 10,
+        "action": "FINALIZE",
         "items": [
-          "08141335637fff1366102f06f2f7d7ac306e5d85c6d8e0f979c765db6a9ec894",
-          "8b000000"
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "e3040000",
+          "6272656164",
+          "00",
+          "00000000",
+          "02000000",
+          "4942bbed4ebc9baf39e5a636884ac0d08b72ce5ae301d825726d210d24324fe8"
         ]
       }
     },
     {
-      "value": 1000000460,
-      "address": "rs1qk9qqak6mqp7lfd7dxpfdntdhsep7xj75ajracs",
+      "value": 1999999440,
+      "address": "rs1qrayzddcwjeqs93ejpxdrq5uxn5yxp68rp0fcxq",
       "covenant": {
         "type": 0,
         "action": "NONE",
@@ -1240,23 +2019,49 @@ const client = new WalletClient(clientOptions);
     }
   ],
   "locktime": 0,
-  "hex": "0000000002c7fc96fa1b865a6139286b29626edf00ff286cb242c5fc65b3a78e0db1613a0400000000ffffffff5e0a26e6ba89dfafd7cd5436ddd5c26180f8619dd8dfebfe27459c4b4ac2093f00000000ffffffff02c0c62d00000000000014e63a33c0867b57154f70d5afa891e6c221df57d20b022008141335637fff1366102f06f2f7d7ac306e5d85c6d8e0f979c765db6a9ec894048b000000cccb9a3b000000000014b1400edb5b007df4b7cd3052d9adb78643e34bd40000000000000241078cf39beab769eb3331b00c1d6c92f152883fcd3ee62f54c69db5b33dd2919d568e52f89ac1d3cd0cb88cba6e88b703a872d61d7a953886bb4b8dce4938e33e012102896c8c128f86f155e61b74aced241304dd7f94feee6510d22f70e1d1b6e42fff0241cf4ce38d371515c47bc51d28476adc288bcd06d39a1d1acf85bc6d39fd88799d578768e873263723e4012f181f071dcde145998107f1d37ad476b6c594cf7de4012103fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
+  "hex": "00000000023f650357a4de12f4d6b764f13ccfd473ab56d4390b6afb71941a429dc4b8cfc400000000ffffffffde7a5680851d3b3bb4509d2559ebd1d61f61e0ca6eaae82225c4c5c4b8e89d1a00000000ffffffff0250d41200000000000014cd5731f8573169c625ca53edecdcb6cbc6b6f3010a0720e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e3040000056272656164010004000000000402000000204942bbed4ebc9baf39e5a636884ac0d08b72ce5ae301d825726d210d24324fe8d09135770000000000141f4826b70e964102c732099a3053869d0860e8e30000000000000241183b5de76722cf361c3cb1b509f537b9fafdab25d724e1d8f37db75c77684496208cbaca9ac59362ab70ef16d483f7371a28a231272c8e481f1af99fe931e48a0121031a7b023f3baf31ec7e730cc1535bdf26c642be367b3de2fb6b6a30d3c5cd5c880241db8152812f0b5db8c94663020019806c6b441a0ff8d5ab9c01a1aca2ac4a98a70a90a6fff5ccda93fe80c39a6dd04c7119635b908ccefcd91cb0d5e18af97a7b012102737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
 }
 ```
 
-While in the `TRANSFER` state, the owner can redeem to a `REVOKE` output. This renders the name's output forever unspendable, and puts the name back up for bidding. This is intended as an action of last resort to stop a theft in the case that the owner's key has been compromised. Use `sendcancel` to simply cancel a transfer.
+Create, sign, and send a FINALIZE.
+
+### HTTP Request
+
+`POST /wallet/:id/finalize`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name in transferred state to finalize transfer for
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
 
 
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name whose transfer you wish to revoke
+## Send REVOKE
 
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcast=true
+sign=true
+```
 
-## importnonce
+```shell--curl
+curl $walleturl/$id/revoke \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcast":'$broadcast',
+    "sign":'$sign'
+  }'
+```
 
 ```shell--cli
-hsw-rpc importnonce $name $address $bid-value
+> no CLI command available
 ```
 
 ```javascript
@@ -1264,61 +2069,101 @@ const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
 
-const clientOptions = {
+const walletOptions = {
   network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
 
-const client = new WalletClient(clientOptions);
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcast};
 
 (async () => {
-  const result = await client.execute('importnonce', [ '$name', '$address', '$bid-value' ]);
+  const result = await wallet.createRevoke(options);
   console.log(result);
 })();
 ```
 
-> importnonce deterministically regenerate's a bid's nonce
+> Sample response:
 
 ```json
+{
+  "hash": "6785ee323e4619b29bcdc7f321dd428f4023ebabe81524e014b7d9c6b72c93cc",
+  "witnessHash": "88bf88f2bcfbb4769b3172924641ef5104fdc5ac5eacb7a82efa47a4b9cda150",
+  "mtime": 1580997666,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "8a8f44c1984ad59e5d69f8bab69abb048940ac9afcb6b69f5db7fa26b963383b",
+        "index": 0
+      },
+      "witness": [
+        "75b04e8eb6b9a8f8accbb0c4c4e7615bc9482b4a9d32cb280c05d6aae0cd1d9a4dbdd03a68b1e4599a99223067a2071fb772c7a5df7a284d614c6420adc863a601",
+        "0340b9a23ad22b1031aebafbcde816f385f8ce37d4364b22415ea5e74d305a1752"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qe4tnr7zhx95uvfw220k7eh9ke0rtducpp3hgjc"
+    },
+    {
+      "prevout": {
+        "hash": "7f468990f5cc5c63e88a1ab635e2534f2d731e34caee0a6a88d349251d8b292d",
+        "index": 0
+      },
+      "witness": [
+        "bf03452993be0678d8a25f87ea261a45a6237665c89dac89dc8a41cb7470fc1735d4d1336c880786a4b7b8dd3ae865add239f244d11c2a5a633131b0d267c5e201",
+        "02737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1q3qm3e6sxd0mzax54jx6p3th0p2adzxdx2tm3zl"
+    }
+  ],
+  "outputs": [
+    {
+      "value": 1234000,
+      "address": "rs1qe4tnr7zhx95uvfw220k7eh9ke0rtducpp3hgjc",
+      "covenant": {
+        "type": 11,
+        "action": "REVOKE",
+        "items": [
+          "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+          "e3040000"
+        ]
+      }
+    },
+    {
+      "value": 2000000460,
+      "address": "rs1q8utpm2zqajrwcaju0ldxjwwaad6cu8awkjevap",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    }
+  ],
+  "locktime": 0,
+  "hex": "00000000028a8f44c1984ad59e5d69f8bab69abb048940ac9afcb6b69f5db7fa26b963383b00000000ffffffff7f468990f5cc5c63e88a1ab635e2534f2d731e34caee0a6a88d349251d8b292d00000000ffffffff0250d41200000000000014cd5731f8573169c625ca53edecdcb6cbc6b6f3010b0220e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a04e3040000cc9535770000000000143f161da840ec86ec765c7fda6939ddeb758e1fae000000000000024175b04e8eb6b9a8f8accbb0c4c4e7615bc9482b4a9d32cb280c05d6aae0cd1d9a4dbdd03a68b1e4599a99223067a2071fb772c7a5df7a284d614c6420adc863a601210340b9a23ad22b1031aebafbcde816f385f8ce37d4364b22415ea5e74d305a17520241bf03452993be0678d8a25f87ea261a45a6237665c89dac89dc8a41cb7470fc1735d4d1336c880786a4b7b8dd3ae865add239f244d11c2a5a633131b0d267c5e2012102737c83b6d4f0e5ef855908de87a62f68992881581f1659549c9ad43035d692f9"
+}
 ```
 
-Deterministically regenerate a bid's nonce.
+Create, sign, and send a REVOKE.
 
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-name | Required | The name for the bid
-address | Required | The address submitting the bid
-bid-value | Required | The value of the bid
+This method is a fail-safe for name owners whose keys are compromised and lose
+control of their name. Before the transfer is finalized, a REVOKE can be sent
+that not only cancels the transfer, but burns the name preventing any further
+updates or transfers. The name can be reopened with a new auction after a set time.
 
+### HTTP Request
 
+`POST /wallet/:id/finalize`
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name in transferred state to revoke transfer for
+sign <br> _bool_ | whether to sign the transaction
+broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
