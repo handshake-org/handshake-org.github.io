@@ -51,61 +51,45 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "hash": "4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f",
-  "witnessHash": "337189c003cf9c2ea413b5b6041c5b9e62f5fdfafcdd6cb54d5829c6cd59dd77",
-  "fee": 2800,
-  "rate": 20000,
-  "mtime": 1528329716,
-  "height": -1,
-  "block": null,
-  "time": 0,
-  "index": -1,
+  "hash": "ffaab95b75c3db650191920a69915e480ced19a8f58cba867382fc8163654299",
+  "witnessHash": "23103d0e91632760a69a8abfb80c0589caf1acfde829b219372d2cd595153f3a",
+  "fee": 0,
+  "rate": 0,
+  "mtime": 1581299437,
+  "height": 74,
+  "block": "19f0de035bfdb5482eb148f49be7e4427ebbcf0b7522665766154e0873637e18",
+  "time": 1581299449,
+  "index": 0,
   "version": 0,
   "inputs": [
     {
       "prevout": {
-        "hash": "2277cbd9dd1c2552f9998e6861c7fd6866b9a48fa94ec85f03697390e8fa5d4b",
-        "index": 0
+        "hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "index": 4294967295
       },
       "witness": [
-        "ef5ae8c401a69123b69da2922514ff62a76a040abb615e79453ad8172a31916c65c82ecebf15d40678b3c749411908e9aaeed1785b23789c746e5f17d11bb4c801",
-        "02deb957b2e4ebb246e1ecb27a4dc7d142504e70a420adb3cf40f9fb5d3928fdf9"
+        "6d696e656420627920687364",
+        "e591dce4a94f7b28",
+        "0000000000000000"
       ],
-      "sequence": 4294967295,
-      "coin": {
-        "version": 0,
-        "height": 2,
-        "value": 500000000,
-        "address": "rs1q7qumafugfglg268djelwr7ps4l2uh2vsdpfnuc",
-        "covenant": {
-          "type": 0,
-          "items": []
-        },
-        "coinbase": true
-      }
+      "sequence": 3610282069,
+      "address": null
     }
   ],
   "outputs": [
     {
-      "value": 100000000,
-      "address": "rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap",
+      "value": 2000000000,
+      "address": "rs1qpu06wprkwleh579mureghcasjhu9uwge6pltn5",
       "covenant": {
         "type": 0,
-        "items": []
-      }
-    },
-    {
-      "value": 399997200,
-      "address": "rs1qx38r5mjzlxfus9yx7nhx3mrg00sv75xc5mksk5",
-      "covenant": {
-        "type": 0,
+        "action": "NONE",
         "items": []
       }
     }
   ],
-  "locktime": 0,
-  "hex": "00000000012277cbd9dd1c2552f9998e6861c7fd6866b9a48fa94ec85f03697390e8fa5d4b000000000241ef5ae8c401a69123b69da2922514ff62a76a040abb615e79453ad8172a31916c65c82ecebf15d40678b3c749411908e9aaeed1785b23789c746e5f17d11bb4c8012102deb957b2e4ebb246e1ecb27a4dc7d142504e70a420adb3cf40f9fb5d3928fdf9ffffffff0200e1f505000000000014f0d9374a2ce80c377187f4bc6c68993c561cb13600001079d717000000000014344e3a6e42f993c81486f4ee68ec687be0cf50d8000000000000",
-  "confirmations": 5
+  "locktime": 74,
+  "hex": "00000000010000000000000000000000000000000000000000000000000000000000000000ffffffff558830d701009435770000000000140f1fa7047677f37a78bbe0f28be3b095f85e391900004a000000030c6d696e65642062792068736408e591dce4a94f7b28080000000000000000",
+  "confirmations": 28
 }
 ```
 
@@ -124,7 +108,7 @@ let address;
 ```
 
 ```shell--vars
-address='rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap';
+address='rs1qpu06wprkwleh579mureghcasjhu9uwge6pltn5';
 ```
 
 ```shell--curl
@@ -161,62 +145,46 @@ const client = new NodeClient(clientOptions);
 ```json
 [
   {
-    "hash": "4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f",
-    "witnessHash": "337189c003cf9c2ea413b5b6041c5b9e62f5fdfafcdd6cb54d5829c6cd59dd77",
-    "fee": 2800,
-    "rate": 20000,
-    "mtime": 1528329716,
-    "height": -1,
-    "block": null,
-    "time": 0,
-    "index": -1,
+    "hash": "ffaab95b75c3db650191920a69915e480ced19a8f58cba867382fc8163654299",
+    "witnessHash": "23103d0e91632760a69a8abfb80c0589caf1acfde829b219372d2cd595153f3a",
+    "fee": 0,
+    "rate": 0,
+    "mtime": 1581299437,
+    "height": 74,
+    "block": "19f0de035bfdb5482eb148f49be7e4427ebbcf0b7522665766154e0873637e18",
+    "time": 1581299449,
+    "index": 0,
     "version": 0,
     "inputs": [
       {
         "prevout": {
-          "hash": "2277cbd9dd1c2552f9998e6861c7fd6866b9a48fa94ec85f03697390e8fa5d4b",
-          "index": 0
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "index": 4294967295
         },
         "witness": [
-          "ef5ae8c401a69123b69da2922514ff62a76a040abb615e79453ad8172a31916c65c82ecebf15d40678b3c749411908e9aaeed1785b23789c746e5f17d11bb4c801",
-          "02deb957b2e4ebb246e1ecb27a4dc7d142504e70a420adb3cf40f9fb5d3928fdf9"
+          "6d696e656420627920687364",
+          "e591dce4a94f7b28",
+          "0000000000000000"
         ],
-        "sequence": 4294967295,
-        "coin": {
-          "version": 0,
-          "height": 2,
-          "value": 500000000,
-          "address": "rs1q7qumafugfglg268djelwr7ps4l2uh2vsdpfnuc",
-          "covenant": {
-            "type": 0,
-            "items": []
-          },
-          "coinbase": true
-        }
+        "sequence": 3610282069,
+        "address": null
       }
     ],
     "outputs": [
       {
-        "value": 100000000,
-        "address": "rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap",
+        "value": 2000000000,
+        "address": "rs1qpu06wprkwleh579mureghcasjhu9uwge6pltn5",
         "covenant": {
           "type": 0,
-          "items": []
-        }
-      },
-      {
-        "value": 399997200,
-        "address": "rs1qx38r5mjzlxfus9yx7nhx3mrg00sv75xc5mksk5",
-        "covenant": {
-          "type": 0,
+          "action": "NONE",
           "items": []
         }
       }
     ],
-    "locktime": 0,
-    "hex": "00000000012277cbd9dd1c2552f9998e6861c7fd6866b9a48fa94ec85f03697390e8fa5d4b000000000241ef5ae8c401a69123b69da2922514ff62a76a040abb615e79453ad8172a31916c65c82ecebf15d40678b3c749411908e9aaeed1785b23789c746e5f17d11bb4c8012102deb957b2e4ebb246e1ecb27a4dc7d142504e70a420adb3cf40f9fb5d3928fdf9ffffffff0200e1f505000000000014f0d9374a2ce80c377187f4bc6c68993c561cb13600001079d717000000000014344e3a6e42f993c81486f4ee68ec687be0cf50d8000000000000",
-    "confirmations": 5
-  }
+    "locktime": 74,
+    "hex": "00000000010000000000000000000000000000000000000000000000000000000000000000ffffffff558830d701009435770000000000140f1fa7047677f37a78bbe0f28be3b095f85e391900004a000000030c6d696e65642062792068736408e591dce4a94f7b28080000000000000000",
+    "confirmations": 28
+  },
   ...
 ]
 ```
