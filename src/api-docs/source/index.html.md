@@ -32,6 +32,7 @@ includes:
   - wallet_tx
   - wallet_auctions
   - wallet_rpc_auctions
+  - wallet_rpc
   - sockets
   - node_sockets
   - wallet_sockets
