@@ -57,37 +57,48 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "version": "0.0.0",
+  "version": "2.0.1",
   "network": "regtest",
   "chain": {
-    "height": 205,
-    "tip": "38d4ff72bca6737d958e1456be90443c0e09186349f28b952564118ace222331",
-    "progress": 1
+    "height": 1,
+    "tip": "6b054a7a561fdfa7c2f11550db4d5341d101be044df24dd58c465b2abac94c3f",
+    "treeRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+    "progress": 0.6125905181398805,
+    "state": {
+      "tx": 2,
+      "coin": 1360,
+      "value": 237416588368270,
+      "burned": 0
+    }
   },
   "pool": {
-    "host": "18.188.224.12",
+    "host": "0.0.0.0",
     "port": 14038,
-    "agent": "/hsd:0.0.0/",
-    "services": "1001",
-    "outbound": 1,
-    "inbound": 1
+    "identitykey": "aorsxa4ylaacshipyjkfbvzfkh3jhh4yowtoqdt64nzemqtiw2whk",
+    "agent": "/hsd:2.0.1/",
+    "services": "1",
+    "outbound": 0,
+    "inbound": 0
   },
   "mempool": {
     "tx": 0,
-    "size": 0
+    "size": 0,
+    "claims": 0,
+    "airdrops": 0,
+    "orphans": 0
   },
   "time": {
-    "uptime": 1744,
-    "system": 1527028546,
-    "adjusted": 1527028546,
+    "uptime": 3,
+    "system": 1581299165,
+    "adjusted": 1581299165,
     "offset": 0
   },
   "memory": {
-    "total": 90,
-    "jsHeap": 19,
-    "jsHeapTotal": 26,
-    "nativeHeap": 64,
-    "external": 9
+    "total": 78,
+    "jsHeap": 11,
+    "jsHeapTotal": 29,
+    "nativeHeap": 49,
+    "external": 14
   }
 }
 ```
@@ -235,8 +246,8 @@ let blockHash, blockHeight;
 ```
 
 ```shell--vars
-blockHash='ae99a76a7de09b955515014d632e70af82e504dab9f8278387ffd0d6a4caa890';
-blockHeight='1';
+blockHash='ae3895cf597eff05b19e02a70ceeeecb9dc72dbfe6504a50e9343a72f06a87c5';
+blockHeight='0';
 ```
 
 ```shell--curl
@@ -274,30 +285,27 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "hash": "ae99a76a7de09b955515014d632e70af82e504dab9f8278387ffd0d6a4caa890",
-  "height": 1,
+  "hash": "ae3895cf597eff05b19e02a70ceeeecb9dc72dbfe6504a50e9343a72f06a87c5",
+  "height": 0,
   "depth": 2,
   "version": 0,
-  "prevBlock": "695e315d274ec2de4d050ef63d497a2cbaf8103bbed0c559d5ac45d840015be5",
-  "merkleRoot": "7d142b878b7894fb916280d0bee0b5c4f8970e1adbc9d1a2e9057a0b8187b709",
-  "witnessRoot": "2521e8ab766ec523a97c6f0acb48d36b5b0684dc5e1cfd5e3cd703eb2d8386e8",
+  "prevBlock": "0000000000000000000000000000000000000000000000000000000000000000",
+  "merkleRoot": "8e4c9756fef2ad10375f360e0560fcc7587eb5223ddf8cd7c7e06e60a1140b15",
+  "witnessRoot": "1a2c60b9439206938f8d7823782abdb8b211a57431e9c9b6a6365d8d42893351",
   "treeRoot": "0000000000000000000000000000000000000000000000000000000000000000",
-  "time": 1528315264,
+  "reservedRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "time": 1580745080,
   "bits": 545259519,
-  "nonce": "0400000000000000000000000000000000000000",
-  "solution": [
-    21,
-    41,
-    56,
-    125
-  ],
+  "nonce": 0,
+  "extraNonce": "000000000000000000000000000000000000000000000000",
+  "mask": "0000000000000000000000000000000000000000000000000000000000000000",
   "txs": [
     {
-      "hash": "7d142b878b7894fb916280d0bee0b5c4f8970e1adbc9d1a2e9057a0b8187b709",
-      "witnessHash": "2521e8ab766ec523a97c6f0acb48d36b5b0684dc5e1cfd5e3cd703eb2d8386e8",
+      "hash": "9553240e6f711271cfccf9407c9348996e61cb3bd39adbc2ec258ff940ff22c6",
+      "witnessHash": "49880b0f9dd1b0b5dd43f6d64803276d54717e5f98b71d82bf170cb4dd0c2388",
       "fee": 0,
       "rate": 0,
-      "mtime": 1528316209,
+      "mtime": 1581299280,
       "index": 0,
       "version": 0,
       "inputs": [
@@ -307,26 +315,28 @@ const client = new NodeClient(clientOptions);
             "index": 4294967295
           },
           "witness": [
-            "6d696e65642062792068736b64",
-            "0569cfb705858fae",
-            "0000000000000000"
+            "50b8937fc5def08f9f3cbda7e5f08c706edb80aba5880c000000000000000000",
+            "2d5de58609d4970fb548f85ad07a87db40e054e34cc81c951ca995a58f674db7",
+            "10d748eda1b9c67b94d3244e0211677618a9b4b329e896ad90431f9f48034bad",
+            "e2c0299a1e466773516655f09a64b1e16b2579530de6c4a59ce5654dea45180f"
           ],
-          "sequence": 368430654,
+          "sequence": 4294967295,
           "address": null
         }
       ],
       "outputs": [
         {
-          "value": 500000000,
-          "address": "rs1qpu06wprkwleh579mureghcasjhu9uwge6pltn5",
+          "value": 2002210000,
+          "address": "rs1q7q3h4chglps004u3yn79z0cp9ed24rfrhvrxnx",
           "covenant": {
             "type": 0,
+            "action": "NONE",
             "items": []
           }
         }
       ],
-      "locktime": 1,
-      "hex": "00000000010000000000000000000000000000000000000000000000000000000000000000ffffffff030d6d696e65642062792068736b64080569cfb705858fae0800000000000000003ecef515010065cd1d0000000000140f1fa7047677f37a78bbe0f28be3b095f85e3919000001000000"
+      "locktime": 0,
+      "hex": "00000000010000000000000000000000000000000000000000000000000000000000000000ffffffffffffffff01d04c5777000000000014f0237ae2e8f860f7d79124fc513f012e5aaa8d23000000000000042050b8937fc5def08f9f3cbda7e5f08c706edb80aba5880c000000000000000000202d5de58609d4970fb548f85ad07a87db40e054e34cc81c951ca995a58f674db72010d748eda1b9c67b94d3244e0211677618a9b4b329e896ad90431f9f48034bad20e2c0299a1e466773516655f09a64b1e16b2579530de6c4a59ce5654dea45180f"
     }
   ]
 }

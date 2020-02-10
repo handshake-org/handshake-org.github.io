@@ -194,7 +194,7 @@ let rawtx;
 ```
 
 ```shell--vars
-rawtx='00000000010000000000000000000000000000000000000000000000000000000000000000ffffffff030d6d696e65642062792068736b64088d8679b7393cc0ac0800000000000000000bf6305f010065cd1d000000000014f039bea7884a3e8568ed967ee1f830afd5cba990000001000000';
+rawtx='000000000103858fc9d1c73d5250f2526ef71e17cb37d542d0fd7c8ddd061ab5f42ac47c5900000000ffffffff0250690f000000000000206237ceaffc6f2960a97c82e5a0b1e40455ee34010b1dd9c3481877a0883459760000d01e267700000000001464ae86dbe6f80c1d50daf5eafade990a5e1bcbdb0000000000000241813478628bcca531d716e088a7efef90eb8155d1afa87156dd6996e12b68e1776121cfbb022de662ce32e2b4c005fbcb033dc4cd06bbd7b99ff64f2af7cb29fc0121021ecadaa8a5146e04aad0d05e7116eeb961f1457b3094b7030f362e31552c2ed0';
 ```
 
 ```shell--curl
@@ -233,35 +233,48 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "txid": "b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb3",
-  "hash": "6a46ce951a4239596405d8bcc3a12a20a43978f57e8cb2ef0cf29611d8a25d51",
-  "size": 115,
-  "vsize": 91,
+  "txid": "d1a4c16e5771115c3f251c0e13a912871af70ffde5cef8b5d5e3357806c80f24",
+  "hash": "550f276f2acbb5c7c84e62b591ff9f13cd7c06a36bcf1c42a2b53105bfc4c9e9",
+  "size": 227,
+  "vsize": 152,
   "version": 0,
-  "locktime": 1,
+  "locktime": 0,
   "vin": [
     {
-      "coinbase": true,
-      "txid": "0000000000000000000000000000000000000000000000000000000000000000",
-      "vout": 4294967295,
+      "coinbase": false,
+      "txid": "03858fc9d1c73d5250f2526ef71e17cb37d542d0fd7c8ddd061ab5f42ac47c59",
+      "vout": 0,
       "txinwitness": [
-        "6d696e65642062792068736b64",
-        "8d8679b7393cc0ac",
-        "0000000000000000"
+        "813478628bcca531d716e088a7efef90eb8155d1afa87156dd6996e12b68e1776121cfbb022de662ce32e2b4c005fbcb033dc4cd06bbd7b99ff64f2af7cb29fc01",
+        "021ecadaa8a5146e04aad0d05e7116eeb961f1457b3094b7030f362e31552c2ed0"
       ],
-      "sequence": 1597044235
+      "sequence": 4294967295
     }
   ],
   "vout": [
     {
-      "value": 500,
+      "value": 1.01,
       "n": 0,
       "address": {
         "version": 0,
-        "hash": "f039bea7884a3e8568ed967ee1f830afd5cba990"
+        "hash": "6237ceaffc6f2960a97c82e5a0b1e40455ee34010b1dd9c3481877a088345976"
       },
       "covenant": {
         "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    },
+    {
+      "value": 1998.98696,
+      "n": 1,
+      "address": {
+        "version": 0,
+        "hash": "64ae86dbe6f80c1d50daf5eafade990a5e1bcbdb"
+      },
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
         "items": []
       }
     }

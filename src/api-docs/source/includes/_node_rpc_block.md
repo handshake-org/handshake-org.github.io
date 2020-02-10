@@ -36,15 +36,22 @@ const client = new NodeClient(clientOptions);
 ```json
 {
   "chain": "regtest",
-  "blocks": 3,
-  "headers": 3,
-  "bestblockhash": "be818dc2e986f872118e2c4d2995d14beb03edada40a448d24daf7b62cc272cf",
+  "blocks": 101,
+  "headers": 101,
+  "bestblockhash": "76fb75dcb6d27b167dac8c01ad9e4fc68490bd9c3515cda02a20db412bf23930",
+  "treeRoot": "0000000000000000000000000000000000000000000000000000000000000000",
   "difficulty": 4.6565423739069247e-10,
-  "mediantime": 1528329686,
-  "verificationprogress": 0.9939113782090621,
-  "chainwork": "0000000000000000000000000000000000000000000000000000000000000008",
+  "mediantime": 1581299452,
+  "verificationprogress": 1,
+  "chainwork": "00000000000000000000000000000000000000000000000000000000000000cc",
   "pruned": false,
   "softforks": {
+    "hardening": {
+      "status": "defined",
+      "bit": 0,
+      "startTime": 1581638400,
+      "timeout": 1707868800
+    },
     "testdummy": {
       "status": "defined",
       "bit": 28,
@@ -165,7 +172,7 @@ let blockhash, details, verbose;
 ```
 
 ```shell--vars
-blockhash='c90f06860f712acf8ff1a79b5697644263470a9a7fd91273e34cb121c7a2b4cd';
+blockhash='76fb75dcb6d27b167dac8c01ad9e4fc68490bd9c3515cda02a20db412bf23930';
 verbose=1;
 details=0;
 ```
@@ -206,38 +213,34 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "hash": "c90f06860f712acf8ff1a79b5697644263470a9a7fd91273e34cb121c7a2b4cd",
-  "confirmations": 3,
-  "strippedsize": 264,
-  "size": 297,
-  "weight": 1089,
-  "height": 1,
+  "hash": "76fb75dcb6d27b167dac8c01ad9e4fc68490bd9c3515cda02a20db412bf23930",
+  "confirmations": 1,
+  "strippedsize": 319,
+  "size": 351,
+  "weight": 1308,
+  "height": 101,
   "version": 0,
   "versionHex": "00000000",
-  "merkleroot": "b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb3",
-  "witnessroot": "6a46ce951a4239596405d8bcc3a12a20a43978f57e8cb2ef0cf29611d8a25d51",
+  "merkleroot": "67f0c36f0a12f276cdd0feb26dacf1bb93df31b9df68c4be09c7ac8231e76794",
+  "witnessroot": "c8a4848c5d4b3b669ff5642ecfc5ab146d928d174c8d708d252a635819b4ccce",
   "treeroot": "0000000000000000000000000000000000000000000000000000000000000000",
-  "solution": [
-    5,
-    22,
-    64,
-    112
-  ],
+  "reservedroot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "mask": "0000000000000000000000000000000000000000000000000000000000000000",
   "coinbase": [
-    "6d696e65642062792068736b64",
-    "8d8679b7393cc0ac",
+    "6d696e656420627920687364",
+    "efc784672034e0ec",
     "0000000000000000"
   ],
   "tx": [
-    "b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb3"
+    "d43a1192315124dcddf3b59902dd6bfef9cf6bcfbb07377e1b69ab1919f99d4e"
   ],
-  "time": 1528329568,
-  "mediantime": 1528329568,
+  "time": 1581299453,
+  "mediantime": 1581299452,
   "bits": 545259519,
   "difficulty": 4.6565423739069247e-10,
-  "chainwork": "0000000000000000000000000000000000000000000000000000000000000004",
-  "previousblockhash": "695e315d274ec2de4d050ef63d497a2cbaf8103bbed0c559d5ac45d840015be5",
-  "nextblockhash": "11f9987bd778436df43e287582c5c76e1d3689dd28a8d5f3cf097124abdbf61f"
+  "chainwork": "00000000000000000000000000000000000000000000000000000000000000cc",
+  "previousblockhash": "21ff4a8264d4b23db3b6a0d870e16d5e49c2b1f8c87b9b79ea342808a2914ed0",
+  "nextblockhash": null
 }
 ```
 
@@ -259,7 +262,7 @@ let blockhash, details, verbose;
 ```
 
 ```shell--vars
-blockheight=1;
+blockheight=101;
 verbose=1;
 details=0;
 ```
@@ -300,38 +303,34 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "hash": "c90f06860f712acf8ff1a79b5697644263470a9a7fd91273e34cb121c7a2b4cd",
-  "confirmations": 3,
-  "strippedsize": 264,
-  "size": 297,
-  "weight": 1089,
-  "height": 1,
+  "hash": "5ff00e4394407ee68deaeebe9034be2ba3c4f1a74e66363200ee3f7bba0bd494",
+  "confirmations": 10,
+  "strippedsize": 319,
+  "size": 351,
+  "weight": 1308,
+  "height": 101,
   "version": 0,
   "versionHex": "00000000",
-  "merkleroot": "b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb3",
-  "witnessroot": "6a46ce951a4239596405d8bcc3a12a20a43978f57e8cb2ef0cf29611d8a25d51",
+  "merkleroot": "6b26e5e0c450fc7ab1565e376af0c728c34d1350ea2a940a7d717e893f697816",
+  "witnessroot": "bc95c2a01f5857cb90444516f4581b010e84e9c99b36d33cd7d00e245bcfb401",
   "treeroot": "0000000000000000000000000000000000000000000000000000000000000000",
-  "solution": [
-    5,
-    22,
-    64,
-    112
-  ],
+  "reservedroot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "mask": "0000000000000000000000000000000000000000000000000000000000000000",
   "coinbase": [
-    "6d696e65642062792068736b64",
-    "8d8679b7393cc0ac",
+    "6d696e656420627920687364",
+    "7a801f3eacdfec0c",
     "0000000000000000"
   ],
   "tx": [
-    "b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb3"
+    "eb63b57dec72917ed747fa14901bb7f07689138afa98a7c9a5aef754c5a143c2"
   ],
-  "time": 1528329568,
-  "mediantime": 1528329568,
+  "time": 1581346912,
+  "mediantime": 1581346912,
   "bits": 545259519,
   "difficulty": 4.6565423739069247e-10,
-  "chainwork": "0000000000000000000000000000000000000000000000000000000000000004",
-  "previousblockhash": "695e315d274ec2de4d050ef63d497a2cbaf8103bbed0c559d5ac45d840015be5",
-  "nextblockhash": "11f9987bd778436df43e287582c5c76e1d3689dd28a8d5f3cf097124abdbf61f"
+  "chainwork": "00000000000000000000000000000000000000000000000000000000000000cc",
+  "previousblockhash": "233e475602c7c0c002237e0a8ea6d02346216bc06b2447bfe80b38c756ef1eba",
+  "nextblockhash": "75cdf5d53071d5629f12dac01d2f312ec04b17f46c085b57bb87df604748817a"
 }
 ```
 
@@ -410,7 +409,7 @@ let blockhash, verbose;
 ```
 
 ```shell--vars
-blockhash='c90f06860f712acf8ff1a79b5697644263470a9a7fd91273e34cb121c7a2b4cd';
+blockhash='5ff00e4394407ee68deaeebe9034be2ba3c4f1a74e66363200ee3f7bba0bd494';
 verbose=1;
 ```
 
@@ -450,27 +449,23 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "hash": "c90f06860f712acf8ff1a79b5697644263470a9a7fd91273e34cb121c7a2b4cd",
-  "confirmations": 3,
-  "height": 1,
+  "hash": "5ff00e4394407ee68deaeebe9034be2ba3c4f1a74e66363200ee3f7bba0bd494",
+  "confirmations": 10,
+  "height": 101,
   "version": 0,
   "versionHex": "00000000",
-  "merkleroot": "b724ff8521fd9e7b86afc29070d52e9709927a6c8023360ea86d906f8ea6dcb3",
-  "witnessroot": "6a46ce951a4239596405d8bcc3a12a20a43978f57e8cb2ef0cf29611d8a25d51",
+  "merkleroot": "6b26e5e0c450fc7ab1565e376af0c728c34d1350ea2a940a7d717e893f697816",
+  "witnessroot": "bc95c2a01f5857cb90444516f4581b010e84e9c99b36d33cd7d00e245bcfb401",
   "treeroot": "0000000000000000000000000000000000000000000000000000000000000000",
-  "solution": [
-    5,
-    22,
-    64,
-    112
-  ],
-  "time": 1528329568,
-  "mediantime": 1528329568,
+  "reservedroot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "mask": "0000000000000000000000000000000000000000000000000000000000000000",
+  "time": 1581346912,
+  "mediantime": 1581346912,
   "bits": 545259519,
   "difficulty": 4.6565423739069247e-10,
-  "chainwork": "0000000000000000000000000000000000000000000000000000000000000004",
-  "previousblockhash": "695e315d274ec2de4d050ef63d497a2cbaf8103bbed0c559d5ac45d840015be5",
-  "nextblockhash": "11f9987bd778436df43e287582c5c76e1d3689dd28a8d5f3cf097124abdbf61f"
+  "chainwork": "00000000000000000000000000000000000000000000000000000000000000cc",
+  "previousblockhash": "233e475602c7c0c002237e0a8ea6d02346216bc06b2447bfe80b38c756ef1eba",
+  "nextblockhash": "75cdf5d53071d5629f12dac01d2f312ec04b17f46c085b57bb87df604748817a"
 }
 ```
 

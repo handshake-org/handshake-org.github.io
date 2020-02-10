@@ -297,32 +297,40 @@ const client = new NodeClient(clientOptions);
   "rules": [],
   "vbavailable": {},
   "vbrequired": 0,
-  "height": 6,
-  "previousblockhash": "ae127a29c02d7b13ed0a3d57f913392a7f8f82b50295970585cbfad8bc6577b2",
-  "merkleroot": "3ce9a239a694cbea6345611ce9683894d2b2a277c8c939a237dc7f9d784880bf",
-  "treeroot": "f57e593ae36828007cb731af13f68e3c33b39c81a126d921102baccd930ec13b",
+  "height": 111,
+  "previousblockhash": "6817423dbb46da50ef7bde47c6dab28e53cbe91f06ecf68e8da0c5283d08e1fe",
+  "treeroot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "reservedroot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "mask": "0000fd0ab9566be24f5d76763172b89c513361d67016a03e57baac69155f2eda",
   "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
-  "cuckoo": {
-    "bits": 8,
-    "size": 4,
-    "ease": 50
-  },
   "bits": "207fffff",
-  "noncerange": "0000000000000000000000000000000000000000ffffffffffffffffffffffffffffffffffffffff",
-  "curtime": 1528428826,
-  "mintime": 1528329694,
-  "maxtime": 1528436026,
-  "expires": 1528436026,
+  "noncerange": "000000000000000000000000000000000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffff",
+  "curtime": 1581347561,
+  "mintime": 1581346914,
+  "maxtime": 1581354761,
+  "expires": 1581354761,
   "sigoplimit": 80000,
   "sizelimit": 1000000,
   "weightlimit": 4000000,
-  "longpollid": "ae127a29c02d7b13ed0a3d57f913392a7f8f82b50295970585cbfad8bc6577b200000000",
+  "longpollid": "6817423dbb46da50ef7bde47c6dab28e53cbe91f06ecf68e8da0c5283d08e1fe00000001",
   "submitold": false,
   "coinbaseaux": {
-    "flags": "6d696e65642062792068736b64"
+    "flags": "6d696e656420627920687364"
   },
-  "coinbasevalue": 500000000,
-  "transactions": []
+  "coinbasevalue": 2000003040,
+  "claims": [],
+  "airdrops": [],
+  "transactions": [
+    {
+      "data": "000000000103858fc9d1c73d5250f2526ef71e17cb37d542d0fd7c8ddd061ab5f42ac47c5900000000ffffffff0250690f000000000000206237ceaffc6f2960a97c82e5a0b1e40455ee34010b1dd9c3481877a0883459760000d01e267700000000001464ae86dbe6f80c1d50daf5eafade990a5e1bcbdb0000000000000241813478628bcca531d716e088a7efef90eb8155d1afa87156dd6996e12b68e1776121cfbb022de662ce32e2b4c005fbcb033dc4cd06bbd7b99ff64f2af7cb29fc0121021ecadaa8a5146e04aad0d05e7116eeb961f1457b3094b7030f362e31552c2ed0",
+      "txid": "d1a4c16e5771115c3f251c0e13a912871af70ffde5cef8b5d5e3357806c80f24",
+      "hash": "550f276f2acbb5c7c84e62b591ff9f13cd7c06a36bcf1c42a2b53105bfc4c9e9",
+      "depends": [],
+      "fee": 3040,
+      "sigops": 0,
+      "weight": 605
+    }
+  ]
 }
 ```
 
