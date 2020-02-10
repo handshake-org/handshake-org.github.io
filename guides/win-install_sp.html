@@ -59,121 +59,14 @@
 </pre>
 
 <h2 id="guía-de-instalación-en-windows">Guía de instalación en Windows</h2>
-<p>El conjunto de software Handshake consta de un nodo completo (<code>hsd</code>) y un cliente ligero (<code>hnsd</code>). El nodo completo permite a los usuarios registrar, actualizar y transferir nombres, resolver nombres y realizar pagos en la cadena de bloques. El cliente ligero (nodo SPV) permite a los usuarios resolver nombres sin los requisitos de recursos informáticos de ejecutar un nodo completo.</p>
-<p>Esta guía incluye instrucciones para instalar <a href="#hsd-installation-instructions"><code>hsd</code></a> y <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
+<p>El conjunto de software Handshake consta de un nodo completo (<code>hsd</code>) y un cliente ligero (<code>hnsd</code>). El nodo completo permite a los usuarios registrar, actualizar y transferir nombres, resolver nombres y realizar pagos en la cadena de bloques. El cliente ligero permite a los usuarios resolver nombres sin los requisitos de recursos informáticos de ejecutar un nodo completo.</p>
 <blockquote>
 <p>NOTA: El software no ha sido probado a fondo en windows.</p>
 </blockquote>
-<p>Consulte <a href="https://github.com/handshake-org/hsd#install">el repositorio</a> para obtener actualizaciones.</p>
-<p><br/></p>
-<h2 id="instrucciones-para-la-instalación-de-hsd">instrucciones para la instalación de <code>hsd</code></h2>
-<h4 id="instalamos-dependencias">Instalamos dependencias</h4>
-<ul>
-<li>Node.js (&gt;= v10) / NPM <a href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a></li>
-<li>OpenSSL Win 64 <a href="http://slproweb.com/products/Win32OpenSSL.html">http://slproweb.com/products/Win32OpenSSL.html</a></li>
-</ul>
-<p>Instalacion de Python y las herramientas de creación para windows :</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">npm</span> install --global --production windows-build-tools</span>
-<span id="cb1-2"><a href="#cb1-2"></a>$ <span class="ex">npm</span> config set msvs_version 2015 --global</span></code></pre></div>
-<p>Cygwin</p>
-<ul>
-<li>Descarga de <a href="https://cygwin.com/install.html">https://cygwin.com/install.html</a></li>
-<li>Abre la línea de comandos ejecutando ‘cmd’</li>
-<li>Ejecuta:</li>
-</ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="bu">cd</span> Downloads</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="ex">setup-x86_64.exe</span> ^</span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="ex">--root</span> C:\Cygwin64<span class="dt">\ </span>^</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="ex">--site</span> http://cygwin.mirror.constant.com ^</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="ex">--quiet-mode</span> ^</span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="ex">--no-desktop</span> ^</span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="ex">--packages</span> wget,git,automake,autoconf,cygwin32-libtool,libunbound-common,libunbound-devel,libunbound2,nano,libtool,gcc-g++,cygwin32-gcc-g++,make</span></code></pre></div>
-<blockquote>
-<p>Nota: Esto asume que estas usando el disco C:</p>
-</blockquote>
-<h4 id="asigna-cygwin-al-path">Asigna Cygwin al Path</h4>
-<ul>
-<li>Abre una línea de comandos (cmd)</li>
-<li>Asigna el path:</li>
-</ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="kw">set</span> <span class="va">PATH=</span><span class="ex">%PATH</span><span class="kw">;</span><span class="ex">C</span>:\Cygwin64\bin</span>
-<span id="cb3-2"><a href="#cb3-2"></a>$ <span class="ex">setx</span> PATH %PATH<span class="kw">;</span><span class="ex">C</span>:\Cygwin64\bin</span></code></pre></div>
-<blockquote>
-<p>Nota: si es una máquina de 32bit, sólo Cygwin en lugar</p>
-</blockquote>
-<h4 id="ejecuta-bash">Ejecuta bash</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="fu">bash</span></span></code></pre></div>
-<h4 id="cambia-al-directorio-home">Cambia al directorio home</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="bu">cd</span> /home</span></code></pre></div>
-<h4 id="descarga-e-instalación-de-hsd">Descarga e instalación de <code>hsd</code></h4>
-<pre><code>$ git clone https://github.com/handshake-org/hsd
-$ cd hsd
-$ npm pack bsip
-$ npm pack mrmr
-$ npm pack bcrypto
-$ tar -zvxf mrmr*
-$ mv package mrmr
-$ tar -zxvf bcrypto*
-$ mv package bcrypto
-$ tar -zxvf bsip*
-$ mv package bsip
-$ rm *.tgz
-$ cd bcrypto</code></pre>
-<ul>
-<li><p>Vaya y edite el package.json en la carpeta raíz <code>hsd/</code> para usar el archivo anterior</p></li>
-<li><p>Edita binding.gyp: <code>"&lt;!(bash -c \"python -c \"from __future__ import print_function; import sys; print(sys.byteorder)\"\")",</code></p></li>
-<li><p>Continúa</p></li>
-</ul>
-<pre><code>$ cd ..
-$ cd bsip</code></pre>
-<ul>
-<li>Haz lo mismo con binding.gyp</li>
-<li>Continúa</li>
-</ul>
-<pre><code>$ cd ..
-$ cd bstring</code></pre>
-<ul>
-<li>Haz lo mismo con binding.gyp</li>
-<li>Continúa</li>
-</ul>
-<pre><code>$ cd ..
-$ cd bcrypto
-$ cd src
-$ cd chacha20
-$ mv chacha20.c chacha20_2.c
-$ mv chacha20.h chacha20_2.h</code></pre>
-<ul>
-<li>Reemplaza la referencia chacha20.h en chacha20_2.c a chacha20_2.h</li>
-<li>Continúa</li>
-</ul>
-<pre><code>$ cd ..</code></pre>
-<ul>
-<li>Reemplaza la referencia chacha20.h en chacha20.h a chacha20_2.h y crypt_scrypt.c también necesita cambiar sha256_2.h</li>
-<li>Continúa</li>
-</ul>
-<pre><code>$ cd ..</code></pre>
-<ul>
-<li>Reemplaza la referencia de chacha20/chacha20.c a chacha20/chacha20_2.c en binding.gyp</li>
-<li>Haz lo mismo para blake2b</li>
-<li>Haz lo mismo para sha256 (nota: Es solo en binding.gyp y no en src/sha256.h)</li>
-<li>Continue by going to root /hsd/ folder but make sure you edit package.json to do file: for the above modules.</li>
-<li>Continúa en la carpeta de root /hsd/ pero asegúrate que editas el package.json para hacer el archivo: para los módulos anteriores</li>
-</ul>
-<pre><code>$ npm install --production
-$ cd ..</code></pre>
-<h4 id="sal-de-la-terminal-y-establece-mklink">Sal de la terminal y establece mklink</h4>
-<pre><code>$ mklink /D C:\home C:\Cygwin64\home</code></pre>
-<h4 id="abre-la-terminal-de-nuevo-y-inicia-en-la-mainnet">Abre la terminal de nuevo y inicia (en la mainnet)</h4>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a>$ <span class="ex">./bin/hsd</span></span></code></pre></div>
-<p><br/></p>
-<h2 id="instrucciones-de-instalación-para-hnsd">Instrucciones de instalación para <code>hnsd</code></h2>
-<h4 id="descarga-y-compila-hnsd">Descarga y compila <code>hnsd</code></h4>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</span>
-<span id="cb15-2"><a href="#cb15-2"></a>$ <span class="bu">cd</span> hnsd</span>
-<span id="cb15-3"><a href="#cb15-3"></a>$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=main <span class="kw">&amp;&amp;</span> <span class="fu">make</span></span></code></pre></div>
-<h4 id="inicia-hnsd">Inicia <code>hnsd</code></h4>
-<pre><code>$ ./hnsd.exe --pool-size=1 --rs-host=127.0.0.1:53</code></pre>
-<h4 id="cambia-las-dns-de-windows-establécelo-en-127.0.0.1">Cambia las DNS de windows establécelo en 127.0.0.1</h4>
+<h3 id="hsd"><code>hsd</code></h3>
+<p>Para instalar <code>hsd</code>, siga las instrucciones <a href="https://github.com/handshake-org/hsd#install">aquí</a>.</p>
+<h3 id="hnsd"><code>hnsd</code></h3>
+<p>Actualmente, <code>hnsd</code> no es compatible con el protocolo de red <code>hsd</code>. Consulte el <a href="https://github.com/handshake-org/hnsd">repositorio</a> para actualizaciones de desarrollo.</p>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>

@@ -59,40 +59,11 @@
 </pre>
 
 <h2 id="macos-install-guide">macOS Install Guide</h2>
-<p>The Handshake software suite consists of a full node (<code>hsd</code>) and a light client (<code>hnsd</code>). The full node allows users to register, update, and transfer names, resolve names, and make blockchain payments. The light client (SPV node) allows users to resolve names without the computing resource requirements of running a full node.</p>
-<p>This guide includes instructions for installing <a href="#hsd-installation-instructions"><code>hsd</code></a> and <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
-<p>Check <a href="https://github.com/handshake-org/hsd#install">the repository</a> for updates.</p>
-<p><br/></p>
-<h2 id="hsd-installation-instructions"><code>hsd</code> Installation Instructions</h2>
-<h4 id="install-dependencies">Install dependencies</h4>
-<p>Xcode Command Line Tools, Homebrew, node.js (&gt;= v10) &amp; git</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">xcode-select</span> --install</span>
-<span id="cb1-2"><a href="#cb1-2"></a>$ <span class="ex">/usr/bin/ruby</span> -e <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="va">)</span><span class="st">&quot;</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>$ <span class="ex">brew</span> install node git</span></code></pre></div>
-<h4 id="download-and-install-hsd">Download and install <code>hsd</code></h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hsd</span>
-<span id="cb2-2"><a href="#cb2-2"></a>$ <span class="bu">cd</span> hsd</span>
-<span id="cb2-3"><a href="#cb2-3"></a>$ <span class="ex">npm</span> install --production</span></code></pre></div>
-<h4 id="start-on-mainnet">Start (on mainnet)</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="ex">./bin/hsd</span></span></code></pre></div>
-<p><br/></p>
-<h2 id="hnsd-installation-instructions"><code>hnsd</code> Installation Instructions</h2>
-<h4 id="install-dependencies-1">Install dependencies</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="ex">brew</span> install git automake autoconf libtool unbound</span></code></pre></div>
-<h4 id="download-and-compile-hnsd">Download and compile <code>hnsd</code></h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="fu">git</span> clone https://github.com/handshake-org/hnsd</span>
-<span id="cb5-2"><a href="#cb5-2"></a>$ <span class="bu">cd</span> hnsd</span>
-<span id="cb5-3"><a href="#cb5-3"></a>$ <span class="ex">./autogen.sh</span> <span class="kw">&amp;&amp;</span> <span class="ex">./configure</span> --with-network=main <span class="kw">&amp;&amp;</span> <span class="fu">make</span></span></code></pre></div>
-<h4 id="start-hnsd">Start <code>hnsd</code></h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="fu">sudo</span> ./hnsd --pool-size=1 --rs-host=127.0.0.1:53</span></code></pre></div>
-<h4 id="configure-nameserver-settings">Configure nameserver settings</h4>
-<ul>
-<li>Open “System Preferences” on the panel/dock.</li>
-<li>Select “Network”.</li>
-<li>Select “Advanced”.</li>
-<li>Select “DNS”.</li>
-<li>Remove all nameservers and add a single server: “127.0.0.1”.</li>
-</ul>
+<p>The Handshake software suite consists of a full node (<code>hsd</code>) and a light client (<code>hnsd</code>). The full node allows users to register, update, transfer, and resolve names. Users can also make blockchain payments using <code>hsd</code>. The light client allows users to resolve names without the computing resource requirements of running a full node.</p>
+<h3 id="hsd"><code>hsd</code></h3>
+<p>To install <code>hsd</code>, follow the instructions <a href="https://github.com/handshake-org/hsd#install">here</a>.</p>
+<h3 id="hnsd"><code>hnsd</code></h3>
+<p>Currently, <code>hnsd</code> is not compatible with the <code>hsd</code> network protocol. Check the <a href="https://github.com/handshake-org/hnsd">repository</a> for development updates.</p>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>

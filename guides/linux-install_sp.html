@@ -59,49 +59,14 @@
 </pre>
 
 <h2 id="linux-install-guide">Linux Install Guide</h2>
-<p>El conjunto de software Handshake consta de un nodo completo (<code>hsd</code>) y un cliente ligero (<code>hnsd</code>). El nodo completo permite a los usuarios registrar, actualizar y transferir nombres, resolver nombres y realizar pagos en la cadena de bloques. El cliente ligero (nodo SPV) permite a los usuarios resolver nombres sin los requisitos de recursos informáticos de ejecutar un nodo completo.</p>
-<p>Esta guía incluye instrucciones para la instalación de <a href="#hsd-installation-instructions"><code>hsd</code></a> y <a href="#hnsd-installation-instructions"><code>hnsd</code></a>.</p>
+<p>El conjunto de software Handshake consta de un nodo completo (<code>hsd</code>) y un cliente ligero (<code>hnsd</code>). El nodo completo permite a los usuarios registrar, actualizar y transferir nombres, resolver nombres y realizar pagos en la cadena de bloques. El cliente ligero permite a los usuarios resolver nombres sin los requisitos de recursos informáticos de ejecutar un nodo completo.</p>
 <blockquote>
-<p>Nota: Las instrucciones son específicas para Debian/Ubuntu. Asegúrese de usar el gestor de paquetes adecuado para su sistema operativo. BSDs y Solaris aún no han sido probados, pero en teoría, debería funcionar.</p>
+<p>NOTA: El software no ha sido probado a fondo en windows.</p>
 </blockquote>
-<p>Consulte <a href="https://github.com/handshake-org/hsd#install">el repositorio</a> para obtener actualizaciones.</p>
-<p><br/></p>
-<h2 id="instrucciones-de-instalación-de-hsd">Instrucciones de instalación de <code>hsd</code></h2>
-<h4 id="instalamos-dependencias">Instalamos dependencias</h4>
-<ul>
-<li>node.js (&gt;= v10)</li>
-<li>git</li>
-</ul>
-<pre><code>$ sudo apt install nodejs git</code></pre>
-<h4 id="descargamos-e-instalamos-hsd">Descargamos e instalamos <code>hsd</code></h4>
-<pre><code>$ git clone https://github.com/handshake-org/hsd
-$ cd hsd
-$ npm install --production</code></pre>
-<h4 id="inicio-en-la-mainnet">Inicio (en la mainnet)</h4>
-<pre><code>$ ./bin/hsd</code></pre>
-<p><br/></p>
-<h2 id="instrucciones-de-instalación-para-hnsd">Instrucciones de instalación para <code>hnsd</code></h2>
-<h4 id="instalamos-dependencias-1">Instalamos dependencias</h4>
-<pre><code>$ sudo apt install automake autoconf libtool unbound libunbound-dev</code></pre>
-<blockquote>
-<p>Nota: unbound-devel en yum</p>
-</blockquote>
-<h4 id="descargamos-y-compilamos-hnsd">Descargamos y compilamos <code>hnsd</code></h4>
-<pre><code>git clone https://github.com/handshake-org/hnsd
-cd hnsd
-./autogen.sh &amp;&amp; ./configure --with-network=main &amp;&amp; make</code></pre>
-<h4 id="iniciamos-hnsd">iniciamos <code>hnsd</code></h4>
-<pre><code>sudo setcap &#39;cap_net_bind_service=+ep&#39; /path/to/hnsd
-./hnsd --pool-size=1 --rs-host=127.0.0.1:53</code></pre>
-<h4 id="configuramos-las-opciones-del-nombre-del-servidor">Configuramos las opciones del nombre del servidor</h4>
-<ol type="1">
-<li>resolv.conf</li>
-</ol>
-<pre><code>$ echo &#39;nameserver 127.0.0.1&#39; | sudo tee /etc/resolv.conf &gt; /dev/null</code></pre>
-<ol start="2" type="1">
-<li>Editamos resolvconf.conf para coincidir:</li>
-</ol>
-<pre><code>name_servers=&quot;127.0.0.1&quot;</code></pre>
+<h3 id="hsd"><code>hsd</code></h3>
+<p>Para instalar <code>hsd</code>, siga las instrucciones <a href="https://github.com/handshake-org/hsd#install">aquí</a>.</p>
+<h3 id="hnsd"><code>hnsd</code></h3>
+<p>Actualmente, <code>hnsd</code> no es compatible con el protocolo de red <code>hsd</code>. Consulte el <a href="https://github.com/handshake-org/hnsd">repositorio</a> para actualizaciones de desarrollo.</p>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>
