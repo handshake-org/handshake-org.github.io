@@ -1,63 +1,17 @@
 ## macOS Install Guide
 
 The Handshake software suite consists of a full node (`hsd`) and a light
-client (`hnsd`). The full node allows users to register, update, and transfer
-names, resolve names, and make blockchain payments. The light client (SPV node)
-allows users to resolve names without the computing resource requirements of
-running a full node.
+client (`hnsd`). The full node allows users to register, update, transfer,
+and resolve names. Users can also make blockchain payments using `hsd`.
+The light client allows users to resolve names without the computing resource
+requirements of running a full node.
 
-This guide includes instructions for installing
-[`hsd`](#hsd-installation-instructions) and
-[`hnsd`](#hnsd-installation-instructions).
+### `hsd`
 
-Check [the repository](https://github.com/handshake-org/hsd#install) for updates.
+To install `hsd`, follow the instructions
+[here](https://github.com/handshake-org/hsd#install).
 
-<br/>
+### `hnsd`
 
-## `hsd` Installation Instructions
-#### Install dependencies
-Xcode Command Line Tools, Homebrew, node.js (>= v10) & git
-```bash
-$ xcode-select --install
-$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-$ brew install node git
-```
-
-#### Download and install `hsd`
-```bash
-$ git clone https://github.com/handshake-org/hsd
-$ cd hsd
-$ npm install --production
-```
-
-#### Start (on mainnet)
-```bash
-$ ./bin/hsd
-```
-
-<br/>
-
-## `hnsd` Installation Instructions
-#### Install dependencies
-```bash
-$ brew install git automake autoconf libtool unbound
-```
-
-#### Download and compile `hnsd`
-```bash
-$ git clone https://github.com/handshake-org/hnsd
-$ cd hnsd
-$ ./autogen.sh && ./configure --with-network=main && make
-```
-
-#### Start `hnsd`
-```bash
-$ sudo ./hnsd --pool-size=1 --rs-host=127.0.0.1:53
-```
-
-#### Configure nameserver settings
-- Open "System Preferences" on the panel/dock.
-- Select "Network".
-- Select "Advanced".
-- Select "DNS".
-- Remove all nameservers and add a single server: "127.0.0.1".
+Currently, `hnsd` is not compatible with the `hsd` network protocol. Check the
+[repository](https://github.com/handshake-org/hnsd) for development updates.
