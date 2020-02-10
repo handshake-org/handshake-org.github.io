@@ -1,7 +1,7 @@
 # RPC Calls - Wallet
 
 ```shell--curl
-# examples in these docs will use a DIFFERENT environment variable
+# Examples in these docs will use a DIFFERENT environment variable
 # than the built-in hs-wallet API calls above:
 walletrpcurl=http://x:api-key@127.0.0.1:14039/
 
@@ -418,7 +418,7 @@ Back up wallet database and files to directory created at specified path.
 ### Params
 N. | Name | Default |  Description
 --------- | --------- | --------- | -----------
-1 | path | Required | Path and name of destination directory for backup
+1 | path | Required | Absolute path (including directories and filename) to write backup file
 
 
 
@@ -552,7 +552,7 @@ Wallet Import Format (base58).
 ### Params
 N. | Name | Default |  Description
 --------- | --------- | --------- | -----------
-1 | path | Required | Path and name of destination file for dump
+1 | path | Required | Absolute path (including directories and filename) to write backup file
 
 
 
