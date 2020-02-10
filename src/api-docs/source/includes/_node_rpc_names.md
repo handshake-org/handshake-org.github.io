@@ -486,6 +486,48 @@ Name | Default |  Description
 --------- | --------- | --------- | -----------
 claim | Required | raw serialized hex-string
 
+## sendrawairdrop
+
+```shell--cli
+hsd-rpc sendrawairdrop <base64-string>
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('sendrawairdrop', [ 'base64-string' ]);
+  console.log(result);
+})();
+```
+
+> send rawairdrop allows you to publish your airdrop proof
+
+```json
+```
+
+Airdrop proofs create brand new coins directly to a Handshake address
+
+For details on how to create an airdrop proof, see the
+[hs-airdrop](https://github.com/handshake-org/hs-airdrop)
+tool.
+
+
+### Params
+Name | Default |  Description
+--------- | --------- | --------- | -----------
+claim | Required | raw serialized base64-string
+
 
 ## grindname
 
