@@ -104,12 +104,10 @@
 <li><code>workers</code>: Whether to use a worker process pool for transaction verification (default: true).</li>
 <li><code>workers-size</code>: Number of worker processes to spawn for transaction verification. By default, the worker pool will be sized based on the number of CPUs/cores in the machine.</li>
 <li><code>workers-timeout</code>: Worker process execution timeout in milliseconds (default: 120000).</li>
-<li><code>sigcache-size</code>: Max number of items in signature cache.</li>
 </ul>
 <h2 id="node-options">Node Options</h2>
 <ul>
 <li><code>prefix</code>: The data directory (stores databases, logs, and configs) (default=~/.hsd).</li>
-<li><code>db</code>: Which database backend to use (default=leveldb).</li>
 <li><code>max-files</code>: Max open files for leveldb. Higher generally means more disk page cache benefits, but also more memory usage (default: 64).</li>
 <li><code>cache-size</code>: Size (in MB) of leveldb cache and write buffer (default: 32mb).</li>
 <li><code>spv</code>: Enable Simplified Payments Verification (SPV) mode</li>
@@ -132,7 +130,6 @@
 <h2 id="mempool-options">Mempool Options</h2>
 <ul>
 <li><code>mempool-size</code>: Max mempool size in MB (default: 100).</li>
-<li><code>replace-by-fee</code>: Allow replace-by-fee transactions (default: false).</li>
 <li><code>persistent-mempool</code>: Save mempool to disk and read into memory on boot (default: false).</li>
 </ul>
 <h2 id="pool-options">Pool Options</h2>
@@ -140,12 +137,14 @@
 <li><code>selfish</code>: Enable “selfish” mode (no relaying of txes or blocks) (default: false).</li>
 <li><code>compact</code>: Enable compact block relay (default: true).</li>
 <li><code>bip37</code>: Enable serving of bip37 merkleblocks (default: false).</li>
-<li><code>listen</code>: Accept incoming connections (default: true).</li>
+<li><code>listen</code>: Accept incoming connections (default: false).</li>
 <li><code>max-outbound</code>: Max number of outbound connections (default: 8).</li>
 <li><code>max-inbound</code>: Max number of inbound connections (default: 30).</li>
+<li><code>max-proof-rps</code>: Max <code>getproof</code> DNS requests per second (default: 100).</li>
 <li><code>seeds</code>: Custom list of DNS seeds (comma-separated).</li>
 <li><code>host</code>: Host to listen on (default: 0.0.0.0).</li>
 <li><code>port</code>: Port to listen on (default: 12038 for mainnet).</li>
+<li><code>brontide-port</code>: Port for encrypted p2p server to listen on (default: 44806 for mainnet).</li>
 <li><code>public-host</code>: Public host to advertise on network.</li>
 <li><code>public-port</code>: Public port to advertise on network.</li>
 <li><code>nodes</code>: List of target nodes to connect to (comma-separated).</li>
@@ -154,24 +153,33 @@
 <ul>
 <li><code>coinbase-flags</code>: Coinbase flags (default: mined by hsd).</li>
 <li><code>coinbase-address</code>: List of payout addresses, randomly selected during block creation (comma-separated).</li>
-<li><code>max-block-weight</code>: Max block weight to mine (default: 4000000).</li>
-<li><code>reserved-block-weight</code>: Amount of space reserved for coinbase (default: 4000).</li>
-<li><code>reserved-block-sigops</code>: Amount of sigops reserved for coinbase (default: 400).</li>
+<li><code>max-weight</code>: Max block weight to mine (default: 4000000).</li>
+<li><code>reserved-weight</code>: Amount of space reserved for coinbase (default: 4000).</li>
+<li><code>reserved-sigops</code>: Amount of sigops reserved for coinbase (default: 400).</li>
 </ul>
 <h2 id="http">HTTP</h2>
 <ul>
 <li><code>http-host</code>: HTTP host to listen on (default: 127.0.0.1).</li>
 <li><code>http-port</code>: HTTP port to listen on (default: 12037 for mainnet).</li>
+<li><code>ssl</code>: Whether to use SSL (default: false)</li>
 <li><code>ssl-cert</code>: Path to SSL cert.</li>
 <li><code>ssl-key</code>: Path to SSL key.</li>
-<li><code>service-key</code>: Service key (used for accessing wallet system only).</li>
 <li><code>api-key</code>: API key (used for accessing all node APIs, may be different than API key for wallet server).</li>
 <li><code>cors</code>: Enable “Cross-Origin Resource Sharing” HTTP headers (default: false).</li>
 </ul>
 <p>Note: For security <code>cors</code> should not be used with <code>no-auth</code>.<br />
 If enabled you should also enable <code>wallet-auth</code> and set <code>api-key</code>.</p>
+<h2 id="dns-resolver-options">DNS Resolver options</h2>
+<ul>
+<li><code>ns-host</code>: Host for authoritative nameserver to listen on (default: 127.0.0.1)</li>
+<li><code>ns-port</code>: Port for authoritative nameserver to listen on (default: 5349 for mainnet)</li>
+<li><code>public-host</code>: (Same as pool option) applies to authoritative nameserver</li>
+<li><code>rs-host</code>: Host for recursive nameserver to listen on (default: 127.0.0.1)</li>
+<li><code>rs-port</code>: Port for recursive nameserver to listen on (default: 5350 for mainnet)</li>
+<li><code>rs-no-unbound</code>: Whether to use the hsd JavaScript resolver as the recursive resolver (default: false)</li>
+</ul>
 <h2 id="wallet-options">Wallet options</h2>
-<p>These options must be saved in <code>hsw.conf</code>. They can also be passed as environment variables or command-line variables if they are preceeded with a <code>wallet-</code> prefix (<code>WALLET_</code> for env vars).</p>
+<p>These options must be saved in <code>hsw.conf</code>. They can also be passed as environment variables or command-line variables if they are preceded with a <code>wallet-</code> prefix (<code>WALLET_</code> for env vars).</p>
 <p>For example, to run a hsd and wallet node on a remote server that you can access from a local machine, you would could use the following examples:</p>
 <p>Example using hsw.conf:</p>
 <pre><code>network: testnet
@@ -191,10 +199,8 @@ http-host: 0.0.0.0</code></pre>
 </ul>
 <h3 id="wallet-database">Wallet database:</h3>
 <ul>
-<li><code>memory</code>: Keep database in memory rather than write to disk.</li>
 <li><code>max-files</code>: Max open files for leveldb.</li>
 <li><code>cache-size</code>: Size (in MB) of leveldb cache and write buffer.</li>
-<li><code>checkpoints</code>: Trust hard-coded blockchain checkpoints.</li>
 </ul>
 <h3 id="wallet-http-server">Wallet http server:</h3>
 <ul>
