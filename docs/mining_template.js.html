@@ -36,12 +36,13 @@
 
 const assert = require('bsert');
 const bio = require('bufio');
-const blake2b = require('bcrypto/lib/blake2b');
-const merkle = require('../protocol/merkle');
+const BLAKE2b = require('bcrypto/lib/blake2b');
 const random = require('bcrypto/lib/random');
+const merkle = require('bcrypto/lib/mrkl');
 const Address = require('../primitives/address');
 const TX = require('../primitives/tx');
 const Block = require('../primitives/block');
+const Headers = require('../primitives/headers');
 const Input = require('../primitives/input');
 const Output = require('../primitives/output');
 const consensus = require('../protocol/consensus');
@@ -70,7 +71,7 @@ class BlockTemplate {
 
   constructor(options) {
     this.prevBlock = consensus.ZERO_HASH;
-    this.version = 1;
+    this.version = 0;
     this.height = 0;
     this.time = 0;
     this.bits = 0;
@@ -84,15 +85,16 @@ class BlockTemplate {
     this.opens = 0;
     this.updates = 0;
     this.renewals = 0;
-    this.interval = 210000;
+    this.interval = 170000;
     this.fees = 0;
-    this.tree = new MerkleTree();
+    this.merkleRoot = consensus.ZERO_HASH;
+    this.witnessRoot = consensus.ZERO_HASH;
     this.treeRoot = consensus.ZERO_HASH;
     this.reservedRoot = consensus.ZERO_HASH;
-    this.left = DUMMY;
-    this.right = DUMMY;
+    this.coinbase = DUMMY;
     this.items = [];
     this.claims = [];
+    this.airdrops = [];
 
     if (options)
       this.fromOptions(options);
@@ -111,6 +113,16 @@ class BlockTemplate {
     if (options.prevBlock != null) {
       assert(Buffer.isBuffer(options.prevBlock));
       this.prevBlock = options.prevBlock;
+    }
+
+    if (options.merkleRoot != null) {
+      assert(Buffer.isBuffer(options.merkleRoot));
+      this.merkleRoot = options.merkleRoot;
+    }
+
+    if (options.witnessRoot != null) {
+      assert(Buffer.isBuffer(options.witnessRoot));
+      this.witnessRoot = options.witnessRoot;
     }
 
     if (options.treeRoot != null) {
@@ -207,6 +219,11 @@ class BlockTemplate {
       this.claims = options.claims;
     }
 
+    if (options.airdrops != null) {
+      assert(Array.isArray(options.airdrops));
+      this.airdrops = options.airdrops;
+    }
+
     return this;
   }
 
@@ -265,7 +282,7 @@ class BlockTemplate {
 
     // Coinbase input.
     const input = new Input();
-    input.sequence = (Math.random() * 0x100000000) >>> 0;
+    input.sequence = random.randomInt();
     input.witness.pushData(Buffer.alloc(20, 0x00));
     input.witness.pushData(Buffer.alloc(8, 0x00));
     input.witness.pushData(Buffer.alloc(8, 0x00));
@@ -301,22 +318,33 @@ class BlockTemplate {
       if (claim.weak)
         flags |= 1;
 
-      if (claim.forked)
-        flags |= 2;
-
       const output = new Output();
 
-      if (claim.forked)
-        output.value = 0;
-      else
-        output.value = claim.value - claim.fee;
-
+      output.value = claim.value - claim.fee;
       output.address = claim.address;
       output.covenant.type = rules.types.CLAIM;
       output.covenant.pushHash(claim.nameHash);
       output.covenant.pushU32(this.height);
       output.covenant.push(claim.name);
       output.covenant.pushU8(flags);
+      output.covenant.pushHash(claim.commitHash);
+      output.covenant.pushU32(claim.commitHeight);
+
+      cb.outputs.push(output);
+    }
+
+    // Add any airdrop proofs.
+    for (const proof of this.airdrops) {
+      const input = new Input();
+
+      input.witness.items.push(proof.blob);
+
+      cb.inputs.push(input);
+
+      const output = new Output();
+
+      output.value = proof.value - proof.fee;
+      output.address = proof.address;
 
       cb.outputs.push(output);
     }
@@ -335,120 +363,79 @@ class BlockTemplate {
 
   refresh() {
     const cb = this.createCoinbase();
-    const raw = cb.encode();
 
-    let size = 0;
+    {
+      const leaves = [];
 
-    size += 4; // version
-    size += bio.sizeVarint(cb.inputs.length); // varint inputs length
+      leaves.push(cb.hash());
 
-    for (const input of cb.inputs)
-      size += input.getSize(); // input
+      for (const {tx} of this.items)
+        leaves.push(tx.hash());
 
-    size += bio.sizeVarint(cb.outputs.length); // varint outputs length
+      this.merkleRoot = merkle.createRoot(BLAKE2b, leaves);
+    }
 
-    for (const output of cb.outputs)
-      size += output.getSize(); // output
+    {
+      const leaves = [];
 
-    size += 4; // locktime
-    size += 1; // varint items size
-    size += bio.sizeVarBytes(this.coinbaseFlags); // first item
-    size += 1 + 8; // second item
-    size += 1; // third item size
+      leaves.push(cb.witnessHash());
 
-    // Cut off right after the varint item size.
-    const left = raw.slice(0, size);
+      for (const {tx} of this.items)
+        leaves.push(tx.witnessHash());
 
-    // Include the rest of the witness.
-    size += 4 + 4; // nonce1 + nonce2
-    const right = raw.slice(size);
+      this.witnessRoot = merkle.createRoot(BLAKE2b, leaves);
+    }
 
-    this.left = left;
-    this.right = right;
-    this.tree = MerkleTree.fromItems(this.items);
+    this.coinbase = cb;
   }
 
   /**
-   * Get raw coinbase with desired nonces.
-   * @param {Number} nonce1
-   * @param {Number} nonce2
-   * @returns {Buffer}
+   * Generate a random mask (2 bytes less than target).
+   * @returns {Buffer[]}
    */
 
-  getRawCoinbase(nonce1, nonce2) {
-    let size = 0;
+  randomMask() {
+    const mask = random.randomBytes(32);
 
-    size += this.left.length;
-    size += 4 + 4;
-    size += this.right.length;
+    for (let i = 0; i &lt; this.target.length; i++) {
+      mask[i] = 0;
 
-    const bw = bio.write(size);
-    bw.writeBytes(this.left);
-    bw.writeU32BE(nonce1);
-    bw.writeU32BE(nonce2);
-    bw.writeBytes(this.right);
+      if (this.target[i] !== 0) {
+        if (i + 1 &lt; mask.length)
+          mask[i + 1] = 0;
+        break;
+      }
+    }
 
-    return bw.render();
-  }
+    const hash = BLAKE2b.multi(this.prevBlock, mask);
 
-  /**
-   * Calculate the merkle root with given nonces.
-   * @param {Number} nonce1
-   * @param {Number} nonce2
-   * @returns {Buffer}
-   */
-
-  getRoot(nonce1, nonce2) {
-    const tx = this.getCoinbase(nonce1, nonce2);
-    return this.tree.withFirst(tx.witnessHash());
+    return [mask, hash];
   }
 
   /**
    * Create raw block header with given parameters.
-   * @param {Buffer} root
+   * @param {Buffer} extraNonce
    * @param {Number} time
    * @param {Number} nonce
    * @returns {Buffer}
    */
 
-  getPreheader(root, time, nonce) {
-    const bw = bio.write(consensus.HEADER_SIZE);
+  getHeader(nonce, time, extraNonce, mask) {
+    const hdr = new Headers();
 
-    bw.writeU32(this.version);
-    bw.writeHash(this.prevBlock);
-    bw.writeHash(root);
-    bw.writeHash(this.treeRoot);
-    bw.writeHash(this.reservedRoot);
-    bw.writeU64(time);
-    bw.writeU32(this.bits);
-    bw.writeBytes(nonce);
+    hdr.version = this.version;
+    hdr.prevBlock = this.prevBlock;
+    hdr.merkleRoot = this.merkleRoot;
+    hdr.witnessRoot = this.witnessRoot;
+    hdr.treeRoot = this.treeRoot;
+    hdr.reservedRoot = this.reservedRoot;
+    hdr.time = time;
+    hdr.bits = this.bits;
+    hdr.nonce = nonce;
+    hdr.extraNonce = extraNonce;
+    hdr.mask = mask;
 
-    return bw.render();
-  }
-
-  /**
-   * Create raw block header with given parameters.
-   * @param {Buffer} root
-   * @param {Number} time
-   * @param {Number} nonce
-   * @param {Solution} sol
-   * @returns {Buffer}
-   */
-
-  getHeader(root, time, nonce, sol) {
-    const bw = bio.write(consensus.HEADER_SIZE + sol.getSize());
-
-    bw.writeU32(this.version);
-    bw.writeHash(this.prevBlock);
-    bw.writeHash(root);
-    bw.writeHash(this.treeRoot);
-    bw.writeHash(this.reservedRoot);
-    bw.writeU64(time);
-    bw.writeU32(this.bits);
-    bw.writeBytes(nonce);
-    sol.write(bw);
-
-    return bw.render();
+    return hdr.toMiner();
   }
 
   /**
@@ -457,37 +444,20 @@ class BlockTemplate {
    * @param {Number} nonce2
    * @param {Number} time
    * @param {Buffer} nonce
-   * @param {Solution} sol
    * @returns {BlockProof}
    */
 
-  getProof(nonce1, nonce2, time, nonce, sol) {
-    const root = this.getRoot(nonce1, nonce2);
-    const hdr = this.getPreheader(root, time, nonce);
-
+  getProof(nonce, time, extraNonce, mask) {
+    const hdr = this.getHeader(nonce, time, extraNonce, mask);
     const proof = new BlockProof();
 
     proof.hdr = hdr;
-    proof.solution = sol;
-    proof.root = root;
-    proof.nonce1 = nonce1;
-    proof.nonce2 = nonce2;
     proof.time = time;
     proof.nonce = nonce;
+    proof.extraNonce = extraNonce;
+    proof.mask = mask;
 
     return proof;
-  }
-
-  /**
-   * Create coinbase from given parameters.
-   * @param {Number} nonce1
-   * @param {Number} nonce2
-   * @returns {TX}
-   */
-
-  getCoinbase(nonce1, nonce2) {
-    const raw = this.getRawCoinbase(nonce1, nonce2);
-    return TX.decode(raw);
   }
 
   /**
@@ -497,27 +467,21 @@ class BlockTemplate {
    */
 
   commit(proof) {
-    const root = proof.root;
-    const n1 = proof.nonce1;
-    const n2 = proof.nonce2;
-    const time = proof.time;
-    const nonce = proof.nonce;
-    const sol = proof.solution;
     const block = new Block();
 
     block.version = this.version;
     block.prevBlock = this.prevBlock;
-    block.merkleRoot = root;
+    block.merkleRoot = this.merkleRoot;
+    block.witnessRoot = this.witnessRoot;
     block.treeRoot = this.treeRoot;
     block.reservedRoot = this.reservedRoot;
-    block.time = time;
+    block.time = proof.time;
     block.bits = this.bits;
-    block.nonce = nonce;
-    block.solution = sol;
+    block.nonce = proof.nonce;
+    block.extraNonce = proof.extraNonce;
+    block.mask = proof.mask;
 
-    const tx = this.getCoinbase(n1, n2);
-
-    block.txs.push(tx);
+    block.txs.push(this.coinbase);
 
     for (const item of this.items)
       block.txs.push(item.tx);
@@ -532,7 +496,7 @@ class BlockTemplate {
    */
 
   toCoinbase() {
-    return this.getCoinbase(0, 0);
+    return this.coinbase;
   }
 
   /**
@@ -542,9 +506,9 @@ class BlockTemplate {
    */
 
   toBlock() {
-    const nonce = consensus.ZERO_NONCE;
-    const sol = consensus.ZERO_SOL;
-    const proof = this.getProof(0, 0, this.time, nonce, sol);
+    const extraNonce = consensus.ZERO_NONCE;
+    const mask = consensus.ZERO_HASH;
+    const proof = this.getProof(0, this.time, extraNonce, mask);
     return this.commit(proof);
   }
 
@@ -656,7 +620,20 @@ class BlockTemplate {
 
   addClaim(claim, data) {
     const entry = BlockClaim.fromClaim(claim, data);
+    this.fees += entry.fee;
     this.claims.push(entry);
+    return true;
+  }
+
+  /**
+   * Add a claim to the template.
+   * @param {AirdropProof} proof
+   */
+
+  addAirdrop(proof) {
+    const entry = BlockAirdrop.fromAirdrop(proof);
+    this.fees += entry.fee;
+    this.airdrops.push(entry);
     return true;
   }
 }
@@ -751,7 +728,8 @@ class BlockClaim {
     this.fee = 0;
     this.rate = 0;
     this.weak = false;
-    this.forked = false;
+    this.commitHash = consensus.ZERO_HASH;
+    this.commitHeight = 0;
   }
 
   /**
@@ -784,7 +762,8 @@ class BlockClaim {
     item.fee = data.fee;
     item.rate = policy.getRate(size, item.fee);
     item.weak = data.weak;
-    item.forked = data.forked;
+    item.commitHash = data.commitHash;
+    item.commitHeight = data.commitHeight;
 
     return item;
   }
@@ -805,7 +784,79 @@ class BlockClaim {
     item.fee = entry.fee;
     item.rate = entry.rate;
     item.weak = entry.weak;
-    item.forked = entry.forked;
+    item.commitHash = entry.commitHash;
+    item.commitHeight = entry.commitHeight;
+    return item;
+  }
+}
+
+/**
+ * Block Airdrop
+ * @alias module:mining.BlockAirdrop
+ */
+
+class BlockAirdrop {
+  /**
+   * Create a block entry.
+   * @constructor
+   */
+
+  constructor() {
+    this.blob = DUMMY;
+    this.position = 0;
+    this.address = new Address();
+    this.value = 0;
+    this.fee = 0;
+    this.rate = 0;
+    this.weak = false;
+  }
+
+  /**
+   * Calculate weight.
+   * @returns {Number}
+   */
+
+  getWeight() {
+    // Add one to be safe.
+    return 1 + bio.sizeVarBytes(this.blob);
+  }
+
+  /**
+   * Instantiate block entry from transaction.
+   * @param {AidropProof} proof
+   * @returns {BlockAirdrop}
+   */
+
+  static fromAirdrop(proof) {
+    const size = proof.getVirtualSize();
+    const item = new this();
+
+    item.blob = proof.encode();
+    item.position = proof.position();
+    item.address = Address.fromHash(proof.address, proof.version);
+    item.value = proof.getValue();
+    item.fee = proof.fee;
+    item.rate = policy.getRate(size, proof.fee);
+    item.weak = proof.isWeak();
+
+    return item;
+  }
+
+  /**
+   * Instantiate block entry from mempool entry.
+   * @param {ClaimEntry} entry
+   * @returns {BlockClaim}
+   */
+
+  static fromEntry(entry) {
+    const item = new this();
+    item.blob = entry.blob;
+    item.position = entry.position;
+    item.address = entry.address;
+    item.value = entry.value;
+    item.fee = entry.fee;
+    item.rate = entry.rate;
+    item.weak = entry.weak;
     return item;
   }
 }
@@ -822,144 +873,36 @@ class BlockProof {
 
   constructor() {
     this.hdr = consensus.ZERO_HEADER;
-    this.solution = consensus.ZERO_SOL;
-    this.root = consensus.ZERO_HASH;
-    this.nonce1 = 0;
-    this.nonce2 = 0;
     this.time = 0;
-    this.nonce = consensus.ZERO_NONCE;
+    this.nonce = 0;
+    this.extraNonce = consensus.ZERO_NONCE;
+    this.mask = consensus.ZERO_HASH;
   }
 
   hash() {
-    return this.solution.sha3();
+    return this.powHash();
+  }
+
+  shareHash() {
+    const hdr = Headers.fromMiner(this.hdr);
+    return hdr.shareHash();
+  }
+
+  powHash() {
+    const hash = this.shareHash();
+
+    for (let i = 0; i &lt; 32; i++)
+      hash[i] ^= this.mask[i];
+
+    return hash;
   }
 
   verify(target, network) {
-    if (this.hash().compare(target) > 0)
-      return false;
-
-    assert(this.hdr.length === consensus.HEADER_SIZE);
-
-    const hdr = this.hdr;
-    const sol = this.solution;
-    const params = network.cuckoo;
-
-    if (!consensus.verifySolution(hdr, sol, params))
-      return false;
-
-    return true;
+    return this.powHash().compare(target) &lt;= 0;
   }
 
   getDifficulty() {
-    return common.getDifficulty(this.hash());
-  }
-}
-
-/**
- * Merkle Tree
- * @property {Hash[]} steps
- */
-
-class MerkleTree {
-  /**
-   * Create a merkle tree.
-   * @constructor
-   */
-
-  constructor() {
-    this.steps = [];
-  }
-
-  withFirst(hash) {
-    let root = merkle.hashLeaf(blake2b, hash);
-
-    for (const step of this.steps)
-      root = merkle.hashInternal(blake2b, root, step);
-
-    return root;
-  }
-
-  toJSON() {
-    const steps = [];
-
-    for (const step of this.steps)
-      steps.push(step.toString('hex'));
-
-    return steps;
-  }
-
-  fromItems(items) {
-    const leaves = [];
-
-    leaves.push(consensus.ZERO_HASH);
-
-    for (const item of items)
-      leaves.push(item.tx.witnessHash());
-
-    return this.fromLeaves(leaves);
-  }
-
-  static fromItems(items) {
-    return new this().fromItems(items);
-  }
-
-  fromBlock(txs) {
-    const leaves = [];
-
-    leaves.push(consensus.ZERO_HASH);
-
-    for (let i = 1; i &lt; txs.length; i++) {
-      const tx = txs[i];
-      leaves.push(tx.witnessHash());
-    }
-
-    return this.fromLeaves(leaves);
-  }
-
-  static fromBlock(txs) {
-    return new this().fromBlock(txs);
-  }
-
-  fromLeaves(leaves) {
-    let nodes = [];
-
-    const sentinel = merkle.hashEmpty(blake2b);
-
-    for (const hash of leaves) {
-      const leaf = merkle.hashLeaf(blake2b, hash);
-      nodes.push(leaf);
-    }
-
-    let len = nodes.length;
-
-    while (len > 1) {
-      const hashes = [consensus.ZERO_HASH];
-
-      this.steps.push(nodes[1]);
-
-      for (let i = 2; i &lt; len; i += 2) {
-        const left = nodes[i];
-
-        let right;
-
-        if (i + 1 &lt; len)
-          right = nodes[i + 1];
-        else
-          right = sentinel;
-
-        const hash = merkle.hashInternal(blake2b, left, right);
-        hashes.push(hash);
-      }
-
-      nodes = hashes;
-      len = nodes.length;
-    }
-
-    return this;
-  }
-
-  static fromLeaves(leaves) {
-    return new this().fromLeaves(leaves);
+    return common.getDifficulty(this.powHash());
   }
 }
 
@@ -971,6 +914,7 @@ exports = BlockTemplate;
 exports.BlockTemplate = BlockTemplate;
 exports.BlockEntry = BlockEntry;
 exports.BlockClaim = BlockClaim;
+exports.BlockAirdrop = BlockAirdrop;
 
 module.exports = exports;
 </code></pre>
@@ -983,13 +927,13 @@ module.exports = exports;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-covenants.html">covenants</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="AirdropKey.html">AirdropKey</a></li><li><a href="AirdropProof.html">AirdropProof</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BitField.html">BitField</a></li><li><a href="BitView.html">BitView</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Field.html">Field</a></li><li><a href="GLUE4.html">GLUE4</a></li><li><a href="GLUE6.html">GLUE6</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">HDPrivateKey</a></li><li><a href="module-hd.PublicKey.html">HDPublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">HTTP</a></li><li><a href="module-http.TransactionOptions.html">TransactionOptions</a></li><li><a href="module-mempool.AirdropEntry.html">AirdropEntry</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockAirdrop.html">BlockAirdrop</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-AirdropPacket.html">AirdropPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.Paths.html">Paths</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletCoinView.html">WalletCoinView</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="NS.html">NS</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="Proof.html">Proof</a></li><li><a href="ProofData.html">ProofData</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Seeder.html">Seeder</a></li><li><a href="SlidingWindow.html">SlidingWindow</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="SYNTH4.html">SYNTH4</a></li><li><a href="SYNTH6.html">SYNTH6</a></li><li><a href="TXT.html">TXT</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:48 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 13:05:05 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
