@@ -45,12 +45,10 @@ $ hsd --prefix ~/.hsd_spv --spv
 - `workers`: Whether to use a worker process pool for transaction verification (default: true).
 - `workers-size`: Number of worker processes to spawn for transaction verification. By default, the worker pool will be sized based on the number of CPUs/cores in the machine.
 - `workers-timeout`: Worker process execution timeout in milliseconds (default: 120000).
-- `sigcache-size`: Max number of items in signature cache.
 
 ## Node Options
 
 - `prefix`: The data directory (stores databases, logs, and configs) (default=~/.hsd).
-- `db`: Which database backend to use (default=leveldb).
 - `max-files`: Max open files for leveldb. Higher generally means more disk page cache benefits, but also more memory usage (default: 64).
 - `cache-size`: Size (in MB) of leveldb cache and write buffer (default: 32mb).
 - `spv`: Enable Simplified Payments Verification (SPV) mode
@@ -74,7 +72,6 @@ Note that certain chain options affect the format and indexing of the chain data
 ## Mempool Options
 
 - `mempool-size`: Max mempool size in MB (default: 100).
-- `replace-by-fee`: Allow replace-by-fee transactions (default: false).
 - `persistent-mempool`: Save mempool to disk and read into memory on boot (default: false).
 
 ## Pool Options
@@ -82,12 +79,14 @@ Note that certain chain options affect the format and indexing of the chain data
 - `selfish`: Enable "selfish" mode (no relaying of txes or blocks) (default: false).
 - `compact`: Enable compact block relay (default: true).
 - `bip37`: Enable serving of bip37 merkleblocks (default: false).
-- `listen`: Accept incoming connections (default: true).
+- `listen`: Accept incoming connections (default: false).
 - `max-outbound`: Max number of outbound connections (default: 8).
 - `max-inbound`: Max number of inbound connections (default: 30).
+- `max-proof-rps`: Max `getproof` DNS requests per second (default: 100).
 - `seeds`: Custom list of DNS seeds (comma-separated).
 - `host`: Host to listen on (default: 0.0.0.0).
 - `port`: Port to listen on (default: 12038 for mainnet).
+- `brontide-port`: Port for encrypted p2p server to listen on (default: 44806 for mainnet).
 - `public-host`: Public host to advertise on network.
 - `public-port`: Public port to advertise on network.
 - `nodes`: List of target nodes to connect to (comma-separated).
@@ -96,27 +95,37 @@ Note that certain chain options affect the format and indexing of the chain data
 
 - `coinbase-flags`: Coinbase flags (default: mined by hsd).
 - `coinbase-address`: List of payout addresses, randomly selected during block creation (comma-separated).
-- `max-block-weight`: Max block weight to mine (default: 4000000).
-- `reserved-block-weight`: Amount of space reserved for coinbase (default: 4000).
-- `reserved-block-sigops`: Amount of sigops reserved for coinbase (default: 400).
+- `max-weight`: Max block weight to mine (default: 4000000).
+- `reserved-weight`: Amount of space reserved for coinbase (default: 4000).
+- `reserved-sigops`: Amount of sigops reserved for coinbase (default: 400).
 
 ## HTTP
 
 - `http-host`: HTTP host to listen on (default: 127.0.0.1).
 - `http-port`: HTTP port to listen on (default: 12037 for mainnet).
+- `ssl`: Whether to use SSL (default: false)
 - `ssl-cert`: Path to SSL cert.
 - `ssl-key`: Path to SSL key.
-- `service-key`: Service key (used for accessing wallet system only).
 - `api-key`: API key (used for accessing all node APIs, may be different than API key for wallet server).
 - `cors`: Enable "Cross-Origin Resource Sharing" HTTP headers (default: false).
 
 Note: For security `cors` should not be used with `no-auth`.\
 If enabled you should also enable `wallet-auth` and set `api-key`.
 
+## DNS Resolver options
+
+- `ns-host`: Host for authoritative nameserver to listen on (default: 127.0.0.1)
+- `ns-port`: Port for authoritative nameserver to listen on (default: 5349 for mainnet)
+- `public-host`: (Same as pool option) applies to authoritative nameserver
+- `rs-host`: Host for recursive nameserver to listen on (default: 127.0.0.1)
+- `rs-port`: Port for recursive nameserver to listen on (default: 5350 for mainnet)
+- `rs-no-unbound`: Whether to use the hsd JavaScript resolver as the recursive resolver (default: false)
+
+
 ## Wallet options
 
 These options must be saved in `hsw.conf`. They can also be passed as
-environment variables or command-line variables if they are preceeded with a
+environment variables or command-line variables if they are preceded with a
 `wallet-` prefix (`WALLET_` for env vars).
 
 For example, to run a hsd and wallet node on a remote server that you can access
@@ -149,10 +158,8 @@ $ HSD_NETWORK=testnet HSD_HTTP_HOST=0.0.0.0 HSD_WALLET_HTTP_HOST=0.0.0.0 HSD_WAL
 
 ### Wallet database:
 
-- `memory`: Keep database in memory rather than write to disk.
 - `max-files`: Max open files for leveldb.
 - `cache-size`: Size (in MB) of leveldb cache and write buffer.
-- `checkpoints`: Trust hard-coded blockchain checkpoints.
 
 ### Wallet http server:
 
