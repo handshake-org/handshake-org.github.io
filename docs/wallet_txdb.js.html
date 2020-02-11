@@ -87,7 +87,7 @@ class TXDB {
    */
 
   async open(wallet) {
-    const prefix = layout.prefix.build(wallet.wid);
+    const prefix = layout.prefix.encode(wallet.wid);
 
     this.wid = wallet.wid;
     this.bucket = this.db.bucket(prefix);
@@ -146,8 +146,8 @@ class TXDB {
   async saveCredit(b, credit, path) {
     const {coin} = credit;
 
-    b.put(layout.c.build(coin.hash, coin.index), credit.encode());
-    b.put(layout.C.build(path.account, coin.hash, coin.index), null);
+    b.put(layout.c.encode(coin.hash, coin.index), credit.encode());
+    b.put(layout.C.encode(path.account, coin.hash, coin.index), null);
 
     return this.addOutpointMap(b, coin.hash, coin.index);
   }
@@ -161,8 +161,8 @@ class TXDB {
   async removeCredit(b, credit, path) {
     const {coin} = credit;
 
-    b.del(layout.c.build(coin.hash, coin.index));
-    b.del(layout.C.build(path.account, coin.hash, coin.index));
+    b.del(layout.c.encode(coin.hash, coin.index));
+    b.del(layout.C.encode(path.account, coin.hash, coin.index));
 
     return this.removeOutpointMap(b, coin.hash, coin.index);
   }
@@ -177,8 +177,8 @@ class TXDB {
   spendCredit(b, credit, tx, index) {
     const prevout = tx.inputs[index].prevout;
     const spender = Outpoint.fromTX(tx, index);
-    b.put(layout.s.build(prevout.hash, prevout.index), spender.encode());
-    b.put(layout.d.build(spender.hash, spender.index), credit.coin.encode());
+    b.put(layout.s.encode(prevout.hash, prevout.index), spender.encode());
+    b.put(layout.d.encode(spender.hash, spender.index), credit.coin.encode());
   }
 
   /**
@@ -190,8 +190,8 @@ class TXDB {
   unspendCredit(b, tx, index) {
     const prevout = tx.inputs[index].prevout;
     const spender = Outpoint.fromTX(tx, index);
-    b.del(layout.s.build(prevout.hash, prevout.index));
-    b.del(layout.d.build(spender.hash, spender.index));
+    b.del(layout.s.encode(prevout.hash, prevout.index));
+    b.del(layout.d.encode(spender.hash, spender.index));
   }
 
   /**
@@ -203,7 +203,7 @@ class TXDB {
   async writeInput(b, tx, index) {
     const prevout = tx.inputs[index].prevout;
     const spender = Outpoint.fromTX(tx, index);
-    b.put(layout.s.build(prevout.hash, prevout.index), spender.encode());
+    b.put(layout.s.encode(prevout.hash, prevout.index), spender.encode());
     return this.addOutpointMap(b, prevout.hash, prevout.index);
   }
 
@@ -215,7 +215,7 @@ class TXDB {
 
   async removeInput(b, tx, index) {
     const prevout = tx.inputs[index].prevout;
-    b.del(layout.s.build(prevout.hash, prevout.index));
+    b.del(layout.s.encode(prevout.hash, prevout.index));
     return this.removeOutpointMap(b, prevout.hash, prevout.index);
   }
 
@@ -227,7 +227,7 @@ class TXDB {
   async updateBalance(b, state) {
     const balance = await this.getWalletBalance();
     state.applyTo(balance);
-    b.put(layout.R.build(), balance.encode());
+    b.put(layout.R.encode(), balance.encode());
     return balance;
   }
 
@@ -240,7 +240,7 @@ class TXDB {
   async updateAccountBalance(b, acct, delta) {
     const balance = await this.getAccountBalance(acct);
     delta.applyTo(balance);
-    b.put(layout.r.build(acct), balance.encode());
+    b.put(layout.r.encode(acct), balance.encode());
     return balance;
   }
 
@@ -252,7 +252,7 @@ class TXDB {
    */
 
   async getSpent(hash, index) {
-    const data = await this.bucket.get(layout.s.build(hash, index));
+    const data = await this.bucket.get(layout.s.encode(hash, index));
 
     if (!data)
       return null;
@@ -268,7 +268,7 @@ class TXDB {
    */
 
   isSpent(hash, index) {
-    return this.bucket.has(layout.s.build(hash, index));
+    return this.bucket.has(layout.s.encode(hash, index));
   }
 
   /**
@@ -364,7 +364,7 @@ class TXDB {
     return this.bucket.keys({
       gte: layout.b.min(),
       lte: layout.b.max(),
-      parse: key => layout.b.parse(key)
+      parse: key => layout.b.decode(key)[0]
     });
   }
 
@@ -375,7 +375,7 @@ class TXDB {
    */
 
   async getBlock(height) {
-    const data = await this.bucket.get(layout.b.build(height));
+    const data = await this.bucket.get(layout.b.encode(height));
 
     if (!data)
       return null;
@@ -391,7 +391,7 @@ class TXDB {
    */
 
   async addBlock(b, hash, block) {
-    const key = layout.b.build(block.height);
+    const key = layout.b.encode(block.height);
     const data = await this.bucket.get(key);
 
     if (!data) {
@@ -419,7 +419,7 @@ class TXDB {
    */
 
   async removeBlock(b, hash, height) {
-    const key = layout.b.build(height);
+    const key = layout.b.encode(height);
     const data = await this.bucket.get(key);
 
     if (!data)
@@ -458,11 +458,11 @@ class TXDB {
       return;
 
     if (block.hashes.size === 0) {
-      b.del(layout.b.build(height));
+      b.del(layout.b.encode(height));
       return;
     }
 
-    b.put(layout.b.build(height), block.encode());
+    b.put(layout.b.encode(height), block.encode());
   }
 
   /**
@@ -472,7 +472,7 @@ class TXDB {
    */
 
   async hasNameState(nameHash) {
-    return this.bucket.has(layout.A.build(nameHash));
+    return this.bucket.has(layout.A.encode(nameHash));
   }
 
   /**
@@ -482,7 +482,7 @@ class TXDB {
    */
 
   async getNameState(nameHash) {
-    const raw = await this.bucket.get(layout.A.build(nameHash));
+    const raw = await this.bucket.get(layout.A.encode(nameHash));
 
     if (!raw)
       return null;
@@ -508,7 +508,7 @@ class TXDB {
     const names = [];
 
     await iter.each((key, raw) => {
-      const nameHash = layout.A.parse(key);
+      const [nameHash] = layout.A.decode(key);
       const ns = NameState.decode(raw);
       ns.nameHash = nameHash;
       names.push(ns);
@@ -526,7 +526,7 @@ class TXDB {
 
   async hasBid(nameHash, outpoint) {
     const {hash, index} = outpoint;
-    return this.bucket.has(layout.i.build(nameHash, hash, index));
+    return this.bucket.has(layout.i.encode(nameHash, hash, index));
   }
 
   /**
@@ -538,7 +538,7 @@ class TXDB {
 
   async getBid(nameHash, outpoint) {
     const {hash, index} = outpoint;
-    const raw = await this.bucket.get(layout.i.build(nameHash, hash, index));
+    const raw = await this.bucket.get(layout.i.encode(nameHash, hash, index));
 
     if (!raw)
       return null;
@@ -566,7 +566,7 @@ class TXDB {
     bb.lockup = options.lockup;
     bb.blind = options.blind;
     bb.own = options.own;
-    b.put(layout.i.build(nameHash, hash, index), bb.encode());
+    b.put(layout.i.encode(nameHash, hash, index), bb.encode());
   }
 
   /**
@@ -578,7 +578,7 @@ class TXDB {
 
   removeBid(b, nameHash, outpoint) {
     const {hash, index} = outpoint;
-    b.del(layout.i.build(nameHash, hash, index));
+    b.del(layout.i.encode(nameHash, hash, index));
   }
 
   /**
@@ -597,7 +597,7 @@ class TXDB {
     const bids = [];
 
     await iter.each(async (key, raw) => {
-      const [nameHash, hash, index] = layout.i.parse(key);
+      const [nameHash, hash, index] = layout.i.decode(key);
       const bb = BlindBid.decode(raw);
 
       bb.nameHash = nameHash;
@@ -637,7 +637,7 @@ class TXDB {
 
   async hasReveal(nameHash, outpoint) {
     const {hash, index} = outpoint;
-    return this.bucket.has(layout.B.build(nameHash, hash, index));
+    return this.bucket.has(layout.B.encode(nameHash, hash, index));
   }
 
   /**
@@ -649,7 +649,7 @@ class TXDB {
 
   async getReveal(nameHash, outpoint) {
     const {hash, index} = outpoint;
-    const raw = await this.bucket.get(layout.B.build(nameHash, hash, index));
+    const raw = await this.bucket.get(layout.B.encode(nameHash, hash, index));
 
     if (!raw)
       return null;
@@ -677,7 +677,7 @@ class TXDB {
     brv.value = options.value;
     brv.height = options.height;
     brv.own = options.own;
-    b.put(layout.B.build(nameHash, hash, index), brv.encode());
+    b.put(layout.B.encode(nameHash, hash, index), brv.encode());
   }
 
   /**
@@ -689,7 +689,7 @@ class TXDB {
 
   removeReveal(b, nameHash, outpoint) {
     const {hash, index} = outpoint;
-    b.del(layout.B.build(nameHash, hash, index));
+    b.del(layout.B.encode(nameHash, hash, index));
   }
 
   /**
@@ -708,7 +708,7 @@ class TXDB {
     const reveals = [];
 
     await iter.each(async (key, raw) => {
-      const [nameHash, hash, index] = layout.B.parse(key);
+      const [nameHash, hash, index] = layout.B.decode(key);
       const brv = BidReveal.decode(raw);
       brv.nameHash = nameHash;
       brv.prevout = new Outpoint(hash, index);
@@ -740,7 +740,7 @@ class TXDB {
    */
 
   async hasBlind(blind) {
-    return this.bucket.has(layout.v.build(blind));
+    return this.bucket.has(layout.v.encode(blind));
   }
 
   /**
@@ -750,7 +750,7 @@ class TXDB {
    */
 
   async getBlind(blind) {
-    const raw = await this.bucket.get(layout.v.build(blind));
+    const raw = await this.bucket.get(layout.v.encode(blind));
 
     if (!raw)
       return null;
@@ -770,7 +770,7 @@ class TXDB {
     const bv = new BlindValue();
     bv.value = value;
     bv.nonce = nonce;
-    b.put(layout.v.build(blind), bv.encode());
+    b.put(layout.v.encode(blind), bv.encode());
   }
 
   /**
@@ -792,7 +792,7 @@ class TXDB {
    */
 
   removeBlind(b, blind) {
-    b.del(layout.v.build(blind));
+    b.del(layout.v.encode(blind));
   }
 
   /**
@@ -854,10 +854,20 @@ class TXDB {
         continue;
 
       const nameHash = covenant.getHash(0);
-      const key = layout.o.build(nameHash);
+      const key = layout.o.encode(nameHash);
+      const hash = await this.bucket.get(key);
 
-      if (await this.bucket.has(key))
+      // Allow a double open if previous auction period has expired
+      // this is not a complete check for name availability or status!
+      if (hash) {
+        const names = this.wdb.network.names;
+        const period = names.biddingPeriod + names.revealPeriod;
+        const oldTX = await this.getTX(hash);
+        if (oldTX.height !== -1 &amp;&amp; oldTX.height + period &lt; this.wdb.height)
+          return false;
+
         return true;
+      }
     }
 
     return false;
@@ -875,7 +885,7 @@ class TXDB {
         continue;
 
       const nameHash = covenant.getHash(0);
-      const key = layout.o.build(nameHash);
+      const key = layout.o.encode(nameHash);
       const hash = await this.bucket.get(key);
 
       if (!hash)
@@ -898,7 +908,7 @@ class TXDB {
         continue;
 
       const nameHash = covenant.getHash(0);
-      const key = layout.o.build(nameHash);
+      const key = layout.o.encode(nameHash);
 
       b.put(key, tx.hash());
     }
@@ -917,7 +927,7 @@ class TXDB {
         continue;
 
       const nameHash = covenant.getHash(0);
-      const key = layout.o.build(nameHash);
+      const key = layout.o.encode(nameHash);
 
       b.del(key);
     }
@@ -1046,13 +1056,13 @@ class TXDB {
       this.indexOpens(b, tx);
 
     // Save and index the transaction record.
-    b.put(layout.t.build(hash), wtx.encode());
-    b.put(layout.m.build(wtx.mtime, hash), null);
+    b.put(layout.t.encode(hash), wtx.encode());
+    b.put(layout.m.encode(wtx.mtime, hash), null);
 
     if (!block)
-      b.put(layout.p.build(hash), null);
+      b.put(layout.p.encode(hash), null);
     else
-      b.put(layout.h.build(height, hash), null);
+      b.put(layout.h.encode(height, hash), null);
 
     // Do some secondary indexing for account-based
     // queries. This saves us a lot of time for
@@ -1060,13 +1070,13 @@ class TXDB {
     for (const [acct, delta] of state.accounts) {
       await this.updateAccountBalance(b, acct, delta);
 
-      b.put(layout.T.build(acct, hash), null);
-      b.put(layout.M.build(acct, wtx.mtime, hash), null);
+      b.put(layout.T.encode(acct, hash), null);
+      b.put(layout.M.encode(acct, wtx.mtime, hash), null);
 
       if (!block)
-        b.put(layout.P.build(acct, hash), null);
+        b.put(layout.P.encode(acct, hash), null);
       else
-        b.put(layout.H.build(acct, height, hash), null);
+        b.put(layout.H.encode(acct, height, hash), null);
     }
 
     // Update block records.
@@ -1209,15 +1219,15 @@ class TXDB {
     // Save the new serialized transaction as
     // the block-related properties have been
     // updated. Also reindex for height.
-    b.put(layout.t.build(hash), wtx.encode());
-    b.del(layout.p.build(hash));
-    b.put(layout.h.build(height, hash), null);
+    b.put(layout.t.encode(hash), wtx.encode());
+    b.del(layout.p.encode(hash));
+    b.put(layout.h.encode(height, hash), null);
 
     // Secondary indexing also needs to change.
     for (const [acct, delta] of state.accounts) {
       await this.updateAccountBalance(b, acct, delta);
-      b.del(layout.P.build(acct, hash));
-      b.put(layout.H.build(acct, height, hash), null);
+      b.del(layout.P.encode(acct, hash));
+      b.put(layout.H.encode(acct, height, hash), null);
     }
 
     await this.removeTXMap(b, hash);
@@ -1339,25 +1349,25 @@ class TXDB {
 
     // Remove the transaction data
     // itself as well as unindex.
-    b.del(layout.t.build(hash));
-    b.del(layout.m.build(wtx.mtime, hash));
+    b.del(layout.t.encode(hash));
+    b.del(layout.m.encode(wtx.mtime, hash));
 
     if (!block)
-      b.del(layout.p.build(hash));
+      b.del(layout.p.encode(hash));
     else
-      b.del(layout.h.build(height, hash));
+      b.del(layout.h.encode(height, hash));
 
     // Remove all secondary indexing.
     for (const [acct, delta] of state.accounts) {
       await this.updateAccountBalance(b, acct, delta);
 
-      b.del(layout.T.build(acct, hash));
-      b.del(layout.M.build(acct, wtx.mtime, hash));
+      b.del(layout.T.encode(acct, hash));
+      b.del(layout.M.encode(acct, wtx.mtime, hash));
 
       if (!block)
-        b.del(layout.P.build(acct, hash));
+        b.del(layout.P.encode(acct, hash));
       else
-        b.del(layout.H.build(acct, height, hash));
+        b.del(layout.H.encode(acct, height, hash));
     }
 
     // Update block records.
@@ -1391,6 +1401,9 @@ class TXDB {
 
   async removeRecursive(wtx) {
     const {tx, hash} = wtx;
+
+    if (!await this.hasTX(hash))
+      return null;
 
     for (let i = 0; i &lt; tx.outputs.length; i++) {
       const spent = await this.getSpent(hash, i);
@@ -1542,15 +1555,15 @@ class TXDB {
     // We need to update the now-removed
     // block properties and reindex due
     // to the height change.
-    b.put(layout.t.build(hash), wtx.encode());
-    b.put(layout.p.build(hash), null);
-    b.del(layout.h.build(height, hash));
+    b.put(layout.t.encode(hash), wtx.encode());
+    b.put(layout.p.encode(hash), null);
+    b.del(layout.h.encode(height, hash));
 
     // Secondary indexing also needs to change.
     for (const [acct, delta] of state.accounts) {
       await this.updateAccountBalance(b, acct, delta);
-      b.put(layout.P.build(acct, hash), null);
-      b.del(layout.H.build(acct, height, hash));
+      b.put(layout.P.encode(acct, hash), null);
+      b.del(layout.H.encode(acct, height, hash));
     }
 
     // Commit state due to unconfirmed
@@ -1692,6 +1705,26 @@ class TXDB {
           state.clocked(path, -output.value);
         break;
       }
+
+      case types.REGISTER: {
+        assert(i &lt; tx.inputs.length);
+
+        const nameHash = covenant.getHash(0);
+        const prevout = tx.inputs[i].prevout;
+
+        const brv = await this.getReveal(nameHash, prevout);
+        assert(brv);
+
+        if (height === -1) {
+          state.ulocked(path, -brv.value);
+          state.ulocked(path, output.value);
+        } else {
+          state.clocked(path, -brv.value);
+          state.clocked(path, output.value);
+        }
+
+        break;
+      }
     }
   }
 
@@ -1746,6 +1779,26 @@ class TXDB {
           state.clocked(path, output.value);
         break;
       }
+
+      case types.REGISTER: {
+        assert(i &lt; tx.inputs.length);
+
+        const nameHash = covenant.getHash(0);
+        const prevout = tx.inputs[i].prevout;
+
+        const brv = await this.getReveal(nameHash, prevout);
+        assert(brv);
+
+        if (height === -1) {
+          state.ulocked(path, brv.value);
+          state.ulocked(path, -output.value);
+        } else {
+          state.clocked(path, brv.value);
+          state.clocked(path, -output.value);
+        }
+
+        break;
+      }
     }
   }
 
@@ -1778,10 +1831,8 @@ class TXDB {
       const outpoint = tx.outpoint(i);
       const ns = await view.getNameState(this, nameHash);
 
-      if (!ns.isNull()) {
-        if (ns.isExpired(height, network))
-          ns.reset(height);
-      }
+      if (!ns.isNull())
+        ns.maybeExpire(height, network);
 
       switch (covenant.type) {
         case types.CLAIM: {
@@ -1790,12 +1841,16 @@ class TXDB {
 
           const name = covenant.get(2);
           const flags = covenant.getU8(3);
+          const claimed = covenant.getU32(5);
 
-          if (ns.isNull())
+          if (ns.isNull()) {
             await this.addNameMap(b, nameHash);
+            ns.set(name, height);
+          }
 
-          ns.set(name, height);
-          ns.setClaimed(true);
+          ns.setHeight(height);
+          ns.setRenewal(height);
+          ns.setClaimed(claimed);
           ns.setValue(0);
           ns.setOwner(outpoint);
           ns.setHighest(0);
@@ -1918,8 +1973,12 @@ class TXDB {
 
           const data = covenant.get(2);
 
+          ns.setRegistered(true);
           ns.setOwner(outpoint);
-          ns.setData(data);
+
+          if (data.length > 0)
+            ns.setData(data);
+
           ns.setRenewal(height);
 
           updated = true;
@@ -1952,6 +2011,7 @@ class TXDB {
           ns.setOwner(outpoint);
           ns.setTransfer(0);
           ns.setRenewal(height);
+          ns.setRenewals(ns.renewals + 1);
 
           updated = true;
 
@@ -1983,12 +2043,15 @@ class TXDB {
             const name = covenant.get(2);
             const flags = covenant.getU8(3);
             const weak = (flags &amp; 1) !== 0;
-            const claimed = (flags &amp; 4) !== 0;
+            const claimed = covenant.getU32(4);
+            const renewals = covenant.getU32(5);
 
             ns.set(name, start);
+            ns.setRegistered(true);
             ns.setValue(output.value);
             ns.setWeak(weak);
             ns.setClaimed(claimed);
+            ns.setRenewals(renewals);
 
             // Cannot get data or highest.
             ns.setHighest(output.value);
@@ -1999,6 +2062,7 @@ class TXDB {
 
           ns.setOwner(tx.outpoint(i));
           ns.setRenewal(height);
+          ns.setRenewals(ns.renewals + 1);
 
           updated = true;
 
@@ -2025,18 +2089,18 @@ class TXDB {
       const {nameHash} = ns;
 
       if (ns.isNull()) {
-        b.del(layout.A.build(nameHash));
+        b.del(layout.A.encode(nameHash));
         continue;
       }
 
-      b.put(layout.A.build(nameHash), ns.encode());
+      b.put(layout.A.encode(nameHash), ns.encode());
     }
 
     if (updated) {
       const undo = view.toNameUndo();
 
       if (undo.names.length > 0)
-        b.put(layout.U.build(hash), undo.encode());
+        b.put(layout.U.encode(hash), undo.encode());
     }
 
     return updated;
@@ -2075,7 +2139,7 @@ class TXDB {
       }
     }
 
-    const raw = await this.bucket.get(layout.U.build(hash));
+    const raw = await this.bucket.get(layout.U.encode(hash));
 
     if (!raw)
       return;
@@ -2088,13 +2152,15 @@ class TXDB {
 
       ns.applyState(delta);
 
-      if (ns.isNull())
-        b.del(layout.A.build(nameHash));
-      else
-        b.put(layout.A.build(nameHash), ns.encode());
+      if (ns.isNull()) {
+        await this.removeNameMap(b, nameHash);
+        b.del(layout.A.encode(nameHash));
+      } else {
+        b.put(layout.A.encode(nameHash), ns.encode());
+      }
     }
 
-    b.del(layout.U.build(hash));
+    b.del(layout.U.encode(hash));
   }
 
   /**
@@ -2206,7 +2272,7 @@ class TXDB {
       gte: layout.T.min(acct),
       lte: layout.T.max(acct),
       parse: (key) => {
-        const [, hash] = layout.T.parse(key);
+        const [, hash] = layout.T.decode(key);
         return hash;
       }
     });
@@ -2227,7 +2293,7 @@ class TXDB {
     return this.bucket.keys({
       gte: layout.t.min(),
       lte: layout.t.max(),
-      parse: key => layout.t.parse(key)
+      parse: key => layout.t.decode(key)[0]
     });
   }
 
@@ -2243,7 +2309,7 @@ class TXDB {
       gte: layout.P.min(acct),
       lte: layout.P.max(acct),
       parse: (key) => {
-        const [, hash] = layout.P.parse(key);
+        const [, hash] = layout.P.decode(key);
         return hash;
       }
     });
@@ -2264,8 +2330,18 @@ class TXDB {
     return this.bucket.keys({
       gte: layout.p.min(),
       lte: layout.p.max(),
-      parse: key => layout.p.parse(key)
+      parse: key => layout.p.decode(key)[0]
     });
+  }
+
+  /**
+   * Test whether the database has a pending transaction.
+   * @param {Hash} hash
+   * @returns {Promise} - Returns Boolean.
+   */
+
+  async hasPending(hash) {
+    return this.bucket.has(layout.p.encode(hash));
   }
 
   /**
@@ -2280,7 +2356,7 @@ class TXDB {
       gte: layout.C.min(acct),
       lte: layout.C.max(acct),
       parse: (key) => {
-        const [, hash, index] = layout.C.parse(key);
+        const [, hash, index] = layout.C.decode(key);
         return new Outpoint(hash, index);
       }
     });
@@ -2302,7 +2378,7 @@ class TXDB {
       gte: layout.c.min(),
       lte: layout.c.max(),
       parse: (key) => {
-        const [hash, index] = layout.c.parse(key);
+        const [hash, index] = layout.c.decode(key);
         return new Outpoint(hash, index);
       }
     });
@@ -2331,7 +2407,7 @@ class TXDB {
       limit: options.limit,
       reverse: options.reverse,
       parse: (key) => {
-        const [,, hash] = layout.H.parse(key);
+        const [,, hash] = layout.H.decode(key);
         return hash;
       }
     });
@@ -2363,7 +2439,7 @@ class TXDB {
       limit: options.limit,
       reverse: options.reverse,
       parse: (key) => {
-        const [, hash] = layout.h.parse(key);
+        const [, hash] = layout.h.decode(key);
         return hash;
       }
     });
@@ -2402,7 +2478,7 @@ class TXDB {
       limit: options.limit,
       reverse: options.reverse,
       parse: (key) => {
-        const [,, hash] = layout.M.parse(key);
+        const [,, hash] = layout.M.decode(key);
         return hash;
       }
     });
@@ -2434,7 +2510,7 @@ class TXDB {
       limit: options.limit,
       reverse: options.reverse,
       parse: (key) => {
-        const [, hash] = layout.m.parse(key);
+        const [, hash] = layout.m.decode(key);
         return hash;
       }
     });
@@ -2557,7 +2633,7 @@ class TXDB {
       gte: layout.c.min(),
       lte: layout.c.max(),
       parse: (key, value) => {
-        const [hash, index] = layout.c.parse(key);
+        const [hash, index] = layout.c.decode(key);
         const credit = Credit.decode(value);
         credit.coin.hash = hash;
         credit.coin.index = index;
@@ -2605,7 +2681,7 @@ class TXDB {
       gte: layout.d.min(hash),
       lte: layout.d.max(hash),
       parse: (key, value) => {
-        const [, index] = layout.d.parse(key);
+        const [, index] = layout.d.decode(key);
         const coin = Coin.decode(value);
         const input = tx.inputs[index];
         assert(input);
@@ -2739,7 +2815,7 @@ class TXDB {
    */
 
   async getTX(hash) {
-    const raw = await this.bucket.get(layout.t.build(hash));
+    const raw = await this.bucket.get(layout.t.encode(hash));
 
     if (!raw)
       return null;
@@ -2826,7 +2902,7 @@ class TXDB {
    */
 
   hasTX(hash) {
-    return this.bucket.has(layout.t.build(hash));
+    return this.bucket.has(layout.t.encode(hash));
   }
 
   /**
@@ -2853,7 +2929,7 @@ class TXDB {
    */
 
   async getCredit(hash, index) {
-    const data = await this.bucket.get(layout.c.build(hash, index));
+    const data = await this.bucket.get(layout.c.encode(hash, index));
 
     if (!data)
       return null;
@@ -2873,7 +2949,8 @@ class TXDB {
    */
 
   async getSpentCoin(spent, prevout) {
-    const data = await this.bucket.get(layout.d.build(spent.hash, spent.index));
+    const key = layout.d.encode(spent.hash, spent.index);
+    const data = await this.bucket.get(key);
 
     if (!data)
       return null;
@@ -2892,7 +2969,7 @@ class TXDB {
    */
 
   hasSpentCoin(spent) {
-    return this.bucket.has(layout.d.build(spent.hash, spent.index));
+    return this.bucket.has(layout.d.encode(spent.hash, spent.index));
   }
 
   /**
@@ -2917,7 +2994,7 @@ class TXDB {
 
     coin.height = height;
 
-    b.put(layout.d.build(spent.hash, spent.index), coin.encode());
+    b.put(layout.d.encode(spent.hash, spent.index), coin.encode());
   }
 
   /**
@@ -2927,7 +3004,7 @@ class TXDB {
    */
 
   async hasCoin(hash, index) {
-    return this.bucket.has(layout.c.build(hash, index));
+    return this.bucket.has(layout.c.encode(hash, index));
   }
 
   /**
@@ -2951,7 +3028,7 @@ class TXDB {
    */
 
   async getWalletBalance() {
-    const data = await this.bucket.get(layout.R.build());
+    const data = await this.bucket.get(layout.R.encode());
 
     if (!data)
       return new Balance();
@@ -2966,7 +3043,7 @@ class TXDB {
    */
 
   async getAccountBalance(acct) {
-    const data = await this.bucket.get(layout.r.build(acct));
+    const data = await this.bucket.get(layout.r.encode(acct));
 
     if (!data)
       return new Balance(acct);
@@ -3019,7 +3096,7 @@ class TXDB {
    */
 
   async abandon(hash) {
-    const result = await this.bucket.has(layout.p.build(hash));
+    const result = await this.bucket.has(layout.p.encode(hash));
 
     if (!result)
       throw new Error('TX not eligible.');
@@ -3838,13 +3915,13 @@ module.exports = TXDB;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-covenants.html">covenants</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="AirdropKey.html">AirdropKey</a></li><li><a href="AirdropProof.html">AirdropProof</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BitField.html">BitField</a></li><li><a href="BitView.html">BitView</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Field.html">Field</a></li><li><a href="GLUE4.html">GLUE4</a></li><li><a href="GLUE6.html">GLUE6</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">HDPrivateKey</a></li><li><a href="module-hd.PublicKey.html">HDPublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">HTTP</a></li><li><a href="module-http.TransactionOptions.html">TransactionOptions</a></li><li><a href="module-mempool.AirdropEntry.html">AirdropEntry</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockAirdrop.html">BlockAirdrop</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-AirdropPacket.html">AirdropPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.Paths.html">Paths</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletCoinView.html">WalletCoinView</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="NS.html">NS</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="Proof.html">Proof</a></li><li><a href="ProofData.html">ProofData</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Seeder.html">Seeder</a></li><li><a href="SlidingWindow.html">SlidingWindow</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="SYNTH4.html">SYNTH4</a></li><li><a href="SYNTH6.html">SYNTH6</a></li><li><a href="TXT.html">TXT</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:48 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 13:05:05 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

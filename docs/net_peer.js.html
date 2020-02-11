@@ -56,6 +56,8 @@ const Claim = require('../primitives/claim');
 const NetAddress = require('./netaddress');
 const Network = require('../protocol/network');
 const {BrontideStream} = require('./brontide');
+const AirdropProof = require('../primitives/airdropproof');
+const SlidingWindow = require('./slidingwindow');
 const services = common.services;
 const invTypes = InvItem.types;
 const packetTypes = packets.types;
@@ -86,8 +88,10 @@ class Peer extends EventEmitter {
     this.framer = new Framer(this.network);
 
     this.id = -1;
+    this.stream = null;
     this.socket = null;
     this.brontide = new BrontideStream();
+    this.encrypted = false;
     this.identityKey = this.options.identityKey;
     this.opened = false;
     this.outbound = false;
@@ -117,7 +121,7 @@ class Peer extends EventEmitter {
     this.agent = null;
     this.noRelay = false;
     this.preferHeaders = false;
-    this.hashContinue = null;
+    this.hashContinue = consensus.ZERO_HASH;
     this.spvFilter = null;
     this.feeRate = -1;
     this.compactMode = -1;
@@ -134,8 +138,11 @@ class Peer extends EventEmitter {
     this.minPing = -1;
     this.blockTime = -1;
 
-    this.bestHash = null;
+    this.bestHash = consensus.ZERO_HASH;
     this.bestHeight = -1;
+
+    this.lastTip = consensus.ZERO_HASH;
+    this.lastStop = consensus.ZERO_HASH;
 
     this.connectTimeout = null;
     this.pingTimer = null;
@@ -148,11 +155,13 @@ class Peer extends EventEmitter {
     this.blockMap = new BufferMap();
     this.txMap = new BufferMap();
     this.claimMap = new BufferMap();
+    this.airdropMap = new BufferMap();
     this.responseMap = new Map();
     this.compactBlocks = new BufferMap();
     this.nameMap = new BufferMap();
     this.totalProofs = 0;
 
+    this.proofWindow = null;
     this.init();
   }
 
@@ -163,9 +172,9 @@ class Peer extends EventEmitter {
    * @returns {Peer}
    */
 
-  static fromInbound(options, socket) {
+  static fromInbound(options, socket, encrypted) {
     const peer = new this(options);
-    peer.accept(socket);
+    peer.accept(socket, encrypted);
     return peer;
   }
 
@@ -212,8 +221,13 @@ class Peer extends EventEmitter {
         return;
 
       this.error(err);
-      this.sendReject('malformed', 'error parsing message');
-      this.increaseBan(10);
+
+      try {
+        this.sendReject('malformed', 'error parsing message');
+        this.increaseBan(10);
+      } catch (e) {
+        this.error(e);
+      }
     });
   }
 
@@ -251,10 +265,12 @@ class Peer extends EventEmitter {
    * @param {net.Socket} socket
    */
 
-  _bind(socket) {
+  _bind(socket, encrypted) {
     assert(!this.socket);
 
     this.socket = socket;
+    this.encrypted = encrypted;
+    this.stream = encrypted ? this.brontide : this.socket;
 
     this.brontide.once('error', (err) => {
       this.error(err);
@@ -278,9 +294,14 @@ class Peer extends EventEmitter {
       this.handleDrain();
     });
 
-    this.brontide.on('data', (chunk) => {
-      this.lastRecv = Date.now();
-      this.feedParser(chunk);
+    this.stream.on('data', (chunk) => {
+      try {
+        this.lastRecv = Date.now();
+        this.feedParser(chunk);
+      } catch (e) {
+        this.error(e);
+        this.destroy();
+      }
     });
 
     this.socket.setNoDelay(true);
@@ -292,16 +313,22 @@ class Peer extends EventEmitter {
    * @returns {net.Socket}
    */
 
-  accept(socket) {
+  accept(socket, encrypted) {
     assert(!this.socket);
 
     this.address = NetAddress.fromSocket(socket, this.network);
     this.address.services = 0;
     this.outbound = false;
-    this.connected = false;
-    this.brontide.accept(socket, this.identityKey);
 
-    this._bind(socket);
+    this._bind(socket, encrypted);
+
+    if (encrypted) {
+      this.connected = false;
+      this.brontide.accept(socket, this.identityKey);
+    } else {
+      this.time = Date.now();
+      this.connected = true;
+    }
 
     return socket;
   }
@@ -321,9 +348,11 @@ class Peer extends EventEmitter {
     this.address = addr;
     this.outbound = true;
     this.connected = false;
-    this.brontide.connect(socket, this.identityKey, addr.key);
 
-    this._bind(socket);
+    this._bind(socket, addr.hasKey());
+
+    if (addr.hasKey())
+      this.brontide.connect(socket, this.identityKey, addr.key);
 
     return socket;
   }
@@ -404,15 +433,29 @@ class Peer extends EventEmitter {
    * @returns {Promise}
    */
 
-  initConnect() {
+  async initConnect() {
+    if (this.connected) {
+      assert(!this.outbound);
+      return Promise.resolve();
+    }
+
+    assert(this.stream);
+    assert(this.socket);
+
     return new Promise((resolve, reject) => {
       const cleanup = () => {
         if (this.connectTimeout != null) {
           clearTimeout(this.connectTimeout);
           this.connectTimeout = null;
         }
+
+        if (this.socket) {
+          // eslint-disable-next-line no-use-before-define
+          this.socket.removeListener('error', onError);
+        }
+
         // eslint-disable-next-line no-use-before-define
-        this.socket.removeListener('error', onError);
+        this.brontide.removeListener('error', onError);
       };
 
       const onError = (err) => {
@@ -420,7 +463,7 @@ class Peer extends EventEmitter {
         reject(err);
       };
 
-      this.brontide.once('connect', () => {
+      this.stream.once('connect', () => {
         this.time = Date.now();
         this.connected = true;
         this.emit('connect');
@@ -430,6 +473,7 @@ class Peer extends EventEmitter {
       });
 
       this.socket.once('error', onError);
+      this.brontide.once('error', onError);
 
       this.connectTimeout = setTimeout(() => {
         this.connectTimeout = null;
@@ -464,23 +508,35 @@ class Peer extends EventEmitter {
   async initVersion() {
     assert(!this.destroyed);
 
-    // Say hello.
-    this.sendVersion();
+    if (this.outbound) {
+      if (this.version !== -1)
+        throw new Error('Peer prematurely introduced themselves (outbound).');
 
-    if (!this.ack) {
+      if (this.ack)
+        throw new Error('Peer prematurely acknowledged us (outbound).');
+
+      // Say hello.
+      this.sendVersion();
+
       await this.wait(packetTypes.VERACK, 10000);
+
       assert(this.ack);
-    }
 
-    // Wait for _their_ version.
-    if (this.version === -1) {
-      this.logger.debug(
-        'Peer sent a verack without a version (%s).',
-        this.hostname());
-
-      await this.wait(packetTypes.VERSION, 10000);
+      if (this.version === -1)
+        await this.wait(packetTypes.VERSION, 10000);
 
       assert(this.version !== -1);
+    } else {
+      // We're shy. Wait for an introduction.
+      if (this.version === -1)
+        await this.wait(packetTypes.VERSION, 10000);
+
+      assert(this.version !== -1);
+
+      if (this.ack)
+        throw new Error('Peer prematurely acknowledged us (inbound).');
+
+      this.sendVersion();
     }
 
     if (this.destroyed)
@@ -510,6 +566,11 @@ class Peer extends EventEmitter {
     this.invTimer = setInterval(() => {
       this.flushInv();
     }, Peer.INV_INTERVAL);
+
+    this.proofWindow = new SlidingWindow({
+      limit: this.options.maxProofRPS
+    });
+    this.proofWindow.start();
   }
 
   /**
@@ -641,6 +702,41 @@ class Peer extends EventEmitter {
         continue;
 
       inv.push(claim.toInv());
+    }
+
+    this.queueInv(inv);
+  }
+
+  /**
+   * Broadcast transactions to peer.
+   * @param {AirdropProof[]} proofs
+   */
+
+  announceAirdrop(proofs) {
+    if (!this.handshake)
+      return;
+
+    if (this.destroyed)
+      return;
+
+    // Do not send proofs to spv clients
+    // that have relay unset.
+    if (this.noRelay)
+      return;
+
+    if (!Array.isArray(proofs))
+      proofs = [proofs];
+
+    const inv = [];
+
+    for (const proof of proofs) {
+      assert(proof instanceof AirdropProof);
+
+      // Don't send if they already have it.
+      if (this.invFilter.test(proof.hash()))
+        continue;
+
+      inv.push(proof.toInv(InvItem));
     }
 
     this.queueInv(inv);
@@ -816,11 +912,6 @@ class Peer extends EventEmitter {
     if (!this.handshake)
       return;
 
-    if (this.version &lt;= common.PONG_VERSION) {
-      this.send(new packets.PingPacket());
-      return;
-    }
-
     if (this.challenge) {
       this.logger.debug(
         'Peer has not responded to ping (%s).',
@@ -889,6 +980,10 @@ class Peer extends EventEmitter {
       this.invTimer = null;
     }
 
+    if (this.proofWindow != null) {
+      this.proofWindow.stop();
+    }
+
     if (this.stallTimer != null) {
       clearInterval(this.stallTimer);
       this.stallTimer = null;
@@ -928,7 +1023,7 @@ class Peer extends EventEmitter {
 
     this.lastSend = Date.now();
 
-    if (this.brontide.write(data) === false)
+    if (this.stream.write(data) === false)
       this.needsDrain(data.length);
   }
 
@@ -1058,6 +1153,7 @@ class Peer extends EventEmitter {
       case packetTypes.MERKLEBLOCK:
       case packetTypes.TX:
       case packetTypes.CLAIM:
+      case packetTypes.AIRDROP:
       case packetTypes.NOTFOUND: {
         const entry = this.response(packetTypes.DATA, packet);
         assert(!entry || entry.jobs.length === 0);
@@ -1127,6 +1223,14 @@ class Peer extends EventEmitter {
         }
       }
 
+      for (const time of this.airdropMap.values()) {
+        if (now > time + Peer.TX_TIMEOUT) {
+          this.error('Peer is stalling (airdrop).');
+          this.destroy();
+          return;
+        }
+      }
+
       for (const block of this.compactBlocks.values()) {
         if (now > block.now + Peer.RESPONSE_TIMEOUT) {
           this.error('Peer is stalling (blocktxn).');
@@ -1159,9 +1263,7 @@ class Peer extends EventEmitter {
         return;
       }
 
-      const mult = this.version &lt;= common.PONG_VERSION ? 4 : 1;
-
-      if (now > this.lastRecv + Peer.TIMEOUT_INTERVAL * mult) {
+      if (now > this.lastRecv + Peer.TIMEOUT_INTERVAL) {
         this.error('Peer is stalling (recv).');
         this.destroy();
         return;
@@ -1352,6 +1454,15 @@ class Peer extends EventEmitter {
   }
 
   /**
+   * Send batched `getdata` to peer (airdrops).
+   * @param {Hash[]} hashes
+   */
+
+  getAirdrop(hashes) {
+    this.getItems(invTypes.AIRDROP, hashes);
+  }
+
+  /**
    * Send `getdata` to peer for a single block.
    * @param {Hash} hash
    */
@@ -1383,8 +1494,13 @@ class Peer extends EventEmitter {
           this.socket.pause();
           await this.handlePacket(packet);
         } finally {
-          if (!this.destroyed)
-            this.socket.resume();
+          if (!this.destroyed &amp;&amp; this.socket) {
+            try {
+              this.socket.resume();
+            } catch (e) {
+              ;
+            }
+          }
         }
         break;
       }
@@ -1394,8 +1510,13 @@ class Peer extends EventEmitter {
           this.socket.pause();
           await this.handlePacket(packet);
         } finally {
-          if (!this.destroyed)
-            this.socket.resume();
+          if (!this.destroyed &amp;&amp; this.socket) {
+            try {
+              this.socket.resume();
+            } catch (e) {
+              ;
+            }
+          }
           unlock();
         }
         break;
@@ -1694,20 +1815,17 @@ class Peer extends EventEmitter {
   /**
    * Send `getheaders` to peer. Note that unlike
    * `getblocks`, `getheaders` can have a null locator.
-   * @param {Hash[]?} locator - Chain locator.
-   * @param {Hash?} stop - Hash to stop at.
+   * @param {Hash[]} locator - Chain locator.
+   * @param {Hash} stop - Hash to stop at.
    */
 
   sendGetHeaders(locator, stop) {
     const packet = new packets.GetHeadersPacket(locator, stop);
 
-    let hash = null;
+    let hash = consensus.ZERO_HASH;
+
     if (packet.locator.length > 0)
       hash = packet.locator[0];
-
-    let end = null;
-    if (stop)
-      end = stop;
 
     this.logger.debug(
       'Requesting headers packet from peer with getheaders (%s).',
@@ -1715,7 +1833,7 @@ class Peer extends EventEmitter {
 
     this.logger.debug(
       'Sending getheaders (hash=%x, stop=%x).',
-      hash, end);
+      hash, stop);
 
     this.send(packet);
   }
@@ -1723,19 +1841,22 @@ class Peer extends EventEmitter {
   /**
    * Send `getblocks` to peer.
    * @param {Hash[]} locator - Chain locator.
-   * @param {Hash?} stop - Hash to stop at.
+   * @param {Hash} stop - Hash to stop at.
    */
 
   sendGetBlocks(locator, stop) {
     const packet = new packets.GetBlocksPacket(locator, stop);
 
-    let hash = null;
+    let hash = consensus.ZERO_HASH;
+
     if (packet.locator.length > 0)
       hash = packet.locator[0];
 
-    let end = null;
-    if (stop)
-      end = stop;
+    if (hash.equals(this.lastTip) &amp;&amp; stop.equals(this.lastStop))
+      return;
+
+    this.lastTip = hash;
+    this.lastStop = stop;
 
     this.logger.debug(
       'Requesting inv packet from peer with getblocks (%s).',
@@ -1743,7 +1864,7 @@ class Peer extends EventEmitter {
 
     this.logger.debug(
       'Sending getblocks (hash=%x, stop=%x).',
-      hash, end);
+      hash, stop);
 
     this.send(packet);
   }
@@ -1837,6 +1958,14 @@ class Peer extends EventEmitter {
     this.logger.info(
       'Sending proof (%s).',
       this.hostname());
+
+    this.proofWindow.increase(1);
+
+    if (!this.proofWindow.allow()) {
+      this.logger.debug('proof: rate limit exceeded (%s).', this.hostname);
+      this.ban();
+      return;
+    }
 
     this.send(new packets.ProofPacket(root, key, proof));
   }
@@ -2024,6 +2153,7 @@ class PeerOptions {
     this.compact = false;
     this.headers = false;
     this.banScore = common.BAN_SCORE;
+    this.proofPRS = 100;
 
     this.getHeight = PeerOptions.getHeight;
     this.isFull = PeerOptions.isFull;
@@ -2102,6 +2232,11 @@ class PeerOptions {
     if (options.banScore != null) {
       assert(typeof options.banScore === 'number');
       this.banScore = options.banScore;
+    }
+
+    if (options.maxProofRPS != null) {
+      assert(typeof options.maxProofRPS === 'number');
+      this.maxProofRPS = options.maxProofRPS;
     }
 
     if (options.getHeight != null) {
@@ -2250,13 +2385,13 @@ module.exports = Peer;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-covenants.html">covenants</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="AirdropKey.html">AirdropKey</a></li><li><a href="AirdropProof.html">AirdropProof</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BitField.html">BitField</a></li><li><a href="BitView.html">BitView</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Field.html">Field</a></li><li><a href="GLUE4.html">GLUE4</a></li><li><a href="GLUE6.html">GLUE6</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">HDPrivateKey</a></li><li><a href="module-hd.PublicKey.html">HDPublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">HTTP</a></li><li><a href="module-http.TransactionOptions.html">TransactionOptions</a></li><li><a href="module-mempool.AirdropEntry.html">AirdropEntry</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockAirdrop.html">BlockAirdrop</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-AirdropPacket.html">AirdropPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.Paths.html">Paths</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletCoinView.html">WalletCoinView</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="NS.html">NS</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="Proof.html">Proof</a></li><li><a href="ProofData.html">ProofData</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Seeder.html">Seeder</a></li><li><a href="SlidingWindow.html">SlidingWindow</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="SYNTH4.html">SYNTH4</a></li><li><a href="SYNTH6.html">SYNTH6</a></li><li><a href="TXT.html">TXT</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:48 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 13:05:05 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

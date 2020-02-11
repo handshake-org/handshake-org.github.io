@@ -29,7 +29,7 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-net.html">net</a>.</span>Pool<span class="signature">(options)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-net.html">net</a>~</span>Pool<span class="signature">(options)</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p>Pool
 A pool of peers for handling all network activity.</p></div>
@@ -158,7 +158,7 @@ A pool of peers for handling all network activity.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line46">line 46</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
@@ -168,6 +168,8 @@ A pool of peers for handling all network activity.</p></div>
 
     
 </dl>
+
+
 
 
 
@@ -276,7 +278,84 @@ A pool of peers for handling all network activity.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3935">line 3935</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4273">line 4273</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".REFILL_INTERVAL"><span class="type-signature">(static, constant) </span>REFILL_INTERVAL<span class="type-signature"> :Number</span></h4>
+
+
+
+
+<div class="description">
+    <p>Interval for refilling outbound peers.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>3000</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4265">line 4265</a>
     </li></ul></dd>
     
 
@@ -428,7 +507,7 @@ A pool of peers for handling all network activity.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2236">line 2236</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2391">line 2391</a>
     </li></ul></dd>
     
 
@@ -438,6 +517,8 @@ A pool of peers for handling all network activity.</p></div>
 
     
 </dl>
+
+
 
 
 
@@ -532,7 +613,7 @@ A pool of peers for handling all network activity.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line260">line 260</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line335">line 335</a>
     </li></ul></dd>
     
 
@@ -542,6 +623,8 @@ A pool of peers for handling all network activity.</p></div>
 
     
 </dl>
+
+
 
 
 
@@ -636,7 +719,7 @@ A pool of peers for handling all network activity.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line302">line 302</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line377">line 377</a>
     </li></ul></dd>
     
 
@@ -646,6 +729,186 @@ A pool of peers for handling all network activity.</p></div>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_handleAirdrop"><span class="type-signature">(async, private) </span>_handleAirdrop<span class="signature">(peer, packet)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Handle an airdrop proof. Attempt to add to mempool (without a lock).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>peer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Peer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>packet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">AirdropPacket</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2778">line 2778</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -812,7 +1075,7 @@ A pool of peers for handling all network activity.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2566">line 2566</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2721">line 2721</a>
     </li></ul></dd>
     
 
@@ -822,6 +1085,8 @@ A pool of peers for handling all network activity.</p></div>
 
     
 </dl>
+
+
 
 
 
@@ -989,7 +1254,7 @@ a given peer without a lock.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2087">line 2087</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2242">line 2242</a>
     </li></ul></dd>
     
 
@@ -999,6 +1264,8 @@ a given peer without a lock.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1165,7 +1432,7 @@ a given peer without a lock.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1585">line 1585</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1695">line 1695</a>
     </li></ul></dd>
     
 
@@ -1175,6 +1442,8 @@ a given peer without a lock.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1323,7 +1592,7 @@ a given peer without a lock.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2723">line 2723</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2935">line 2935</a>
     </li></ul></dd>
     
 
@@ -1333,6 +1602,8 @@ a given peer without a lock.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1481,7 +1752,7 @@ a given peer without a lock.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2467">line 2467</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2622">line 2622</a>
     </li></ul></dd>
     
 
@@ -1491,6 +1762,8 @@ a given peer without a lock.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1657,7 +1930,7 @@ a given peer without a lock.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2217">line 2217</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2372">line 2372</a>
     </li></ul></dd>
     
 
@@ -1667,6 +1940,8 @@ a given peer without a lock.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1810,7 +2085,7 @@ a given peer without a lock.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3114">line 3114</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3326">line 3326</a>
     </li></ul></dd>
     
 
@@ -1820,6 +2095,8 @@ a given peer without a lock.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1897,7 +2174,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line599">line 599</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line683">line 683</a>
     </li></ul></dd>
     
 
@@ -1907,6 +2184,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1984,7 +2263,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3184">line 3184</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3399">line 3399</a>
     </li></ul></dd>
     
 
@@ -2012,13 +2291,152 @@ exist for transaction relaying.</p>
 
 
 
+
+
         
             
 
     
 
     
-    <h4 class="name" id="announceBlock"><span class="type-signature"></span>announceBlock<span class="signature">(tx)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="announceAirdrop"><span class="type-signature"></span>announceAirdrop<span class="signature">(msg)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Announce a transaction to all peers.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>msg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="AirdropProof.html">AirdropProof</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4156">line 4156</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="announceBlock"><span class="type-signature"></span>announceBlock<span class="signature">(msg)</span><span class="type-signature"></span></h4>
     
 
     
@@ -2062,7 +2480,7 @@ exist for transaction relaying.</p>
 
         <tr>
             
-                <td class="name"><code>tx</code></td>
+                <td class="name"><code>msg</code></td>
             
 
             <td class="type">
@@ -2119,7 +2537,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3806">line 3806</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4126">line 4126</a>
     </li></ul></dd>
     
 
@@ -2147,13 +2565,15 @@ exist for transaction relaying.</p>
 
 
 
+
+
         
             
 
     
 
     
-    <h4 class="name" id="announceClaim"><span class="type-signature"></span>announceClaim<span class="signature">(claim)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="announceClaim"><span class="type-signature"></span>announceClaim<span class="signature">(msg)</span><span class="type-signature"></span></h4>
     
 
     
@@ -2197,7 +2617,7 @@ exist for transaction relaying.</p>
 
         <tr>
             
-                <td class="name"><code>claim</code></td>
+                <td class="name"><code>msg</code></td>
             
 
             <td class="type">
@@ -2254,7 +2674,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3826">line 3826</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4146">line 4146</a>
     </li></ul></dd>
     
 
@@ -2264,6 +2684,8 @@ exist for transaction relaying.</p>
 
     
 </dl>
+
+
 
 
 
@@ -2389,7 +2811,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line928">line 928</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1006">line 1006</a>
     </li></ul></dd>
     
 
@@ -2417,13 +2839,15 @@ exist for transaction relaying.</p>
 
 
 
+
+
         
             
 
     
 
     
-    <h4 class="name" id="announceTX"><span class="type-signature"></span>announceTX<span class="signature">(tx)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="announceTX"><span class="type-signature"></span>announceTX<span class="signature">(msg)</span><span class="type-signature"></span></h4>
     
 
     
@@ -2467,7 +2891,7 @@ exist for transaction relaying.</p>
 
         <tr>
             
-                <td class="name"><code>tx</code></td>
+                <td class="name"><code>msg</code></td>
             
 
             <td class="type">
@@ -2524,7 +2948,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3816">line 3816</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4136">line 4136</a>
     </li></ul></dd>
     
 
@@ -2534,6 +2958,8 @@ exist for transaction relaying.</p>
 
     
 </dl>
+
+
 
 
 
@@ -2659,7 +3085,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3287">line 3287</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3503">line 3503</a>
     </li></ul></dd>
     
 
@@ -2669,6 +3095,8 @@ exist for transaction relaying.</p>
 
     
 </dl>
+
+
 
 
 
@@ -2794,7 +3222,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1143">line 1143</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1237">line 1237</a>
     </li></ul></dd>
     
 
@@ -2804,6 +3232,8 @@ exist for transaction relaying.</p>
 
     
 </dl>
+
+
 
 
 
@@ -2885,6 +3315,9 @@ exist for transaction relaying.</p>
 |
 
 <span class="param-type"><a href="Claim.html">Claim</a></span>
+|
+
+<span class="param-type"><a href="AirdropProof.html">AirdropProof</a></span>
 
 
             
@@ -2935,7 +3368,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3782">line 3782</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4102">line 4102</a>
     </li></ul></dd>
     
 
@@ -2945,6 +3378,8 @@ exist for transaction relaying.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3039,7 +3474,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line245">line 245</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line320">line 320</a>
     </li></ul></dd>
     
 
@@ -3049,6 +3484,8 @@ exist for transaction relaying.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3192,7 +3629,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1104">line 1104</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1198">line 1198</a>
     </li></ul></dd>
     
 
@@ -3202,6 +3639,8 @@ exist for transaction relaying.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3345,7 +3784,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1083">line 1083</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1177">line 1177</a>
     </li></ul></dd>
     
 
@@ -3355,6 +3794,8 @@ exist for transaction relaying.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3449,7 +3890,7 @@ exist for transaction relaying.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line287">line 287</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line362">line 362</a>
     </li></ul></dd>
     
 
@@ -3459,6 +3900,8 @@ exist for transaction relaying.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3554,7 +3997,7 @@ Attempt to add port mapping once again.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line406">line 406</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line492">line 492</a>
     </li></ul></dd>
     
 
@@ -3564,6 +4007,8 @@ Attempt to add port mapping once again.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3658,7 +4103,7 @@ Attempt to add port mapping once again.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line518">line 518</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line602">line 602</a>
     </li></ul></dd>
     
 
@@ -3668,6 +4113,8 @@ Attempt to add port mapping once again.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3763,7 +4210,7 @@ remote:8333-&gt;local:8333) via UPNP.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line425">line 425</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line511">line 511</a>
     </li></ul></dd>
     
 
@@ -3773,6 +4220,8 @@ remote:8333-&gt;local:8333) via UPNP.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3916,7 +4365,7 @@ remote:8333-&gt;local:8333) via UPNP.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line481">line 481</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line567">line 567</a>
     </li></ul></dd>
     
 
@@ -3926,6 +4375,8 @@ remote:8333-&gt;local:8333) via UPNP.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3957,6 +4408,167 @@ remote:8333-&gt;local:8333) via UPNP.</p>
 </dl>
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="ensureAirdrop"><span class="type-signature"></span>ensureAirdrop<span class="signature">(peer, hashes)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Queue a <code>getdata</code> request to be sent.
+Check tx existence before requesting.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>peer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Peer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hashes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#Hash">Hash</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3984">line 3984</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4093,7 +4705,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3686">line 3686</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3964">line 3964</a>
     </li></ul></dd>
     
 
@@ -4103,6 +4715,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -4252,7 +4866,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3666">line 3666</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3944">line 3944</a>
     </li></ul></dd>
     
 
@@ -4262,6 +4876,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -4338,7 +4954,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3213">line 3213</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3428">line 3428</a>
     </li></ul></dd>
     
 
@@ -4348,6 +4964,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -4424,7 +5042,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line678">line 678</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line756">line 756</a>
     </li></ul></dd>
     
 
@@ -4434,6 +5052,168 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getAirdrop"><span class="type-signature"></span>getAirdrop<span class="signature">(peer, hashes)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Queue a <code>getdata</code> request to be sent.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>peer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Peer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hashes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#Hash">Hash</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3821">line 3821</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -4582,7 +5362,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3448">line 3448</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3664">line 3664</a>
     </li></ul></dd>
     
 
@@ -4610,13 +5390,15 @@ Check tx existence before requesting.</p>
 
 
 
+
+
         
             
 
     
 
     
-    <h4 class="name" id="getBlocks"><span class="type-signature">(async) </span>getBlocks<span class="signature">(peer, tip, stop<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="getBlocks"><span class="type-signature">(async) </span>getBlocks<span class="signature">(peer, tip, stop)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -4648,8 +5430,6 @@ Check tx existence before requesting.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -4675,14 +5455,6 @@ Check tx existence before requesting.</p>
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -4706,14 +5478,6 @@ Check tx existence before requesting.</p>
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -4736,16 +5500,6 @@ Check tx existence before requesting.</p>
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-
-                
-                </td>
             
 
             
@@ -4791,7 +5545,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3437">line 3437</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3653">line 3653</a>
     </li></ul></dd>
     
 
@@ -4801,6 +5555,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -4967,7 +5723,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line968">line 968</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1053">line 1053</a>
     </li></ul></dd>
     
 
@@ -4977,6 +5733,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5143,7 +5901,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3553">line 3553</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3769">line 3769</a>
     </li></ul></dd>
     
 
@@ -5171,13 +5929,15 @@ Check tx existence before requesting.</p>
 
 
 
+
+
         
             
 
     
 
     
-    <h4 class="name" id="getHeaders"><span class="type-signature">(async) </span>getHeaders<span class="signature">(peer, tip, stop<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="getHeaders"><span class="type-signature">(async) </span>getHeaders<span class="signature">(peer, tip, stop)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -5209,8 +5969,6 @@ Check tx existence before requesting.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -5236,14 +5994,6 @@ Check tx existence before requesting.</p>
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -5267,14 +6017,6 @@ Check tx existence before requesting.</p>
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -5297,16 +6039,6 @@ Check tx existence before requesting.</p>
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-
-                
-                </td>
             
 
             
@@ -5352,7 +6084,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3423">line 3423</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3639">line 3639</a>
     </li></ul></dd>
     
 
@@ -5362,6 +6094,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5456,7 +6190,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3132">line 3132</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3344">line 3344</a>
     </li></ul></dd>
     
 
@@ -5466,6 +6200,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5632,7 +6368,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1015">line 1015</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1103">line 1103</a>
     </li></ul></dd>
     
 
@@ -5642,6 +6378,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5785,7 +6523,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line914">line 914</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line992">line 992</a>
     </li></ul></dd>
     
 
@@ -5795,6 +6533,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5961,7 +6701,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3501">line 3501</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3717">line 3717</a>
     </li></ul></dd>
     
 
@@ -5971,6 +6711,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6119,7 +6861,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1524">line 1524</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1634">line 1634</a>
     </li></ul></dd>
     
 
@@ -6129,6 +6871,346 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="handleAirdrop"><span class="type-signature">(async, private) </span>handleAirdrop<span class="signature">(peer, packet)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Handle an airdrop proof. Attempt to add to mempool.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>peer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Peer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>packet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">AirdropPacket</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2759">line 2759</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="handleAirdropInv"><span class="type-signature">(async, private) </span>handleAirdropInv<span class="signature">(peer, hashes)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Handle peer inv packet (airdrops).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>peer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Peer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hashes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#Hash">Hash</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1875">line 1875</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -6300,7 +7382,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2392">line 2392</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2547">line 2547</a>
     </li></ul></dd>
     
 
@@ -6310,6 +7392,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6435,7 +7519,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1406">line 1406</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1513">line 1513</a>
     </li></ul></dd>
     
 
@@ -6445,6 +7529,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6593,7 +7679,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2195">line 2195</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2350">line 2350</a>
     </li></ul></dd>
     
 
@@ -6603,6 +7689,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6769,7 +7857,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1646">line 1646</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1763">line 1763</a>
     </li></ul></dd>
     
 
@@ -6779,6 +7867,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6945,7 +8035,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2982">line 2982</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3194">line 3194</a>
     </li></ul></dd>
     
 
@@ -6955,6 +8045,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7103,7 +8195,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2547">line 2547</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2702">line 2702</a>
     </li></ul></dd>
     
 
@@ -7113,6 +8205,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7279,7 +8373,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1742">line 1742</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1858">line 1858</a>
     </li></ul></dd>
     
 
@@ -7289,6 +8383,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7437,7 +8533,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1364">line 1364</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1477">line 1477</a>
     </li></ul></dd>
     
 
@@ -7447,6 +8543,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7595,7 +8693,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2809">line 2809</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3021">line 3021</a>
     </li></ul></dd>
     
 
@@ -7605,6 +8703,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7730,7 +8830,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1287">line 1287</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1400">line 1400</a>
     </li></ul></dd>
     
 
@@ -7740,6 +8840,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7888,7 +8990,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2785">line 2785</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2997">line 2997</a>
     </li></ul></dd>
     
 
@@ -7898,6 +9000,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8046,7 +9150,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2681">line 2681</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2893">line 2893</a>
     </li></ul></dd>
     
 
@@ -8056,6 +9160,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8204,7 +9310,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2693">line 2693</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2905">line 2905</a>
     </li></ul></dd>
     
 
@@ -8214,6 +9320,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8362,7 +9470,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2669">line 2669</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2881">line 2881</a>
     </li></ul></dd>
     
 
@@ -8372,6 +9480,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8520,7 +9630,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1479">line 1479</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1586">line 1586</a>
     </li></ul></dd>
     
 
@@ -8530,6 +9640,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8678,7 +9790,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1971">line 1971</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2126">line 2126</a>
     </li></ul></dd>
     
 
@@ -8688,6 +9800,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8836,7 +9950,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2931">line 2931</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3143">line 3143</a>
     </li></ul></dd>
     
 
@@ -8846,6 +9960,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8994,7 +10110,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1759">line 1759</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1892">line 1892</a>
     </li></ul></dd>
     
 
@@ -9004,6 +10120,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9152,7 +10270,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2016">line 2016</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2171">line 2171</a>
     </li></ul></dd>
     
 
@@ -9162,6 +10280,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9310,7 +10430,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3024">line 3024</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3236">line 3236</a>
     </li></ul></dd>
     
 
@@ -9320,6 +10440,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9468,7 +10590,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2068">line 2068</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2223">line 2223</a>
     </li></ul></dd>
     
 
@@ -9478,6 +10600,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9644,7 +10768,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1568">line 1568</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1678">line 1678</a>
     </li></ul></dd>
     
 
@@ -9654,6 +10778,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9802,7 +10928,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2631">line 2631</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2843">line 2843</a>
     </li></ul></dd>
     
 
@@ -9812,6 +10938,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9960,7 +11088,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2705">line 2705</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2917">line 2917</a>
     </li></ul></dd>
     
 
@@ -9970,6 +11098,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10118,7 +11248,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1949">line 1949</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2104">line 2104</a>
     </li></ul></dd>
     
 
@@ -10128,6 +11258,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10253,7 +11385,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1303">line 1303</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1416">line 1416</a>
     </li></ul></dd>
     
 
@@ -10263,6 +11395,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10411,7 +11545,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1180">line 1180</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1290">line 1290</a>
     </li></ul></dd>
     
 
@@ -10421,6 +11555,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10587,7 +11723,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1455">line 1455</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1562">line 1562</a>
     </li></ul></dd>
     
 
@@ -10597,6 +11733,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10745,7 +11883,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1467">line 1467</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1574">line 1574</a>
     </li></ul></dd>
     
 
@@ -10755,6 +11893,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10903,7 +12043,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3038">line 3038</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3250">line 3250</a>
     </li></ul></dd>
     
 
@@ -10913,6 +12053,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11061,7 +12203,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2603">line 2603</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2815">line 2815</a>
     </li></ul></dd>
     
 
@@ -11071,6 +12213,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11219,7 +12363,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2797">line 2797</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3009">line 3009</a>
     </li></ul></dd>
     
 
@@ -11229,6 +12373,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11377,7 +12523,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2182">line 2182</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2337">line 2337</a>
     </li></ul></dd>
     
 
@@ -11387,6 +12533,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11530,7 +12678,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line565">line 565</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line649">line 649</a>
     </li></ul></dd>
     
 
@@ -11540,6 +12688,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11688,7 +12838,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2448">line 2448</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2603">line 2603</a>
     </li></ul></dd>
     
 
@@ -11698,6 +12848,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11864,7 +13016,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1725">line 1725</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1841">line 1841</a>
     </li></ul></dd>
     
 
@@ -11874,6 +13026,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -12022,7 +13176,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3102">line 3102</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3314">line 3314</a>
     </li></ul></dd>
     
 
@@ -12032,6 +13186,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -12180,7 +13336,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1443">line 1443</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1550">line 1550</a>
     </li></ul></dd>
     
 
@@ -12190,6 +13346,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -12338,7 +13496,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1419">line 1419</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1526">line 1526</a>
     </li></ul></dd>
     
 
@@ -12361,6 +13519,163 @@ Check tx existence before requesting.</p>
 
 
 
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="hasAirdrop"><span class="type-signature"></span>hasAirdrop<span class="signature">(hash)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Test whether the mempool has or has seen an item.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>hash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Hash">Hash</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3933">line 3933</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -12473,7 +13788,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3606">line 3606</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3874">line 3874</a>
     </li></ul></dd>
     
 
@@ -12483,6 +13798,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -12632,7 +13949,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3655">line 3655</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3923">line 3923</a>
     </li></ul></dd>
     
 
@@ -12642,6 +13959,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -12785,7 +14104,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3624">line 3624</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3892">line 3892</a>
     </li></ul></dd>
     
 
@@ -12795,6 +14114,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -12889,7 +14210,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line107">line 107</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -12899,6 +14220,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13024,7 +14347,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line763">line 763</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line841">line 841</a>
     </li></ul></dd>
     
 
@@ -13034,6 +14357,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13128,7 +14453,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line350">line 350</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line421">line 421</a>
     </li></ul></dd>
     
 
@@ -13138,6 +14463,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13281,7 +14608,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2416">line 2416</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2571">line 2571</a>
     </li></ul></dd>
     
 
@@ -13291,6 +14618,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13367,7 +14696,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line189">line 189</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line264">line 264</a>
     </li></ul></dd>
     
 
@@ -13377,6 +14706,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13520,7 +14851,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3837">line 3837</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4167">line 4167</a>
     </li></ul></dd>
     
 
@@ -13530,6 +14861,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13624,7 +14957,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3350">line 3350</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3566">line 3566</a>
     </li></ul></dd>
     
 
@@ -13634,6 +14967,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13710,7 +15045,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3235">line 3235</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3450">line 3450</a>
     </li></ul></dd>
     
 
@@ -13720,6 +15055,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13845,7 +15182,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3251">line 3251</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3464">line 3464</a>
     </li></ul></dd>
     
 
@@ -13855,6 +15192,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13931,7 +15270,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line218">line 218</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line293">line 293</a>
     </li></ul></dd>
     
 
@@ -13941,6 +15280,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14066,7 +15407,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3896">line 3896</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4226">line 4226</a>
     </li></ul></dd>
     
 
@@ -14076,6 +15417,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14101,6 +15444,184 @@ Check tx existence before requesting.</p>
     <dd>
         
 <span class="param-type">Buffer</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="resolveAirdrop"><span class="type-signature"></span>resolveAirdrop<span class="signature">(peer, hash)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fulfill a requested claim.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>peer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Peer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Hash">Hash</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4061">line 4061</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
 
 
     </dd>
@@ -14242,7 +15763,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3725">line 3725</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4023">line 4023</a>
     </li></ul></dd>
     
 
@@ -14252,6 +15773,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14418,7 +15941,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2311">line 2311</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2466">line 2466</a>
     </li></ul></dd>
     
 
@@ -14428,6 +15951,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14594,7 +16119,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3744">line 3744</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4042">line 4042</a>
     </li></ul></dd>
     
 
@@ -14604,6 +16129,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14747,7 +16274,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line869">line 869</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line947">line 947</a>
     </li></ul></dd>
     
 
@@ -14757,6 +16284,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14905,7 +16434,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line890">line 890</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line968">line 968</a>
     </li></ul></dd>
     
 
@@ -14915,6 +16444,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15063,7 +16594,7 @@ Check tx existence before requesting.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3763">line 3763</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4080">line 4080</a>
     </li></ul></dd>
     
 
@@ -15073,6 +16604,8 @@ Check tx existence before requesting.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15240,7 +16773,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3405">line 3405</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3621">line 3621</a>
     </li></ul></dd>
     
 
@@ -15250,6 +16783,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15416,7 +16951,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3706">line 3706</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line4004">line 4004</a>
     </li></ul></dd>
     
 
@@ -15426,6 +16961,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15581,7 +17118,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line734">line 734</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line812">line 812</a>
     </li></ul></dd>
     
 
@@ -15591,6 +17128,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15757,7 +17296,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1054">line 1054</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1148">line 1148</a>
     </li></ul></dd>
     
 
@@ -15767,6 +17306,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15861,7 +17402,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3367">line 3367</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3583">line 3583</a>
     </li></ul></dd>
     
 
@@ -15871,6 +17412,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15947,7 +17490,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line858">line 858</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line936">line 936</a>
     </li></ul></dd>
     
 
@@ -15957,6 +17500,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16105,7 +17650,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line822">line 822</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line900">line 900</a>
     </li></ul></dd>
     
 
@@ -16115,6 +17660,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16209,7 +17756,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line849">line 849</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line927">line 927</a>
     </li></ul></dd>
     
 
@@ -16219,6 +17766,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16344,7 +17893,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line791">line 791</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line869">line 869</a>
     </li></ul></dd>
     
 
@@ -16354,6 +17903,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16497,7 +18048,7 @@ locator and resolving orphan root.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3313">line 3313</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3529">line 3529</a>
     </li></ul></dd>
     
 
@@ -16507,6 +18058,8 @@ locator and resolving orphan root.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16584,7 +18137,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line644">line 644</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line722">line 722</a>
     </li></ul></dd>
     
 
@@ -16594,6 +18147,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16670,7 +18225,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line664">line 664</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line742">line 742</a>
     </li></ul></dd>
     
 
@@ -16680,6 +18235,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16756,7 +18313,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line384">line 384</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line460">line 460</a>
     </li></ul></dd>
     
 
@@ -16766,6 +18323,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16842,7 +18401,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line700">line 700</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line778">line 778</a>
     </li></ul></dd>
     
 
@@ -16852,6 +18411,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16928,7 +18489,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line394">line 394</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line475">line 475</a>
     </li></ul></dd>
     
 
@@ -16938,6 +18499,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -17086,7 +18649,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2372">line 2372</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line2527">line 2527</a>
     </li></ul></dd>
     
 
@@ -17096,6 +18659,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -17190,7 +18755,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line691">line 691</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line769">line 769</a>
     </li></ul></dd>
     
 
@@ -17200,6 +18765,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -17276,7 +18843,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1119">line 1119</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line1213">line 1213</a>
     </li></ul></dd>
     
 
@@ -17286,6 +18853,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -17429,7 +18998,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3304">line 3304</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3520">line 3520</a>
     </li></ul></dd>
     
 
@@ -17439,6 +19008,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -17515,7 +19086,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line369">line 369</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line443">line 443</a>
     </li></ul></dd>
     
 
@@ -17525,6 +19096,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -17619,7 +19192,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3338">line 3338</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3554">line 3554</a>
     </li></ul></dd>
     
 
@@ -17629,6 +19202,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -17757,7 +19332,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3326">line 3326</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3542">line 3542</a>
     </li></ul></dd>
     
 
@@ -17767,6 +19342,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -17895,7 +19472,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3382">line 3382</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3598">line 3598</a>
     </li></ul></dd>
     
 
@@ -17905,6 +19482,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -18030,7 +19609,7 @@ a sync to even begin.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3392">line 3392</a>
+        <a href="net_pool.js.html">net/pool.js</a>, <a href="net_pool.js.html#line3608">line 3608</a>
     </li></ul></dd>
     
 
@@ -18040,6 +19619,8 @@ a sync to even begin.</p>
 
     
 </dl>
+
+
 
 
 
@@ -18074,13 +19655,13 @@ a sync to even begin.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-covenants.html">covenants</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="AirdropKey.html">AirdropKey</a></li><li><a href="AirdropProof.html">AirdropProof</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BitField.html">BitField</a></li><li><a href="BitView.html">BitView</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Field.html">Field</a></li><li><a href="GLUE4.html">GLUE4</a></li><li><a href="GLUE6.html">GLUE6</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">HDPrivateKey</a></li><li><a href="module-hd.PublicKey.html">HDPublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">HTTP</a></li><li><a href="module-http.TransactionOptions.html">TransactionOptions</a></li><li><a href="module-mempool.AirdropEntry.html">AirdropEntry</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockAirdrop.html">BlockAirdrop</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-AirdropPacket.html">AirdropPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.Paths.html">Paths</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletCoinView.html">WalletCoinView</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="NS.html">NS</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="Proof.html">Proof</a></li><li><a href="ProofData.html">ProofData</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Seeder.html">Seeder</a></li><li><a href="SlidingWindow.html">SlidingWindow</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="SYNTH4.html">SYNTH4</a></li><li><a href="SYNTH6.html">SYNTH6</a></li><li><a href="TXT.html">TXT</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:50 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 13:05:06 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

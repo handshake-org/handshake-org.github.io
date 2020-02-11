@@ -37,7 +37,7 @@
 const assert = require('bsert');
 const EventEmitter = require('events');
 const {Lock} = require('bmutex');
-const {base58} = require('bstring');
+const base58 = require('bcrypto/lib/encoding/base58');
 const bio = require('bufio');
 const blake2b = require('bcrypto/lib/blake2b');
 const cleanse = require('bcrypto/lib/cleanse');
@@ -47,6 +47,8 @@ const common = require('./common');
 const Address = require('../primitives/address');
 const MTX = require('../primitives/mtx');
 const Script = require('../script/script');
+const CoinView = require('../coins/coinview');
+const WalletCoinView = require('./walletcoinview');
 const WalletKey = require('./walletkey');
 const HD = require('../hd/hd');
 const Output = require('../primitives/output');
@@ -55,13 +57,14 @@ const MasterKey = require('./masterkey');
 const policy = require('../protocol/policy');
 const consensus = require('../protocol/consensus');
 const rules = require('../covenants/rules');
-const Resource = require('../dns/resource');
+const {Resource} = require('../dns/resource');
 const Claim = require('../primitives/claim');
 const reserved = require('../covenants/reserved');
 const ownership = require('../covenants/ownership');
 const {states} = require('../covenants/namestate');
 const {types} = rules;
 const {Mnemonic} = HD;
+const {BufferSet} = require('buffer-map');
 
 /*
  * Constants
@@ -103,6 +106,8 @@ class Wallet extends EventEmitter {
     this.master = new MasterKey();
 
     this.txdb = new TXDB(this.wdb);
+
+    this.maxAncestors = policy.MEMPOOL_MAX_ANCESTORS;
 
     if (options)
       this.fromOptions(options);
@@ -163,6 +168,11 @@ class Wallet extends EventEmitter {
     if (options.tokenDepth != null) {
       assert((options.tokenDepth >>> 0) === options.tokenDepth);
       this.tokenDepth = options.tokenDepth;
+    }
+
+    if (options.maxAncestors != null) {
+      assert((options.maxAncestors >>> 0) === options.maxAncestors);
+      this.maxAncestors = options.maxAncestors;
     }
 
     if (!id)
@@ -612,7 +622,7 @@ class Wallet extends EventEmitter {
     await this.unlock(passphrase);
 
     let key;
-    if (this.watchOnly &amp;&amp; options.accountKey) {
+    if (this.watchOnly) {
       key = options.accountKey;
 
       if (typeof key === 'string')
@@ -1229,24 +1239,15 @@ class Wallet extends EventEmitter {
     const rawName = Buffer.from(name, 'ascii');
     const nameHash = rules.hashName(rawName);
     const height = this.wdb.height + 1;
-    const hardened = Boolean(options.hardened);
     const network = this.network;
 
+    // TODO: Handle expired behavior.
     if (!rules.isReserved(nameHash, height, network))
       throw new Error('Name is not reserved.');
 
     const ns = await this.getNameState(nameHash);
 
-    let forked = false;
-
     if (ns) {
-      if (hardened) {
-        if (ns.isWeak(height, network)) {
-          ns.reset(height);
-          forked = true;
-        }
-      }
-
       if (!ns.isExpired(height, network))
         throw new Error('Name already claimed.');
     } else {
@@ -1283,7 +1284,7 @@ class Wallet extends EventEmitter {
       added += item.target.length; // rrname
       added += 10; // header
       added += 1; // txt size
-      added += 65; // max string size
+      added += 200; // max string size
 
       // RRSIG record size.
       if (!zone || zone.claim.length === 0) {
@@ -1307,14 +1308,30 @@ class Wallet extends EventEmitter {
     if (minFee == null)
       minFee = policy.getMinFee(vsize, rate);
 
-    let fee = Math.min(item.value, minFee);
+    if (this.wdb.height &lt; 1)
+      throw new Error('Chain too immature for name claim.');
 
-    if (forked)
-      fee = 0;
+    let commitHash = (await this.wdb.getBlock(1)).hash;
+    let commitHeight = 1;
 
+    if (options.commitHeight != null) {
+      const block = await this.wdb.getBlock(options.commitHeight);
+
+      if (!block)
+        throw new Error('Block not found.');
+
+      commitHeight = block.height;
+      commitHash = block.hash;
+    }
+
+    const fee = Math.min(item.value, minFee);
     const acct = options.account || 0;
     const address = await this.receiveAddress(acct);
-    const txt = ownership.createData(fee, address, forked, network);
+    const txt = ownership.createData(address,
+                                     fee,
+                                     commitHash,
+                                     commitHeight,
+                                     network);
 
     return {
       name,
@@ -1362,21 +1379,16 @@ class Wallet extends EventEmitter {
     const rawName = Buffer.from(name, 'ascii');
     const nameHash = rules.hashName(rawName);
     const height = this.wdb.height + 1;
-    const hardened = Boolean(options.hardened);
     const network = this.network;
 
+    // TODO: Handle expired behavior.
     if (!rules.isReserved(nameHash, height, network))
       throw new Error('Name is not reserved.');
 
     const ns = await this.getNameState(nameHash);
 
-    let forked = false;
-
     if (ns) {
-      if (hardened &amp;&amp; ns.isWeak(height, network))
-        forked = true;
-
-      if (!forked &amp;&amp; !ns.isExpired(height, network))
+      if (!ns.isExpired(height, network))
         throw new Error('Name already claimed.');
     } else {
       if (!await this.wdb.isAvailable(nameHash))
@@ -1394,9 +1406,6 @@ class Wallet extends EventEmitter {
 
     if (!data)
       throw new Error(`No valid DNS commitment found for ${name}.`);
-
-    if (data.forked !== forked)
-      throw new Error('Proof data must have the correct fork flag.');
 
     return Claim.fromProof(proof);
   }
@@ -1447,21 +1456,16 @@ class Wallet extends EventEmitter {
     const rawName = Buffer.from(name, 'ascii');
     const nameHash = rules.hashName(rawName);
     const height = this.wdb.height + 1;
-    const hardened = Boolean(options.hardened);
     const network = this.network;
 
+    // TODO: Handle expired behavior.
     if (!rules.isReserved(nameHash, height, network))
       throw new Error('Name is not reserved.');
 
     const ns = await this.getNameState(nameHash);
 
-    let forked = false;
-
     if (ns) {
-      if (hardened &amp;&amp; ns.isWeak(height, network))
-        forked = true;
-
-      if (!forked &amp;&amp; !ns.isExpired(height, network))
+      if (!ns.isExpired(height, network))
         throw new Error('Name already claimed.');
     } else {
       if (!await this.wdb.isAvailable(nameHash))
@@ -1476,9 +1480,6 @@ class Wallet extends EventEmitter {
 
     if (!data)
       throw new Error(`No valid DNS commitment found for ${name}.`);
-
-    if (data.forked !== forked)
-      throw new Error('Proof data must have the correct fork flag.');
 
     return Claim.fromProof(proof);
   }
@@ -1513,13 +1514,15 @@ class Wallet extends EventEmitter {
   /**
    * Make a open MTX.
    * @param {String} name
-   * @param {Number} acct
+   * @param {Number|String} acct
+   * @param {Boolean} force
    * @returns {MTX}
    */
 
-  async makeOpen(name, acct) {
+  async makeOpen(name, force, acct) {
     assert(typeof name === 'string');
-    assert((acct >>> 0) === acct);
+    assert(typeof force === 'boolean');
+    assert((acct >>> 0) === acct || typeof acct === 'string');
 
     if (!rules.verifyName(name))
       throw new Error('Invalid name.');
@@ -1529,6 +1532,7 @@ class Wallet extends EventEmitter {
     const height = this.wdb.height + 1;
     const network = this.network;
 
+    // TODO: Handle expired behavior.
     if (rules.isReserved(nameHash, height, network))
       throw new Error('Name is reserved.');
 
@@ -1540,8 +1544,7 @@ class Wallet extends EventEmitter {
     if (!ns)
       ns = await this.wdb.getNameStatus(nameHash);
 
-    if (ns.isExpired(height, network))
-      ns.reset(height);
+    ns.maybeExpire(height, network);
 
     const state = ns.state(height, network);
     const start = ns.height;
@@ -1572,47 +1575,65 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize a open MTX.
+   * Create and finalize an open
+   * MTX without a lock.
    * @param {String} name
-   * @param {Number} value
-   * @param {Number} lockup
+   * @param {Boolean} force
    * @param {Object} options
    * @returns {MTX}
    */
 
-  async createOpen(name, value, lockup, options) {
+  async _createOpen(name, force, options) {
     const acct = options ? options.account || 0 : 0;
-    const mtx = await this.makeOpen(name, acct);
+    const mtx = await this.makeOpen(name, force, acct);
     await this.fill(mtx, options);
     return this.finalize(mtx, options);
   }
 
   /**
-   * Create and send a open MTX.
+   * Create and finalize an open
+   * MTX with a lock.
    * @param {String} name
-   * @param {Number} value
-   * @param {Number} lockup
+   * @param {Boolean} force
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async createOpen(name, force, options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createOpen(name, force, options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Create and send an open
+   * MTX without a lock.
+   * @param {String} name
+   * @param {Boolean} force
    * @param {Object} options
    */
 
-  async _sendOpen(name, value, lockup, options) {
+  async _sendOpen(name, force, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createOpen(name, value, lockup, options);
+    const mtx = await this._createOpen(name, force, options);
     return this.sendMTX(mtx, passphrase);
   }
 
   /**
-   * Create and send a open MTX.
+   * Create and send an open
+   * MTX with a lock.
    * @param {String} name
-   * @param {Number} value
-   * @param {Number} lockup
+   * @param {Boolean} force
    * @param {Object} options
    */
 
-  async sendOpen(name, value, lockup, options) {
+  async sendOpen(name, force, options) {
     const unlock = await this.fundLock.lock();
     try {
-      return await this._sendOpen(name, value, lockup, options);
+      return await this._sendOpen(name, force, options);
     } finally {
       unlock();
     }
@@ -1623,7 +1644,7 @@ class Wallet extends EventEmitter {
    * @param {String} name
    * @param {Number} value
    * @param {Number} lockup
-   * @param {Number} acct
+   * @param {Number|String} acct
    * @returns {MTX}
    */
 
@@ -1631,7 +1652,7 @@ class Wallet extends EventEmitter {
     assert(typeof name === 'string');
     assert(Number.isSafeInteger(value) &amp;&amp; value >= 0);
     assert(Number.isSafeInteger(lockup) &amp;&amp; lockup >= 0);
-    assert((acct >>> 0) === acct);
+    assert((acct >>> 0) === acct || typeof acct === 'string');
 
     if (!rules.verifyName(name))
       throw new Error('Invalid name.');
@@ -1652,8 +1673,7 @@ class Wallet extends EventEmitter {
     if (!ns)
       ns = await this.wdb.getNameStatus(nameHash);
 
-    if (ns.isExpired(height, network))
-      ns.reset(height);
+    ns.maybeExpire(height, network);
 
     const state = ns.state(height, network);
     const start = ns.height;
@@ -1686,7 +1706,25 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize a bid MTX.
+   * Create and finalize a bid
+   * MTX without a lock.
+   * @param {String} name
+   * @param {Number} value
+   * @param {Number} lockup
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async _createBid(name, value, lockup, options) {
+    const acct = options ? options.account || 0 : 0;
+    const mtx = await this.makeBid(name, value, lockup, acct);
+    await this.fill(mtx, options);
+    return this.finalize(mtx, options);
+  }
+
+  /**
+   * Create and finalize a bid
+   * MTX with a lock.
    * @param {String} name
    * @param {Number} value
    * @param {Number} lockup
@@ -1695,10 +1733,12 @@ class Wallet extends EventEmitter {
    */
 
   async createBid(name, value, lockup, options) {
-    const acct = options ? options.account || 0 : 0;
-    const mtx = await this.makeBid(name, value, lockup, acct);
-    await this.fill(mtx, options);
-    return this.finalize(mtx, options);
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createBid(name, value, lockup, options);
+    } finally {
+      unlock();
+    }
   }
 
   /**
@@ -1711,7 +1751,7 @@ class Wallet extends EventEmitter {
 
   async _sendBid(name, value, lockup, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createBid(name, value, lockup, options);
+    const mtx = await this._createBid(name, value, lockup, options);
     return this.sendMTX(mtx, passphrase);
   }
 
@@ -1753,8 +1793,7 @@ class Wallet extends EventEmitter {
     if (!ns)
       throw new Error('Auction not found.');
 
-    if (ns.isExpired(height, network))
-      ns.reset(height);
+    ns.maybeExpire(height, network);
 
     const state = ns.state(height, network);
 
@@ -1809,27 +1848,45 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize a bid MTX.
+   * Create and finalize a reveal
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    * @returns {MTX}
    */
 
-  async createReveal(name, options) {
+  async _createReveal(name, options) {
     const mtx = await this.makeReveal(name);
     await this.fill(mtx, options);
     return this.finalize(mtx, options);
   }
 
   /**
-   * Create and send a bid MTX.
+   * Create and finalize a reveal
+   * MTX with a lock.
+   * @param {String} name
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async createReveal(name, options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createReveal(name, options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Create and send a reveal MTX.
    * @param {String} name
    * @param {Object} options
    */
 
   async _sendReveal(name, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createReveal(name, options);
+    const mtx = await this._createReveal(name, options);
     return this.sendMTX(mtx, passphrase);
   }
 
@@ -1843,6 +1900,126 @@ class Wallet extends EventEmitter {
     const unlock = await this.fundLock.lock();
     try {
       return await this._sendReveal(name, options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Make a reveal MTX.
+   * @returns {MTX}
+   */
+
+  async makeRevealAll() {
+    const height = this.wdb.height + 1;
+    const network = this.network;
+    const bids = await this.getBids();
+    const mtx = new MTX();
+
+    for (const {nameHash, prevout, own} of bids) {
+      if (!own)
+        continue;
+
+      const ns = await this.getNameState(nameHash);
+
+      if (!ns)
+        continue;
+
+      ns.maybeExpire(height, network);
+
+      const state = ns.state(height, network);
+
+      if (state &lt; states.REVEAL)
+        continue;
+
+      if (state > states.REVEAL)
+        continue;
+
+      const {hash, index} = prevout;
+      const coin = await this.getCoin(hash, index);
+
+      if (!coin)
+        continue;
+
+      // Is local?
+      if (coin.height &lt; ns.height)
+        continue;
+
+      const blind = coin.covenant.getHash(3);
+      const bv = await this.getBlind(blind);
+
+      if (!bv)
+        throw new Error('Blind value not found.');
+
+      const {value, nonce} = bv;
+
+      const output = new Output();
+      output.address = coin.address;
+      output.value = value;
+      output.covenant.type = types.REVEAL;
+      output.covenant.pushHash(nameHash);
+      output.covenant.pushU32(ns.height);
+      output.covenant.pushHash(nonce);
+
+      mtx.addOutpoint(prevout);
+      mtx.outputs.push(output);
+    }
+
+    if (mtx.outputs.length === 0)
+      throw new Error('No bids to reveal.');
+
+    return mtx;
+  }
+
+  /**
+   * Create and finalize a reveal all
+   * MTX without a lock.
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async _createRevealAll(options) {
+    const mtx = await this.makeRevealAll();
+    await this.fill(mtx, options);
+    return this.finalize(mtx, options);
+  }
+
+  /**
+   * Create and finalize a reveal all
+   * MTX with a lock.
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async createRevealAll(options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createRevealAll(options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Create and send a reveal all MTX.
+   * @param {Object} options
+   */
+
+  async _sendRevealAll(options) {
+    const passphrase = options ? options.passphrase : null;
+    const mtx = await this._createRevealAll(options);
+    return this.sendMTX(mtx, passphrase);
+  }
+
+  /**
+   * Create and send a bid MTX.
+   * @param {Object} options
+   */
+
+  async sendRevealAll(options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._sendRevealAll(options);
     } finally {
       unlock();
     }
@@ -1918,32 +2095,52 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize a redeem MTX.
+   * Create and finalize a redeem
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    * @returns {MTX}
    */
 
-  async createRedeem(name, options) {
+  async _createRedeem(name, options) {
     const mtx = await this.makeRedeem(name);
     await this.fill(mtx, options);
     return this.finalize(mtx, options);
   }
 
   /**
-   * Create and send a redeem MTX.
+   * Create and finalize a redeem
+   * MTX with a lock.
+   * @param {String} name
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async createRedeem(name, options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createRedeem(name, options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Create and send a redeem
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    */
 
   async _sendRedeem(name, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createRedeem(name, options);
+    const mtx = await this._createRedeem(name, options);
     return this.sendMTX(mtx, passphrase);
   }
 
   /**
-   * Create and send a redeem MTX.
+   * Create and send a redeem
+   * MTX with a lock.
    * @param {String} name
    * @param {Object} options
    */
@@ -1952,6 +2149,123 @@ class Wallet extends EventEmitter {
     const unlock = await this.fundLock.lock();
     try {
       return await this._sendRedeem(name, options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Make a redeem MTX.
+   * @param {String} name
+   * @returns {MTX}
+   */
+
+  async makeRedeemAll() {
+    const height = this.wdb.height + 1;
+    const network = this.network;
+    const reveals = await this.txdb.getReveals();
+    const mtx = new MTX();
+
+    for (const {nameHash, prevout, own} of reveals) {
+      const {hash, index} = prevout;
+
+      const ns = await this.getNameState(nameHash);
+
+      if (!ns)
+        continue;
+
+      if (ns.isExpired(height, network))
+        continue;
+
+      const state = ns.state(height, network);
+
+      if (state &lt; states.CLOSED)
+        continue;
+
+      if (!own)
+        continue;
+
+      if (prevout.equals(ns.owner))
+        continue;
+
+      const coin = await this.getCoin(hash, index);
+
+      if (!coin)
+        continue;
+
+      // Is local?
+      if (coin.height &lt; ns.height)
+        continue;
+
+      mtx.addOutpoint(prevout);
+
+      const output = new Output();
+      output.address = coin.address;
+      output.value = coin.value;
+      output.covenant.type = types.REDEEM;
+      output.covenant.pushHash(nameHash);
+      output.covenant.pushU32(ns.height);
+
+      mtx.outputs.push(output);
+    }
+
+    if (mtx.outputs.length === 0)
+      throw new Error('No reveals to redeem.');
+
+    return mtx;
+  }
+
+  /**
+   * Create and finalize a redeem
+   * all MTX without a lock.
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async _createRedeemAll(options) {
+    const mtx = await this.makeRedeemAll();
+    await this.fill(mtx, options);
+    return this.finalize(mtx, options);
+  }
+
+  /**
+   * Create and finalize a redeem
+   * all MTX with a lock.
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async createRedeemAll(options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createRedeemAll(options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Create and send a redeem all
+   * MTX without a lock.
+   * @param {Object} options
+   */
+
+  async _sendRedeemAll(options) {
+    const passphrase = options ? options.passphrase : null;
+    const mtx = await this._createRedeemAll(options);
+    return this.sendMTX(mtx, passphrase);
+  }
+
+  /**
+   * Create and send a redeem all
+   * MTX with a lock.
+   * @param {Object} options
+   */
+
+  async sendRedeemAll(options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._sendRedeemAll(options);
     } finally {
       unlock();
     }
@@ -2107,7 +2421,23 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize an update MTX.
+   * Create and finalize an update
+   * MTX without a lock.
+   * @param {String} name
+   * @param {Resource} resource
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async _createUpdate(name, resource, options) {
+    const mtx = await this.makeUpdate(name, resource);
+    await this.fill(mtx, options);
+    return this.finalize(mtx, options);
+  }
+
+  /**
+   * Create and finalize an update
+   * MTX with a lock.
    * @param {String} name
    * @param {Resource} resource
    * @param {Object} options
@@ -2115,13 +2445,17 @@ class Wallet extends EventEmitter {
    */
 
   async createUpdate(name, resource, options) {
-    const mtx = await this.makeUpdate(name, resource);
-    await this.fill(mtx, options);
-    return this.finalize(mtx, options);
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createUpdate(name, resource, options);
+    } finally {
+      unlock();
+    }
   }
 
   /**
-   * Create and send an update MTX.
+   * Create and send an update
+   * MTX without a lock.
    * @param {String} name
    * @param {Resource} resource
    * @param {Object} options
@@ -2129,12 +2463,13 @@ class Wallet extends EventEmitter {
 
   async _sendUpdate(name, resource, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createUpdate(name, resource, options);
+    const mtx = await this._createUpdate(name, resource, options);
     return this.sendMTX(mtx, passphrase);
   }
 
   /**
-   * Create and send an update MTX.
+   * Create and send an update
+   * MTX with a lock.
    * @param {String} name
    * @param {Resource} resource
    * @param {Object} options
@@ -2216,32 +2551,52 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize a renewal MTX.
+   * Create and finalize a renewal
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    * @returns {MTX}
    */
 
-  async createRenewal(name, options) {
+  async _createRenewal(name, options) {
     const mtx = await this.makeRenewal(name);
     await this.fill(mtx, options);
     return this.finalize(mtx, options);
   }
 
   /**
-   * Create and send a renewal MTX.
+   * Create and finalize a renewal
+   * MTX with a lock.
+   * @param {String} name
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async createRenewal(name, options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createRenewal(name, options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Create and send a renewal
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    */
 
   async _sendRenewal(name, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createRenewal(name, options);
+    const mtx = await this._createRenewal(name, options);
     return this.sendMTX(mtx, passphrase);
   }
 
   /**
-   * Create and send an renewal MTX.
+   * Create and send a renewal
+   * MTX with a lock.
    * @param {String} name
    * @param {Object} options
    */
@@ -2303,9 +2658,6 @@ class Wallet extends EventEmitter {
       throw new Error('Name must be registered.');
     }
 
-    if (ns.isWeak(height, network))
-      throw new Error('Cannot transfer a weak name prematurely.');
-
     const output = new Output();
     output.address = coin.address;
     output.value = coin.value;
@@ -2323,7 +2675,23 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize an update MTX.
+   * Create and finalize a transfer
+   * MTX without a lock.
+   * @param {String} name
+   * @param {Address} address
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async _createTransfer(name, address, options) {
+    const mtx = await this.makeTransfer(name, address);
+    await this.fill(mtx, options);
+    return this.finalize(mtx, options);
+  }
+
+  /**
+   * Create and finalize a transfer
+   * MTX with a lock.
    * @param {String} name
    * @param {Address} address
    * @param {Object} options
@@ -2331,13 +2699,17 @@ class Wallet extends EventEmitter {
    */
 
   async createTransfer(name, address, options) {
-    const mtx = await this.makeTransfer(name, address);
-    await this.fill(mtx, options);
-    return this.finalize(mtx, options);
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createTransfer(name, address, options);
+    } finally {
+      unlock();
+    }
   }
 
   /**
-   * Create and send an update MTX.
+   * Create and send a transfer
+   * MTX without a lock.
    * @param {String} name
    * @param {Address} address
    * @param {Object} options
@@ -2345,7 +2717,7 @@ class Wallet extends EventEmitter {
 
   async _sendTransfer(name, address, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createTransfer(
+    const mtx = await this._createTransfer(
       name,
       address,
       options
@@ -2354,7 +2726,8 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and send an update MTX.
+   * Create and send a transfer
+   * MTX with a lock.
    * @param {String} name
    * @param {Address} address
    * @param {Object} options
@@ -2428,32 +2801,52 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize a cancel MTX.
+   * Create and finalize a cancel
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    * @returns {MTX}
    */
 
-  async createCancel(name, options) {
+  async _createCancel(name, options) {
     const mtx = await this.makeCancel(name);
     await this.fill(mtx, options);
     return this.finalize(mtx, options);
   }
 
   /**
-   * Create and send a cancel MTX.
+   * Create and finalize a cancel
+   * MTX with a lock.
+   * @param {String} name
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async createCancel(name, options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createCancel(name, options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Create and send a cancel
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    */
 
   async _sendCancel(name, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createCancel(name, options);
+    const mtx = await this._createCancel(name, options);
     return this.sendMTX(mtx, passphrase);
   }
 
   /**
-   * Create and send a cancel MTX.
+   * Create and send a cancel
+   * MTX with a lock.
    * @param {String} name
    * @param {Object} options
    */
@@ -2522,9 +2915,6 @@ class Wallet extends EventEmitter {
     if (ns.weak)
       flags |= 1;
 
-    if (ns.claimed)
-      flags |= 4;
-
     const output = new Output();
     output.address = address;
     output.value = coin.value;
@@ -2533,6 +2923,8 @@ class Wallet extends EventEmitter {
     output.covenant.pushU32(ns.height);
     output.covenant.push(rawName);
     output.covenant.pushU8(flags);
+    output.covenant.pushU32(ns.claimed);
+    output.covenant.pushU32(ns.renewals);
     output.covenant.pushHash(await this.wdb.getRenewalBlock());
 
     const mtx = new MTX();
@@ -2543,32 +2935,52 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize a finalize MTX.
+   * Create and finalize a finalize
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    * @returns {MTX}
    */
 
-  async createFinalize(name, options) {
+  async _createFinalize(name, options) {
     const mtx = await this.makeFinalize(name);
     await this.fill(mtx, options);
     return this.finalize(mtx, options);
   }
 
   /**
-   * Create and send a finalize MTX.
+   * Create and finalize a finalize
+   * MTX with a lock.
+   * @param {String} name
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async createFinalize(name, options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createFinalize(name, options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Create and send a finalize
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    */
 
   async _sendFinalize(name, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createFinalize(name, options);
+    const mtx = await this._createFinalize(name, options);
     return this.sendMTX(mtx, passphrase);
   }
 
   /**
-   * Create and send a finalize MTX.
+   * Create and send a finalize
+   * MTX with a lock.
    * @param {String} name
    * @param {Object} options
    */
@@ -2629,9 +3041,6 @@ class Wallet extends EventEmitter {
       throw new Error('Name must be registered.');
     }
 
-    if (ns.isWeak(height, network))
-      throw new Error('Cannot revoke a weak name prematurely.');
-
     const output = new Output();
     output.address = coin.address;
     output.value = coin.value;
@@ -2647,32 +3056,52 @@ class Wallet extends EventEmitter {
   }
 
   /**
-   * Create and finalize an update MTX.
+   * Create and finalize a revoke
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    * @returns {MTX}
    */
 
-  async createRevoke(name, options) {
+  async _createRevoke(name, options) {
     const mtx = await this.makeRevoke(name);
     await this.fill(mtx, options);
     return this.finalize(mtx, options);
   }
 
   /**
-   * Create and send an update MTX.
+   * Create and finalize a revoke
+   * MTX with a lock.
+   * @param {String} name
+   * @param {Object} options
+   * @returns {MTX}
+   */
+
+  async createRevoke(name, options) {
+    const unlock = await this.fundLock.lock();
+    try {
+      return await this._createRevoke(name, options);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Create and send a revoke
+   * MTX without a lock.
    * @param {String} name
    * @param {Object} options
    */
 
   async _sendRevoke(name, options) {
     const passphrase = options ? options.passphrase : null;
-    const mtx = await this.createRevoke(name);
+    const mtx = await this._createRevoke(name);
     return this.sendMTX(mtx, passphrase);
   }
 
   /**
-   * Create and send an update MTX.
+   * Create and send a revoke
+   * MTX with a lock.
    * @param {String} name
    * @param {Object} options
    */
@@ -2770,7 +3199,8 @@ class Wallet extends EventEmitter {
       const output = new Output(obj);
       const addr = output.getAddress();
 
-      if (output.isDust())
+      const {covenant} = output;
+      if (covenant.isDustworthy() &amp;&amp; output.isDust())
         throw new Error('Output is dust.');
 
       if (output.value > 0) {
@@ -2813,6 +3243,12 @@ class Wallet extends EventEmitter {
     assert(mtx.isSane(), 'TX failed sanity check.');
     assert(mtx.verifyInputs(this.wdb.height + 1, this.network),
       'TX failed context check.');
+    assert(this.wdb.height + 1 >= this.network.txStart,
+      'Transactions are not allowed on network yet.');
+
+    // Set the HD paths.
+    if (options.paths === true)
+      mtx.view = await this.getWalletCoinView(mtx, mtx.view);
 
     const total = await this.template(mtx);
 
@@ -2874,6 +3310,10 @@ class Wallet extends EventEmitter {
 
     if (tx.getWeight() > policy.MAX_TX_WEIGHT)
       throw new Error('TX exceeds policy weight.');
+
+    const ancestors = await this.getPendingAncestors(tx);
+    if (ancestors.size + 1 > this.maxAncestors)
+      throw new Error('TX exceeds maximum unconfirmed ancestors.');
 
     await this.wdb.addTX(tx);
 
@@ -2999,8 +3439,10 @@ class Wallet extends EventEmitter {
 
     const txs = [];
 
-    for (const wtx of wtxs)
-      txs.push(wtx.tx);
+    for (const wtx of wtxs) {
+      if (!wtx.tx.isCoinbase())
+        txs.push(wtx.tx);
+    }
 
     const sorted = common.sortDeps(txs);
 
@@ -3055,6 +3497,21 @@ class Wallet extends EventEmitter {
 
     if (!account)
       return null;
+
+    // The account index in the db may be wrong.
+    // We must read it from the stored xpub to be
+    // sure of its correctness.
+    //
+    // For more details see:
+    // https://github.com/bcoin-org/bcoin/issues/698.
+    //
+    // TODO(boymanjor): remove index manipulation
+    // once the watch-only wallet bug is fixed.
+    account.accountIndex = account.accountKey.childIndex;
+
+    // Unharden the account index, if necessary.
+    if (account.accountIndex &amp; HD.common.HARDENED)
+      account.accountIndex ^= HD.common.HARDENED;
 
     return account.derivePath(path, this.master);
   }
@@ -3265,6 +3722,58 @@ class Wallet extends EventEmitter {
   }
 
   /**
+   * Get pending ancestors up to the policy limit
+   * @param {TX} tx
+   * @returns {Promise} - Returns {BufferSet} with Hash
+   */
+
+   async getPendingAncestors(tx) {
+    return this._getPendingAncestors(tx, new BufferSet());
+   }
+
+  /**
+   * Get pending ancestors up to the policy limit.
+   * @param {TX} tx
+   * @param {Object} set
+   * @returns {Promise} - Returns {BufferSet} with Hash
+   */
+
+  async _getPendingAncestors(tx, set) {
+    for (const {prevout} of tx.inputs) {
+      const hash = prevout.hash;
+
+      if (set.has(hash))
+        continue;
+
+      if (!await this.hasPending(hash))
+        continue;
+
+      set.add(hash);
+
+      if (set.size > this.maxAncestors)
+        break;
+
+      const parent = await this.getTX(hash);
+      await this._getPendingAncestors(parent.tx, set);
+
+      if (set.size > this.maxAncestors)
+        break;
+    }
+
+    return set;
+  }
+
+  /**
+   * Test whether the database has a pending transaction.
+   * @param {Hash} hash
+   * @returns {Promise} - Returns Boolean.
+   */
+
+  hasPending(hash) {
+    return this.txdb.hasPending(hash);
+  }
+
+  /**
    * Get a coin viewpoint.
    * @param {TX} tx
    * @returns {Promise} - Returns {@link CoinView}.
@@ -3272,6 +3781,61 @@ class Wallet extends EventEmitter {
 
   getCoinView(tx) {
     return this.txdb.getCoinView(tx);
+  }
+
+  /**
+   * Get a wallet coin viewpoint with HD paths.
+   * @param {TX} tx
+   * @param {CoinView?} view - Coins to be used in wallet coin viewpoint.
+   * @returns {Promise} - Returns {@link WalletCoinView}.
+   */
+
+  async getWalletCoinView(tx, view) {
+    if (!(view instanceof CoinView))
+      view = new CoinView();
+
+    if (!tx.hasCoins(view))
+      view = await this.txdb.getCoinView(tx);
+
+    view = WalletCoinView.fromCoinView(view);
+
+    for (const input of tx.inputs) {
+      const prevout = input.prevout;
+      const coin = view.getCoin(prevout);
+
+      if (!coin)
+        continue;
+
+      const path = await this.getPath(coin.address);
+
+      if (!path)
+        continue;
+
+      const account = await this.getAccount(path.account);
+
+      if (!account)
+        continue;
+
+      // The account index in the db may be wrong.
+      // We must read it from the stored xpub to be
+      // sure of its correctness.
+      //
+      // For more details see:
+      // https://github.com/bcoin-org/bcoin/issues/698.
+      //
+      // TODO(boymanjor): remove index manipulation
+      // once the watch-only wallet bug is fixed.
+      path.account = account.accountKey.childIndex;
+
+      // Unharden the account index, if necessary.
+      if (path.account &amp; HD.common.HARDENED)
+        path.account ^= HD.common.HARDENED;
+
+      // Add path to the viewpoint.
+      view.addPath(prevout, path);
+    }
+
+    return view;
   }
 
   /**
@@ -3420,7 +3984,7 @@ class Wallet extends EventEmitter {
    */
 
   async getRevealsByName(name) {
-    return this.txdb.getReveals(rules.hashName(name));
+    return this.txdb.getReveals(name ? rules.hashName(name) : null);
   }
 
   /**
@@ -3843,7 +4407,7 @@ class Wallet extends EventEmitter {
       accountDepth: this.accountDepth,
       token: this.token.toString('hex'),
       tokenDepth: this.tokenDepth,
-      master: this.master.toJSON(this.network, unsafe),
+      master: this.master.getJSON(this.network, unsafe),
       balance: balance ? balance.toJSON(true) : null
     };
   }
@@ -3951,13 +4515,13 @@ module.exports = Wallet;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-covenants.html">covenants</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="AirdropKey.html">AirdropKey</a></li><li><a href="AirdropProof.html">AirdropProof</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BitField.html">BitField</a></li><li><a href="BitView.html">BitView</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Field.html">Field</a></li><li><a href="GLUE4.html">GLUE4</a></li><li><a href="GLUE6.html">GLUE6</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">HDPrivateKey</a></li><li><a href="module-hd.PublicKey.html">HDPublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">HTTP</a></li><li><a href="module-http.TransactionOptions.html">TransactionOptions</a></li><li><a href="module-mempool.AirdropEntry.html">AirdropEntry</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockAirdrop.html">BlockAirdrop</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-AirdropPacket.html">AirdropPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.Paths.html">Paths</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletCoinView.html">WalletCoinView</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="NS.html">NS</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="Proof.html">Proof</a></li><li><a href="ProofData.html">ProofData</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Seeder.html">Seeder</a></li><li><a href="SlidingWindow.html">SlidingWindow</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="SYNTH4.html">SYNTH4</a></li><li><a href="SYNTH6.html">SYNTH6</a></li><li><a href="TXT.html">TXT</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:48 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 13:05:05 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

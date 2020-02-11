@@ -29,7 +29,7 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-wallet.html">wallet</a>.</span>Wallet<span class="signature">(options)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-wallet.html">wallet</a>~</span>Wallet<span class="signature">(options)</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p>Wallet</p></div>
         
@@ -157,7 +157,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line50">line 50</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -167,6 +167,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -323,7 +325,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3896">line 3896</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4460">line 4460</a>
     </li></ul></dd>
     
 
@@ -333,6 +335,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -499,7 +503,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line159">line 159</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line169">line 169</a>
     </li></ul></dd>
     
 
@@ -509,6 +513,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -652,7 +658,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3906">line 3906</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4470">line 4470</a>
     </li></ul></dd>
     
 
@@ -662,6 +668,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -805,7 +813,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3516">line 3516</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4080">line 4080</a>
     </li></ul></dd>
     
 
@@ -815,6 +823,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -959,7 +969,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3421">line 3421</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3985">line 3985</a>
     </li></ul></dd>
     
 
@@ -969,6 +979,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1138,7 +1150,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line242">line 242</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -1148,6 +1160,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1291,7 +1305,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line575">line 575</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line585">line 585</a>
     </li></ul></dd>
     
 
@@ -1301,6 +1315,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1332,6 +1348,410 @@ Potentially resolves orphans.</p>
     <dd>
         
 <span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createBid"><span class="type-signature">(async) </span>_createBid<span class="signature">(name, value, lockup, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a bid
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lockup</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1690">line 1690</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createCancel"><span class="type-signature">(async) </span>_createCancel<span class="signature">(name, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a cancel
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2783">line 2783</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
 
 
     </dd>
@@ -1450,7 +1870,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1191">line 1191</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1201">line 1201</a>
     </li></ul></dd>
     
 
@@ -1460,6 +1880,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1485,6 +1907,185 @@ Potentially resolves orphans.</p>
     <dd>
         
 <span class="param-type"><a href="Claim.html">Claim</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createFinalize"><span class="type-signature">(async) </span>_createFinalize<span class="signature">(name, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a finalize
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2917">line 2917</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
 
 
     </dd>
@@ -1649,7 +2250,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line820">line 820</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line830">line 830</a>
     </li></ul></dd>
     
 
@@ -1659,6 +2260,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1690,6 +2293,1640 @@ Potentially resolves orphans.</p>
     <dd>
         
 <span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createOpen"><span class="type-signature">(async) </span>_createOpen<span class="signature">(name, force, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize an open
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>force</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1558">line 1558</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createRedeem"><span class="type-signature">(async) </span>_createRedeem<span class="signature">(name, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a redeem
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2077">line 2077</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createRedeemAll"><span class="type-signature">(async) </span>_createRedeemAll<span class="signature">(options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a redeem
+all MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2197">line 2197</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createRenewal"><span class="type-signature">(async) </span>_createRenewal<span class="signature">(name, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a renewal
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2533">line 2533</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createReveal"><span class="type-signature">(async) </span>_createReveal<span class="signature">(name, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a reveal
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1830">line 1830</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createRevealAll"><span class="type-signature">(async) </span>_createRevealAll<span class="signature">(options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a reveal all
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1953">line 1953</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createRevoke"><span class="type-signature">(async) </span>_createRevoke<span class="signature">(name, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a revoke
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3038">line 3038</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createTransfer"><span class="type-signature">(async) </span>_createTransfer<span class="signature">(name, address, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a transfer
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>address</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Address</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2658">line 2658</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createUpdate"><span class="type-signature">(async) </span>_createUpdate<span class="signature">(name, resource, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize an update
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>resource</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Resource.html">Resource</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2404">line 2404</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
 
 
     </dd>
@@ -1811,7 +4048,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line365">line 365</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line375">line 375</a>
     </li></ul></dd>
     
 
@@ -1821,6 +4058,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1967,7 +4206,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line328">line 328</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line338">line 338</a>
     </li></ul></dd>
     
 
@@ -1990,9 +4229,195 @@ Potentially resolves orphans.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_getPendingAncestors"><span class="type-signature">(async) </span>_getPendingAncestors<span class="signature">(tx, set)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get pending ancestors up to the policy limit.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">TX</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>set</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3713">line 3713</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Returns {BufferSet} with Hash</li>
+</ul>
+</div>
+
 
 
 <dl>
@@ -2202,7 +4627,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1036">line 1036</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1046">line 1046</a>
     </li></ul></dd>
     
 
@@ -2212,6 +4637,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -2437,7 +4864,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line971">line 971</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line981">line 981</a>
     </li></ul></dd>
     
 
@@ -2447,6 +4874,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -2633,7 +5062,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1940">line 1940</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2254">line 2254</a>
     </li></ul></dd>
     
 
@@ -2643,6 +5072,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -2812,7 +5243,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line279">line 279</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line289">line 289</a>
     </li></ul></dd>
     
 
@@ -2822,6 +5253,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3011,7 +5444,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line456">line 456</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line466">line 466</a>
     </li></ul></dd>
     
 
@@ -3021,6 +5454,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3179,7 +5614,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line402">line 402</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line412">line 412</a>
     </li></ul></dd>
     
 
@@ -3189,6 +5624,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3381,7 +5818,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2824">line 2824</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3260">line 3260</a>
     </li></ul></dd>
     
 
@@ -3391,6 +5828,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3609,7 +6048,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1684">line 1684</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1724">line 1724</a>
     </li></ul></dd>
     
 
@@ -3619,6 +6058,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3651,7 +6092,8 @@ Potentially resolves orphans.</p>
 
 
 <div class="description">
-    <p>Create and send a cancel MTX.</p>
+    <p>Create and send a cancel
+MTX without a lock.</p>
 </div>
 
 
@@ -3767,7 +6209,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2421">line 2421</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2813">line 2813</a>
     </li></ul></dd>
     
 
@@ -3777,6 +6219,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -3925,7 +6369,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1464">line 1464</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1465">line 1465</a>
     </li></ul></dd>
     
 
@@ -3935,6 +6379,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -4083,7 +6529,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1382">line 1382</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1391">line 1391</a>
     </li></ul></dd>
     
 
@@ -4093,6 +6539,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -4125,7 +6573,8 @@ Potentially resolves orphans.</p>
 
 
 <div class="description">
-    <p>Create and send a finalize MTX.</p>
+    <p>Create and send a finalize
+MTX without a lock.</p>
 </div>
 
 
@@ -4241,7 +6690,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2536">line 2536</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2947">line 2947</a>
     </li></ul></dd>
     
 
@@ -4269,13 +6718,15 @@ Potentially resolves orphans.</p>
 
 
 
+
+
         
             
 
     
 
     
-    <h4 class="name" id="_sendOpen"><span class="type-signature">(async) </span>_sendOpen<span class="signature">(name, value, lockup, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="_sendOpen"><span class="type-signature">(async) </span>_sendOpen<span class="signature">(name, force, options)</span><span class="type-signature"></span></h4>
     
 
     
@@ -4283,7 +6734,8 @@ Potentially resolves orphans.</p>
 
 
 <div class="description">
-    <p>Create and send a open MTX.</p>
+    <p>Create and send an open
+MTX without a lock.</p>
 </div>
 
 
@@ -4342,36 +6794,13 @@ Potentially resolves orphans.</p>
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>force</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lockup</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
+<span class="param-type">Boolean</span>
 
 
             
@@ -4445,7 +6874,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1570">line 1570</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1591">line 1591</a>
     </li></ul></dd>
     
 
@@ -4455,6 +6884,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -4487,7 +6918,8 @@ Potentially resolves orphans.</p>
 
 
 <div class="description">
-    <p>Create and send a redeem MTX.</p>
+    <p>Create and send a redeem
+MTX without a lock.</p>
 </div>
 
 
@@ -4603,7 +7035,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1911">line 1911</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2107">line 2107</a>
     </li></ul></dd>
     
 
@@ -4613,6 +7045,146 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_sendRedeemAll"><span class="type-signature">(async) </span>_sendRedeemAll<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and send a redeem all
+MTX without a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2225">line 2225</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -4645,7 +7217,8 @@ Potentially resolves orphans.</p>
 
 
 <div class="description">
-    <p>Create and send a renewal MTX.</p>
+    <p>Create and send a renewal
+MTX without a lock.</p>
 </div>
 
 
@@ -4761,7 +7334,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2209">line 2209</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2563">line 2563</a>
     </li></ul></dd>
     
 
@@ -4771,6 +7344,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -4803,7 +7378,7 @@ Potentially resolves orphans.</p>
 
 
 <div class="description">
-    <p>Create and send a bid MTX.</p>
+    <p>Create and send a reveal MTX.</p>
 </div>
 
 
@@ -4919,7 +7494,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1802">line 1802</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1859">line 1859</a>
     </li></ul></dd>
     
 
@@ -4929,6 +7504,145 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_sendRevealAll"><span class="type-signature">(async) </span>_sendRevealAll<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and send a reveal all MTX.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1980">line 1980</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -4961,7 +7675,8 @@ Potentially resolves orphans.</p>
 
 
 <div class="description">
-    <p>Create and send an update MTX.</p>
+    <p>Create and send a revoke
+MTX without a lock.</p>
 </div>
 
 
@@ -5077,7 +7792,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2640">line 2640</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3068">line 3068</a>
     </li></ul></dd>
     
 
@@ -5087,6 +7802,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5119,7 +7836,8 @@ Potentially resolves orphans.</p>
 
 
 <div class="description">
-    <p>Create and send an update MTX.</p>
+    <p>Create and send a transfer
+MTX without a lock.</p>
 </div>
 
 
@@ -5258,7 +7976,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2318">line 2318</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2690">line 2690</a>
     </li></ul></dd>
     
 
@@ -5268,6 +7986,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5300,7 +8020,8 @@ Potentially resolves orphans.</p>
 
 
 <div class="description">
-    <p>Create and send an update MTX.</p>
+    <p>Create and send an update
+MTX without a lock.</p>
 </div>
 
 
@@ -5439,7 +8160,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2102">line 2102</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2436">line 2436</a>
     </li></ul></dd>
     
 
@@ -5449,6 +8170,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5620,7 +8343,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3131">line 3131</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3588">line 3588</a>
     </li></ul></dd>
     
 
@@ -5630,6 +8353,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5819,7 +8544,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3489">line 3489</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4053">line 4053</a>
     </li></ul></dd>
     
 
@@ -5829,6 +8554,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -5972,7 +8699,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3500">line 3500</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4064">line 4064</a>
     </li></ul></dd>
     
 
@@ -5982,6 +8709,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6145,7 +8874,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3690">line 3690</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4254">line 4254</a>
     </li></ul></dd>
     
 
@@ -6155,6 +8884,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6298,7 +9029,7 @@ Potentially resolves orphans.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3404">line 3404</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3968">line 3968</a>
     </li></ul></dd>
     
 
@@ -6308,6 +9039,8 @@ Potentially resolves orphans.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6478,7 +9211,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line225">line 225</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line235">line 235</a>
     </li></ul></dd>
     
 
@@ -6488,6 +9221,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6651,7 +9386,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3742">line 3742</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4306">line 4306</a>
     </li></ul></dd>
     
 
@@ -6661,6 +9396,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6824,7 +9561,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3716">line 3716</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4280">line 4280</a>
     </li></ul></dd>
     
 
@@ -6834,6 +9571,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -6997,7 +9736,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3768">line 3768</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4332">line 4332</a>
     </li></ul></dd>
     
 
@@ -7007,6 +9746,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7150,7 +9891,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line560">line 560</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line570">line 570</a>
     </li></ul></dd>
     
 
@@ -7160,6 +9901,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7216,7 +9959,8 @@ Saves the key in the wallet database.</p>
 
 
 <div class="description">
-    <p>Create and finalize a bid MTX.</p>
+    <p>Create and finalize a bid
+MTX with a lock.</p>
 </div>
 
 
@@ -7378,7 +10122,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1669">line 1669</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1707">line 1707</a>
     </li></ul></dd>
     
 
@@ -7388,6 +10132,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7438,7 +10184,8 @@ Saves the key in the wallet database.</p>
 
 
 <div class="description">
-    <p>Create and finalize a cancel MTX.</p>
+    <p>Create and finalize a cancel
+MTX with a lock.</p>
 </div>
 
 
@@ -7554,7 +10301,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2409">line 2409</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2797">line 2797</a>
     </li></ul></dd>
     
 
@@ -7564,6 +10311,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7730,7 +10479,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line792">line 792</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line802">line 802</a>
     </li></ul></dd>
     
 
@@ -7740,6 +10489,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7912,7 +10663,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1309">line 1309</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1326">line 1326</a>
     </li></ul></dd>
     
 
@@ -7922,6 +10673,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -7954,7 +10707,8 @@ Saves the key in the wallet database.</p>
 
 
 <div class="description">
-    <p>Create and finalize a finalize MTX.</p>
+    <p>Create and finalize a finalize
+MTX with a lock.</p>
 </div>
 
 
@@ -8070,7 +10824,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2524">line 2524</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2931">line 2931</a>
     </li></ul></dd>
     
 
@@ -8080,6 +10834,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8269,7 +11025,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line803">line 803</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line813">line 813</a>
     </li></ul></dd>
     
 
@@ -8279,6 +11035,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8327,7 +11085,7 @@ Saves the key in the wallet database.</p>
     
 
     
-    <h4 class="name" id="createOpen"><span class="type-signature">(async) </span>createOpen<span class="signature">(name, value, lockup, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    <h4 class="name" id="createOpen"><span class="type-signature">(async) </span>createOpen<span class="signature">(name, force, options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
     
 
     
@@ -8335,7 +11093,8 @@ Saves the key in the wallet database.</p>
 
 
 <div class="description">
-    <p>Create and finalize a open MTX.</p>
+    <p>Create and finalize an open
+MTX with a lock.</p>
 </div>
 
 
@@ -8394,36 +11153,13 @@ Saves the key in the wallet database.</p>
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>force</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lockup</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
+<span class="param-type">Boolean</span>
 
 
             
@@ -8497,7 +11233,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1555">line 1555</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1574">line 1574</a>
     </li></ul></dd>
     
 
@@ -8507,6 +11243,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8673,7 +11411,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line782">line 782</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line792">line 792</a>
     </li></ul></dd>
     
 
@@ -8683,6 +11421,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -8739,7 +11479,8 @@ Saves the key in the wallet database.</p>
 
 
 <div class="description">
-    <p>Create and finalize a redeem MTX.</p>
+    <p>Create and finalize a redeem
+MTX with a lock.</p>
 </div>
 
 
@@ -8855,7 +11596,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1899">line 1899</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2091">line 2091</a>
     </li></ul></dd>
     
 
@@ -8865,6 +11606,164 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="createRedeemAll"><span class="type-signature">(async) </span>createRedeemAll<span class="signature">(options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a redeem
+all MTX with a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2210">line 2210</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -8915,7 +11814,8 @@ Saves the key in the wallet database.</p>
 
 
 <div class="description">
-    <p>Create and finalize a renewal MTX.</p>
+    <p>Create and finalize a renewal
+MTX with a lock.</p>
 </div>
 
 
@@ -9031,7 +11931,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2197">line 2197</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2547">line 2547</a>
     </li></ul></dd>
     
 
@@ -9041,6 +11941,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9091,7 +11993,8 @@ Saves the key in the wallet database.</p>
 
 
 <div class="description">
-    <p>Create and finalize a bid MTX.</p>
+    <p>Create and finalize a reveal
+MTX with a lock.</p>
 </div>
 
 
@@ -9207,7 +12110,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1790">line 1790</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1844">line 1844</a>
     </li></ul></dd>
     
 
@@ -9217,6 +12120,164 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="createRevealAll"><span class="type-signature">(async) </span>createRevealAll<span class="signature">(options)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and finalize a reveal all
+MTX with a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1966">line 1966</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -9267,7 +12328,8 @@ Saves the key in the wallet database.</p>
 
 
 <div class="description">
-    <p>Create and finalize an update MTX.</p>
+    <p>Create and finalize a revoke
+MTX with a lock.</p>
 </div>
 
 
@@ -9383,7 +12445,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2628">line 2628</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3052">line 3052</a>
     </li></ul></dd>
     
 
@@ -9393,6 +12455,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9443,7 +12507,8 @@ Saves the key in the wallet database.</p>
 
 
 <div class="description">
-    <p>Create and finalize an update MTX.</p>
+    <p>Create and finalize a transfer
+MTX with a lock.</p>
 </div>
 
 
@@ -9582,7 +12647,7 @@ Saves the key in the wallet database.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2305">line 2305</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2673">line 2673</a>
     </li></ul></dd>
     
 
@@ -9592,6 +12657,8 @@ Saves the key in the wallet database.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9786,7 +12853,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2733">line 2733</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3162">line 3162</a>
     </li></ul></dd>
     
 
@@ -9796,6 +12863,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -9852,7 +12921,8 @@ to avoid sorting), set locktime, and template it.</p>
 
 
 <div class="description">
-    <p>Create and finalize an update MTX.</p>
+    <p>Create and finalize an update
+MTX with a lock.</p>
 </div>
 
 
@@ -9991,7 +13061,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2089">line 2089</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2419">line 2419</a>
     </li></ul></dd>
     
 
@@ -10001,6 +13071,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10144,7 +13216,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3876">line 3876</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4440">line 4440</a>
     </li></ul></dd>
     
 
@@ -10154,6 +13226,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10282,7 +13356,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line349">line 349</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line359">line 359</a>
     </li></ul></dd>
     
 
@@ -10292,6 +13366,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10478,7 +13554,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2992">line 2992</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3434">line 3434</a>
     </li></ul></dd>
     
 
@@ -10488,6 +13564,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10588,7 +13666,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line204">line 204</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line214">line 214</a>
     </li></ul></dd>
     
 
@@ -10598,6 +13676,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10692,7 +13772,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3852">line 3852</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4416">line 4416</a>
     </li></ul></dd>
     
 
@@ -10702,6 +13782,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -10848,7 +13930,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line312">line 312</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line322">line 322</a>
     </li></ul></dd>
     
 
@@ -10858,6 +13940,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11001,7 +14085,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line643">line 643</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line653">line 653</a>
     </li></ul></dd>
     
 
@@ -11011,6 +14095,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11163,7 +14249,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line736">line 736</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line746">line 746</a>
     </li></ul></dd>
     
 
@@ -11173,6 +14259,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11334,7 +14422,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2683">line 2683</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3112">line 3112</a>
     </li></ul></dd>
     
 
@@ -11344,6 +14432,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11438,7 +14528,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1098">line 1098</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1108">line 1108</a>
     </li></ul></dd>
     
 
@@ -11457,6 +14547,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11605,7 +14697,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2772">line 2772</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3202">line 3202</a>
     </li></ul></dd>
     
 
@@ -11615,6 +14707,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11709,7 +14803,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3780">line 3780</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4344">line 4344</a>
     </li></ul></dd>
     
 
@@ -11719,6 +14813,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -11862,7 +14958,7 @@ to avoid sorting), set locktime, and template it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line89">line 89</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -11872,6 +14968,8 @@ to avoid sorting), set locktime, and template it.</p>
 
     
 </dl>
+
+
 
 
 
@@ -12336,7 +15434,7 @@ fee from existing outputs rather than adding more inputs.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1082">line 1082</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1092">line 1092</a>
     </li></ul></dd>
     
 
@@ -12355,6 +15453,8 @@ fee from existing outputs rather than adding more inputs.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -12526,7 +15626,7 @@ fee from existing outputs rather than adding more inputs.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1176">line 1176</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1186">line 1186</a>
     </li></ul></dd>
     
 
@@ -12536,6 +15636,8 @@ fee from existing outputs rather than adding more inputs.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -12727,7 +15829,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1148">line 1148</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1158">line 1158</a>
     </li></ul></dd>
     
 
@@ -12737,6 +15839,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -12883,7 +15987,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line695">line 695</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line705">line 705</a>
     </li></ul></dd>
     
 
@@ -12893,6 +15997,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13042,7 +16148,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2667">line 2667</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3096">line 3096</a>
     </li></ul></dd>
     
 
@@ -13052,6 +16158,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13198,7 +16306,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line680">line 680</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line690">line 690</a>
     </li></ul></dd>
     
 
@@ -13208,6 +16316,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13360,7 +16470,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line719">line 719</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line729">line 729</a>
     </li></ul></dd>
     
 
@@ -13370,6 +16480,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13519,7 +16631,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line754">line 754</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line764">line 764</a>
     </li></ul></dd>
     
 
@@ -13529,6 +16641,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13681,7 +16795,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line917">line 917</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line927">line 927</a>
     </li></ul></dd>
     
 
@@ -13691,6 +16805,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13791,7 +16907,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line658">line 658</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line668">line 668</a>
     </li></ul></dd>
     
 
@@ -13801,6 +16917,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -13965,7 +17083,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line668">line 668</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line678">line 678</a>
     </li></ul></dd>
     
 
@@ -13975,6 +17093,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14139,7 +17259,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3653">line 3653</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4217">line 4217</a>
     </li></ul></dd>
     
 
@@ -14149,6 +17269,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14298,7 +17420,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3364">line 3364</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3928">line 3928</a>
     </li></ul></dd>
     
 
@@ -14308,6 +17430,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14454,7 +17578,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3374">line 3374</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3938">line 3938</a>
     </li></ul></dd>
     
 
@@ -14464,6 +17588,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14607,7 +17733,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3354">line 3354</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3918">line 3918</a>
     </li></ul></dd>
     
 
@@ -14617,6 +17743,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14760,7 +17888,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3315">line 3315</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3879">line 3879</a>
     </li></ul></dd>
     
 
@@ -14770,6 +17898,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -14870,7 +18000,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3305">line 3305</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3869">line 3869</a>
     </li></ul></dd>
     
 
@@ -14880,6 +18010,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15052,7 +18184,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3286">line 3286</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3850">line 3850</a>
     </li></ul></dd>
     
 
@@ -15062,6 +18194,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15226,7 +18360,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3581">line 3581</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4145">line 4145</a>
     </li></ul></dd>
     
 
@@ -15236,6 +18370,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15385,7 +18521,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3245">line 3245</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3754">line 3754</a>
     </li></ul></dd>
     
 
@@ -15395,6 +18531,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15559,7 +18697,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3592">line 3592</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4156">line 4156</a>
     </li></ul></dd>
     
 
@@ -15569,6 +18707,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15718,7 +18858,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3275">line 3275</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3839">line 3839</a>
     </li></ul></dd>
     
 
@@ -15728,6 +18868,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -15892,7 +19034,7 @@ bid value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3570">line 3570</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4134">line 4134</a>
     </li></ul></dd>
     
 
@@ -15902,6 +19044,8 @@ bid value.</p>
 
     
 </dl>
+
+
 
 
 
@@ -16005,7 +19149,7 @@ of <code>0x03be04</code> (<code>WLT</code> in base58).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line512">line 512</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line522">line 522</a>
     </li></ul></dd>
     
 
@@ -16015,6 +19159,8 @@ of <code>0x03be04</code> (<code>WLT</code> in base58).</p>
 
     
 </dl>
+
+
 
 
 
@@ -16158,7 +19304,7 @@ of <code>0x03be04</code> (<code>WLT</code> in base58).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3070">line 3070</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3527">line 3527</a>
     </li></ul></dd>
     
 
@@ -16168,6 +19314,8 @@ of <code>0x03be04</code> (<code>WLT</code> in base58).</p>
 
     
 </dl>
+
+
 
 
 
@@ -16331,7 +19479,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3809">line 3809</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4373">line 4373</a>
     </li></ul></dd>
     
 
@@ -16341,6 +19489,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -16487,7 +19637,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3019">line 3019</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3461">line 3461</a>
     </li></ul></dd>
     
 
@@ -16497,6 +19647,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -16686,7 +19838,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3679">line 3679</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4243">line 4243</a>
     </li></ul></dd>
     
 
@@ -16696,6 +19848,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -16796,7 +19950,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3560">line 3560</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4124">line 4124</a>
     </li></ul></dd>
     
 
@@ -16806,6 +19960,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -16900,7 +20056,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3324">line 3324</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3888">line 3888</a>
     </li></ul></dd>
     
 
@@ -16910,6 +20066,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -17053,7 +20211,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3334">line 3334</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3898">line 3898</a>
     </li></ul></dd>
     
 
@@ -17063,6 +20221,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -17209,7 +20369,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3344">line 3344</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3908">line 3908</a>
     </li></ul></dd>
     
 
@@ -17219,6 +20379,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -17362,7 +20524,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3094">line 3094</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3551">line 3551</a>
     </li></ul></dd>
     
 
@@ -17372,6 +20534,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -17524,7 +20688,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line870">line 870</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line880">line 880</a>
     </li></ul></dd>
     
 
@@ -17534,6 +20698,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -17698,7 +20864,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line904">line 904</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line914">line 914</a>
     </li></ul></dd>
     
 
@@ -17708,6 +20874,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -17872,7 +21040,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3642">line 3642</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4206">line 4206</a>
     </li></ul></dd>
     
 
@@ -17895,12 +21063,175 @@ the master key in the JSON.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
 <div class="param-desc">
     <ul>
 <li>Returns TX[].</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getPendingAncestors"><span class="type-signature">(async) </span>getPendingAncestors<span class="signature">(tx)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get pending ancestors up to the policy limit</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">TX</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3702">line 3702</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Returns {BufferSet} with Hash</li>
 </ul>
 </div>
 
@@ -18081,7 +21412,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3042">line 3042</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3499">line 3499</a>
     </li></ul></dd>
     
 
@@ -18091,6 +21422,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -18352,7 +21685,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3667">line 3667</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4231">line 4231</a>
     </li></ul></dd>
     
 
@@ -18362,6 +21695,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -18511,7 +21846,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3384">line 3384</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3948">line 3948</a>
     </li></ul></dd>
     
 
@@ -18521,6 +21856,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -18664,7 +22001,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3394">line 3394</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3958">line 3958</a>
     </li></ul></dd>
     
 
@@ -18674,6 +22011,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -18768,7 +22107,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3840">line 3840</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4404">line 4404</a>
     </li></ul></dd>
     
 
@@ -18778,6 +22117,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -18936,7 +22277,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3603">line 3603</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4167">line 4167</a>
     </li></ul></dd>
     
 
@@ -18946,6 +22287,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -19095,7 +22438,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3255">line 3255</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3819">line 3819</a>
     </li></ul></dd>
     
 
@@ -19105,6 +22448,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -19278,7 +22623,7 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line541">line 541</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line551">line 551</a>
     </li></ul></dd>
     
 
@@ -19288,6 +22633,8 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
 
     
 </dl>
+
+
 
 
 
@@ -19431,7 +22778,7 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3296">line 3296</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3860">line 3860</a>
     </li></ul></dd>
     
 
@@ -19454,12 +22801,218 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
 <div class="param-desc">
     <ul>
 <li>Returns TX.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getWalletCoinView"><span class="type-signature">(async) </span>getWalletCoinView<span class="signature">(tx, view<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get a wallet coin viewpoint with HD paths.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">TX</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>view</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">CoinView</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Coins to be used in wallet coin viewpoint.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3765">line 3765</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Returns WalletCoinView.</li>
 </ul>
 </div>
 
@@ -19593,7 +23146,7 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line767">line 767</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line777">line 777</a>
     </li></ul></dd>
     
 
@@ -19603,6 +23156,8 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
 
     
 </dl>
+
+
 
 
 
@@ -19755,7 +23310,7 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line858">line 858</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line868">line 868</a>
     </li></ul></dd>
     
 
@@ -19765,6 +23320,8 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
 
     
 </dl>
+
+
 
 
 
@@ -19917,7 +23474,7 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line893">line 893</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line903">line 903</a>
     </li></ul></dd>
     
 
@@ -19940,12 +23497,175 @@ It is represented as BLAKE2b(m/44'-&gt;private|nonce).</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
 <div class="param-desc">
     <ul>
 <li>Returns {Boolean}.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="hasPending"><span class="type-signature"></span>hasPending<span class="signature">(hash)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Test whether the database has a pending transaction.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>hash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Hash">Hash</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3744">line 3744</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Returns Boolean.</li>
 </ul>
 </div>
 
@@ -20159,7 +23879,7 @@ Rescanning must be invoked manually.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1018">line 1018</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1028">line 1028</a>
     </li></ul></dd>
     
 
@@ -20169,6 +23889,8 @@ Rescanning must be invoked manually.</p>
 
     
 </dl>
+
+
 
 
 
@@ -20395,7 +24117,7 @@ Rescanning must be invoked manually.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line953">line 953</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line963">line 963</a>
     </li></ul></dd>
     
 
@@ -20405,6 +24127,8 @@ Rescanning must be invoked manually.</p>
 
     
 </dl>
+
+
 
 
 
@@ -20626,7 +24350,7 @@ increasing fee for an existing transaction.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2868">line 2868</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3308">line 3308</a>
     </li></ul></dd>
     
 
@@ -20636,6 +24360,8 @@ increasing fee for an existing transaction.</p>
 
     
 </dl>
+
+
 
 
 
@@ -20736,7 +24462,7 @@ increasing fee for an existing transaction.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line848">line 848</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line858">line 858</a>
     </li></ul></dd>
     
 
@@ -20746,6 +24472,8 @@ increasing fee for an existing transaction.</p>
 
     
 </dl>
+
+
 
 
 
@@ -20843,7 +24571,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line171">line 171</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line181">line 181</a>
     </li></ul></dd>
     
 
@@ -20853,6 +24581,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -20947,7 +24677,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3797">line 3797</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4361">line 4361</a>
     </li></ul></dd>
     
 
@@ -20957,6 +24687,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -21103,7 +24835,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3551">line 3551</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4115">line 4115</a>
     </li></ul></dd>
     
 
@@ -21113,6 +24845,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -21189,7 +24923,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line482">line 482</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line492">line 492</a>
     </li></ul></dd>
     
 
@@ -21199,6 +24933,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -21327,7 +25063,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3525">line 3525</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4089">line 4089</a>
     </li></ul></dd>
     
 
@@ -21337,6 +25073,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -21481,6 +25219,9 @@ walletdb.</p>
             
                 
 <span class="param-type">Number</span>
+|
+
+<span class="param-type">String</span>
 
 
             
@@ -21531,7 +25272,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1602">line 1602</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1623">line 1623</a>
     </li></ul></dd>
     
 
@@ -21541,6 +25282,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -21684,7 +25427,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2351">line 2351</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2724">line 2724</a>
     </li></ul></dd>
     
 
@@ -21694,6 +25437,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -21860,7 +25605,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1410">line 1410</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1419">line 1419</a>
     </li></ul></dd>
     
 
@@ -21870,6 +25615,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -22036,7 +25783,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1325">line 1325</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1342">line 1342</a>
     </li></ul></dd>
     
 
@@ -22046,6 +25793,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -22189,7 +25938,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2449">line 2449</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2842">line 2842</a>
     </li></ul></dd>
     
 
@@ -22199,6 +25948,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -22241,7 +25992,7 @@ walletdb.</p>
     
 
     
-    <h4 class="name" id="makeOpen"><span class="type-signature">(async) </span>makeOpen<span class="signature">(name, acct)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    <h4 class="name" id="makeOpen"><span class="type-signature">(async) </span>makeOpen<span class="signature">(name, acct, force)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
     
 
     
@@ -22315,6 +26066,32 @@ walletdb.</p>
             
                 
 <span class="param-type">Number</span>
+|
+
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>force</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
 
 
             
@@ -22365,7 +26142,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1492">line 1492</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1494">line 1494</a>
     </li></ul></dd>
     
 
@@ -22375,6 +26152,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -22518,7 +26297,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1829">line 1829</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2006">line 2006</a>
     </li></ul></dd>
     
 
@@ -22528,6 +26307,163 @@ walletdb.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="makeRedeemAll"><span class="type-signature">(async) </span>makeRedeemAll<span class="signature">(name)</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Make a redeem MTX.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2135">line 2135</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -22714,7 +26650,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2132">line 2132</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2467">line 2467</a>
     </li></ul></dd>
     
 
@@ -22724,6 +26660,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -22867,7 +26805,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1713">line 1713</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1753">line 1753</a>
     </li></ul></dd>
     
 
@@ -22877,6 +26815,114 @@ walletdb.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MTX</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="makeRevealAll"><span class="type-signature">(async) </span>makeRevealAll<span class="signature">()</span><span class="type-signature"> &rarr; {MTX}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Make a reveal MTX.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1885">line 1885</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -23020,7 +27066,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2563">line 2563</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2975">line 2975</a>
     </li></ul></dd>
     
 
@@ -23030,6 +27076,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -23196,7 +27244,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2237">line 2237</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2592">line 2592</a>
     </li></ul></dd>
     
 
@@ -23206,6 +27254,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -23372,7 +27422,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2017">line 2017</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2331">line 2331</a>
     </li></ul></dd>
     
 
@@ -23382,6 +27432,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -23476,7 +27528,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line188">line 188</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line198">line 198</a>
     </li></ul></dd>
     
 
@@ -23486,6 +27538,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -23632,7 +27686,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line882">line 882</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line892">line 892</a>
     </li></ul></dd>
     
 
@@ -23642,6 +27696,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -23811,7 +27867,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3729">line 3729</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4293">line 4293</a>
     </li></ul></dd>
     
 
@@ -23821,6 +27877,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -23984,7 +28042,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3703">line 3703</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4267">line 4267</a>
     </li></ul></dd>
     
 
@@ -23994,6 +28052,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -24157,7 +28217,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3755">line 3755</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4319">line 4319</a>
     </li></ul></dd>
     
 
@@ -24167,6 +28227,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -24310,7 +28372,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3456">line 3456</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4020">line 4020</a>
     </li></ul></dd>
     
 
@@ -24320,6 +28382,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -24489,7 +28553,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line262">line 262</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line272">line 272</a>
     </li></ul></dd>
     
 
@@ -24499,6 +28563,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -24642,7 +28708,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line423">line 423</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line433">line 433</a>
     </li></ul></dd>
     
 
@@ -24652,6 +28718,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -24841,7 +28909,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line439">line 439</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line449">line 449</a>
     </li></ul></dd>
     
 
@@ -24851,6 +28919,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -24945,7 +29015,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2966">line 2966</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3406">line 3406</a>
     </li></ul></dd>
     
 
@@ -24955,6 +29025,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -25113,7 +29185,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line386">line 386</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line396">line 396</a>
     </li></ul></dd>
     
 
@@ -25123,6 +29195,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -25266,7 +29340,7 @@ walletdb.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3441">line 3441</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4005">line 4005</a>
     </li></ul></dd>
     
 
@@ -25276,6 +29350,8 @@ walletdb.</p>
 
     
 </dl>
+
+
 
 
 
@@ -25371,7 +29447,7 @@ when address depth and keys change.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line839">line 839</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line849">line 849</a>
     </li></ul></dd>
     
 
@@ -25381,6 +29457,8 @@ when address depth and keys change.</p>
 
     
 </dl>
+
+
 
 
 
@@ -25576,7 +29654,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2807">line 2807</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3243">line 3243</a>
     </li></ul></dd>
     
 
@@ -25586,6 +29664,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -25804,7 +29884,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1698">line 1698</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1738">line 1738</a>
     </li></ul></dd>
     
 
@@ -25814,6 +29894,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -25846,7 +29928,8 @@ coins from being double spent.</p>
 
 
 <div class="description">
-    <p>Create and send a cancel MTX.</p>
+    <p>Create and send a cancel
+MTX with a lock.</p>
 </div>
 
 
@@ -25962,7 +30045,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2433">line 2433</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2826">line 2826</a>
     </li></ul></dd>
     
 
@@ -25972,6 +30055,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -26120,7 +30205,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1476">line 1476</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1477">line 1477</a>
     </li></ul></dd>
     
 
@@ -26130,6 +30215,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -26278,7 +30365,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1394">line 1394</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1403">line 1403</a>
     </li></ul></dd>
     
 
@@ -26288,6 +30375,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -26320,7 +30409,8 @@ coins from being double spent.</p>
 
 
 <div class="description">
-    <p>Create and send a finalize MTX.</p>
+    <p>Create and send a finalize
+MTX with a lock.</p>
 </div>
 
 
@@ -26436,7 +30526,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2548">line 2548</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2960">line 2960</a>
     </li></ul></dd>
     
 
@@ -26446,6 +30536,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -26594,7 +30686,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2835">line 2835</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3271">line 3271</a>
     </li></ul></dd>
     
 
@@ -26622,13 +30714,15 @@ coins from being double spent.</p>
 
 
 
+
+
         
             
 
     
 
     
-    <h4 class="name" id="sendOpen"><span class="type-signature">(async) </span>sendOpen<span class="signature">(name, value, lockup, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="sendOpen"><span class="type-signature">(async) </span>sendOpen<span class="signature">(name, force, options)</span><span class="type-signature"></span></h4>
     
 
     
@@ -26636,7 +30730,8 @@ coins from being double spent.</p>
 
 
 <div class="description">
-    <p>Create and send a open MTX.</p>
+    <p>Create and send an open
+MTX with a lock.</p>
 </div>
 
 
@@ -26695,36 +30790,13 @@ coins from being double spent.</p>
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>force</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lockup</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
+<span class="param-type">Boolean</span>
 
 
             
@@ -26798,7 +30870,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1584">line 1584</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1605">line 1605</a>
     </li></ul></dd>
     
 
@@ -26808,6 +30880,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -26840,7 +30914,8 @@ coins from being double spent.</p>
 
 
 <div class="description">
-    <p>Create and send a redeem MTX.</p>
+    <p>Create and send a redeem
+MTX with a lock.</p>
 </div>
 
 
@@ -26956,7 +31031,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1923">line 1923</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2120">line 2120</a>
     </li></ul></dd>
     
 
@@ -26966,6 +31041,146 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="sendRedeemAll"><span class="type-signature">(async) </span>sendRedeemAll<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and send a redeem all
+MTX with a lock.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2237">line 2237</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -26998,7 +31213,8 @@ coins from being double spent.</p>
 
 
 <div class="description">
-    <p>Create and send an renewal MTX.</p>
+    <p>Create and send a renewal
+MTX with a lock.</p>
 </div>
 
 
@@ -27114,7 +31330,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2221">line 2221</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2576">line 2576</a>
     </li></ul></dd>
     
 
@@ -27124,6 +31340,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -27272,7 +31490,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1814">line 1814</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1871">line 1871</a>
     </li></ul></dd>
     
 
@@ -27282,6 +31500,145 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="sendRevealAll"><span class="type-signature">(async) </span>sendRevealAll<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create and send a bid MTX.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line1991">line 1991</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -27314,7 +31671,8 @@ coins from being double spent.</p>
 
 
 <div class="description">
-    <p>Create and send an update MTX.</p>
+    <p>Create and send a revoke
+MTX with a lock.</p>
 </div>
 
 
@@ -27430,7 +31788,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2652">line 2652</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3081">line 3081</a>
     </li></ul></dd>
     
 
@@ -27440,6 +31798,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -27472,7 +31832,8 @@ coins from being double spent.</p>
 
 
 <div class="description">
-    <p>Create and send an update MTX.</p>
+    <p>Create and send a transfer
+MTX with a lock.</p>
 </div>
 
 
@@ -27611,7 +31972,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2335">line 2335</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2708">line 2708</a>
     </li></ul></dd>
     
 
@@ -27621,6 +31982,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -27653,7 +32016,8 @@ coins from being double spent.</p>
 
 
 <div class="description">
-    <p>Create and send an update MTX.</p>
+    <p>Create and send an update
+MTX with a lock.</p>
 </div>
 
 
@@ -27792,7 +32156,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2115">line 2115</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line2450">line 2450</a>
     </li></ul></dd>
     
 
@@ -27802,6 +32166,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -27973,7 +32339,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3114">line 3114</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3571">line 3571</a>
     </li></ul></dd>
     
 
@@ -27983,6 +32349,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -28155,7 +32523,7 @@ coins from being double spent.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line299">line 299</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line309">line 309</a>
     </li></ul></dd>
     
 
@@ -28165,6 +32533,8 @@ coins from being double spent.</p>
 
     
 </dl>
+
+
 
 
 
@@ -28338,7 +32708,7 @@ to build/sign inputs that are redeemable by this wallet.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3228">line 3228</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3685">line 3685</a>
     </li></ul></dd>
     
 
@@ -28348,6 +32718,8 @@ to build/sign inputs that are redeemable by this wallet.</p>
 
     
 </dl>
+
+
 
 
 
@@ -28500,7 +32872,7 @@ a confirmed transaction is seen.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3150">line 3150</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3607">line 3607</a>
     </li></ul></dd>
     
 
@@ -28510,6 +32882,8 @@ a confirmed transaction is seen.</p>
 
     
 </dl>
+
+
 
 
 
@@ -28655,7 +33029,7 @@ for inputs that are redeemable by this wallet.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3214">line 3214</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3671">line 3671</a>
     </li></ul></dd>
     
 
@@ -28665,6 +33039,8 @@ for inputs that are redeemable by this wallet.</p>
 
     
 </dl>
+
+
 
 
 
@@ -28815,7 +33191,7 @@ for inputs that are redeemable by this wallet.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3265">line 3265</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3829">line 3829</a>
     </li></ul></dd>
     
 
@@ -28825,6 +33201,8 @@ for inputs that are redeemable by this wallet.</p>
 
     
 </dl>
+
+
 
 
 
@@ -28988,7 +33366,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3831">line 3831</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4395">line 4395</a>
     </li></ul></dd>
     
 
@@ -28998,6 +33376,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -29201,7 +33581,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line499">line 499</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line509">line 509</a>
     </li></ul></dd>
     
 
@@ -29211,6 +33591,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -29339,7 +33721,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3534">line 3534</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4098">line 4098</a>
     </li></ul></dd>
     
 
@@ -29349,6 +33731,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -29425,7 +33809,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3542">line 3542</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4106">line 4106</a>
     </li></ul></dd>
     
 
@@ -29435,6 +33819,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -29606,7 +33992,7 @@ the master key in the JSON.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line3472">line 3472</a>
+        <a href="wallet_wallet.js.html">wallet/wallet.js</a>, <a href="wallet_wallet.js.html#line4036">line 4036</a>
     </li></ul></dd>
     
 
@@ -29616,6 +34002,8 @@ the master key in the JSON.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -29668,13 +34056,13 @@ the master key in the JSON.</p></td>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="Addr.html">Addr</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="CacheUpdate.html">CacheUpdate</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="Compressor.html">Compressor</a></li><li><a href="Decompressor.html">Decompressor</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Extra.html">Extra</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="Location.html">Location</a></li><li><a href="Magnet.html">Magnet</a></li><li><a href="MerkleTree.html">MerkleTree</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">PrivateKey</a></li><li><a href="module-hd.PublicKey.html">PublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">Server</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="PGP.html">PGP</a></li><li><a href="Proof.html">Proof</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Service.html">Service</a></li><li><a href="SMIME.html">SMIME</a></li><li><a href="SSH.html">SSH</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="Target.html">Target</a></li><li><a href="TLS.html">TLS</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checkOutput">checkOutput</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createRoot">createRoot</a></li><li><a href="global.html#createTree">createTree</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#deriveRoot">deriveRoot</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockchain.html">blockchain</a></li><li><a href="module-blockchain_common.html">blockchain/common</a></li><li><a href="module-coins.html">coins</a></li><li><a href="module-covenants.html">covenants</a></li><li><a href="module-hd.html">hd</a></li><li><a href="module-hsd.html">hsd</a></li><li><a href="module-mempool.html">mempool</a></li><li><a href="module-mining.html">mining</a></li><li><a href="module-mining_common.html">mining/common</a></li><li><a href="module-net.html">net</a></li><li><a href="module-net_bip152.html">net/bip152</a></li><li><a href="module-net_common.html">net/common</a></li><li><a href="module-net_packets.html">net/packets</a></li><li><a href="module-node.html">node</a></li><li><a href="module-primitives.html">primitives</a></li><li><a href="module-protocol.html">protocol</a></li><li><a href="module-protocol_consensus.html">protocol/consensus</a></li><li><a href="module-protocol_errors.html">protocol/errors</a></li><li><a href="module-protocol_networks.html">protocol/networks</a></li><li><a href="module-protocol_policy.html">protocol/policy</a></li><li><a href="module-script.html">script</a></li><li><a href="module-script_common.html">script/common</a></li><li><a href="module-ui.html">ui</a></li><li><a href="module-utils.html">utils</a></li><li><a href="module-utils_util.html">utils/util</a></li><li><a href="module-wallet.html">wallet</a></li><li><a href="module-wallet_common.html">wallet/common</a></li><li><a href="module-wallet_plugin.html">wallet/plugin</a></li><li><a href="module-wallet_records.html">wallet/records</a></li><li><a href="module-workers.html">workers</a></li><li><a href="module-workers_jobs.html">workers/jobs</a></li><li><a href="module-workers_packets.html">workers/packets</a></li></ul><h3>Classes</h3><ul><li><a href="AirdropKey.html">AirdropKey</a></li><li><a href="AirdropProof.html">AirdropProof</a></li><li><a href="BidReveal.html">BidReveal</a></li><li><a href="BitField.html">BitField</a></li><li><a href="BitView.html">BitView</a></li><li><a href="BlindBid.html">BlindBid</a></li><li><a href="BlindValue.html">BlindValue</a></li><li><a href="BlockProof.html">BlockProof</a></li><li><a href="Brontide.html">Brontide</a></li><li><a href="BrontideStream.html">BrontideStream</a></li><li><a href="ChainFlags.html">ChainFlags</a></li><li><a href="ChainState.html">ChainState</a></li><li><a href="CipherState.html">CipherState</a></li><li><a href="Claim.html">Claim</a></li><li><a href="DetailsMember.html">DetailsMember</a></li><li><a href="DS.html">DS</a></li><li><a href="Field.html">Field</a></li><li><a href="GLUE4.html">GLUE4</a></li><li><a href="GLUE6.html">GLUE6</a></li><li><a href="HandshakeState.html">HandshakeState</a></li><li><a href="HashList.html">HashList</a></li><li><a href="ICANN.html">ICANN</a></li><li><a href="module-blockchain.Chain.html">Chain</a></li><li><a href="module-blockchain.ChainDB.html">ChainDB</a></li><li><a href="module-blockchain.ChainEntry.html">ChainEntry</a></li><li><a href="module-blockchain.ChainOptions.html">ChainOptions</a></li><li><a href="module-blockchain.DeploymentState.html">DeploymentState</a></li><li><a href="module-coins.CoinEntry.html">CoinEntry</a></li><li><a href="module-coins.Coins.html">Coins</a></li><li><a href="module-coins.CoinView.html">CoinView</a></li><li><a href="module-coins.UndoCoins.html">UndoCoins</a></li><li><a href="module-currency.Amount.html">Amount</a></li><li><a href="module-hd.Mnemonic.html">Mnemonic</a></li><li><a href="module-hd.PrivateKey.html">HDPrivateKey</a></li><li><a href="module-hd.PublicKey.html">HDPublicKey</a></li><li><a href="module-http.HTTPOptions.html">HTTPOptions</a></li><li><a href="module-http.RPC.html">RPC</a></li><li><a href="module-http.Server.html">HTTP</a></li><li><a href="module-http.TransactionOptions.html">TransactionOptions</a></li><li><a href="module-mempool.AirdropEntry.html">AirdropEntry</a></li><li><a href="module-mempool.ClaimEntry.html">ClaimEntry</a></li><li><a href="module-mempool.ConfirmStats.html">ConfirmStats</a></li><li><a href="module-mempool.Mempool.html">Mempool</a></li><li><a href="module-mempool.MempoolEntry.html">MempoolEntry</a></li><li><a href="module-mempool.MempoolOptions.html">MempoolOptions</a></li><li><a href="module-mempool.PolicyEstimator.html">PolicyEstimator</a></li><li><a href="module-mining.BlockAirdrop.html">BlockAirdrop</a></li><li><a href="module-mining.BlockClaim.html">BlockClaim</a></li><li><a href="module-mining.BlockEntry.html">BlockEntry</a></li><li><a href="module-mining.BlockTemplate.html">BlockTemplate</a></li><li><a href="module-mining.CPUMiner.html">CPUMiner</a></li><li><a href="module-mining.Miner.html">Miner</a></li><li><a href="module-mining.MinerOptions.html">MinerOptions</a></li><li><a href="module-net.BroadcastItem.html">BroadcastItem</a></li><li><a href="module-net.Framer.html">Framer</a></li><li><a href="module-net.HostEntry.html">HostEntry</a></li><li><a href="module-net.HostList.html">HostList</a></li><li><a href="module-net.HostListOptions.html">HostListOptions</a></li><li><a href="module-net.LocalAddress.html">LocalAddress</a></li><li><a href="module-net.NetAddress.html">NetAddress</a></li><li><a href="module-net.Parser.html">Parser</a></li><li><a href="module-net.Peer.html">Peer</a></li><li><a href="module-net.PeerList.html">PeerList</a></li><li><a href="module-net.PeerOptions.html">PeerOptions</a></li><li><a href="module-net.Pool.html">Pool</a></li><li><a href="module-net.PoolOptions.html">PoolOptions</a></li><li><a href="module-net_bip152-CompactBlock.html">CompactBlock</a></li><li><a href="module-net_bip152-TXRequest.html">TXRequest</a></li><li><a href="module-net_bip152-TXResponse.html">TXResponse</a></li><li><a href="module-net_packets-AddrPacket.html">AddrPacket</a></li><li><a href="module-net_packets-AirdropPacket.html">AirdropPacket</a></li><li><a href="module-net_packets-BlockPacket.html">BlockPacket</a></li><li><a href="module-net_packets-BlockTxnPacket.html">BlockTxnPacket</a></li><li><a href="module-net_packets-ClaimPacket.html">ClaimPacket</a></li><li><a href="module-net_packets-CmpctBlockPacket.html">CmpctBlockPacket</a></li><li><a href="module-net_packets-FeeFilterPacket.html">FeeFilterPacket</a></li><li><a href="module-net_packets-FilterAddPacket.html">FilterAddPacket</a></li><li><a href="module-net_packets-FilterClearPacket.html">FilterClearPacket</a></li><li><a href="module-net_packets-FilterLoadPacket.html">FilterLoadPacket</a></li><li><a href="module-net_packets-GetAddrPacket.html">GetAddrPacket</a></li><li><a href="module-net_packets-GetBlocksPacket.html">GetBlocksPacket</a></li><li><a href="module-net_packets-GetBlockTxnPacket.html">GetBlockTxnPacket</a></li><li><a href="module-net_packets-GetDataPacket.html">GetDataPacket</a></li><li><a href="module-net_packets-GetHeadersPacket.html">GetHeadersPacket</a></li><li><a href="module-net_packets-GetProofPacket.html">GetProofPacket</a></li><li><a href="module-net_packets-HeadersPacket.html">HeadersPacket</a></li><li><a href="module-net_packets-InvPacket.html">InvPacket</a></li><li><a href="module-net_packets-MempoolPacket.html">MempoolPacket</a></li><li><a href="module-net_packets-MerkleBlockPacket.html">MerkleBlockPacket</a></li><li><a href="module-net_packets-NotFoundPacket.html">NotFoundPacket</a></li><li><a href="module-net_packets-Packet.html">Packet</a></li><li><a href="module-net_packets-PingPacket.html">PingPacket</a></li><li><a href="module-net_packets-PongPacket.html">PongPacket</a></li><li><a href="module-net_packets-ProofPacket.html">ProofPacket</a></li><li><a href="module-net_packets-RejectPacket.html">RejectPacket</a></li><li><a href="module-net_packets-SendCmpctPacket.html">SendCmpctPacket</a></li><li><a href="module-net_packets-SendHeadersPacket.html">SendHeadersPacket</a></li><li><a href="module-net_packets-TXPacket.html">TXPacket</a></li><li><a href="module-net_packets-UnknownPacket.html">UnknownPacket</a></li><li><a href="module-net_packets-VerackPacket.html">VerackPacket</a></li><li><a href="module-net_packets-VersionPacket.html">VersionPacket</a></li><li><a href="module-node.FullNode.html">FullNode</a></li><li><a href="module-node.Node.html">Node</a></li><li><a href="module-node.NodeClient.html">NodeClient</a></li><li><a href="module-node.NullClient.html">NullClient</a></li><li><a href="module-node.SPVNode.html">SPVNode</a></li><li><a href="module-primitives.AbstractBlock.html">AbstractBlock</a></li><li><a href="module-primitives.Address.html">Address</a></li><li><a href="module-primitives.Block.html">Block</a></li><li><a href="module-primitives.Coin.html">Coin</a></li><li><a href="module-primitives.CoinSelector.html">CoinSelector</a></li><li><a href="module-primitives.Covenant.html">Covenant</a></li><li><a href="module-primitives.Headers.html">Headers</a></li><li><a href="module-primitives.Input.html">Input</a></li><li><a href="module-primitives.InvItem.html">InvItem</a></li><li><a href="module-primitives.KeyRing.html">KeyRing</a></li><li><a href="module-primitives.MemBlock.html">MemBlock</a></li><li><a href="module-primitives.MerkleBlock.html">MerkleBlock</a></li><li><a href="module-primitives.MTX.html">MTX</a></li><li><a href="module-primitives.Outpoint.html">Outpoint</a></li><li><a href="module-primitives.Output.html">Output</a></li><li><a href="module-primitives.TX.html">TX</a></li><li><a href="module-primitives.TXMeta.html">TXMeta</a></li><li><a href="module-protocol.Network.html">Network</a></li><li><a href="module-protocol.TimeData.html">TimeData</a></li><li><a href="module-protocol_errors-VerifyError.html">VerifyError</a></li><li><a href="module-script.Opcode.html">Opcode</a></li><li><a href="module-script.Script.html">Script</a></li><li><a href="module-script.ScriptError.html">ScriptError</a></li><li><a href="module-script.ScriptNum.html">ScriptNum</a></li><li><a href="module-script.SigCache.html">SigCache</a></li><li><a href="module-script.Stack.html">Stack</a></li><li><a href="module-script.Witness.html">Witness</a></li><li><a href="module-ui.URI.html">URI</a></li><li><a href="module-wallet.Account.html">Account</a></li><li><a href="module-wallet.Balance.html">Balance</a></li><li><a href="module-wallet.BlockRecord.html">BlockRecord</a></li><li><a href="module-wallet.Credit.html">Credit</a></li><li><a href="module-wallet.Details.html">Details</a></li><li><a href="module-wallet.HTTP.html">HTTP</a></li><li><a href="module-wallet.MasterKey.html">MasterKey</a></li><li><a href="module-wallet.Path.html">Path</a></li><li><a href="module-wallet.Paths.html">Paths</a></li><li><a href="module-wallet.RPC.html">RPC</a></li><li><a href="module-wallet.TXDB.html">TXDB</a></li><li><a href="module-wallet.Wallet.html">Wallet</a></li><li><a href="module-wallet.WalletCoinView.html">WalletCoinView</a></li><li><a href="module-wallet.WalletDB.html">WalletDB</a></li><li><a href="module-wallet.WalletKey.html">WalletKey</a></li><li><a href="module-wallet.WalletOptions.html">WalletOptions</a></li><li><a href="module-wallet_plugin-Plugin.html">Plugin</a></li><li><a href="module-wallet_records-BlockMeta.html">BlockMeta</a></li><li><a href="module-wallet_records-ChainState.html">ChainState</a></li><li><a href="module-wallet_records-MapRecord.html">MapRecord</a></li><li><a href="module-wallet_records-TXRecord.html">TXRecord</a></li><li><a href="module-workers.Framer.html">Framer</a></li><li><a href="module-workers.Master.html">Master</a></li><li><a href="module-workers.Parent.html">Parent</a></li><li><a href="module-workers.Parser.html">Parser</a></li><li><a href="module-workers.Worker.html">Worker</a></li><li><a href="module-workers.WorkerPool.html">WorkerPool</a></li><li><a href="module-workers_packets-CheckInputPacket.html">CheckInputPacket</a></li><li><a href="module-workers_packets-CheckInputResultPacket.html">CheckInputResultPacket</a></li><li><a href="module-workers_packets-CheckPacket.html">CheckPacket</a></li><li><a href="module-workers_packets-CheckResultPacket.html">CheckResultPacket</a></li><li><a href="module-workers_packets-ECSignPacket.html">ECSignPacket</a></li><li><a href="module-workers_packets-ECSignResultPacket.html">ECSignResultPacket</a></li><li><a href="module-workers_packets-ECVerifyPacket.html">ECVerifyPacket</a></li><li><a href="module-workers_packets-ECVerifyResultPacket.html">ECVerifyResultPacket</a></li><li><a href="module-workers_packets-EnvPacket.html">EnvPacket</a></li><li><a href="module-workers_packets-ErrorPacket.html">ErrorPacket</a></li><li><a href="module-workers_packets-ErrorResultPacket.html">ErrorResultPacket</a></li><li><a href="module-workers_packets-EventPacket.html">EventPacket</a></li><li><a href="module-workers_packets-LogPacket.html">LogPacket</a></li><li><a href="module-workers_packets-MinePacket.html">MinePacket</a></li><li><a href="module-workers_packets-MineResultPacket.html">MineResultPacket</a></li><li><a href="module-workers_packets-Packet.html">Packet</a></li><li><a href="module-workers_packets-ScryptPacket.html">ScryptPacket</a></li><li><a href="module-workers_packets-ScryptResultPacket.html">ScryptResultPacket</a></li><li><a href="module-workers_packets-SignInputPacket.html">SignInputPacket</a></li><li><a href="module-workers_packets-SignInputResultPacket.html">SignInputResultPacket</a></li><li><a href="module-workers_packets-SignPacket.html">SignPacket</a></li><li><a href="module-workers_packets-SignResultPacket.html">SignResultPacket</a></li><li><a href="NameDelta.html">NameDelta</a></li><li><a href="NameState.html">NameState</a></li><li><a href="NS.html">NS</a></li><li><a href="Ownership.html">Ownership</a></li><li><a href="Proof.html">Proof</a></li><li><a href="ProofData.html">ProofData</a></li><li><a href="RecursiveServer.html">RecursiveServer</a></li><li><a href="Reserved.html">Reserved</a></li><li><a href="Resource.html">Resource</a></li><li><a href="RootCache.html">RootCache</a></li><li><a href="RootServer.html">RootServer</a></li><li><a href="Seeder.html">Seeder</a></li><li><a href="SlidingWindow.html">SlidingWindow</a></li><li><a href="StateCache.html">StateCache</a></li><li><a href="SymmetricState.html">SymmetricState</a></li><li><a href="SYNTH4.html">SYNTH4</a></li><li><a href="SYNTH6.html">SYNTH6</a></li><li><a href="TXT.html">TXT</a></li><li><a href="WalletNode.html">WalletNode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bindExit">bindExit</a></li><li><a href="global.html#checksig">checksig</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#fromFloat">fromFloat</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#listenExit">listenExit</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#toFloat">toFloat</a></li><li><a href="global.html#validateKey">validateKey</a></li><li><a href="global.html#validateSignature">validateSignature</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 02 2018 12:52:52 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 13:05:08 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
