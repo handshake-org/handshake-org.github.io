@@ -1,3 +1,8 @@
+The notes below describe the approach in designing and writing the initial
+reference implementation of Handshake. This is not a prescriptive document and
+should not be used as such. This document's goal is to provide a referenece on
+the rationale and initial design of the protocol.
+
 # Abstract
 
 The foundation for the internet's security has relied upon trusted Certificate
@@ -102,7 +107,7 @@ open source community, and ultimately the whole of humanity.
 In order to achieve new games of distribution and a new economy predicated upon
 true gifts over contracted labor, it must be achieved via a self-perpetuating
 and self-interested mechanism which is game-theoretically sound. One of the
-principal aims of this project is sparking a mechanism whereby individuals have
+principal of this project is sparking a mechanism whereby individuals have
 self-interested incentives towards creating decentralized projects as well as a
 wide distribution via gifts. Consequently, its goal is to fulfill the
 self-interested imperative of a return by the principals initiating, developing,
@@ -172,8 +177,8 @@ all possible short names in existence, monopolizing the network. This would
 severely reduce the usefulness as one or a handful of parties monopolize the
 resources. To correctly mitigate this problem, a currency native to the
 blockchain is necessary to create a cost function for the names. When a name is
-auctioned and sold, the coins are permanently destroyed from the system. Without
-a cost, there is no cost to spamming and a single party owning everything. A
+auction and sold, the coins are permanently destroyed from the system. Without a
+cost, there is no cost to spamming and a single party owning everything. A
 native coin is necessary, as a dollar-pegged coin would depend on an external
 environment and have a trusted 3rd party operate as a gatekeeper to the system,
 whereas a native coin would not depend on any single trusted third party.
@@ -191,7 +196,7 @@ decentralized blockchain is ideal.
 
 ## Proof of Work
 
-_Proof of work_[pow] saw its first use in cryptocurrency with the advent of
+_Proof of work_[pow] saw its first use in cryptocurrency with the advent
 Bitcoin[bitcoin]. Bitcoin's PoW function is a further iteration of a specific
 proof-of-work construction known as Hashcash[hashcash]. The use of
 proof-of-work led to the creation of specialized chip hardware intended to
@@ -200,44 +205,26 @@ proof-of-work network is protected, we concede that it does have the capacity
 to enable the existence of hardware monopolies.
 
 However, we submit that this is an acceptable risk due to the benefits
-proof-of-work offers in the way of SPV[spv]. Our protocol is not usable in
-practice without proper SPV proofs.
+proof-of-work offers in the way of SPV. Our protocol is not usable in practice
+without proper SPV proofs.
 
 There is currently no known sufficiently _decentralized_ proof-of-stake system
 in production resilient against fraudulent SPV proofs.
 
 ### Proof of Work Functions
 
-Cuckoo Cycle[cuckoo-1], proposed by Tromp[cuckoo-2], is a _memory-hard_ proof
-of work function wherein memory latency, rather than CPU usage, is the
-performance bottleneck.
+A Hashcash proof-of-work function using SHA3 and blake2b is used. SHA3 is
+currently under-represented in proof-of-work functions. We find that simplistic
+nature of Hashcash limits the room for unforeseen optimizations, and that the
+current lack of SHA3 usage in combination with blake2b in proof-of-work
+functions creates a more level playing field for hardware manufacturers.
 
-Unlike former attempts at memory-hardening proof-of-work with the use
-of _Scrypt_, Cuckoo Cycle mining and verification functions are asymmetric,
-with verification requiring a constant stack-based memory allocation of just
-over 336 bytes.
-
-While Cuckoo Cycle has yet to see use in production, we saw it as holding
-promise for the initial iterations of our protocol. Allowing mining with
-consumer-grade hardware in the short-term was our primary goal.
-
-It is a given that memory-hard proof-of-work by no means guarantees that a
-network will be free of production of specialized hardware. We fully
-acknowledge that nothing, not even an alleged ASIC-resistant algorithm, will
-prevent a free market from developing specialized hardware. However, we do
-contend that mining new memory-hard algorithms with consumer-available GPUs
-should be viable in the short term.
-
-We experimented with Tromp's default parameters: a graph size of 2^30 nodes,
-and a proof size of 42 nonces. Using the GeForce 1080 GTX, we were able to mine
-several blocks beginning with a high target, with our retargetting algorithm
-properly adjusting rather quickly.
-
-Throughout the course of the development of our protocol, we witnessed frequent
-optimizations to cuckoo cycle mining algorithms by Tromp and other
-contributors. Given these optimizations and the complexity of the underlying
-algorithm itself, we began to strongly consider the room for unforeseen
-optimizations in the mining process.
+Cuckoo Cycle[cuckoo-1][cuckoo-2] was considered, however, throughout the course
+of the development of our protocol, we witnessed frequent optimizations to
+cuckoo cycle mining algorithms by Tromp and other contributors. Given these
+optimizations and the complexity of the underlying algorithm itself, we began
+to strongly consider the room for unforeseen optimizations in the mining
+process.
 
 We fear that an unforeseen optimization, if kept secret after its eventual
 discovery, could lead to even harsher monopolistic conditions among hardware
@@ -252,24 +239,15 @@ choose Cuckoo Cycle parameters for a blockchain. Cuckoo Cycle parameters
 themselves are difficult to adjust on the consensus layer, and perhaps cannot
 be dynamically adjusted safely.
 
-For these reasons, we still consider a simple Hashcash construction a viable
-option. As a possible alternative for the final protocol, we propose a SHA3
-Hashcash proof-of-work function. SHA3 is currently under-represented in
-proof-of-work functions. We find that simplistic nature of Hashcash limits the
-room for unforeseen optimizations, and that the current lack of SHA3 usage in
-proof-of-work functions creates a level playing field for hardware
-manufacturers who will no doubt compete to be the first to market with SHA3
-hardware.
-
 #### Difficulty Adjustment
 
 Given the prevalence of edge cases such as _timewarp attacks_[timewarp] and
-stalling during abrupt hashpower changes on the Bitcoin retargeting algorithm,
+stalling during abrupt hashpower changes on the Bitcoin retargetting algorithm,
 we sought alternatives.
 
 We examined DigiByte's DigiShield[digishield-1][digishield-2], MegaCoin's
 Kimoto Gravity Well[kimoto-1][kimoto-2], and DarkCoin's Dark Gravity Wave[dgw],
-as potential retargeting algorithms for our protocol.
+as potential retargetting algorithms for our protocol.
 
 Due to the uncertainty of exactly how much mining power will enter the network
 upon launch, and, initially, the added uncertainty of a new PoW algorithm, we
@@ -277,10 +255,10 @@ desired an approach which would retarget on every block. DigiShield seems to
 perform especially well in the case that mining power abruptly enters or exits
 the network.
 
-The formulation of the _Zcash_ retargeting
+The formulation of the _Zcash_ retargetting
 algorithm[zcash-1][zcash-2][zcash-3] is also of particular relevance, given the
 similarities of the protocols' respective PoW functions. Zcash has had success
-with their variation of DigiShield, and as such, our protocol's retargeting is
+with their variation of DigiShield, and as such, our protocol's retargetting is
 more-or-less a faithful reimplementation of the Zcash algorithm.
 
 ## Unspent Transaction Outputs (UTXOs)
@@ -309,7 +287,7 @@ thousands of individuals and organizations. Since then, there have been many
 other attempts to replace, upgrade, or distribute this system.
 
 The pioneers of naming cryptocurrencies include Namecoin[namecoin-1],
-ENS[ens-1][ens-2], and Blockstack[blockstack-1].
+ENS[ens-1][ens-2], and Blockstack[blockstack-1] (among others).
 
 Namecoin's model requires a user to run a fully validating node in order to
 securely resolve domain names. Although Namecoin was the first cryptocurrency
@@ -354,8 +332,8 @@ which means that two people can have a different view on the correct certificate
 in adversarial or faulty notaries.
 
 Certificate Transparency[ct] provides a method to ensure committed proofs of
-name records and significantly increases the security of the system. It creates
-a method of accountability for failure and rapid detection. This is primarily a
+name records and significant increases the security of the system. It creates a
+method of accountability for failure and rapid detection. This is primarily a
 detection mechanism in the event of failure of CAs.
 
 ## Provable Data Sets
@@ -1321,9 +1299,9 @@ off on keys in order to add them to the trust chain.
 ## Handshake Architecture
 
 The Handshake naming protocol differs from its predecessors in that it has no
-concept of _namespacing_ or subdomains at the consensus layer. Its purpose is
-currently _not_ to replace all of DNS, but to replace the root zone file and
-the root servers.
+concept of _namespacing_ or subdomains at the consensus layer. Its role is
+_not_ to replace all of DNS, but to replace the root zone file and the root
+servers.
 
 The goal is to maintain our own root zone file in a decentralized manner,
 making the root zone uncensorable, permissionless, and free of centralized
@@ -1354,12 +1332,9 @@ blockchain. This is because the trust anchor is, in fact, a blockchain.
 
 ### Compatibility
 
-In contrast to other naming projects, our goal is to work with DNS, not
-against it. We intend to transparently be compatible with the protocol used by
-IANA and ICANN over to decentralized system, all while requiring zero
-intervention on the part of most users. These protocols can be updated over
-time and the Handshake blockchain can be forwards compatible with new DNS
-protocols.
+In contrast to other naming projects, our goal is to work with DNS, not against
+it. We intend to transparently provide an alternative to existing centralized
+systems, all while requiring zero or minimal intervention from most users.
 
 DNS is a very mature piece of internet architecture. Several tools we need are
 already built. For example, it is already possible to store SSH fingerprints in
@@ -1389,21 +1364,17 @@ blockchain rather than ICANN's root zonefile. This is a difficult dynamic to
 work with, as virtually no consumer devices currently ship with a recursive
 resolver running locally.
 
-To make things worse, DNS is a notoriously difficult protocol to work with.
-Only a handful of complete DNS implementations currently exist. The DNS
-reference implementation, ISC's BIND[bind], is also fairly difficult to work
-with, given its 34 year history of code maintenance. This leads us to locate
-alternative DNS implementations, most notably LDNS[ldns] and Unbound[unbound],
-both of which are authored by NLnetLabs[nlnetlabs]. Due to the lack of options
-available, we also created our own full DNS implementation[bns] throughout the
-course of our research.
+There are multiple full DNS implementations include ISC's BIND[bind], as well
+as LDNS[ldns] and Unbound[unbound] maintained by NLnetLabs[nlnetlabs]. We were
+inspired by these implementations and created our own full DNS
+implementation[bns] throughout the course of our research.
 
 ### Network Bootstrapping
 
 In order to bootstrap the network, all entries in ICANN's existing zonefile are
 _pre-reserved_ by consensus rules. Names in the list of Alexa top
 100,000[alexa] domains are also pre-reserved for further inclusion of existing
-stakeholders (with deduplication and common words down to above 80,000 names).
+stakeholders (with deduplication and common words down to above ~80,000 names).
 The latter names are converted to top-level domains by selecting their first
 domain name label.
 
@@ -1517,10 +1488,6 @@ ICANN will not be able to ethically justify publishing KSK-2010 before the
 rollover to KSK-2017 is complete. As such, we find that this mitigation
 provides adequate security against an attack of this sort.
 
-Additionally, in extreme circumstances, the community can institute a
-hard-fork to manually assign rightsholders their names with sufficient
-consensus.
-
 ### Economic Incentives for DNSSEC implementation
 
 DNSSEC has rather sparse support, with only a handful top-level and
@@ -1599,8 +1566,8 @@ improve privacy here, QNAME minimization[qname] can be utilized by the
 recursive resolver. QNAME minimization is surprisingly non-trivial, because not
 every domain name label originates from a zone cut, making it non-obvious in
 how to "trick" an authoritative server into sending a proper nameserver
-referral. Luckily, modern validating resolvers like Unbound implement this
-functionality rather well.
+referral. Luckily, validating resolvers such as Unbound currently implement
+this functionality.
 
 Despite child zones being unencrypted, they can still be validated via DNSSEC.
 Because the ICANN root zone is replaced with a blockchain, the recursive
@@ -1618,7 +1585,7 @@ publicly known, conforming SPV nodes can create the appropriate RRSIG records
 in real-time when serving a response. These responses can be cached to avoid
 repetition of expensive signing operations.
 
-While dummy RRSIGs can be created to fool existing recursive resolvers into
+While dummy RRSIGs can be created to fool existing recursive resolvers in to
 validating a complete trust chain, NX proofs present a different challenge. The
 most modern non-existence proof verification currently in DNS is NSEC3[nsec3].
 NX proofs operate by maintaining a sorted linked list of child zones. When an
@@ -1750,24 +1717,15 @@ a DNSCurve enabled proxy for a specific zone on the peer-to-peer layer.
 There are many security and incentives questions this raises, but we consider
 this an idea worth pursuing in the future.
 
-#### Plasma Child Zones
+#### Subdomains
 
-In the future, not all child zones may be standard DNS servers. In this system,
-an on-chain resource for a name can refer resolvers using a standard NS record
-_as well_ as pointer to a plasma[plasma] child chain. Like DNS, this constructs
-a multi-layer system whereby the owner of name can instantiate his or her own
-child blockchain.
-
-This child blockchain acts as a DNS zone. With economic incentives as an
-inherent property of this child zone, a name owner is able to sell subdomains
-within their top-level domain.
-
-As Plasma is being researched and developed on Ethereum, it is possible to
-construct child zones compatible with Ethereum chains as well. A plasma chain
-can verify and commit to third party chains, with compact headers on its own.
-Additionally, use of btcrelay-like[btcrelay] constructions, with validators
-enforcing new block creation may be possible to do external validation of the
-Handshake state in other chains.
+Subdomains are out of scope for this system. Blockchains should be storing the
+minimal data needed, and domains/subdomains with defined owners should be able
+to prove the validity of that name out-of-band. If the data is already disclosed
+in the root zone, then it makes sense for that data to be in a TLD anyway. The
+load on a chain is the same whether it is a TLD, domain, or subdomain. As there
+are no efficiencies, any potential use of subdomains on-chain should have a
+separate name record in the root zone.
 
 # Reorg Safety and Name Expiration
 
@@ -1808,15 +1766,15 @@ These allocations are this paper's proposed allocations, and the Handshake
 community will ultimately determine the final allocation in mainnet.
 
 A total of 1,360,000,000 coins are minted in the genesis block to be distributed
-to relevant stakeholders:
+to relevant stakeholders
 
 ## Pre-Launch Blockchain Development - 7.5%
 
 This allocation goes to fund development across various stakeholders who have
 been involved with creation of this project. These coins are used to pay for
-work prior to mainnet launch and is the only source of development funds. An
+work prior to mainnet launch and is the only source of development funds. A
 iterated tit-for-tat game exists whereby there is self-interested benefit for
-giving away value ("the more I give away, the more value I accrue") across
+distribution of value ("the more I give away, the more value I accrue") across
 many projects and development teams emulating this model.
 
 ## Financial Contributors and Pricing - 7.5%
@@ -1857,7 +1815,7 @@ valuable projects. These entities are a significant stakeholder in the current
 ecosystem and a continuing game for project selection and curation may persist
 as a result ("putting your money where your mouth is").
 
-## Free and Open Source Software Developers - 65.0%
+## Free and Open Source Software Developers - 68.0%
 
 The free and open source community is the principal coin owner of the project
 upon launch. These coins are distributed without any expectation of work. As
@@ -1870,7 +1828,7 @@ possible (but without any obligation whatsoever, contractual or implied) for
 individuals to have incentive to integrate the functionality into their own
 software.
 
-## Domain Name Holders - 7.5%
+## Domain Name Holders - 10%
 
 The Handshake blockchain will allocate all TLDs to the rightful holders upon
 submission of a sufficiently secure DNSSEC proof on the blockchain.
@@ -1891,86 +1849,85 @@ delay period before the coins are matured and available to use.
 
 2.5% will be allocated to TLDs to be distributed evenly.
 
-5% will be allocated to the Handshake reserved names (over 80,000 names) to be
+2.5% will be allocated to the top 100 Alexa names.
+
+2.5% will be allocated to the Handshake reserved names (over 80,000 names) to be
 distributed evenly. These names will also be able to claim a TLD on Handshake.
 
-## CA/Naming Corporations and Other Blockchain Projects - 7.5%
+## CA/Naming Corporations and Other Blockchain Projects - 5%
 
-The following corporations and projects are being offered Handshake coins. They
-have not acknowledged or accepted the coins at this time of writing. In the
-event the coins are not claimed or accepted, these coins will not be reallocated
-and are effectively burned. These allocations are subject to change before
-launch in the event of refusal before Handshake mainnet launch. Some of these
-allocations may be only redeemable by submitting a DNSSEC proof of their domain
-to the blockchain to claim coins. There is no contractual expectation for any of
-these entities to help the Handshake project in any way and is explicitly an
-obligation-free distribution with no strings attached.
+The following corporations and projects are being allocated Handshake coins.
+They have not acknowledged or accepted the coins at this time of writing. In
+the event the coins are not claimed or accepted, these coins will not be
+reallocated and are effectively burned. Some of these allocations may be only
+redeemable by submitting a DNSSEC proof of their domain to the blockchain to
+claim coins. There is no contractual expectation for any of these entities to
+help the Handshake project in any way and is explicitly an obligation-free
+distribution with no strings attached.
 
 ICANN has been the root namespace for the internet. ICANN (CA, US) is allocated
-2.75% of the total coin supply by the Handshake community. This offer is a gift
-to the foundation without any expectation of return or assistance.
+24,480,000 of the initial coin supply by the Handshake community. 
 
-ENS has developed an alternate naming root (.eth) using a decentralized Ethereum
-smart contract. The handshake project will be allocating 0.75% of the Handshake
-coin supply to the Root Key Holders (and may be ultimately allocated according
-to their desires to key ENS developers).
+Cloudflare, Inc. (DE, US) is a corporation doing fundamental research for
+naming, caching, and certificate authorities. They are allocated 6,800,000 of the
+initial token supply.
 
-Namecoin is also a naming blockchain. Handshake will allocate 0.75% total to
-leading current Namecoin developers. The designated allocations will be split
-evenly between the Chief Scientist and Lead Application Engineer (coins to be
-allocated according to their desires).
+Namecoin is a decentralized naming blockchain. 10,200,000 of the initial supply
+was allocated to leading current and prior Namecoin developers.
 
-Blockstack is a corporation developing a naming blockchain as well as a
-decentralized internet stack. The Handshake distribution will allocate 0.75% to
-Blockstack Token LLC (NJ, USA). This is an offer of distribution to the entity
-owners itself, and is not implied distribution to the Blockstack Token holders;
-it is up to the entity on how to allocate or whether to claim the distribution
-at all.
-
-Cloudflare, Inc. (DE, USA) is a corporation doing fundamental research for
-naming, caching, and certificate authorities. They are allocated 0.5% of the
-total token supply.
+Verisign, Inc. (VA, US) is the registrar for .com and .net. They are allocated
+6,800,000 of the initial token supply. The .com and .net TLDs on Handshake will
+be given to Verisign with a DNSSEC proof.
 
 Keybase has been innovating in the naming and certificate authority space.
-Keybase, Inc. (DE, USA) are allocated 0.25% of the total token supply.
+Keybase, Inc. (DE, US) are allocated 0.25% of the total token supply.
 
-Verisign, Inc. (VA, USA) is the registrar for .com and .net. They are allocated
-0.5% of the total token supply. The .com and .net TLDs on Handshake will be
-given to Verisign with a DNSSEC proof.
+Public Internet Registry (VA, US) maintains the .org namespace. They are
+allocated 3,400,000 of the initial token supply. The .org TLD on Handshake will
+be given to PIR with a DNSSEC proof to pir.org.
 
-Public Internet Registry (VA, USA) maintains the .org namespace. They are
-allocated 0.25% of the total token supply. The .org TLD on Handshake will be
-given to PIR with a DNSSEC proof.
+Afilias plc (IE) has been the service provider for the .org namespace. They were
+allocated 3,400,000 of the initial supply to a DNSSEC proof of afilias.info.
+Note for both PIR and Afilias, this allocation was made before the proposed
+sale of the .org namespace.
 
-Afilias plc (IE) has been the service provider for the .org namespace. They are
-allocated 0.25% of the total supply.
+Brave is a browser which has cryptoeconomic incentives. Handshake allocated
+3,400,000 to Brave Software, Inc. (CA, US). This is a distribution to the
+entity owners itself, and is not an implied distribution to the Basic Attention
+Token holders.
 
-Brave is a browser which has cryptoeconomic incentives. Handshake is allocating
-0.25% to Brave Software, Inc. (CA, US). This is an offer of distribution to the
-entity owners itself, and is not implied distribution to the Basic Attention
-Token holders; it is up to the entity on how to allocate or whether to claim the
-distribution at all.
+Namecheap is a large domain registrar and has support cryptocurrency in the
+past. They were allocated 2,720,000 of the initial supply.
 
-IdenTrust, Inc. (UT, US), Comodo (NJ, US), Digicert (UT, US), Godaddy (AZ, US),
-and GMO GlobalSign, Inc. (NH, US) are certificate authorities and are allocated
-0.25%, 0.25%, 0.2%, 0.2%, and 0.1% respectively. It is possible that the
-certificate authority providers may still play a role by operating wallets of
-multisig private keys of some users' names if users do not want to hold the keys
-themselves, as well as attestation on the current blockchain blockhash for added
-security when users are resolving names.
+Godaddy (AZ, US) is a large domain registrar and has a Certificate Authority as
+well.  They were allocated 2,720,000 of the initial supply.
 
-## Non-Profits and FOSS Projects - 5%
+Blockstack is a corporation developing a naming blockchain as well as a
+decentralized internet stack. The Handshake distribution allocated 408,000 of
+the initial supply to Blockstack Token LLC (NJ, USA) under a DNSSEC proof for
+blockstack.com. This is to the entity owners itself, and is not implied
+distribution to the Blockstack Token holders.
+
+ENS (True Names LTD (SG)) is developing an alternate naming root (.eth) using
+an Ethereum smart contract. They were allocated 136,000 of the initial
+Handshake coin supply to the entity running ENS (ens.domains).
+
+GnuNet provides PKI infrastructure and provides identity via a DHT. They were
+allocated 136,000 of the initial coin supply to gnunet.org (may require DNSSEC
+upgrades on the .org namespace).
+
+## Non-Profits and FOSS Projects - 2%
 
 Not to be confused with the $10,200,000 USD given to non-profits and FOSS
-projects, Handshake coins (HNS) will be given to those entities in addition to
-the USD.
+projects, Handshake coins (HNS) will be given to some of those entities in
+addition to the USD.
 
 ## Miners
 
 Historically, many blockchains have distributed 100\% of the total coin supply
 to Proof-of-Work miners or the overwhelming majority to investors (with none
 going to free and open source developers directly). These miners capture value
-by competitively discovering lower operating expense costs with electricity or
+by competitively discover lower operating expense costs with electricity or
 optimizing computation with better hardware.
 
 Miners receive a block reward for validating the chain correctly. There is no
@@ -1978,25 +1935,13 @@ promise, implied or explicit of guarantees around future rewards to miners and
 may be changed upon future technological progress. Additionally, there are no
 guarantees on expenditure upon continued operation of hardware.
 
-## Public Worldwide Distribution
+## Further Distributions
 
-With community consent, a coin distribution can occur worldwide to double the
-money supply via a hard fork and give that doubling to everyone in the world (7
-billion people as a goal). This is only useful with sufficient value in the
-coin, with a target of $50 billion USD as a trigger. This can be triggered by
-the aggregate value of Handshake, or an aggregate value of all coins committed
-to worldwide distribution.
-
-This is within the self-interest of the community as a method to convince
-everyone worldwide to switch over to Handshake.
-
-It can be achieved if a centralized party proposes a list of anonymous addresses
-and proposes it to the Handshake community (could use combination of thumbprint
-and veinprint and the individual supplies a public key or they are given a
-private key). Additionally, decentralized means may be possible in the future
-via peer-to-peer oracles and Web-of-Trust verification requiring physical
-presence.
-[//]: # (TODO: Cite relevant papers)
+Further incentivized distributions presupposing the incentives derived from
+Metcalfe's Law are theoretically possible via a hard-fork but outside the scope
+of this document, as it would be wrong to be prescriptive on future actions,
+especially as the future is unknown with the ability to achieve coordination of
+this activity and programmatic ability to acquire keys.
 
 # Coordination
 
@@ -2010,18 +1955,18 @@ The blockchain allows for cheap verification, but it does not inherently rally
 people to a change in infrastructure. It is exceptionally costly to build a
 top-down organization of millions in a hierarchy to replace entrenched
 interests, hence a ground-up structure is proposed using gift economies, which
-is only possible with emerging technologies that are capable of accounting value
+is only possible with emerging technologies which is capable of accounting value
 without central authorities (the blockchain), as well as tools for wide-scale
 coordination across millions (internet free and open source communications
 software). Handshake is an open performance by all parties worldwide to
 participate and deliver a new naming system as a gift to wider society.
 
 The Theory of the Firm[natureofthefirm] postulates that organizations exist
-due to transaction costs: it is often cheaper to conduct transactions within an
+due to transaction costs, it is often cheaper to conduct transactions within an
 organization rather than between organizations as intra-organizational goals are
 aligned, rather than inter-organizational goals, hence the high transaction
 costs from due diligence with external parties. Firms become large fundamentally
-due to trust and ensure everyone is rallying to the same cause. Power
+due to trust and ensures everyone is rallying to the same cause. Power
 centralizes into the agents of these firms, we believe we can do better with
 technology.
 
@@ -2038,13 +1983,13 @@ The purpose of smart contracts[smartcontracts] is that it allows the
 principal to also be the agent, as computation can allow one to read the code
 once and ensure that the code is being followed, significantly reducing
 potential information costs. However, smart contracts do not solve social
-coordination inherently, they merely make it cheap for those who have already
+coordination inherently, they merely make it cheap for those whom have already
 agreed with what is being coordinated.
 
-By constructing a capital structure without obligations (gift economies), a
-method is proposed to create immensely valuable social structures with proper
-social incentives for restructuring the current organizational centers of power
-within society by participants of this gift economy.
+By constructing a capital structure without obligations (gift economies), method
+is proposed to create immensely valuable social structures with proper social
+incentives for restructuring the current organizational centers of power within
+society by participants of this gift economy.
 
 ## Inability to Verify Actions
 
@@ -2066,11 +2011,10 @@ until now. There have been prior work around reward mechanisms in exchange for
 production in Commons-Based Crypto Currencies[primaveradefilippi], and much
 exploration has occurred in understanding the implications of the blockchain
 having no single owner (hence similarity to the notion of a commons), but
-payment for free and open source code are primarily within the context of
-payment for proposed acceptable work in exchange for cryptocurrencies. Instead,
-this project is about ensuring that free and open source developers are the
-majority owners of the system without any direct contractual expectation of
-return or work.
+payment for free and open source code are primarily within the context of payment for
+proposed acceptable work in exchange for cryptocurrencies. Instead, this project
+is about ensuring that free and open source developers are the majority owners of the
+system without any direct contractual expectation of return or work.
 
 Previously, FOSS developers have been rewarded by working in large
 companies such as Red Hat Software who are able to evaluate payment towards end
@@ -2102,7 +2046,7 @@ difficult to persuade riders to participate if there's insufficient drivers
 (long wait times), and difficult to persuade drivers on the platform if there's
 insufficient riders (low revenue). One of the earliest efforts for resolving
 this two-sided marketplace problem for internet services was initiated by
-PayPal, which resolved a side of the marketplace by directly giving money to new
+Paypal, which resolved a side of the marketplace by directly giving money to new
 users of PayPal.
 
 Overcoming two-sided marketplaces traditionally has required significant capital
@@ -2151,8 +2095,7 @@ humanity, and may be an exploration in a different model for development.
 There are no guarantees provided by the Handshake community developers past and
 present, including continued development and leadership. This document is
 illustrative and the de-facto community standards are the primary source. All
-contents of this document are subject to change according to community
-consensus.
+contents of this document is subject to change according to community consensus.
 
 No guarantees are provided with regards to functionality of the naming and
 auction system, including renewal availability, fees, or block availability in
@@ -2160,8 +2103,8 @@ general. Further, no guarantees are provided with coin supply, coin value, or
 name value. In the event of a worldwide distribution, it is up to the wider
 community to execute this plan.
 
-Project developers involved before the mainnet launch have committed to never
-make unilateral advocacy of where the blockchain should go, and any rhetoric
+Those making unilateral advocacy of where the blockchain should go under the
+auspicies of being an early developer of the chain, and any rhetoric related
 should be seen with suspicion. It is up to the community to suggest changes and
 any code forks are initiated with community consensus and approval.
 
@@ -2170,16 +2113,16 @@ acknowledging new state updates. It is heavily recommended for service providers
 to have long deposit times and their own internal controls and software
 verification.
 
-Hard forks are presumed to be possible in this system, for example, with the
-proposed hard fork for the global distribution to all of humanity. All hard
-forks are only valid upon community consent.
+Hard forks are presumed to be possible in this system, there are no guarantees
+around mining, economics, etc.
 
 Trademark holders are responsible for munging their own renewals and
-registrations, and the project developers do not have the ability to make
+registrations, and project developers do not have the ability to make
 unilateral changes to the system after the sunrise period. Any changes to the
-name ownership requires a hard fork and is contingent upon community approval of
-fullnodes and miners. Any changes after the sunrise period should be proposed to
-the community as a hardfork.
+records requires a hard fork and is contingent upon community approval of
+fullnodes and miners. Any changes after the sunrise period may be proposed
+to the community as a hardfork, or more likely the updates should be made
+(without consensus) in the resolver client-side.
 
 No guarantees are provided for transaction formats past one year. Pre-signed
 transactions should not be presumed to be permanently available. Private keys
@@ -2271,4 +2214,3 @@ should be kept in the event transaction formats change.
 [navalblog] https://startupboy.com/2014/03/09/the-bitcoin-model-for-crowdfunding/
 [fatprotocols] http://www.usv.com/blog/fat-protocols
 [primaveradefilippi] https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2725415
-[spv] https://en.wikipedia.org/wiki/Bitcoin_network#Payment_verification
