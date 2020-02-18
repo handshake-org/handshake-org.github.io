@@ -59,7 +59,7 @@
 </pre>
 
 <h2 id="how-to-claim-a-name">How to Claim a Name</h2>
-<p>If you own a name in the existing root zone or the Alexa top 100k, your name is waiting for you on the blockchain. You are able to claim it by publishing a <em>DNSSEC ownership proof</em> – a cryptographic proof that you own the name on ICANN’s system.</p>
+<p>If you own a name in the existing root zone, or the Alexa top 100k, or you reserved your name through a trademark claim, it is waiting for you on the blockchain. You are able to claim it by publishing a <em>DNSSEC ownership proof</em> – a cryptographic proof that you own the name on ICANN’s system.</p>
 <p>Your name <em>must</em> have a valid DNSSEC setup in order for the claim to be created. If you do not have DNSSEC set up, don’t worry – you can set it up <em>after</em> the handshake blockchain launches and proofs will still be accepted retroactively. Here’s some useful guides for setting DNSSEC up on popular DNS services:</p>
 <ul>
 <li>Namecheap: <a href="https://www.namecheap.com/support/knowledgebase/subcategory.aspx/2232/dnssec">https://www.namecheap.com/support/knowledgebase/subcategory.aspx/2232/dnssec</a></li>
@@ -76,6 +76,12 @@
 <li><a href="https://linux.die.net/man/8/dnssec-signzone">https://linux.die.net/man/8/dnssec-signzone</a></li>
 </ul>
 <hr />
+<h3 id="prerequisites">Prerequisites</h3>
+<p>This guide assumes you have a running <a href="https://github.com/handshake-org/hsd">hsd</a> node and have used the <a href="https://hsd-dev.org/api-docs/#selectwallet"><code>selectwallet</code></a> rpc method to select the wallet that will control your name. Otherwise, the following instructions will assign control of your name to a key in the <code>default</code> account of the <code>primary</code> wallet. This wallet and account are automatically generated when your node is started for the first time.</p>
+<p>The <a href="https://hsd-dev.org/api-docs">api docs</a> will be useful for understanding how to setup, configure, and interact with your node and wallet with <a href="https://github.com/handshake-org/hs-client">hs-client</a>.</p>
+<p>For specific information on how to configure your hsd node, view this <a href="https://hsd-dev.org/guides/config.html">guide</a>.</p>
+<p>For specific information on setting up a wallet using your faucet mnemonic, view this <a href="https://hsd-dev.org/guides/wallet.html">guide</a>. For general information on creating wallets, view the documentation <a href="https://hsd-dev.org/api-docs/#wallet">here</a>.</p>
+<h3 id="claiming-your-name">Claiming your name</h3>
 <p>First, we need to create a TXT record which we will sign in our zone (say we own example.com for instance):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">hsw-cli</span> rpc createclaim example</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">{</span></span>
