@@ -1,9 +1,9 @@
 ## How to Claim a Name
 
-If you own a name in the existing root zone or the Alexa top 100k, your name is
-waiting for you on the blockchain. You are able to claim it by publishing a
-_DNSSEC ownership proof_ -- a cryptographic proof that you own the name on
-ICANN's system.
+If you own a name in the existing root zone, or the Alexa top 100k, or you
+reserved your name through a trademark claim, it is waiting for you on the
+blockchain. You are able to claim it by publishing a _DNSSEC ownership
+proof_ -- a cryptographic proof that you own the name on ICANN's system.
 
 Your name _must_ have a valid DNSSEC setup in order for the claim to be
 created. If you do not have DNSSEC set up, don't worry -- you can set it up
@@ -27,6 +27,35 @@ accomplishing this:
 - [https://linux.die.net/man/8/dnssec-signzone](https://linux.die.net/man/8/dnssec-signzone)
 
 ---
+
+### Prerequisites
+
+This guide assumes you have a running [hsd][hsd] node and have used the
+[`selectwallet`][select] rpc method to select the wallet that will control
+your name. Otherwise, the following instructions will assign control of your
+name to a key in the `default` account of the `primary` wallet. This wallet
+and account are automatically generated when your node is started for the
+first time.
+
+The [api docs][api] will be useful for understanding how to setup, configure,
+and interact with your node and wallet with [hs-client][client].
+
+For specific information on how to configure your hsd node, view this
+[guide][config].
+
+For specific information on setting up a wallet using your faucet mnemonic,
+view this [guide][wallet]. For general information on creating wallets,
+view the documentation [here][wallet-docs].
+
+[hsd]: https://github.com/handshake-org/hsd
+[select]: https://hsd-dev.org/api-docs/#selectwallet
+[config]: https://hsd-dev.org/guides/config.html
+[wallet]: https://hsd-dev.org/guides/wallet.html
+[api]: https://hsd-dev.org/api-docs
+[wallet-docs]: https://hsd-dev.org/api-docs/#wallet
+[client]: https://github.com/handshake-org/hs-client
+
+### Claiming your name
 
 First, we need to create a TXT record which we will sign in our zone (say we
 own example.com for instance):
