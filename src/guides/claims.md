@@ -105,7 +105,8 @@ $ hsw-cli rpc sendclaim example
 
 This will create and broadcast the proof to all of your peers, ultimately
 ending up in a miner's mempool. Your claim should be mined within 5-20 minutes.
-Once mined, you must wait 400 blocks before your claim is considered "mature".
+Once mined, you must wait 4,320 blocks (approx. 30 days) before your claim is
+considered "mature".
 
 Once the claim has reached maturity, you are able to bypass the auction process
 by calling `sendupdate` on your claimed name.
