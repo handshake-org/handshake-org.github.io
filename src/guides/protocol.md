@@ -54,6 +54,8 @@ including a `maskHash` designed to prevent block withholding attacks.
     are included in the coinbase transaction. Proofs for both of these types are verified during
     [TX input checks](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/primitives/tx.js#L425-L479)
 
+    - All coinbase outputs _including airdrops and claims_ require 100 confirmations before they are spendable.
+
 ### Money Supply
 
 - Base unit: [dollarydoo](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/pkg.js#L52)
