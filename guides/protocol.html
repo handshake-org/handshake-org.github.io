@@ -80,6 +80,7 @@
 <ul>
 <li><p>Because Handshake is 100% SegWit, there is no <code>ScriptSig</code>, just witness data. Therefore, <a href="https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki">to enforce transaction uniqueness</a>, block heights are committed to the <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/mining/template.js#L253"><code>locktime</code> value of coinbase transactions.</a></p></li>
 <li><p><a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/mining/template.js#L308-L322">Airdrops</a> and <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/mining/template.js#L280-L306">Claims</a> are included in the coinbase transaction. Proofs for both of these types are verified during <a href="https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/primitives/tx.js#L425-L479">TX input checks</a></p></li>
+<li><p>All coinbase outputs <em>including airdrops and claims</em> require 100 confirmations before they are spendable.</p></li>
 </ul></li>
 </ul>
 <h3 id="money-supply">Money Supply</h3>
