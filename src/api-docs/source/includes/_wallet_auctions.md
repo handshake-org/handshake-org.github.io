@@ -1458,7 +1458,7 @@ associated with a given name.
 
 ### HTTP Request
 
-`POST /wallet/:id/redeem`
+`POST /wallet/:id/update`
 
 ### Post Parameters
 Parameter | Description
