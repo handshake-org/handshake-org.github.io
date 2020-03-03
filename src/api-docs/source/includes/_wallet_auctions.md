@@ -1465,7 +1465,7 @@ Parameter | Description
 --------- | ------------------
 id <br> _string_ | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name to REDEEM bids for (or `null` for all names)
+name <br> _string_  | name to UPDATE
 sign <br> _bool_ | whether to sign the transaction
 broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
 data <br> _object_ | JSON object containing an array of DNS records (see next section)
