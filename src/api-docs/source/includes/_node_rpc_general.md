@@ -260,8 +260,10 @@ const client = new NodeClient(clientOptions);
 {
   "isvalid": true,
   "address": "rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap",
-  "ismine": false,
-  "iswatchonly": false
+  "isscript": false,
+  "isspendable": true,
+  "witness_version": 0,
+  "witness_program": "f0d9374a2ce80c377187f4bc6c68993c561cb136"
 }
 ```
 
@@ -477,6 +479,7 @@ curl $url \
     "params": [ '$timestamp' ]
   }'
 ```
+
 
 ```shell--cli
 hsd-cli rpc setmocktime $timestamp
