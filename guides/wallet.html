@@ -105,7 +105,8 @@ Examples
 <li><p><code>hsd-cli</code> - hsd node REST API  <br />
 </p></li>
 </ul>
-<p>For more info on node commands unrelated to the wallet. (<a href="https://handshake-org.github.io/api-docs">See here</a>)</p>
+<p>For more general info on hsd, <a href="https://hsd-dev.org/api-docs/#introduction">see here</a>.</p>
+<p>For more general info on the wallet, <a href="https://hsd-dev.org/api-docs/#wallet">see here</a>.</p>
 <p>Below you will find short intros to both wallet tools <code>hsw-cli</code> and <code>hsw-rpc</code>. Use them for wallet creation, sending coins, generating addresses, bidding on names, updating resource records for a name, transfering names, etc..  <br />
 </p>
 <h3 id="set-the-network-option">Set the network option</h3>
@@ -119,10 +120,10 @@ Examples
 <p>You can set the network for your hsd node with the <code>--network=</code> option or by setting the environment variable <code>HSD_NETWORK</code>. Choose ‘regtest’ for testing out the commands below.</p>
 <h3 id="hsw-cli">hsw-cli</h3>
 <p> <br />
-Calling the CLI without any arguments <code>$ hsw-cli</code> will output the list of supported commands</p>
+Calling the CLI without any arguments <code>$ hsw-cli</code> will output the list of supported commands. There are also admin commands that can be viewed by running <code>$hsw-cli admin.</code></p>
 <p> <br />
-Create a new wallet, seed it with a mnemonic phrase and encrypt it with a passphrase.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">hsw-cli</span> mkwallet <span class="op">&lt;</span>name-of-new-wallet<span class="op">&gt;</span> --mnemonic=<span class="op">&lt;</span>mnemonic-phrase<span class="op">&gt;</span> --passphrase=<span class="op">&lt;</span>passphrase<span class="op">&gt;</span></span></code></pre></div>
+Create a new wallet, seed it with a mnemonic phrase, and encrypt it with a passphrase.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">hsw-cli</span> mkwallet <span class="op">&lt;</span>wallet-id<span class="op">&gt;</span> --mnemonic=<span class="op">&lt;</span>mnemonic-phrase<span class="op">&gt;</span> --passphrase=<span class="op">&lt;</span>passphrase<span class="op">&gt;</span></span></code></pre></div>
 <p>Response JSON:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">{</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>  <span class="dt">&quot;network&quot;</span><span class="fu">:</span> <span class="st">&quot;regtest&quot;</span><span class="fu">,</span></span>
@@ -138,26 +139,26 @@ Create a new wallet, seed it with a mnemonic phrase and encrypt it with a passph
 <span id="cb2-12"><a href="#cb2-12"></a><span class="fu">}</span></span></code></pre></div>
 <p> <br />
 See that <code>token</code>? With it we can do things like query our wallet balance</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="ex">hsw-cli</span> balance --id=<span class="op">&lt;</span>name-of-wallet<span class="op">&gt;</span> --token=aef7603ff78c32e267fad434246ce6447d420b81e4798d99cf06c80b57c40765</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="ex">hsw-cli</span> balance --id=<span class="op">&lt;</span>wallet-id<span class="op">&gt;</span> --token=aef7603ff78c32e267fad434246ce6447d420b81e4798d99cf06c80b57c40765</span></code></pre></div>
 <p> <br />
 Create a new account</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="ex">hsw-cli</span> --id=<span class="op">&lt;</span>name-of-wallet<span class="op">&gt;</span> account create <span class="op">&lt;</span>name-of-new-account<span class="op">&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="ex">hsw-cli</span> --id=<span class="op">&lt;</span>wallet-id<span class="op">&gt;</span> account create <span class="op">&lt;</span>name-of-new-account<span class="op">&gt;</span></span></code></pre></div>
 <p> <br />
 Generate a new receiving address for an account</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="ex">hsw-cli</span> --id=<span class="op">&lt;</span>name-of-wallet<span class="op">&gt;</span> --account=<span class="op">&lt;</span>name-of-account<span class="op">&gt;</span> address</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="ex">hsw-cli</span> --id=<span class="op">&lt;</span>wallet-id<span class="op">&gt;</span> --account=<span class="op">&lt;</span>name-of-account<span class="op">&gt;</span> address</span></code></pre></div>
 <p> <br />
 Get the HNS balance of your wallet</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="ex">hsw-cli</span> --id=<span class="op">&lt;</span>name-of-wallet<span class="op">&gt;</span> balance</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="ex">hsw-cli</span> --id=<span class="op">&lt;</span>wallet-id<span class="op">&gt;</span> balance</span></code></pre></div>
 <p> <br />
 List all wallets in your walletdb.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a>$ <span class="ex">hsw-cli</span> wallets</span></code></pre></div>
 <p> <br />
 List all accounts in a given wallet</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a>$ <span class="ex">hsw-cli</span> --id=<span class="op">&lt;</span>name-of-wallet<span class="op">&gt;</span> account list</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a>$ <span class="ex">hsw-cli</span> --id=<span class="op">&lt;</span>wallet-id<span class="op">&gt;</span> account list</span></code></pre></div>
 <p> <br />
 Send HNS coins to an address</p>
 <p><em>Be careful how you enter values and fee rates! Value and rate are expressed in satoshis when using cURL or Javascript. Value and rate are expressed in WHOLE HNS when using CLI. Watch carefully how values are entered in the examples, all examples send the same amount when executed.</em></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a>$ <span class="ex">hsw-cli</span> send --id=<span class="op">&lt;</span>name-of-wallet<span class="op">&gt;</span> --value=<span class="op">&lt;</span>number of WHOLE HNS<span class="op">&gt;</span> --address=<span class="op">&lt;</span>destination address<span class="op">&gt;</span> --passphrase=<span class="op">&lt;</span>passphrase<span class="op">&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a>$ <span class="ex">hsw-cli</span> send --id=<span class="op">&lt;</span>wallet-id<span class="op">&gt;</span> --value=<span class="op">&lt;</span>number of WHOLE HNS<span class="op">&gt;</span> --address=<span class="op">&lt;</span>destination address<span class="op">&gt;</span> --passphrase=<span class="op">&lt;</span>passphrase<span class="op">&gt;</span></span></code></pre></div>
 <p> <br />
 Initiate blockchain rescan for walletdb. Necessary after importing a key or wallet. Wallets will be rolled back to the specified block height if provided.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a>$ <span class="ex">hsw-cli</span> rescan --height=<span class="op">&lt;</span>block-height<span class="op">&gt;</span></span></code></pre></div>
@@ -167,7 +168,7 @@ Get info on all of the names your wallet has interacted with (open, bid, reveal,
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a>$ <span class="ex">hsw-rpc</span> getnames</span></code></pre></div>
 <p> <br />
 Get info on a wallet.</p>
-<pre class="base"><code>$ hsw-rpc --id=&lt;name-of-wallet&gt; getwalletinfo</code></pre>
+<pre class="base"><code>$ hsw-rpc --id=&lt;wallet-id&gt; getwalletinfo</code></pre>
 <p> <br />
 Get resource data for a name</p>
 <pre class="base"><code>$ hsw-rpc getnameresource &lt;name&gt;</code></pre>
