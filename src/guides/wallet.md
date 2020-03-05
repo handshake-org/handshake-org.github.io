@@ -138,8 +138,11 @@ To begin, install [hsd](https://github.com/handshake-org/hsd) and
 * `hsd-cli` - hsd node REST API
 &nbsp;\
 
-For more info on node commands unrelated to the wallet.
-([See here](https://handshake-org.github.io/api-docs))
+For more general info on hsd,
+[see here](https://hsd-dev.org/api-docs/#introduction).
+
+For more general info on the wallet,
+[see here](https://hsd-dev.org/api-docs/#wallet).
 
 Below you will find short intros to both wallet tools `hsw-cli` and `hsw-rpc`.
 Use them for wallet creation, sending coins, generating addresses, bidding on
@@ -166,13 +169,14 @@ out the commands below.
 
 &nbsp;\
 Calling the CLI without any arguments `$ hsw-cli` will output the list of
-supported commands
+supported commands. There are also admin commands that can be viewed by
+running `$hsw-cli admin.`
 
 &nbsp;\
-Create a new wallet, seed it with a mnemonic phrase and encrypt it with
+Create a new wallet, seed it with a mnemonic phrase, and encrypt it with
 a passphrase.
 ``` bash
-$ hsw-cli mkwallet <name-of-new-wallet> --mnemonic=<mnemonic-phrase> --passphrase=<passphrase>
+$ hsw-cli mkwallet <wallet-id> --mnemonic=<mnemonic-phrase> --passphrase=<passphrase>
 ```
 
 Response JSON:
@@ -194,25 +198,25 @@ Response JSON:
 &nbsp;\
 See that `token`? With it we can do things like query our wallet balance
 ``` bash
-$ hsw-cli balance --id=<name-of-wallet> --token=aef7603ff78c32e267fad434246ce6447d420b81e4798d99cf06c80b57c40765
+$ hsw-cli balance --id=<wallet-id> --token=aef7603ff78c32e267fad434246ce6447d420b81e4798d99cf06c80b57c40765
 ```
 
 &nbsp;\
 Create a new account
 ``` bash
-$ hsw-cli --id=<name-of-wallet> account create <name-of-new-account>
+$ hsw-cli --id=<wallet-id> account create <name-of-new-account>
 ```
 
 &nbsp;\
 Generate a new receiving address for an account
 ``` bash
-$ hsw-cli --id=<name-of-wallet> --account=<name-of-account> address
+$ hsw-cli --id=<wallet-id> --account=<name-of-account> address
 ```
 
 &nbsp;\
 Get the HNS balance of your wallet
 ``` bash
-$ hsw-cli --id=<name-of-wallet> balance
+$ hsw-cli --id=<wallet-id> balance
 ```
 
 &nbsp;\
@@ -224,7 +228,7 @@ $ hsw-cli wallets
 &nbsp;\
 List all accounts in a given wallet
 ``` bash
-$ hsw-cli --id=<name-of-wallet> account list
+$ hsw-cli --id=<wallet-id> account list
 ```
 
 &nbsp;\
@@ -236,7 +240,7 @@ WHOLE HNS  when using CLI. Watch carefully how values are entered in the
 examples, all examples send the same amount when executed.*
 
 ``` bash
-$ hsw-cli send --id=<name-of-wallet> --value=<number of WHOLE HNS> --address=<destination address> --passphrase=<passphrase>
+$ hsw-cli send --id=<wallet-id> --value=<number of WHOLE HNS> --address=<destination address> --passphrase=<passphrase>
 ```
 
 &nbsp;\
@@ -257,7 +261,7 @@ $ hsw-rpc getnames
 &nbsp;\
 Get info on a wallet.
 ``` base
-$ hsw-rpc --id=<name-of-wallet> getwalletinfo
+$ hsw-rpc --id=<wallet-id> getwalletinfo
 ```
 
 &nbsp;\
