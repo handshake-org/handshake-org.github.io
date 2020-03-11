@@ -1159,7 +1159,7 @@ cli info
 <aside class="notice">
 You must replace <code>api-key</code> with your own, strong API key.<br>
 <br>
-A good way to generate a strong key is to use the <code>bcrypto</code> module that is installed as a 
+A good way to generate a strong key is to use the <code>bcrypto</code> module that is installed as a
 dependency for <code>hsd</code>. From your hsd directory (or anywhere, if <code>bcrypto</code> is installed globally), run:<br>
 <code>node -e "bcrypto=require('bcrypto'); console.log(bcrypto.random.randomBytes(32).toString('hex'))"</code><br>
 Which will generate and output a securely random, 32-byte hex string.<br>
@@ -2845,7 +2845,7 @@ CLI and Javascript calls return just the &quot;result&quot; or an error.</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="s2">"arjD5y4glPea270IiExx04E+tTvryHKhWZcA2oy8svVHr9q/AvGA647UF2ICaIGJHazbRyyj3draiNnBns9aWQ=="</span><span class="w">
 </span></code></pre>
-<p>Signs message with private key. 
+<p>Signs message with private key.
 <aside>Note: Due to behavior of some shells like bash, if your message contains spaces you may need to add additional quotes like this: <code>&quot;&#39;&quot;$message&quot;&#39;&quot;</code></aside></p>
 <h3 id='params-7'>Params</h3>
 <table><thead>
@@ -6360,18 +6360,18 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"reserved"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w"> 
+      </span><span class="s2">"reserved"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
       </span><span class="s2">"week"</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"start"</span><span class="p">:</span><span class="mi">3024</span><span class="w"> 
+      </span><span class="s2">"start"</span><span class="p">:</span><span class="mi">3024</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pi"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"nameHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"512da52b8aba40722262447a53ff36f1ab854a5dd1ea1bf92d0aed18a50ebca9"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CLOSED"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">7203</span><span class="p">,</span><span class="w"> 
-    </span><span class="s2">"renewal"</span><span class="p">:</span><span class="w"> </span><span class="mi">14636</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">7203</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"renewal"</span><span class="p">:</span><span class="w"> </span><span class="mi">14636</span><span class="p">,</span><span class="w">
     </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"47510cf5ba035cfc97f3e2e6cbe9c06e536fa87e81350343d30f2d021dc1dd36"</span><span class="p">,</span><span class="w"> 
+      </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"47510cf5ba035cfc97f3e2e6cbe9c06e536fa87e81350343d30f2d021dc1dd36"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
@@ -6440,7 +6440,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <tr>
 <td>height</td>
 <td>int</td>
-<td>block height at which auction closed</td>
+<td>block height at which auction started</td>
 </tr>
 <tr>
 <td>renewal</td>
@@ -8469,8 +8469,8 @@ Note that since it must be a multisig, the wallet on creation should be set with
 <code>false</code> if key was already removed, but will still return <code>success: true</code> with status <code>200</code>.</p>
 
 <aside class="notice">
-Remove Key is only available to a multisig wallet that is not yet "complete" -- as in, 
-<nobr><code>n-1</code></nobr> number of keys have not yet been added to the wallet's own original key. 
+Remove Key is only available to a multisig wallet that is not yet "complete" -- as in,
+<nobr><code>n-1</code></nobr> number of keys have not yet been added to the wallet's own original key.
 Once a multisig wallet has the right number of keys to create m-of-n addresses, this function will return an error.
 </aside>
 <h3 id='http-request-17'>HTTP Request</h3>
@@ -9495,7 +9495,7 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <span class="nv">passphrase</span><span class="o">=</span><span class="s1">'secret123'</span>
 <span class="nv">name</span><span class="o">=</span><span class="s1">'menace'</span>
 <span class="nb">type</span><span class="o">=</span><span class="s1">'multisig'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> account create --name<span class="o">=</span><span class="nv">$name</span> --type<span class="o">=</span><span class="nv">$type</span> --passphrase<span class="o">=</span><span class="nv">$passphrase</span> 
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-cli --id<span class="o">=</span><span class="nv">$id</span> account create --name<span class="o">=</span><span class="nv">$name</span> --type<span class="o">=</span><span class="nv">$type</span> --passphrase<span class="o">=</span><span class="nv">$passphrase</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walleturl</span>/<span class="nv">$id</span>/account/<span class="nv">$name</span> <span class="se">\</span>
     -X PUT <span class="se">\</span>
     --data <span class="s1">'{"type": "'</span><span class="nv">$type</span><span class="s1">'", "passphrase": "'</span><span class="nv">$passphrase</span><span class="s1">'"}'</span>
@@ -12916,7 +12916,7 @@ an UPDATE.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>On mainnet, name ownership expires after two years. If the name owner does not
-RENEW the name, it can be re-opened by any user. RENEW covenants commit to a 
+RENEW the name, it can be re-opened by any user. RENEW covenants commit to a
 a recent block hash to prevent pre-signing and prove physical ownership of controlling keys.
 There is no cost besides the miner fee.</p>
 <h3 id='params-9'>Params</h3>
@@ -13878,7 +13878,7 @@ cP4N8mxe81DhZfrgTz2GoV3croXD2o6Hern4DTB6Gr5jUwoLkT8h 2019-10-22T18:29:15Z change
 
 # End of dump
 </code></pre>
-<p>Creates a new human-readable file at specified path with all wallet private keys in 
+<p>Creates a new human-readable file at specified path with all wallet private keys in
 Wallet Import Format (base58).</p>
 <h3 id='params-8'>Params</h3>
 <table><thead>
@@ -14099,7 +14099,7 @@ if wallet has already been encrypted.</p>
 <h2 id='getbalance'>getbalance</h2><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$walletrpcurl</span> <span class="se">\</span>
   -X POST <span class="se">\</span>
   --data <span class="s1">'{ "method": "getbalance" }'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc getbalance 
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc getbalance
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -14262,7 +14262,7 @@ if wallet has already been encrypted.</p>
 </blockquote>
 <pre class="highlight plaintext"><code>50.001234
 </code></pre>
-<p>Get total amount received by specified account. 
+<p>Get total amount received by specified account.
 Optionally only count transactions with <code>minconf</code> number of confirmations.</p>
 <h3 id='params-16'>Params</h3>
 <table><thead>
@@ -14318,7 +14318,7 @@ Optionally only count transactions with <code>minconf</code> number of confirmat
 </blockquote>
 <pre class="highlight plaintext"><code>50.001234
 </code></pre>
-<p>Get total amount received by specified address. 
+<p>Get total amount received by specified address.
 Optionally only count transactions with <code>minconf</code> number of confirmations.</p>
 <h3 id='params-17'>Params</h3>
 <table><thead>
@@ -15038,7 +15038,7 @@ See <a href="#lockunspent">lockunspent</a> and <a href="#lock-coin-outpoints">lo
     "method": "listreceivedbyaddress",
     "params": [ '</span><span class="nv">$minconf</span><span class="s1">', '</span><span class="nv">$includeEmpty</span><span class="s1">', '</span><span class="nv">$watchOnly</span><span class="s1">' ]
   }'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listreceivedbyaddress <span class="nv">$minconf</span> <span class="nv">$includeEmpty</span> <span class="nv">$watchOnly</span> 
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listreceivedbyaddress <span class="nv">$minconf</span> <span class="nv">$includeEmpty</span> <span class="nv">$watchOnly</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -15126,7 +15126,7 @@ See <a href="#lockunspent">lockunspent</a> and <a href="#lock-coin-outpoints">lo
     "method": "listsinceblock",
     "params": [ "'</span><span class="nv">$block</span><span class="s1">'", '</span><span class="nv">$minconf</span><span class="s1">', '</span><span class="nv">$watchOnly</span><span class="s1">' ]
   }'</span>
-</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listsinceblock <span class="nv">$block</span> <span class="nv">$minconf</span> <span class="nv">$watchOnly</span> 
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listsinceblock <span class="nv">$block</span> <span class="nv">$minconf</span> <span class="nv">$watchOnly</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -16430,7 +16430,7 @@ to broadcast the transaction without any checks.</p>
 <blockquote>
 <p>Example:</p>
 </blockquote>
-<pre class="highlight plaintext"><code>{ 
+<pre class="highlight plaintext"><code>{
   name: 'hello',
   nameHash:
    '3338be694f50c5f338814986cdf0686453a888b84f424d792af4b9202398f392',
@@ -16455,7 +16455,7 @@ to broadcast the transaction without any checks.</p>
    { renewalPeriodStart: 252,
      renewalPeriodEnd: 5252,
      blocksUntilExpire: 4990,
-     daysUntilExpire: 34.65 } 
+     daysUntilExpire: 34.65 }
 }
 </code></pre>
 <p>Get namestate of a name, given its sha3 hash as a Buffer. This is the ONLY node server
@@ -16597,7 +16597,7 @@ block being removed.</p>
 <p>Example:</p>
 </blockquote>
 <pre class="highlight plaintext"><code> # TX.fromRaw(raw)
-{ 
+{
   hash:
    'd3f31c0f86f563daf1413570b04b26e39e0a011ed87be16dce31db1237bde14b',
   witnessHash:
