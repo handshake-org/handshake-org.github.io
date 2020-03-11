@@ -37,18 +37,18 @@ const client = new NodeClient(clientOptions);
 {
   "result": {
     "start": {
-      "reserved":false, 
+      "reserved":false,
       "week":20,
-      "start":3024 
+      "start":3024
     },
 	"info": {
     "name": "pi",
     "nameHash": "512da52b8aba40722262447a53ff36f1ab854a5dd1ea1bf92d0aed18a50ebca9",
     "state": "CLOSED",
-    "height": 7203, 
-    "renewal": 14636, 
+    "height": 7203,
+    "renewal": 14636,
     "owner": {
-      "hash": "47510cf5ba035cfc97f3e2e6cbe9c06e536fa87e81350343d30f2d021dc1dd36", 
+      "hash": "47510cf5ba035cfc97f3e2e6cbe9c06e536fa87e81350343d30f2d021dc1dd36",
       "index": 0
     },
     "value": 1000000,
@@ -81,12 +81,12 @@ name | Required | Name you wish to look up
 
 ### Return values
 Name | Type |  Description
---------- | --------- | --------- 
+--------- | --------- | ---------
 reserved | Boolean | true if the name is pre-reserved for it's existing owner to claim via DNSSEC proof.
 week | int | estimated number of weeks after mainnet launch that name will become available (if not reserved)
 start | int | exact block number that name will become available for bidding (if not reserved)
 state | string | the current auction state of the name (BIDDING, REVEAL, CLOSED, REVOKED, TRANSFER)
-height | int | block height at which auction closed
+height | int | block height at which auction started
 renewal | int | block height at which rewnewal period begins
 owner | int | UTXO to which the name belongs
 value | int | penultimate bid amount, paid by winner
@@ -213,7 +213,7 @@ name
 
 ```
 
-Returns the name for a from a given nameHash. 
+Returns the name for a from a given nameHash.
 
 ### Params
 Name | Default |  Description
@@ -222,8 +222,8 @@ nameHash | Required | hash for which you want to the name.
 
 ### Return values
 Name | Type |  Description
---------- | --------- | --------- 
-name | String 
+--------- | --------- | ---------
+name | String
 
 
 
@@ -337,15 +337,15 @@ const client = new NodeClient(clientOptions);
 Returns the merkle trie proof for a given name.
 
 ### Params
-Name | Default 
---------- | --------- 
-name | Required 
+Name | Default
+--------- | ---------
+name | Required
 
 
 ### Proof types
 Type | Description
 --------- | --------- |
-'TYPE_DEADEND' | Name does not exist in trie. 
+'TYPE_DEADEND' | Name does not exist in trie.
 'TYPE_SHORT' | Name does not exist in trie (path stops short).
 'TYPE_COLLISION' | Name does not exist in trie (path collides with existing key).
 'TYPE_EXISTS' | Name exists in trie. Returns array of nodes as proof.
@@ -437,7 +437,7 @@ const client = new NodeClient(clientOptions);
 
 Once our proof is published on the DNS layer, we can use `sendclaim` to crawl the relevant zones and create the proof.
 
-`sendclaim` will create and broadcast the proof to all of your peers, ultimately ending up in a miner's mempool. Your claim should be mined within 5-20 minutes. Once mined, you must wait several blocks before your claim is considered "mature". 
+`sendclaim` will create and broadcast the proof to all of your peers, ultimately ending up in a miner's mempool. Your claim should be mined within 5-20 minutes. Once mined, you must wait several blocks before your claim is considered "mature".
 
 See the [README](https://github.com/handshake-org/hsd) for hsd or the [Name Claims](https://handshake-org.github.io/guides/claims.html) guide for more.
 
@@ -476,7 +476,7 @@ const client = new NodeClient(clientOptions);
 ```json
 ```
 
-If you already have DNSSEC setup, you can avoid publishing a TXT record publicly by creating the proof locally. This requires that you have direct access to your zone-signing keys. The private keys themselves must be stored in BIND's private key format and naming convention. 
+If you already have DNSSEC setup, you can avoid publishing a TXT record publicly by creating the proof locally. This requires that you have direct access to your zone-signing keys. The private keys themselves must be stored in BIND's private key format and naming convention.
 
 See the [README](https://github.com/handshake-org/hsd) for hsd or the [Name Claims](https://handshake-org.github.io/guides/claims.html) guide for more.
 
