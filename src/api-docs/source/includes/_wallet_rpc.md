@@ -165,7 +165,8 @@ const walletClient = new WalletClient(walletOptions);
     "keypoololdest": 0,
     "keypoolsize": 0,
     "unlocked_until": 0,
-    "paytxfee": 0
+    "paytxfee": 0,
+    "height": 50
   },
   "error": null,
   "id": null
