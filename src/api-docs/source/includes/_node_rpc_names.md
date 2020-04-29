@@ -486,6 +486,55 @@ Name | Default |  Description
 --------- | --------- | --------- | -----------
 claim | Required | raw serialized hex-string
 
+## getdnssecproof
+
+```shell--cli
+hsd-rpc getdnssecproof <domain-name>
+```
+
+```shell--curl
+domain_name=foo.bar
+
+curl $url \
+  -X POST \
+  --data '{ "method": "getdnssecproof", "params": ["$domain_name"] }'
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('getdnssecproof', [ 'domain-name' ]);
+  console.log(result);
+})();
+```
+
+```json
+{
+  "zones": [...]
+}
+```
+
+Query for and build a Handshake DNSSEC ownership proof.
+This is the proof that is included in a name claim (`sendclaim`).
+
+### Params
+Name | Default | Description
+--------- | --------- | --------- |
+name | Required | Domain name
+estimate | Optional | No validation when true
+verbose | Optional | Returns hex when false
+
 ## sendrawairdrop
 
 ```shell--cli
