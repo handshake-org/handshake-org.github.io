@@ -32,10 +32,16 @@ Build jsdoc:
 To view the site locally, run a simple http server from the project's
 root directory. 
 
-Python:
+Python2:
 
 ```bash
 $ python -m SimpleHTTPServer 8080
+```
+
+Python3:
+
+```bash
+$ python -m http.server 8080
 ```
 
 Ruby:
