@@ -14,6 +14,7 @@ Command     				|cURL method	| Description
 [`/tx/address/:address`](#get-tx-by-address)		| `GET`			| TX by address
 [`/tx/address`](#get-tx-by-addresses)				| `POST`		| Bulk read TXs
 [`/block/:block`](#get-block-by-hash-or-height)			| `GET`			| Block by hash or height
+[`/header/:block`](#get-header-by-hash-or-height)			| `GET`			| Header by hash or height
 [`/mempool`](#get-mempool-snapshot)					| `GET`			| Mempool snapshot
 [`/mempool/invalid`](#get-mempool-rejects-filter)         | `GET`     | Mempool rejects filter
 [`/mempool/invalid/:hash`](#test-mempool-rejects-filter)         | `GET`     | Test mempool rejects filter
@@ -347,13 +348,68 @@ Returns block info by block hash or height.
 ### HTTP Request
 `GET /block/:blockhashOrHeight`
 
-
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
 :blockhashOrHeight | Hash or Height of block
 
+## Get Header by hash or height
+
+```javascript
+let blockHash, blockHeight;
+```
+
+```shell--vars
+blockHash='ae3895cf597eff05b19e02a70ceeeecb9dc72dbfe6504a50e9343a72f06a87c5';
+blockHeight='0';
+```
+
+```shell--curl
+curl $url/header/$blockHash # by hash
+curl $url/header/$blockHeight # by height
+```
+
+```shell--cli
+# None available
+```
+
+```javascript
+// None available
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "hash": "ae3895cf597eff05b19e02a70ceeeecb9dc72dbfe6504a50e9343a72f06a87c5",
+  "height": 0,
+  "depth": 2,
+  "version": 0,
+  "prevBlock": "0000000000000000000000000000000000000000000000000000000000000000",
+  "merkleRoot": "8e4c9756fef2ad10375f360e0560fcc7587eb5223ddf8cd7c7e06e60a1140b15",
+  "witnessRoot": "1a2c60b9439206938f8d7823782abdb8b211a57431e9c9b6a6365d8d42893351",
+  "treeRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "reservedRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "time": 1580745080,
+  "bits": 545259519,
+  "nonce": 0,
+  "extraNonce": "000000000000000000000000000000000000000000000000",
+  "mask": "0000000000000000000000000000000000000000000000000000000000000000",
+  "chainwork": "0000000000000000000000000000000000000000000000000000010001000100"
+}
+```
+
+Returns block header by block hash or height.
+
+### HTTP Request
+`GET /header/:blockhashOrHeight`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:blockhashOrHeight | Hash or Height of header
 
 ## Broadcast transaction
 ```javascript
