@@ -6897,7 +6897,21 @@ curl <span class="nv">$url</span> <span class="se">\</span>
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>Query for and build a Handshake DNSSEC ownership proof.
-This is the proof is that is included in a name claim (<code>sendclaim</code>).</p>
+This is the same proof that is included in a name claim. See
+the <code>sendclaim</code> RPC method to build a transaction that includes
+the DNSSEC ownership proof. The <code>estimate</code> param is used to
+validate the proof. If set to <code>false</code>, it will strictly require
+the proof to be valid. If set to <code>true</code>, the proof will be build
+and returned to the caller, even if it is invalid. The default
+<code>value</code> for <code>estimate</code> is <code>false</code>.</p>
+
+<p>A Handshake DNSSEC ownership proof is a more strict subset of
+a DNSSEC proof. Each parent/child zone must operate through a series
+of <code>DS-&gt;DNSKEY</code> relationships, no <code>CNAME</code>s or wildcards are allowed,
+each label separation (<code>.</code>) must behave like a zone cut (with an
+appropriate child zone referral) and weak cryptography is not allowed.
+This means that <code>SHA1</code> digests for <code>DS</code> hashes are not allowed,
+and RSA-1024 is subject to be disabled via soft-fork.</p>
 <h3 id='params-8'>Params</h3>
 <table><thead>
 <tr>
