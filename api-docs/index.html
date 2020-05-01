@@ -6870,12 +6870,12 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <td>raw serialized hex-string</td>
 </tr>
 </tbody></table>
-<h2 id='getdnssecproof'>getdnssecproof</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc getdnssecproof &lt;domain-name&gt;
-</code></pre><pre class="highlight shell tab-shell--curl"><code><span class="nv">domain_name</span><span class="o">=</span>foo.bar
-
-curl <span class="nv">$url</span> <span class="se">\</span>
+<h2 id='getdnssecproof'>getdnssecproof</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">name</span><span class="p">;</span>
+</code></pre><pre class="highlight shell tab-shell--vars"><code><span class="nv">name</span><span class="o">=</span><span class="s1">'foo.bar'</span>;
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsd-rpc getdnssecproof <span class="s2">"</span><span class="nv">$name</span><span class="s2">"</span>
+</code></pre><pre class="highlight shell tab-shell--curl"><code>curl <span class="nv">$url</span> <span class="se">\</span>
   -X POST <span class="se">\</span>
-  --data <span class="s1">'{ "method": "getdnssecproof", "params": ["$domain_name"] }'</span>
+  --data <span class="s1">'{ "method": "getdnssecproof", "params": ["$name"] }'</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -6889,7 +6889,7 @@ curl <span class="nv">$url</span> <span class="se">\</span>
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getdnssecproof'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'domain-name'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'getdnssecproof'</span><span class="p">,</span> <span class="p">[</span> <span class="nx">name</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
@@ -6898,12 +6898,12 @@ curl <span class="nv">$url</span> <span class="se">\</span>
 </span></code></pre>
 <p>Query for and build a Handshake DNSSEC ownership proof.
 This is the same proof that is included in a name claim. See
-the <code>sendclaim</code> RPC method to build a transaction that includes
+the <a href="#sendclaim">sendclaim</a> RPC method to build a transaction that includes
 the DNSSEC ownership proof. The <code>estimate</code> param is used to
 validate the proof. If set to <code>false</code>, it will strictly require
 the proof to be valid. If set to <code>true</code>, the proof will be build
 and returned to the caller, even if it is invalid. The default
-<code>value</code> for <code>estimate</code> is <code>false</code>.</p>
+value for <code>estimate</code> is <code>false</code>.</p>
 
 <p>A Handshake DNSSEC ownership proof is a more strict subset of
 a DNSSEC proof. Each parent/child zone must operate through a series
@@ -6922,17 +6922,17 @@ and RSA-1024 is subject to be disabled via soft-fork.</p>
 </thead><tbody>
 <tr>
 <td>name</td>
-<td>Required</td>
+<td></td>
 <td>Domain name</td>
 </tr>
 <tr>
 <td>estimate</td>
-<td>Optional</td>
+<td>false</td>
 <td>No validation when true</td>
 </tr>
 <tr>
 <td>verbose</td>
-<td>Optional</td>
+<td>false</td>
 <td>Returns hex when false</td>
 </tr>
 </tbody></table>
