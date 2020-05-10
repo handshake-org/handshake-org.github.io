@@ -486,6 +486,75 @@ Name | Default |  Description
 --------- | --------- | --------- | -----------
 claim | Required | raw serialized hex-string
 
+## getdnssecproof
+
+```javascript
+let name;
+```
+
+```shell--vars
+name='foo.bar';
+```
+
+```shell--cli
+hsd-rpc getdnssecproof "$name"
+```
+
+```shell--curl
+curl $url \
+    -X POST \
+    --data '{"method":"getdnssecproof","params":["'$name'"]}'
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('getdnssecproof', [ name ]);
+  console.log(result);
+})();
+```
+
+```json
+{
+  "zones": [...]
+}
+```
+
+Query for and build a Handshake DNSSEC ownership proof.
+This is the same proof that is included in a name claim. See
+the [sendclaim](#sendclaim) RPC method to build a transaction that includes
+the DNSSEC ownership proof. The `estimate` param is used to
+validate the proof. If set to `false`, it will strictly require
+the proof to be valid. If set to `true`, the proof will be built
+and returned to the caller, even if it is invalid. The default
+value for `estimate` is `false`.
+
+A Handshake DNSSEC ownership proof is a more strict subset of
+a DNSSEC proof. Each parent/child zone must operate through a series
+of `DS->DNSKEY` relationships, no `CNAME`s or wildcards are allowed,
+each label separation (`.`) must behave like a zone cut (with an
+appropriate child zone referral) and weak cryptography is not allowed.
+This means that SHA1 digests for `DS` hashes are not allowed,
+and RSA-1024 is subject to be disabled via soft-fork.
+
+### Params
+Name | Default | Description
+--------- | --------- | --------- |
+name | | Domain name
+estimate | false | No validation when true
+verbose | true | Returns hex when false
+
 ## sendrawairdrop
 
 ```shell--cli
