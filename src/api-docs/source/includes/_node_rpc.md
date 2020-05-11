@@ -1,7 +1,7 @@
 # RPC Calls - Node
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{ "method": "<method>", "params": [...] "id": "some-id" }'
 ```

@@ -3,7 +3,7 @@
 ## pruneblockchain
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "pruneblockchain",
@@ -61,7 +61,7 @@ blockhash='52d7beaf4c7f392bef2744167c7f4db4bb4113b2635496edcf2d1c94128696aa';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "invalidateblock",
@@ -117,7 +117,7 @@ blockhash='1896e628f8011b77ea80f4582c29c21b3376183683f587ee863050376add3891'
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "reconsiderblock",

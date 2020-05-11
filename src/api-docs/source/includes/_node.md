@@ -28,7 +28,7 @@ Command     				|cURL method	| Description
 ## Get server info
 
 ```shell--curl
-curl $url/
+curl http://x:api-key@127.0.0.1:14037/
 ```
 
 ```shell--cli
@@ -117,7 +117,7 @@ Get server Info.
 ## Get mempool snapshot
 
 ```shell--curl
-curl $url/mempool
+curl http://x:api-key@127.0.0.1:14037/mempool
 ```
 
 ```shell--cli
@@ -169,7 +169,7 @@ No Params.
 ## Get mempool rejects filter
 
 ```shell--curl
-curl $url/mempool/invalid
+curl http://x:api-key@127.0.0.1:14037/mempool/invalid
 ```
 
 ```shell--cli
@@ -209,7 +209,7 @@ verbose | _(bool)_ Returns entire Bloom Filter in `filter` property, hex-encoded
 
 ```shell--curl
 hash=8e4c9756fef2ad10375f360e0560fcc7587eb5223ddf8cd7c7e06e60a1140b15
-curl $url/mempool/invalid/$hash
+curl http://x:api-key@127.0.0.1:14037/mempool/invalid/$hash
 ```
 
 ```shell--cli
@@ -252,8 +252,8 @@ blockHeight='0';
 ```
 
 ```shell--curl
-curl $url/block/$blockHash # by hash
-curl $url/block/$blockHeight # by height
+curl http://x:api-key@127.0.0.1:14037/block/$blockHash # by hash
+curl http://x:api-key@127.0.0.1:14037/block/$blockHeight # by height
 ```
 
 ```shell--cli
@@ -366,8 +366,8 @@ blockHeight='0';
 ```
 
 ```shell--curl
-curl $url/header/$blockHash # by hash
-curl $url/header/$blockHeight # by height
+curl http://x:api-key@127.0.0.1:14037/header/$blockHash # by hash
+curl http://x:api-key@127.0.0.1:14037/header/$blockHeight # by height
 ```
 
 ```shell--cli
@@ -421,7 +421,7 @@ tx='010000000106b014e37704109fefe2c5c9f4227d68840c3497fc89a9832db8504df039a6c700
 ```
 
 ```shell--curl
-curl $url/broadcast \
+curl http://x:api-key@127.0.0.1:14037/broadcast \
   -H 'Content-Type: application/json' \
   -X POST \
   --data '{ "tx": "'$tx'" }'
@@ -479,7 +479,7 @@ claim='310d030300003000010002a30001080101030803010001acffb409bcc939f...';
 ```
 
 ```shell--curl
-curl $url/claim \
+curl http://x:api-key@127.0.0.1:14037/claim \
   -H 'Content-Type: application/json' \
   -X POST \
   --data '{ "claim": "'$claim'" }'
@@ -537,7 +537,7 @@ blocks=3
 ```
 
 ```shell--curl
-curl $url/fee?blocks=$blocks
+curl http://x:api-key@127.0.0.1:14037/fee?blocks=$blocks
 ```
 
 ```shell--cli
@@ -592,7 +592,7 @@ height=1000;
 ```
 
 ```shell--curl
-curl $url/reset \
+curl http://x:api-key@127.0.0.1:14037/reset \
   -H 'Content-Type: application/json' \
   -X POST \
   --data '{ "height": '$height' }'

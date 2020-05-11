@@ -8,7 +8,7 @@ id='primary'
 ```
 
 ```shell--curl
-curl $walleturl/$id/name
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/name
 ```
 
 ```shell--cli
@@ -89,7 +89,7 @@ name='handshake'
 ```
 
 ```shell--curl
-curl $walleturl/$id/name/$name
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/name/$name
 ```
 
 ```shell--cli
@@ -168,7 +168,7 @@ id='primary'
 ```
 
 ```shell--curl
-curl $walleturl/$id/auction
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/auction
 ```
 
 ```shell--cli
@@ -276,7 +276,7 @@ name='handshake'
 ```
 
 ```shell--curl
-curl $walleturl/$id/auction/$name
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/auction/$name
 ```
 
 ```shell--cli
@@ -383,7 +383,7 @@ own=true
 ```
 
 ```shell--curl
-curl $walleturl/$id/bid?own=$own
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/bid?own=$own
 ```
 
 ```shell--cli
@@ -453,7 +453,7 @@ own=false
 ```
 
 ```shell--curl
-curl $walleturl/$id/bid/$name?own=$own
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/bid/$name?own=$own
 ```
 
 ```shell--cli
@@ -534,7 +534,7 @@ own=false
 ```
 
 ```shell--curl
-curl $walleturl/$id/reveal?own=$own
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/reveal?own=$own
 ```
 
 ```shell--cli
@@ -614,7 +614,7 @@ own=false
 ```
 
 ```shell--curl
-curl $walleturl/$id/reveal/$name?own=$own
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/reveal/$name?own=$own
 ```
 
 ```shell--cli
@@ -694,7 +694,7 @@ name='handshake'
 ```
 
 ```shell--curl
-curl $walleturl/$id/resource/$name
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/resource/$name
 ```
 
 ```shell--cli
@@ -759,7 +759,7 @@ address='rs1q3qavv25ye6zsntszsj4awvq7gr4akq59k9y8hw'
 ```
 
 ```shell--curl
-curl "$walleturl/$id/nonce/$name?address=$address&bid=$bid"
+curl "http://x:api-key@127.0.0.1:14039/wallet/$id/nonce/$name?address=$address&bid=$bid"
 ```
 
 ```shell--cli
@@ -831,7 +831,7 @@ sign=true
 ```
 
 ```shell--curl
-curl $walleturl/$id/open \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/open \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -947,7 +947,7 @@ lockup=4567000
 ```
 
 ```shell--curl
-curl $walleturl/$id/bid \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/bid \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -1066,7 +1066,7 @@ sign=true
 ```
 
 ```shell--curl
-curl $walleturl/$id/reveal \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/reveal \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -1199,7 +1199,7 @@ sign=true
 ```
 
 ```shell--curl
-curl $walleturl/$id/redeem \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/redeem \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -1345,7 +1345,7 @@ value='Bread is a delicious food.'
 ```
 
 ```shell--curl
-curl $walleturl/$id/update \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/update \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -1534,7 +1534,7 @@ sign=true
 ```
 
 ```shell--curl
-curl $walleturl/$id/renewal \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/renewal \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -1661,7 +1661,7 @@ address='rs1qe4tnr7zhx95uvfw220k7eh9ke0rtducpp3hgjc'
 ```
 
 ```shell--curl
-curl $walleturl/$id/transfer \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/transfer \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -1790,7 +1790,7 @@ sign=true
 ```
 
 ```shell--curl
-curl $walleturl/$id/cancel \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/cancel \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -1920,7 +1920,7 @@ sign=true
 ```
 
 ```shell--curl
-curl $walleturl/$id/finalize \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/finalize \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -2050,7 +2050,7 @@ sign=true
 ```
 
 ```shell--curl
-curl $walleturl/$id/revoke \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/revoke \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",

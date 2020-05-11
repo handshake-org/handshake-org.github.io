@@ -14,7 +14,7 @@ height=1000000;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getnetworkhashps",
@@ -64,7 +64,7 @@ N. | Name | Default |  Description
 ## getmininginfo
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getmininginfo",
@@ -130,7 +130,7 @@ None. |
 ## getwork
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getwork",
@@ -186,7 +186,7 @@ N. | Name | Default |  Description
 # Because there is a request timeout set on CLI http requests.
 # without manually adjusting the timeout (or receiving a new transaction on the current
 # network) this call will timeout before the request is complete.
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getworklp",
@@ -250,7 +250,7 @@ None. |
 ## getblocktemplate
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getblocktemplate",
@@ -360,7 +360,7 @@ blockdata='000000203f6397a1442eb6a9901998c4a4b432f8573c7a490b2d5e6d6f2ad0d0fca25
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "submitblock",
@@ -410,7 +410,7 @@ blockdata='000000203f6397a1442eb6a9901998c4a4b432f8573c7a490b2d5e6d6f2ad0d0fca25
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "verifyblock",
@@ -465,7 +465,7 @@ proclimit=1;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "setgenerate",
@@ -515,7 +515,7 @@ N. | Name | Default |  Description
 ## getgenerate
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getgenerate",
@@ -572,7 +572,7 @@ numblocks=2;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "generate",
@@ -638,7 +638,7 @@ address='RTZJdYScA7uGb5pbQPEczpDmq9HiYLv2fJ';
 
 ```shell--curl
 # Will return once all blocks are mined.
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "generatetoaddress",
