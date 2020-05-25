@@ -3,7 +3,7 @@
 ## getconnectioncount
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getconnectioncount",
@@ -50,7 +50,7 @@ None. |
 ## ping
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "ping",
@@ -99,7 +99,7 @@ None. |
 ## getpeerinfo
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getpeerinfo",
@@ -186,7 +186,7 @@ cmd='add'
 
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "addnode",
@@ -252,7 +252,7 @@ nodeAddr='127.0.0.1:14038';
 
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "disconnectnode",
@@ -309,7 +309,7 @@ nodeAddr='127.0.0.1:14038';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getaddednodeinfo",
@@ -369,7 +369,7 @@ N. | Name | Default |  Description
 ## getnettotals
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getnettotals",
@@ -422,7 +422,7 @@ None. |
 ## getnetworkinfo
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getnetworkinfo",
@@ -501,7 +501,7 @@ cmd='add'
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "setban",
@@ -557,7 +557,7 @@ remove | Removes node from ban list
 ## listbanned
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "listbanned",
@@ -613,7 +613,7 @@ None. |
 ## clearbanned
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "clearbanned",

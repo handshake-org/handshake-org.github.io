@@ -16,7 +16,7 @@ hsw-cli --id=$id tx $hash
 ```
 
 ```shell--curl
-curl $walleturl/$id/tx/$hash
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/$hash
 ```
 
 ```javascript
@@ -126,7 +126,7 @@ hash="a97a9993389ae321b263dffb68ba1312ad0655da83aeca75b2372d5abc70544a"
 ```
 
 ```shell--curl
-curl $walleturl/$id/tx/$hash \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/$hash \
   -X DELETE
 ```
 
@@ -161,7 +161,7 @@ hsw-cli --id=$id history
 ```
 
 ```shell--curl
-curl $walleturl/$id/tx/history
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/history
 ```
 
 ```javascript
@@ -274,7 +274,7 @@ hsw-cli --id=$id pending
 ```
 
 ```shell--curl
-curl $walleturl/$id/tx/unconfirmed
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/unconfirmed
 ```
 
 ```javascript
@@ -326,7 +326,7 @@ end="1527186612"
 ```
 
 ```shell--curl
-curl $walleturl/$id/tx/range?start=$start'&'end=$end
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/range?start=$start'&'end=$end
 ```
 
 ```javascript

@@ -3,7 +3,7 @@
 ## getmempoolinfo
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getmempoolinfo"
@@ -66,7 +66,7 @@ verbose=1;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getmempoolancestors",
@@ -171,7 +171,7 @@ verbose=1;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getmempooldescendants",
@@ -275,7 +275,7 @@ txhash='0e690d6655767c8b388e7403d13dc9ebe49b68e3bd46248c840544f9da87d1e8';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getmempoolentry",
@@ -349,7 +349,7 @@ verbose=1;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getrawmempool",
@@ -445,7 +445,7 @@ feeDelta=1000;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "prioritisetransaction",
@@ -507,7 +507,7 @@ nblocks=10;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "estimatefee",
@@ -564,7 +564,7 @@ nblocks=10;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "estimatepriority",
@@ -621,7 +621,7 @@ nblocks=10;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "estimatesmartfee",
@@ -681,7 +681,7 @@ nblocks=10;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "estimatesmartpriority",

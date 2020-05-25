@@ -3,7 +3,7 @@
 ## getnameinfo
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{ "method": "getnameinfo", "params": [ '$name'] }'
 ```
@@ -501,7 +501,7 @@ hsd-rpc getdnssecproof "$name"
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
     -X POST \
     --data '{"method":"getdnssecproof","params":["'$name'"]}'
 ```

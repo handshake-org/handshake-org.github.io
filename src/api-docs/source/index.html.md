@@ -53,10 +53,6 @@ The default hsd HTTP server listens on port (`12037` for main, `13037` for testn
 ```shell--curl
 # default regtest port is 14037 (may be reconfigured by user), API key is required in URL
 curl http://x:api-key@127.0.0.1:14037/
-
-# examples in these docs will use an environment variable:
-url=http://x:api-key@127.0.0.1:14037/
-curl $url
 ```
 
 ```shell--cli

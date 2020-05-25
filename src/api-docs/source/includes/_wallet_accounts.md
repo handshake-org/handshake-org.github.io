@@ -49,7 +49,7 @@ id='primary'
 ```
 
 ```shell--curl
-curl $walleturl/$id/account
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/account
 ```
 
 ```shell--cli
@@ -110,7 +110,7 @@ account='default'
 ```
 
 ```shell--curl
-curl $walleturl/$id/account/$account
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/account/$account
 ```
 
 ```shell--cli
@@ -196,7 +196,7 @@ hsw-cli --id=$id account create --name=$name --type=$type --passphrase=$passphra
 ```
 
 ```shell--curl
-curl $walleturl/$id/account/$name \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/account/$name \
     -X PUT \
     --data '{"type": "'$type'", "passphrase": "'$passphrase'"}'
 ```

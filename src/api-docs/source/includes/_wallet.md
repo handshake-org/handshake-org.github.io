@@ -80,7 +80,7 @@ token='17715756779e4a5f7c9b26c48d90a09d276752625430b41b5fcf33cf41aa7615'
 ```
 
 ```shell--curl
-curl $walleturl/$id?token=$token
+curl http://x:api-key@127.0.0.1:14039/wallet/$id?token=$token
 ```
 
 ```shell--cli
@@ -154,10 +154,6 @@ id="primary"
 
 ```shell--curl
 curl http://x:api-key@127.0.0.1:14039/wallet # will list regtest (default port 14039) wallets
-
-# examples in these docs will use an environment variable:
-walleturl=http://x:api-key@127.0.0.1:14039/wallet/
-curl $walleturl/$id
 ```
 
 ```shell--cli
@@ -253,7 +249,7 @@ witness=false
 watchOnly=true
 accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
 
-curl $walleturl/$id \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id \
   -X PUT \
   --data '{"witness":'$witness', "passphrase":"'$passphrase'", "watchOnly": '$watchOnly', "accountKey":"'$accountKey'"}'
 ```
@@ -363,7 +359,7 @@ hsw-cli retoken --id=$id --passphrase=$passphrase
 ```
 
 ```shell--curl
-curl $walleturl/$id/retoken \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/retoken \
   -X POST \
   --data '{"passphrase":"'$passphrase'"}'
 ```
@@ -417,7 +413,7 @@ id='primary'
 ```
 
 ```shell--curl
-curl $walleturl/$id
+curl http://x:api-key@127.0.0.1:14039/wallet/$id
 ```
 
 ```shell--cli
@@ -491,7 +487,7 @@ id='primary'
 ```
 
 ```shell--curl
-curl $walleturl/$id/master
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/master
 ```
 
 ```shell--cli
@@ -582,7 +578,7 @@ newPass='789secret'
 ```
 
 ```shell--curl
-curl $walleturl/$id/passphrase \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/passphrase \
   -X POST \
   --data '{"old":"'$oldPass'", "passphrase":"'$newPass'"}'
 ```
@@ -649,7 +645,7 @@ rate=500
 value=1000
 address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
 
-curl $walleturl/$id/send \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/send \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -802,7 +798,7 @@ rate=500
 value=5000000
 address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap
 
-curl $walleturl/$id/create \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/create \
   -X POST \
   --data '{
     "passphrase":"'$passphrase'",
@@ -949,7 +945,7 @@ hsw-cli sign --id=$id --passphrase=$passphrase --tx=$tx
 ```
 
 ```shell--curl
-curl $walleturl/$id/sign \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/sign \
   -X POST \
   --data '{"tx": "'$tx'", "passphrase":"'$passphrase'"}'
 ```
@@ -1060,7 +1056,7 @@ id="primary"
 account="default"
 age=259200 # 72 hours
 
-curl $walleturl/$id/zap \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/zap \
   -X POST \
   --data '{
     "account": "'$account'",
@@ -1140,7 +1136,7 @@ hsw-cli unlock --id=$id $pass $timeout
 ```
 
 ```shell--curl
-curl $walleturl/$id/unlock \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/unlock \
   -X POST \
   --data '{"passphrase":"'$pass'", "timeout": '$timeout'}'
 ```
@@ -1205,7 +1201,7 @@ hsw-cli lock --id=$id
 ```
 
 ```shell--curl
-curl $walleturl/$id/lock \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/lock \
   -X POST
 ```
 
@@ -1267,11 +1263,11 @@ hsw-cli --id=$watchid --account=$account import $pubkey
 ```
 
 ```shell--curl
-curl $walleturl/$id/import \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/import \
   -X POST \
   --data '{"account":"'$account'", "privateKey":"'$privkey'"}'
   
-curl $walleturl/$watchid/import \
+curl http://x:api-key@127.0.0.1:14039/wallet/$watchid/import \
   -X POST \
   --data '{"account":"'$account'", "publicKey":"'$pubkey'"}'
 ```
@@ -1351,7 +1347,7 @@ hsw-cli watch --id=$id --account=$account $address
 ```
 
 ```shell--curl
-curl $walleturl/$id/import \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/import \
   -X POST \
   --data '{"account":"'$account'", "address":"'$address'"}'
 ```
@@ -1408,7 +1404,7 @@ id="primary"
 ```
 
 ```shell--curl
-curl $walleturl/$id/block
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/block
 ```
 
 ```shell--cli
@@ -1465,7 +1461,7 @@ hsw-cli --id=$id block $height
 ```
 
 ```shell--curl
-curl $walleturl/$id/block/$height
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/block/$height
 ```
 
 ```javascript
@@ -1529,7 +1525,7 @@ hsw-cli --id=$id --account=$account shared add $key
 ```
 
 ```shell--curl
-curl $walleturl/$id/shared-key \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/shared-key \
   -X PUT \
   --data '{"accountKey": "'$key'", "account": "'$account'"}'
 ```
@@ -1599,7 +1595,7 @@ hsw-cli --id=$id --account=$account shared remove $key
 ```
 
 ```shell--curl
-curl $walleturl/$id/shared-key \
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/shared-key \
   -X DELETE \
   --data '{"accountKey": "'$key'", "account": "'$account'"}'
 ```
@@ -1670,7 +1666,7 @@ hsw-cli --id=$id key $address
 ```
 
 ```shell--curl
-curl $walleturl/$id/key/$address
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/key/$address
 ```
 
 ```javascript
@@ -1734,7 +1730,7 @@ hsw-cli --id=$id --passphrase=$passphrase dump $address
 ```
 
 ```shell--curl
-curl $walleturl/$id/wif/$address?passphrase=$passphrase
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/wif/$address?passphrase=$passphrase
 ```
 
 ```javascript
@@ -1792,7 +1788,7 @@ hsw-cli --id=$id --account=$account address
 ```
 
 ```shell--curl
-curl $walleturl/$id/address -X POST --data '{"account":"'$account'"}'
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/address -X POST --data '{"account":"'$account'"}'
 ```
 
 ```javascript
@@ -1860,7 +1856,7 @@ hsw-cli --id=$id --account=$account change
 ```
 
 ```shell--curl
-curl $walleturl/$id/change -X POST --data '{"account":"'$account'"}'
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/change -X POST --data '{"account":"'$account'"}'
 ```
 
 ```javascript
@@ -1927,7 +1923,7 @@ hsw-cli --id=$id nested --account=$account
 ```
 
 ```shell--curl
-curl $walleturl/$id/nested -X POST --data '{"account": "'$account'"}'
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/nested -X POST --data '{"account": "'$account'"}'
 ```
 
 ```javascript
@@ -1992,7 +1988,7 @@ hsw-cli --id=$id balance --account=$account
 ```
 
 ```shell--curl
-curl $walleturl/$id/balance?account=$account
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/balance?account=$account
 ```
 
 ```javascript
@@ -2053,7 +2049,7 @@ id="primary"
 ```
 
 ```shell--curl
-curl $walleturl/$id/coin
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/coin
 ```
 
 ```shell--cli
@@ -2136,7 +2132,7 @@ index="0"
 ```
 
 ```shell--curl
-curl $walleturl/$id/locked/$hash/$index -X PUT
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/locked/$hash/$index -X PUT
 ```
 
 ```javascript
@@ -2202,7 +2198,7 @@ index="0"
 ```
 
 ```shell--curl
-curl $walleturl/$id/locked/$hash/$index -X DELETE
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/locked/$hash/$index -X DELETE
 ```
 
 ```javascript
@@ -2267,7 +2263,7 @@ id="primary"
 ```
 
 ```shell--curl
-curl $walleturl/$id/locked
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/locked
 ```
 
 ```javascript
@@ -2332,7 +2328,7 @@ hsd-cli coin $hash $index
 ```
 
 ```shell--curl
-curl $walleturl/$id/coin/$hash/$index
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/coin/$hash/$index
 ```
 
 ```javascript

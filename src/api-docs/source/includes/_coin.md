@@ -28,7 +28,7 @@ index=0;
 ```
 
 ```shell--curl
-curl $url/coin/$hash/$index
+curl http://x:api-key@127.0.0.1:14037/coin/$hash/$index
 ```
 
 ```shell--cli
@@ -98,7 +98,7 @@ address='rs1qpu06wprkwleh579mureghcasjhu9uwge6pltn5';
 ```
 
 ```shell--curl
-curl $url/coin/address/$address
+curl http://x:api-key@127.0.0.1:14037/coin/address/$address
 ```
 
 ```shell--cli
@@ -189,7 +189,7 @@ address1='rs1qcxuurryemelaj64k6rswn8x9aa8nd9nafa47ag';
 ```
 
 ```shell--curl
-curl $url/coin/address \
+curl http://x:api-key@127.0.0.1:14037/coin/address \
   -H 'Content-Type: application/json' \
   -X POST \
   --data '{ "addresses":[ "'$address0'", "'$address1'" ]}'
