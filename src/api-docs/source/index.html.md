@@ -45,7 +45,120 @@ search: true
 
 Welcome to the hsd API!
 
-The default hsd HTTP server listens on port (`12037` for main, `13037` for testnet, `14037` for regtest, and `15037` for simnet). It exposes a REST JSON, as well as a JSON-RPC API.
+hsd is a fork of [bcoin](https://github.com/bcoin-org/bcoin) and so if you are familiar with it,
+you'll find that the API is very similar to the [bcoin API](http://bcoin.io/api-docs/).
+bcoin was released with a JSON-RPC API that was based on the Bitcoin Core RPC interface.
+The actual Bitcoin Core RPC API has changed a lot since then, but if you are familiar with
+using bitcoind, you'll find a lot of the same RPC calls available in hsd.
+
+**There are four API servers in hsd**
+
+The full node and the wallet are separate processes in hsd, and their API servers run on separate ports.
+
+Network   | Wallet API Port | Node API Port
+--------- | --------------- | -------------
+main      | 12039           | 12037
+testnet   | 13039           | 13037
+regtest   | 14039           | 14037
+simnet    | 15039           | 15037
+
+In addition, each server has two API formats: JSON-RPC and a RESTful HTTP API.
+In general, the HTTP APIs respond to `GET` requests and the RPC APIs respond to
+`POST` requests. There are exceptions, so be sure to read the docs carefully.
+
+**Examples:**
+
+**Get a [transaction by hash](#get-tx-by-txhash) from the full node HTTP API:**
+
+<code>
+curl http://x:api-key@127.0.0.1:14037/tx/4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f
+</code>
+
+**Get a [raw transaction by hash](#getrawtransaction) from the full node RPC API:**
+
+<code>
+curl http://x:api-key@127.0.0.1:14037
+  -X POST
+  --data '{
+    "method": "getrawtransaction",
+    "params": [ "4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f"]
+  }'
+</code>
+
+**Get a [transaction by hash](#get-wallet-tx-details) from the "primary" wallet HTTP API:**
+
+<code>
+curl http://x:api-key@127.0.0.1:14039/wallet/primary/tx/4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f
+</code>
+
+**Get a [transaction by hash](#gettransaction) from the wallet RPC API:**
+
+<code>
+curl http://x:api-key@127.0.0.1:14039
+  -X POST
+  --data '{
+    "method": "gettransaction",
+    "params": [ "4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f" ]
+  }'
+</code>
+
+**Indexing**
+
+hsd has two indexer modules that are inactive by default. When turned on, the indexers
+enable additional API calls.
+
+Transaction indexer: enabled by `--index-tx=true`. Allows lookup of arbitrary transactions
+by their hash (txid). When disabled, the wallet still tracks all of its own transactions
+by hash and the full node can still be used to look up UTXO (unspent transaction outputs).
+
+Address indexer: enabled by `--index-address=true`. Allows lookup of all transactions
+involving a certain address.
+
+
+**Wallet: BIP44**
+
+The hsd wallet follows a [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)
+structure with cointype `5353` for mainnet. A single hsd instance can have multiple BIP44
+wallets in its database.
+
+The hierarchy looks like this:
+
+`WalletDB`: A levelDB database stored in a `/wallet` directory, accessed by the wallet module
+plugged-in by default to the full node. Can process transactions for multiple wallets.
+
+`Wallet`: A BIP44 wallet based on 128 or 256 bits of entropy and backed up by a 12- or 24-
+word phrase. Multiple accounts can be derived from a single wallet.
+
+`Account`: A branch of a BIP44 wallet. Multiple addresses can be derived from a single
+account, and the wallet can be configured to spend coins from a single specified account.
+
+`Address`: A hash of a public key or script that can be given to a counterparty with the intent
+of receiving funds.
+
+
+**Wallet: rpc selectwallet vs --id=...**
+
+The wallet RPC module is STATEFUL, and is always focused on one single wallet.
+On boot, the `primary` wallet and its `default` account are the target of all
+wallet RPC calls. To switch wallets, the client must call [rpc selectwallet <wallet>](#selectwallet)
+before making the command for that specific wallet.
+
+The wallet HTTP module is NOT stateful, meaning API calls can target any wallet,
+specified on-the-fly by adding the command line argument `--id=<wallet>`
+
+**Wallet: recovery**
+
+There are [known issues](https://github.com/bcoin-org/bcoin/issues/835) with the hsd
+wallet that may make wallet recovery difficult in some cases. The fact that addresses can
+be imported (or "watched") adds to the [possible failure states](https://github.com/handshake-org/hsd/issues/218)
+during recovery.
+
+In addition, Handshake wallet users should be careful when recovering a wallet
+that is bidding on in-progress auctions. Because BIDs are BLINDED on the blockchain,
+they can not be recovered using the BIP44 process (which is computed exclusively with
+a seed phrase plus blockchain data). [This issue is well-known](https://github.com/handshake-org/hsd/issues/378)
+and some solutions have been proposed to assist in wallet recovery of blinded bid data.
+
 
 # Authentication
 ## Auth
