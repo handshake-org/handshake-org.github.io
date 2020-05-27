@@ -173,8 +173,3 @@ $ HSD_NETWORK=testnet HSD_HTTP_HOST=0.0.0.0 HSD_WALLET_HTTP_HOST=0.0.0.0 HSD_WAL
 - `no-auth`: Disable auth for API server and wallets (default: false).
 - `wallet-auth`: Enable token auth for wallets (default: false).
 - `admin-token`: Token required if `wallet-auth` is enabled: restricts access to [all wallet admin routes.](https://handshake-org.github.io/api-docs/#wallet-admin-commands)
-
-
-## Sample Config Files
-
-See https://github.com/handshake-org/hsd/blob/master/etc/sample.conf
