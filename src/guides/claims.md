@@ -113,7 +113,7 @@ by calling `sendupdate` on your claimed name.
 
 ``` bash
 $ hsw-cli rpc sendupdate example \
-  '{"ttl":3600,"canonical":"icanhazip.com."}'
+  '{"records": [{"type":"NS", "ns":"icanhazip.com."}] }'
 ```
 
 ### Creating a proof by hand
