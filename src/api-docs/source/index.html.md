@@ -51,9 +51,50 @@ bcoin was released with a JSON-RPC API that was based on the Bitcoin Core RPC in
 The actual Bitcoin Core RPC API has changed a lot since then, but if you are familiar with
 using bitcoind, you'll find a lot of the same RPC calls available in hsd.
 
+```
+# Examples:
+
+# Get a transaction by hash from the full node HTTP API:
+
+
+curl http://x:api-key@127.0.0.1:14037/tx/\
+  4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f
+
+
+# Get a raw transaction by hash from the full node RPC API:
+
+
+curl http://x:api-key@127.0.0.1:14037 \
+  -X POST \
+  --data '{ \
+    "method": "getrawtransaction", \
+    "params": [ "4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f"] \
+  }'
+
+
+# Get a transaction by hash from the "primary" wallet HTTP API:
+
+
+curl http://x:api-key@127.0.0.1:14039/wallet/primary/tx/\
+  4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f
+
+
+# Get a transaction by hash from the wallet RPC API:
+
+
+curl http://x:api-key@127.0.0.1:14039 \
+  -X POST \
+  --data '{ \
+    "method": "gettransaction", \
+    "params": [ "4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f" ] \
+  }'
+```
+
 **There are four API servers in hsd**
 
-The full node and the wallet are separate processes in hsd, and their API servers run on separate ports.
+The full node and the wallet are separate modules in hsd, and their API servers run on separate ports.
+The wallet is configured as a plug-in by default but can actually be run as a separate process
+(even on a remote server) using websockets and HTTP requests to sync with the full node.
 
 Network   | Wallet API Port | Node API Port
 --------- | --------------- | -------------
@@ -63,44 +104,10 @@ regtest   | 14039           | 14037
 simnet    | 15039           | 15037
 
 In addition, each server has two API formats: JSON-RPC and a RESTful HTTP API.
-In general, the HTTP APIs respond to `GET` requests and the RPC APIs respond to
-`POST` requests. There are exceptions, so be sure to read the docs carefully.
-
-**Examples:**
-
-**Get a [transaction by hash](#get-tx-by-txhash) from the full node HTTP API:**
-
-<code>
-curl http://x:api-key@127.0.0.1:14037/tx/4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f
-</code>
-
-**Get a [raw transaction by hash](#getrawtransaction) from the full node RPC API:**
-
-<code>
-curl http://x:api-key@127.0.0.1:14037
-  -X POST
-  --data '{
-    "method": "getrawtransaction",
-    "params": [ "4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f"]
-  }'
-</code>
-
-**Get a [transaction by hash](#get-wallet-tx-details) from the "primary" wallet HTTP API:**
-
-<code>
-curl http://x:api-key@127.0.0.1:14039/wallet/primary/tx/4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f
-</code>
-
-**Get a [transaction by hash](#gettransaction) from the wallet RPC API:**
-
-<code>
-curl http://x:api-key@127.0.0.1:14039
-  -X POST
-  --data '{
-    "method": "gettransaction",
-    "params": [ "4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f" ]
-  }'
-</code>
+Much of the functionality is duplicated between the HTTP API and RPC API.
+Note that if multiple user-agents are using the wallet at the same time,
+the wallet RPC API is not safe as it maintains global state (more on this below)
+It is recommended to use the wallet HTTP API in multiprocess/multithreaded environments.
 
 **Indexing**
 
@@ -110,6 +117,8 @@ enable additional API calls.
 Transaction indexer: enabled by `--index-tx=true`. Allows lookup of arbitrary transactions
 by their hash (txid). When disabled, the wallet still tracks all of its own transactions
 by hash and the full node can still be used to look up UTXO (unspent transaction outputs).
+The UTXOs are indexed by outpoint, which is the transaction ID that created the UTXO
+along with its index in that transaction.
 
 Address indexer: enabled by `--index-address=true`. Allows lookup of all transactions
 involving a certain address.
@@ -123,7 +132,7 @@ wallets in its database.
 
 The hierarchy looks like this:
 
-`WalletDB`: A levelDB database stored in a `/wallet` directory, accessed by the wallet module
+`WalletDB`: A levelDB database stored in a `wallet` directory, accessed by the wallet module
 plugged-in by default to the full node. Can process transactions for multiple wallets.
 
 `Wallet`: A BIP44 wallet based on 128 or 256 bits of entropy and backed up by a 12- or 24-
@@ -133,7 +142,11 @@ word phrase. Multiple accounts can be derived from a single wallet.
 account, and the wallet can be configured to spend coins from a single specified account.
 
 `Address`: A hash of a public key or script that can be given to a counterparty with the intent
-of receiving funds.
+of receiving funds. There are two types of outputs currently defined for witness version 0:
+Pay-to-Witness-Pubkeyhash has a 20 byte hash of a public key and can be spent if the owner
+reveals the public key and provides a signature from the corresponding private key.
+Pay-to-Witness-Scripthash has a 32 byte hash of a script and can be spent if the owner
+reveals the script along with any additional data required to satisfy the script.
 
 
 **Wallet: rpc selectwallet vs --id=...**
