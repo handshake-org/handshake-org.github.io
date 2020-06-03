@@ -853,6 +853,9 @@
                   <li>
                     <a href="#importnonce" class="toc-h2 toc-link" data-title="RPC Calls - Wallet Auctions">importnonce</a>
                   </li>
+                  <li>
+                    <a href="#importname" class="toc-h2 toc-link" data-title="RPC Calls - Wallet Auctions">importname</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -13501,6 +13504,63 @@ the name transfer. This renders the name&#39;s output forever unspendable, and p
 <td>value</td>
 <td>Required</td>
 <td>value of the bid (in HNS)</td>
+</tr>
+</tbody></table>
+<h2 id='importname'>importname</h2><pre class="highlight shell tab-shell--vars"><code><span class="nv">name</span><span class="o">=</span><span class="s1">'test-txt'</span>
+<span class="nv">height</span><span class="o">=</span>100
+</code></pre><pre class="highlight shell tab-shell--cli"><code>hsw-rpc importname <span class="nv">$name</span> <span class="nv">$height</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">clientOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">network</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="s1">'api-key'</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'importname'</span><span class="p">,</span> <span class="p">[</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">height</span> <span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre>
+<blockquote>
+<p>importname adds a name to the wallet without sending a transaction</p>
+</blockquote>
+<pre class="highlight plaintext"><code>null
+</code></pre>
+<p>Add a name to the wallet &quot;watchlist&quot; without sending a transaction. Optionally
+rescan the blockchain to recover OPEN and BIDs for the name. This action will
+fail if the name already exists in the wallet.</p>
+
+<p>The purpose of this action is to &quot;subscribe&quot; to BIDs for a name auction <em>before</em>
+participating in that auction. If a user is interested in BIDs that have already
+been placed on a name they are interested in bidding on themselves, they may
+execute this RPC call and include a <code>height</code> parameter, which should be any block
+<em>before</em> the OPEN for the name was confirmed. The OPEN transaction <em>must</em> be included
+in the rescan or the wallet will not track BIDs on the name.</p>
+
+<p>Once the auction is rescanned, <a href="#getbids"><code>rpc getbids</code></a> can be used to return
+all current BIDs on a name, even if the wallet has not placed any BIDs itself.</p>
+<h3 id='params-15'>Params</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>Required</td>
+<td>name to import</td>
+</tr>
+<tr>
+<td>height</td>
+<td>Optional</td>
+<td>if present, perform a wallet rescan from specified height</td>
 </tr>
 </tbody></table>
 <h1 id='rpc-calls-wallet'>RPC Calls - Wallet</h1><pre class="highlight shell tab-shell--curl"><code><span class="c"># Examples in these docs will use a DIFFERENT environment variable</span>

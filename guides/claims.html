@@ -105,7 +105,7 @@ example.com. 1800 IN RRSIG TXT 5 2 1800 20190615140933 20180615131108 ...</code>
 <p>This will create and broadcast the proof to all of your peers, ultimately ending up in a miner’s mempool. Your claim should be mined within 5-20 minutes. Once mined, you must wait 4,320 blocks (approx. 30 days) before your claim is considered “mature”.</p>
 <p>Once the claim has reached maturity, you are able to bypass the auction process by calling <code>sendupdate</code> on your claimed name.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="ex">hsw-cli</span> rpc sendupdate example \</span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="st">&#39;{&quot;ttl&quot;:3600,&quot;canonical&quot;:&quot;icanhazip.com.&quot;}&#39;</span></span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="st">&#39;{&quot;records&quot;: [{&quot;type&quot;:&quot;NS&quot;, &quot;ns&quot;:&quot;icanhazip.com.&quot;}] }&#39;</span></span></code></pre></div>
 <h3 id="creating-a-proof-by-hand">Creating a proof by hand</h3>
 <p>If you already have DNSSEC setup, you can avoid publishing a TXT record publicly by creating the proof locally. This requires that you have direct access to your zone-signing keys. The private keys themselves must be stored in BIND’s private key format (v1.3) and naming convention.</p>
 <p>We use [bns] for this task, which includes a command-line tool for creating ownership proofs.</p>
