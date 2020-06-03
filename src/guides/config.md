@@ -174,7 +174,26 @@ $ HSD_NETWORK=testnet HSD_HTTP_HOST=0.0.0.0 HSD_WALLET_HTTP_HOST=0.0.0.0 HSD_WAL
 - `wallet-auth`: Enable token auth for wallets (default: false).
 - `admin-token`: Token required if `wallet-auth` is enabled: restricts access to [all wallet admin routes.](https://handshake-org.github.io/api-docs/#wallet-admin-commands)
 
+### Example configuration file
 
-## Sample Config Files
+The following file could be placed at `~/.hsd/hsd.conf` for use with a mainnet hsd node.
+It could (for example) be placed at `~/.hsd/testnet/hsd.conf` if the node is started with `hsd --network=testnet`.
+All the settings in the example below are defaults, meaning you do NOT need to use
+this `hsd.conf` if you do not need to change any of the values. It is
+provided only as an example of the configuration file syntax:
 
-See https://github.com/handshake-org/hsd/blob/master/etc/sample.conf
+- Configuration options are newline delimited.
+- The key/value pairs are delimited by a colon.
+- All options can be set via command line, environment variable or the config file.
+(See top of page)
+
+```
+max-inbound: 8
+max-outbound: 8
+log-level: debug
+prune: false
+checkpoints: true
+rs-port: 5350
+```
+
+
