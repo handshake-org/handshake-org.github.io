@@ -35,6 +35,7 @@
     <li><a id="guides-auctions"   href="/guides/auctions.html">Name Auctions</a></li>
     <li><a id="guides-wallet"   href="/guides/wallet.html">Wallet Setup</a></li>
     <li><a id="guides-protocol"   href="/guides/protocol.html">Protocol Summary</a></li>
+    <li><a id="guides-resource"   href="/guides/resource-records.html">HNS Resource Records</a></li>
   </ul>
   <ul>
     <li><strong>DOCUMENTATION</strong></li>
@@ -215,8 +216,19 @@ http-host: 0.0.0.0</code></pre>
 <li><code>wallet-auth</code>: Enable token auth for wallets (default: false).</li>
 <li><code>admin-token</code>: Token required if <code>wallet-auth</code> is enabled: restricts access to <a href="https://handshake-org.github.io/api-docs/#wallet-admin-commands">all wallet admin routes.</a></li>
 </ul>
-<h2 id="sample-config-files">Sample Config Files</h2>
-<p>See https://github.com/handshake-org/hsd/blob/master/etc/sample.conf</p>
+<h3 id="example-configuration-file">Example configuration file</h3>
+<p>The following file could be placed at <code>~/.hsd/hsd.conf</code> for use with a mainnet hsd node. It could (for example) be placed at <code>~/.hsd/testnet/hsd.conf</code> if the node is started with <code>hsd --network=testnet</code>. All the settings in the example below are defaults, meaning you do NOT need to use this <code>hsd.conf</code> if you do not need to change any of the values. It is provided only as an example of the configuration file syntax:</p>
+<ul>
+<li>Configuration options are newline delimited.</li>
+<li>The key/value pairs are delimited by a colon.</li>
+<li>All options can be set via command line, environment variable or the config file. (See top of page)</li>
+</ul>
+<pre><code>max-inbound: 8
+max-outbound: 8
+log-level: debug
+prune: false
+checkpoints: true
+rs-port: 5350</code></pre>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>
