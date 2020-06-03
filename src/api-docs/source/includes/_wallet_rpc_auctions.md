@@ -1347,3 +1347,60 @@ Name | Default |  Description
 name | Required | name to bid on
 address | Required | address submitting the bid
 value | Required | value of the bid (in HNS)
+
+
+## importname
+
+```shell--vars
+name='test-txt'
+height=100
+```
+
+```shell--cli
+hsw-rpc importname $name $height
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  network: network.type,
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const client = new WalletClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('importname', [ name, height ]);
+  console.log(result);
+})();
+```
+
+> importname adds a name to the wallet without sending a transaction
+
+```
+null
+```
+
+Add a name to the wallet "watchlist" without sending a transaction. Optionally
+rescan the blockchain to recover OPEN and BIDs for the name. This action will
+fail if the name already exists in the wallet.
+
+The purpose of this action is to "subscribe" to BIDs for a name auction *before*
+participating in that auction. If a user is interested in BIDs that have already
+been placed on a name they are interested in bidding on themselves, they may
+execute this RPC call and include a `height` parameter, which should be any block
+*before* the OPEN for the name was confirmed. The OPEN transaction *must* be included
+in the rescan or the wallet will not track BIDs on the name.
+
+Once the auction is rescanned, [`rpc getbids`](#getbids) can be used to return
+all current BIDs on a name, even if the wallet has not placed any BIDs itself.
+
+### Params
+Name | Default |  Description
+--------- | --------- | ---------
+name | Required | name to import
+height | Optional | if present, perform a wallet rescan from specified height
