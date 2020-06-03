@@ -112,6 +112,9 @@ and BIP44 and supports Handshake.
 &nbsp;\
 &nbsp;\
 
+### Graphical Interface
+There is a third party GUI [Bob wallet](https://github.com/kyokan/bob-wallet).
+
 <h2 id='examples'>Examples</h2>
 
 Command line examples against a local `hsd` server.
