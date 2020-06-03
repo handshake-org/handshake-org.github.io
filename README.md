@@ -77,6 +77,10 @@ Have an idea for a guide or tutorial? First head on over to the
 [GitHub issues](https://github.com/handshake-org/handshake-org.github.io/issues)
 and see if your idea is already posted. If not, create an issue.
 
+### Don't commit built files
+Pull requests should only include changes to files in the `src` directory.
+Releases will be done that build and deploy.
+
 ### Adding a New Guide
 To add a new guide, just a submit a pull request (PR) with a markdown
 file added to the `src/guides` directory in this repo (take a look at
