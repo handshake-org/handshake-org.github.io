@@ -1,11 +1,7 @@
 # RPC Calls - Wallet
 
 ```shell--curl
-# Examples in these docs will use a DIFFERENT environment variable
-# than the built-in hs-wallet API calls above:
-walletrpcurl=http://x:api-key@127.0.0.1:14039/
-
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "<method>", "params": [...] "id": "some-id" }'
 ```
@@ -75,7 +71,7 @@ id='primary'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "selectwallet",
@@ -124,7 +120,7 @@ N. | Name | Default |  Description
 ## getwalletinfo
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "getwalletinfo" }'
 ```
@@ -196,7 +192,7 @@ tx='0100000000024e61bc00000000001976a914fbdd46898a6d70a682cbd34420ccf0b6bb644937
 ```shell--curl
 options='{"changeAddress": "rs1qew8r8c2c74zpmkhwmxu6jkrhwmgegl5h6cfaz3", "feeRate": 0.001000}'
 
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "fundrawtransaction",
@@ -260,7 +256,7 @@ changeAddress | Handshake address for change output of transaction
 ## resendwallettransactions
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "resendwallettransactions" }'
 ```
@@ -321,7 +317,7 @@ tx='a0a65cd0508450e8acae76f35ae622e7b1e7980e95f50026b98b2c6e025dae6c'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "abandontransaction",
@@ -377,7 +373,7 @@ path='/home/user/WalletBackup'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "backupwallet",
@@ -434,7 +430,7 @@ address='rs1qew8r8c2c74zpmkhwmxu6jkrhwmgegl5h6cfaz3'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "dumpprivkey",
@@ -492,7 +488,7 @@ path='/home/user-1/secretfiles/dump1.txt'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "dumpwallet",
@@ -568,7 +564,7 @@ passphrase='bikeshed'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "encryptwallet",
@@ -628,7 +624,7 @@ account='default'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "getaccountaddress",
@@ -685,7 +681,7 @@ address='rs1qew8r8c2c74zpmkhwmxu6jkrhwmgegl5h6cfaz3'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "getaccount",
@@ -742,7 +738,7 @@ account='default'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "getaddressesbyaccount",
@@ -796,7 +792,7 @@ N. | Name | Default |  Description
 ## getbalance
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "getbalance" }'
 ```
@@ -850,7 +846,7 @@ account='default'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "getnewaddress",
@@ -899,7 +895,7 @@ N. | Name | Default |  Description
 ## getrawchangeaddress
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "getrawchangeaddress" }'
 ```
@@ -954,7 +950,7 @@ minconf=6
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "getreceivedbyaccount",
@@ -1015,7 +1011,7 @@ minconf=6
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "getreceivedbyaddress",
@@ -1074,7 +1070,7 @@ txid='36cbb7ad0cc98ca86640a04c485f164dd741c20339af34516d359ecba2892c21'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "gettransaction",
@@ -1144,7 +1140,7 @@ N. | Name | Default |  Description
 ## getunconfirmedbalance
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "getunconfirmedbalance" }'
 ```
@@ -1207,7 +1203,7 @@ rescan=false
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "importprivkey",
@@ -1267,7 +1263,7 @@ rescan=false
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "importwallet",
@@ -1325,7 +1321,7 @@ address='rs1qew8r8c2c74zpmkhwmxu6jkrhwmgegl5h6cfaz3'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "importaddress",
@@ -1390,7 +1386,7 @@ txoutproof='0000002006226e46111a0b59caaf126043eb5bbf28c34f3a5e332a1fc7b2b73cf188
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "importprunedfunds",
@@ -1452,7 +1448,7 @@ pubkey='02548e0a23b90505f1b4017f52cf2beeaa399fce7ff2961e29570c6afdfa9bfc5b'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "importpubkey",
@@ -1511,7 +1507,7 @@ watchonly=false
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "listaccounts",
@@ -1581,7 +1577,7 @@ unlock=false
 ```shell--curl
 outputs='[{ "txid": "3962a06342fc62a733700d74c075a5d24c4f44f7108f6d9a318b66e92e3bdc72", "vout": 1 }]'
 
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "lockunspent",
@@ -1637,7 +1633,7 @@ N. | Name | Default |  Description
 ## listlockunspent
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "listlockunspent" }'
 ```
@@ -1699,7 +1695,7 @@ watchOnly=true
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "listreceivedbyaccount",
@@ -1782,7 +1778,7 @@ watchOnly=false
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "listreceivedbyaddress",
@@ -1869,7 +1865,7 @@ watchOnly=false
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "listsinceblock",
@@ -1984,7 +1980,7 @@ account='hot'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "listtransactions",
@@ -2102,7 +2098,7 @@ maxconf=20
 addrs='["rs1q3qm3e6sxd0mzax54jx6p3th0p2adzxdx2tm3zl"]'
 
 
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "listunspent",
@@ -2176,7 +2172,7 @@ amount=0.0195
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "sendfrom",
@@ -2241,7 +2237,7 @@ subtractfee=false
 ```shell--curl
 outputs='{"rs1qkk62444euknkya4qws9cg3ej3au24n635n4qye": 0.123, "rs1qew8r8c2c74zpmkhwmxu6jkrhwmgegl5h6cfaz3": 0.321}'
 
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "sendmany",
@@ -2308,7 +2304,7 @@ subtractfee=true
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "sendtoaddress",
@@ -2368,7 +2364,7 @@ rate=0.001
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "settxfee",
@@ -2427,7 +2423,7 @@ message='Satoshi'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "signmessage",
@@ -2480,7 +2476,7 @@ N. | Name | Default |  Description
 ## walletlock
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "walletlock" }'
 ```
@@ -2536,7 +2532,7 @@ passphrase='CorrectHorseBatteryStaple'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "walletpassphrasechange",
@@ -2595,7 +2591,7 @@ timeout=600
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "walletpassphrase",
@@ -2653,7 +2649,7 @@ txid='6478cafe0c91e5ed4c55ade3b1726209caa0d290c8a3a84cc345caad60073ad5'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "removeprunedfunds",
@@ -2703,7 +2699,7 @@ N. | Name | Default |  Description
 ## wallet getmemoryinfo
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "getmemoryinfo" }'
 ```
@@ -2764,7 +2760,7 @@ level='debug'
 ```
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
     "method": "setloglevel",
@@ -2816,7 +2812,7 @@ N. | Name | Default |  Description
 ## wallet stop
 
 ```shell--curl
-curl $walletrpcurl \
+curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{ "method": "stop" }'
 ```

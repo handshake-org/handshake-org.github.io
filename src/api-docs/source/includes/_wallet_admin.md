@@ -2,10 +2,6 @@
 
 ```shell--curl
 curl http://x:api-key@127.0.0.1:14039 # will access admin functions for regtest (port 14039) wallets
-
-# examples in these docs will use an environment variable:
-walletadminurl=http://x:api-key@127.0.0.1:14039/
-curl $walletadminurl/<METHOD>
 ```
 
 Admin commands are simply commands not specific to any particular wallet,
@@ -28,7 +24,7 @@ height=50
 ```
 
 ```shell--curl
-curl $walletadminurl/rescan \
+curl http://x:api-key@127.0.0.1:14039/rescan \
   -X POST \
   --data '{"height": '$height'}'
 ```
@@ -70,7 +66,7 @@ Initiates a blockchain rescan for the walletdb. Wallets will be rolled back to t
 
 ## Wallet Resend
 ```shell--curl
-curl $walletadminurl/resend \
+curl http://x:api-key@127.0.0.1:14039/resend \
 -X POST
 ```
 
@@ -119,7 +115,7 @@ path='/home/user/walletdb-backup.ldb'
 ```
 
 ```shell--curl
-curl $walletadminurl/backup?path=$path \
+curl http://x:api-key@127.0.0.1:14039/backup?path=$path \
   -X POST
 ```
 
@@ -167,7 +163,7 @@ id='primary'
 ```
 
 ```shell--curl
-curl $walletadminurl/$id/master
+curl http://x:api-key@127.0.0.1:14039/$id/master
 ```
 
 ```shell--cli
@@ -247,7 +243,7 @@ id <br> _string_ | wallet id
 ## List all Wallets
 
 ```shell--curl
-curl $walletadminurl/wallet
+curl http://x:api-key@127.0.0.1:14039/wallet
 ```
 
 ```shell--cli

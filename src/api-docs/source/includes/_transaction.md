@@ -19,7 +19,7 @@ txhash='4674eb87021d9e07ff68cfaaaddfb010d799246b8f89941c58b8673386ce294f';
 ```
 
 ```shell--curl
-curl $url/tx/$txhash
+curl http://x:api-key@127.0.0.1:14037/tx/$txhash
 ```
 
 ```shell--cli
@@ -112,7 +112,7 @@ address='rs1qpu06wprkwleh579mureghcasjhu9uwge6pltn5';
 ```
 
 ```shell--curl
-curl $url/tx/address/$address
+curl http://x:api-key@127.0.0.1:14037/tx/address/$address
 ```
 
 ```shell--cli
@@ -217,7 +217,7 @@ address1='rs1qx38r5mjzlxfus9yx7nhx3mrg00sv75xc5mksk5';
 ```
 
 ```shell--curl
- curl $url/tx/address \
+ curl http://x:api-key@127.0.0.1:14037/tx/address \
   -H 'Content-Type: application/json' \
   -X POST \
   --data '{ "addresses":[ "'$address0'", "'$address1'" ]}'

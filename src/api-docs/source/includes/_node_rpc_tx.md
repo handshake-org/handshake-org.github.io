@@ -13,7 +13,7 @@ includemempool=1;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "gettxout",
@@ -74,7 +74,7 @@ N. | Name | Default |  Description
 ## gettxoutsetinfo
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "gettxoutsetinfo",
@@ -140,7 +140,7 @@ verbose=0;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getrawtransaction",
@@ -198,7 +198,7 @@ rawtx='000000000103858fc9d1c73d5250f2526ef71e17cb37d542d0fd7c8ddd061ab5f42ac47c5
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "decoderawtransaction",
@@ -306,7 +306,7 @@ script='76c014af92ad98c7f77559f96430dfef2a6805b87b24f888ac';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "decodescript",
@@ -367,7 +367,7 @@ rawtx='0100000001eaefefbd1f687ef4e861804aed59ef05e743ea85f432cc146f325d759a026ce
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "sendrawtransaction",
@@ -428,7 +428,7 @@ data='deadbeef';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "createrawtransaction",
@@ -513,7 +513,7 @@ privkey='ENced8VD7YWkzPC8FTJ3gTTq4pQhF2PF79QS51mgZq7BgCfiEP5A';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "signrawtransaction",
@@ -601,7 +601,7 @@ txid1='e66c029a755d326f14cc32f485ea43e705ef59ed4a8061e8f47e681fbdefefea';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "gettxoutproof",
@@ -660,7 +660,7 @@ proof='00000020e562d79a1ffb4f95926ed1c67baab26b7e73712369a61b134eb881205bd8110ef
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "verifytxoutproof",

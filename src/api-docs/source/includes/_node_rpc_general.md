@@ -1,7 +1,7 @@
 ## stop
 
 ```shell--curl
-curl $url/ \
+curl http://x:api-key@127.0.0.1:14037/ \
   -H 'Content-Type: application/json' \
   -X POST \
   --data '{ "method": "stop" }'
@@ -48,7 +48,7 @@ None. |
 ## getinfo
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{ "method": "getinfo" }'
 ```
@@ -112,7 +112,7 @@ None. |
 ## getmemoryinfo
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{ "method": "getmemoryinfo" }'
 ```
@@ -165,7 +165,7 @@ None. |
 ## setloglevel
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "setloglevel",
@@ -223,7 +223,7 @@ address='rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap';
 ```
 
 ```shell--curl
-curl $url/ \
+curl http://x:api-key@127.0.0.1:14037/ \
   -X POST \
   --data '{
     "method": "validateaddress",
@@ -291,7 +291,7 @@ pubkey2='034bc2280e68d3bdd0ef0664e0ad2949a467344d8e59e435fe2d9be81e39f70f76';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "createmultisig",
@@ -352,7 +352,7 @@ message='hello';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "signmessagewithprivkey",
@@ -413,7 +413,7 @@ message='hello';
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "verifymessage",
@@ -472,7 +472,7 @@ timestamp=1503058155;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "setmocktime",

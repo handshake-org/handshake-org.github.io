@@ -3,7 +3,7 @@
 ## getblockchaininfo
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{ "method": "getblockchaininfo" }'
 ```
@@ -75,7 +75,7 @@ None. |
 ## getbestblockhash
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{ "method": "getbestblockhash" }'
 ```
@@ -122,7 +122,7 @@ None. |
 
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{ "method": "getblockcount" }'
 ```
@@ -178,7 +178,7 @@ details=0;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getblock",
@@ -268,7 +268,7 @@ details=0;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getblockbyheight",
@@ -356,7 +356,7 @@ blockheight=50;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getblockhash",
@@ -414,7 +414,7 @@ verbose=1;
 ```
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getblockheader",
@@ -482,7 +482,7 @@ N. | Name | Default |  Description
 ## getchaintips
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getchaintips"
@@ -538,7 +538,7 @@ None. |
 ## getdifficulty
 
 ```shell--curl
-curl $url \
+curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{
     "method": "getdifficulty"
