@@ -238,7 +238,7 @@ $ hsw-cli --id=<wallet-id> account list
 Send HNS coins to an address
 
 *Be careful how you enter values and fee rates! Value and rate are expressed
-in satoshis when using cURL or Javascript. Value and rate are expressed in
+in dollarydoos when using cURL or Javascript. Value and rate are expressed in
 WHOLE HNS  when using CLI. Watch carefully how values are entered in the
 examples, all examples send the same amount when executed.*
 
