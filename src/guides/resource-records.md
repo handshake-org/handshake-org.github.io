@@ -9,6 +9,10 @@ so that proofs can be served to light clients.
 Each Handshake name stores a single `Resource` with the maximum size of
 512 bytes.
 
+Note that the blockchain records are designed to be referral-only, meaning
+you'll need a conventional nameserver running somewhere to host records like
+A, AAAA, CNAME, etc.
+
 ### Updating Resource Records
 
 To update the resource records associated with a name, the wallet RPC
