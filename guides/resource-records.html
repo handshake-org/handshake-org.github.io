@@ -62,6 +62,7 @@
 <h2 id="handshake-resource-record-guide">Handshake Resource Record Guide</h2>
 <p>Handshake has resource records that represent DNS resource records. Some of them map one-to-one with DNS resource record types, while others do not. These resource records are included in <code>REGISTER</code> or <code>UPDATE</code> outputs and written to the Urkel tree so that proofs can be served to light clients.</p>
 <p>Each Handshake name stores a single <code>Resource</code> with the maximum size of 512 bytes.</p>
+<p>Note that the blockchain records are designed to be referral-only, meaning you’ll need a conventional nameserver running somewhere to host records like A, AAAA, CNAME, etc.</p>
 <h3 id="updating-resource-records">Updating Resource Records</h3>
 <p>To update the resource records associated with a name, the wallet RPC command <code>sendupdate</code> is used. If the name is in a different wallet than the primary wallet, use the RPC command <code>selectwallet</code> before sending the update. The Node RPC method <code>verifyresource</code> can be used to check if the resource is valid before attempting to <code>sendupdate</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">hsw-cli</span> rpc sendupdate easyhandshake <span class="st">&#39;{&quot;records&quot;: []}&#39;</span></span></code></pre></div>
