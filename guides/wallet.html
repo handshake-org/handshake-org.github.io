@@ -160,7 +160,7 @@ List all accounts in a given wallet</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a>$ <span class="ex">hsw-cli</span> --id=<span class="op">&lt;</span>wallet-id<span class="op">&gt;</span> account list</span></code></pre></div>
 <p> <br />
 Send HNS coins to an address</p>
-<p><em>Be careful how you enter values and fee rates! Value and rate are expressed in satoshis when using cURL or Javascript. Value and rate are expressed in WHOLE HNS when using CLI. Watch carefully how values are entered in the examples, all examples send the same amount when executed.</em></p>
+<p><em>Be careful how you enter values and fee rates! Value and rate are expressed in dollarydoos when using cURL or Javascript. Value and rate are expressed in WHOLE HNS when using CLI. Watch carefully how values are entered in the examples, all examples send the same amount when executed.</em></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a>$ <span class="ex">hsw-cli</span> send --id=<span class="op">&lt;</span>wallet-id<span class="op">&gt;</span> --value=<span class="op">&lt;</span>number of WHOLE HNS<span class="op">&gt;</span> --address=<span class="op">&lt;</span>destination address<span class="op">&gt;</span> --passphrase=<span class="op">&lt;</span>passphrase<span class="op">&gt;</span></span></code></pre></div>
 <p> <br />
 Initiate blockchain rescan for walletdb. Necessary after importing a key or wallet. Wallets will be rolled back to the specified block height if provided.</p>
