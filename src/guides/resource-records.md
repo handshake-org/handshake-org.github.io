@@ -32,13 +32,13 @@ every 36 blocks.
 
 ### Resource Record Types
 
-- `DS`
-- `NS`
-- `GLUE4`
-- `GLUE6`
+- [`DS`](#ds)
+- [`NS`](#ns)
+- [`GLUE4`](#glue4)
+- [`GLUE6`](#glue6)
 - `SYNTH4`
 - `SYNTH6`
-- `TXT`
+- [`TXT`](#txt)
 
 #### `DS`
 

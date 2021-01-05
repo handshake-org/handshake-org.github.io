@@ -68,13 +68,13 @@
 <p>Note that there are no <code>records</code> being included in this example. When calling <code>sendupdate</code> for the first time after winning an auction, a <code>REGISTER</code> output is created along with a change output that includes the difference between the user’s bid and the second highest bid. Use the Node RPC <code>getnameresource</code> to view the resources for a name. Newly updated names will not reflect their records via DNS until a tree inverval is passed, which happens every 36 blocks.</p>
 <h3 id="resource-record-types">Resource Record Types</h3>
 <ul>
-<li><code>DS</code></li>
-<li><code>NS</code></li>
-<li><code>GLUE4</code></li>
-<li><code>GLUE6</code></li>
+<li><a href="#ds"><code>DS</code></a></li>
+<li><a href="#ns"><code>NS</code></a></li>
+<li><a href="#glue4"><code>GLUE4</code></a></li>
+<li><a href="#glue6"><code>GLUE6</code></a></li>
 <li><code>SYNTH4</code></li>
 <li><code>SYNTH6</code></li>
-<li><code>TXT</code></li>
+<li><a href="#txt"><code>TXT</code></a></li>
 </ul>
 <h4 id="ds"><code>DS</code></h4>
 <p>The <code>DS</code> Handshake resource record is the same as the DNS <code>DS</code> resource record. It it used for DNSSEC and is specified in <a href="http://tools.ietf.org/html/rfc4033">RFC 4033</a>, <a href="http://tools.ietf.org/html/rfc4034">RFC 4034</a> and <a href="http://tools.ietf.org/html/rfc4035">RFC 4035</a>. Its purpose it to enable secure delegation of zones by creating a chain of authentication between a parent and child zone. The <code>DS</code> record contains the hash of a <code>DNSKEY</code> resource record. It is inserted into the parent zone and the <code>DNSKEY</code> record is inserted into the child zone. The Handshake <code>DS</code> record must contain the fields <code>type</code>, <code>keyTag</code>, <code>algorithm</code>, <code>digestType</code> and <code>digest</code>. See <a href="https://tools.ietf.org/html/rfc4034">RFC 4034</a> for the definitions of these fields.</p>
