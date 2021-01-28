@@ -11,7 +11,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -93,7 +92,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -172,7 +170,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -272,7 +269,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -370,7 +366,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -426,7 +421,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -500,7 +494,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -589,7 +582,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -669,7 +661,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -822,7 +813,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -956,7 +946,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1075,7 +1064,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1147,7 +1135,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1211,7 +1198,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1279,7 +1265,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1358,7 +1343,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1417,7 +1401,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1470,7 +1453,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1536,7 +1518,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1606,7 +1587,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1675,7 +1655,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1739,7 +1718,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1797,7 +1775,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1865,7 +1842,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1907,72 +1883,6 @@ Parameter | Description
 --------- | -------------
 account <br>_string_ | BIP44 account to generate address from
 
-## Derive Nested Address
-
-```javascript
-let id, account;
-```
-
-```shell--vars
-id="witness1"
-account='default'
-```
-
-```shell--cli
-hsw-cli --id=$id nested --account=$account
-```
-
-```shell--curl
-curl http://x:api-key@127.0.0.1:14039/wallet/$id/nested -X POST --data '{"account": "'$account'"}'
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const walletOptions = {
-  network: network.type,
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const walletClient = new WalletClient(walletOptions);
-const wallet = walletClient.wallet(id);
-
-(async () => {
-  const result = await wallet.createNested(account);
-  console.log(result);
-})();
-```
-
-> Sample response
-
-```json
-{
-  "name": "default",
-  "account": 0,
-  "branch": 1,
-  "index": 6,
-  "publicKey": "0232b907306e5bea1899874b813aed4e82eace6cb75c2a039434ce81576cf299c7",
-  "script": null,
-  "address": "rs1q30ppv5gyrwpy4wyk0v6uzawxygdtvrpux8yrg2"
-}
-```
-
-Derive new nested p2sh receiving address for account. Note that this can't be done on a non-witness account otherwise you will receive the following error:
-
-`[error] (node) Cannot derive nested on non-witness account.`
-
-### HTTP Request
-
-`POST /wallet/:id/nested`
-
-### Post Paramters
-Paramter | Description
---------- | --------------
-account <br> _string_ | account to derive the nested address for (default='default')
-
 ## Get Balance
 ```javascript
 let id, account;
@@ -1997,7 +1907,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -2062,7 +1971,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -2141,7 +2049,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -2207,7 +2114,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -2272,7 +2178,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -2337,7 +2242,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
