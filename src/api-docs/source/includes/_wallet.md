@@ -2025,7 +2025,7 @@ const wallet = walletClient.wallet(id);
 }
 ```
 
-Get wallet or account balance. If no account option is passed, the call defaults to wallet balance (with account index of <nobr>`-1`</nobr>). Balance values for `unconfimred` and `confirmed` are expressed in subunits.
+Get wallet or account balance. If no account option is passed, the call defaults to wallet balance (with account index of <nobr>`-1`</nobr>). Balance values for `unconfirmed` and `confirmed` are expressed in subunits.
 
 ### HTTP Request
 
