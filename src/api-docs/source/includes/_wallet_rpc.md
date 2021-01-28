@@ -1175,13 +1175,6 @@ const walletClient = new WalletClient(walletOptions);
 ```
 
 Get the unconfirmed balance from the wallet.
-<aside class="notice">
-In hsd balances, <code>confirmed</code> refers to the total balance of coins
-confirmed in the blockchain. <code>unconfirmed</code> refers to that total
-IN ADDITION to any transactions still unconfirmed in the mempool.
-Another way to think about it is your <code>unconfirmed</code> balance is the
-FUTURE total value of your wallet after everything is confirmed.
-</aside>
 
 ### Params
 N. | Name | Default |  Description
