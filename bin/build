@@ -7,22 +7,21 @@ cd ../
 
 # convert .md to .html files
 echo 'converting markdown files to html...'
-rm -f ./*.html
-rm -rf ./install
-rm -rf ./guides
-mkdir -p ./install
-mkdir -p ./guides
+
+mkdir -p ./build/install
+mkdir -p ./build/guides
+cp -r ./static/* ./build
 
 for file in ./src/*.md
 do
     PREFIX=$(basename "$file" | cut -d. -f1)
-    pandoc $file -T $PREFIX -V "active-$PREFIX:true" -V "ghpath:$PREFIX" -V "pagetitle:$PREFIX" -w html5 -o "$PREFIX.html" --template ./src/templates/layout.html
+    pandoc $file -T $PREFIX -V "active-$PREFIX:true" -V "ghpath:$PREFIX" -V "pagetitle:$PREFIX" -w html5 -o "./build/$PREFIX.html" --template ./src/templates/layout.html
 done
 
 for file in ./src/guides/*.md
 do
     PREFIX=$(basename "$file" | cut -d. -f1)
-    pandoc $file -T $PREFIX -V "active-guides-$PREFIX:true" -V "ghpath:guides/$PREFIX" -V "pagetitle:$PREFIX" -w html5 -o ./guides/"$PREFIX.html" --template ./src/templates/layout.html
+    pandoc $file -T $PREFIX -V "active-guides-$PREFIX:true" -V "ghpath:guides/$PREFIX" -V "pagetitle:$PREFIX" -w html5 -o "./build/guides/$PREFIX.html" --template ./src/templates/layout.html
 done
 echo 'finished'
 
@@ -30,4 +29,4 @@ echo 'finished'
 echo 'building api documentation...'
 cd ./src/api-docs
 bundle install
-bundle exec middleman build --clean --build-dir=../../api-docs
+bundle exec middleman build --clean --build-dir=../../build/api-docs
