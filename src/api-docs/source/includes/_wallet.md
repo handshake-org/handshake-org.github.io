@@ -617,7 +617,7 @@ Change wallet passphrase. Encrypt if unencrypted.
 `POST /wallet/:id/passphrase`
 
 ### Body Parameters
-Paramters | Description
+Parameters | Description
 --------- | ---------------------
 old <br> _string_ | Old passphrase. Pass in empty string if none
 new <br> _string_ | New passphrase
@@ -912,7 +912,7 @@ Watch carefully how values are entered in the examples, all examples send the sa
 
 `POST /wallet/:id/create`
 
-### Post Paramters
+### Post Parameters
 Paramter | Description
 --------- | ----------------
 outputs <br> _array_ | An array of outputs to send for the transaction
@@ -1035,7 +1035,7 @@ Sign a templated transaction (useful for multisig).
 
 `POST /wallet/:id/sign`
 
-### Post Paramters
+### Post Parameters
 Parameter | Description
 ----------| -----------------
 tx <br> _string_ | the hex of the transaction you would like to sign
@@ -1321,7 +1321,7 @@ Note that imported keys do not exist anywhere in the wallet's HD tree. They can 
 
 `POST /wallet/:id/import`
 
-### Body Paramters
+### Body Parameters
 Paramter | Description
 -------- | -------------------------
 id <br> _string_ | id of target wallet to import key into
@@ -1388,7 +1388,7 @@ The HTTP endpoint is the same as for key imports.
 
 `POST /wallet/:id/import`
 
-### Body Paramters
+### Body Parameters
 Paramter | Description
 -------- | -------------------------
 id <br> _string_ | id of target wallet to import key into
@@ -1836,7 +1836,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 
 `POST /wallet/:id/address`
 
-### Post Paramters
+### Post Parameters
 Parameter | Description
 --------- | -------------
 account <br>_string_ | BIP44 account to generate address from
@@ -1902,7 +1902,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 
 `POST /wallet/:id/change`
 
-### Post Paramters
+### Post Parameters
 Parameter | Description
 --------- | -------------
 account <br>_string_ | BIP44 account to generate address from
@@ -1968,7 +1968,7 @@ Derive new nested p2sh receiving address for account. Note that this can't be do
 
 `POST /wallet/:id/nested`
 
-### Post Paramters
+### Post Parameters
 Paramter | Description
 --------- | --------------
 account <br> _string_ | account to derive the nested address for (default='default')
@@ -2031,9 +2031,9 @@ Get wallet or account balance. If no account option is passed, the call defaults
 
 `GET /wallet/:id/balance?account=:account`
 
-### Request Paramters
+### Request Parameters
 
-Paramters | Description
+Parameters | Description
 --------- | -------------
 id <br> _string_ | wallet id to get balance of
 account <br> _string_ | account name (optional, defaults to entire wallet balance)
@@ -2170,13 +2170,13 @@ Lock outpoints.
 `PUT /wallet/:id/locked/:hash/:index`
 
 ### Request Parameters
-Paramters | Description
+Parameters | Description
 ---------- | --------------
 id <br> _string_ | id of wallet that contains the outpoint
 hash <br> _string_ | hash of transaction that created the outpoint
 index <br> _string_ or _int_ | index of the output in the transaction being referenced
 
-### Body Paramters
+### Body Parameters
 Parameter | Description
 --------- | ------------
 passphrase <br> _string_ | passphrase of wallet being referenced
@@ -2236,13 +2236,13 @@ Unlock outpoints.
 `DEL /wallet/:id/locked/:hash/:index`
 
 ### Request Parameters
-Paramters | Description
+Parameters | Description
 ---------- | --------------
 id <br> _string_ | id of wallet that contains the outpoint
 hash <br> _string_ | hash of transaction that created the outpoint
 index <br> _string_ or _int_ | index of the output in the transaction being referenced
 
-### Body Paramters
+### Body Parameters
 Parameter | Description
 --------- | ------------
 passphrase <br> _string_ | passphrase of wallet being referenced
@@ -2304,7 +2304,7 @@ Get all locked outpoints.
 `GET /wallet/:id/locked`
 
 ### Request Parameters
-Paramters | Description
+Parameters | Description
 ---------- | --------------
 id <br> _string_ | id of wallet to check for outpoints
 
@@ -2372,7 +2372,7 @@ Get wallet coin
 `GET /wallet/:id/coin/:hash/:index`
 
 ### Request Parameters
-Paramters | Description
+Parameters | Description
 ---------- | --------------
 id <br> _string_ | id of wallet that contains the outpoint
 hash <br> _string_ | hash of transaction that created the outpoint
