@@ -353,25 +353,24 @@
 <span id="cb7-3"><a href="#cb7-3"></a><span class="kw">const</span> network <span class="op">=</span> <span class="va">Network</span>.<span class="at">get</span>(<span class="st">&#39;regtest&#39;</span>)<span class="op">;</span></span>
 <span id="cb7-4"><a href="#cb7-4"></a></span>
 <span id="cb7-5"><a href="#cb7-5"></a><span class="kw">const</span> clientOptions <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a>  <span class="dt">network</span><span class="op">:</span> <span class="va">network</span>.<span class="at">type</span><span class="op">,</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a>  <span class="dt">port</span><span class="op">:</span> <span class="va">network</span>.<span class="at">rpcPort</span><span class="op">,</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a>  <span class="dt">apiKey</span><span class="op">:</span> <span class="st">&#39;api-key&#39;</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="op">}</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a><span class="kw">const</span> client <span class="op">=</span> <span class="kw">new</span> <span class="at">NodeClient</span>(clientOptions)<span class="op">;</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a></span>
-<span id="cb7-12"><a href="#cb7-12"></a>(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></span>
-<span id="cb7-13"><a href="#cb7-13"></a>  <span class="co">// bclient handles the connection, the auth, and the channel subscriptions</span></span>
-<span id="cb7-14"><a href="#cb7-14"></a>  <span class="cf">await</span> <span class="va">client</span>.<span class="at">open</span>()<span class="op">;</span></span>
-<span id="cb7-15"><a href="#cb7-15"></a></span>
-<span id="cb7-16"><a href="#cb7-16"></a>  <span class="co">// use socket connection to request data</span></span>
-<span id="cb7-17"><a href="#cb7-17"></a>  <span class="kw">const</span> tip <span class="op">=</span> <span class="cf">await</span> <span class="va">client</span>.<span class="at">getTip</span>()<span class="op">;</span></span>
-<span id="cb7-18"><a href="#cb7-18"></a>  <span class="va">console</span>.<span class="at">log</span>(tip)<span class="op">;</span></span>
-<span id="cb7-19"><a href="#cb7-19"></a><span class="op">}</span>)()<span class="op">;</span></span>
-<span id="cb7-20"><a href="#cb7-20"></a></span>
-<span id="cb7-21"><a href="#cb7-21"></a><span class="co">// listen for new blocks</span></span>
-<span id="cb7-22"><a href="#cb7-22"></a><span class="va">client</span>.<span class="at">bind</span>(<span class="st">&#39;chain connect&#39;</span><span class="op">,</span> (raw) <span class="kw">=&gt;</span> <span class="op">{</span></span>
-<span id="cb7-23"><a href="#cb7-23"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Chain Connect Event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="va">ChainEntry</span>.<span class="at">fromRaw</span>(raw))<span class="op">;</span></span>
-<span id="cb7-24"><a href="#cb7-24"></a><span class="op">}</span>)<span class="op">;</span></span></code></pre></div>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="dt">port</span><span class="op">:</span> <span class="va">network</span>.<span class="at">rpcPort</span><span class="op">,</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>  <span class="dt">apiKey</span><span class="op">:</span> <span class="st">&#39;api-key&#39;</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="op">}</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="kw">const</span> client <span class="op">=</span> <span class="kw">new</span> <span class="at">NodeClient</span>(clientOptions)<span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11"></a>(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>  <span class="co">// bclient handles the connection, the auth, and the channel subscriptions</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>  <span class="cf">await</span> <span class="va">client</span>.<span class="at">open</span>()<span class="op">;</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a></span>
+<span id="cb7-15"><a href="#cb7-15"></a>  <span class="co">// use socket connection to request data</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>  <span class="kw">const</span> tip <span class="op">=</span> <span class="cf">await</span> <span class="va">client</span>.<span class="at">getTip</span>()<span class="op">;</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a>  <span class="va">console</span>.<span class="at">log</span>(tip)<span class="op">;</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="op">}</span>)()<span class="op">;</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a></span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="co">// listen for new blocks</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="va">client</span>.<span class="at">bind</span>(<span class="st">&#39;chain connect&#39;</span><span class="op">,</span> (raw) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Chain Connect Event:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="va">ChainEntry</span>.<span class="at">fromRaw</span>(raw))<span class="op">;</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="op">}</span>)<span class="op">;</span></span></code></pre></div>
 <h2 id="socket-events-directory">Socket Events Directory</h2>
 <h3 id="wallet">Wallet</h3>
 <p>All wallet events are emitted by a <code>WalletDB</code> object, which may have been triggered by its parent <code>TXDB</code> or <code>Wallet</code>. The socket emits the event along with the wallet ID, and the same “Returns” as listed above.</p>
