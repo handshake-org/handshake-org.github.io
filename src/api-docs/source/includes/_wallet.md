@@ -627,6 +627,9 @@ If you have never set a passphrase for this wallet before, you need to omit the 
 </aside>
 
 ## Send a transaction
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```shell--cli
 id="primary"
@@ -753,9 +756,6 @@ const options = {
 
 Create, sign, and send a transaction.
 
-<aside class="warning">
-This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
-</aside>
 
 ### HTTP Request
 
@@ -779,6 +779,9 @@ value <br> _int_ (or _float_) | Value to send in subunits (or whole HNS, see war
 address <br> _string_ | destination address for transaction
 
 ## Create a Transaction
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 ```shell--cli
 id="multisig1"
 passphrase="multisecret123"
@@ -900,9 +903,6 @@ const options = {
 Create and template a transaction (useful for multisig).
 Does not broadcast or add to wallet.
 
-<aside class="warning">
-This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
-</aside>
 
 
 ### HTTP Request
