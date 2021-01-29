@@ -204,7 +204,6 @@ const network = Network.get('regtest');
 
 // network type derived from hsd object, client object stores API key
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }

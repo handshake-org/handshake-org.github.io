@@ -25,7 +25,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -170,7 +169,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -283,7 +281,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -335,7 +332,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }

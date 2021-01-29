@@ -211,7 +211,6 @@ const {Network, ChainEntry} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
