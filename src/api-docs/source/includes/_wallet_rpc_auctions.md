@@ -387,6 +387,10 @@ name | Required | name to open bidding on
 
 ## sendbid
 
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+
 ```shell--vars
 name='possibility'
 amount=5.000000
@@ -1303,6 +1307,9 @@ name | Required | name to revoke the in-progress transfer of
 
 
 ## importnonce
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```shell--vars
 name='possibility'

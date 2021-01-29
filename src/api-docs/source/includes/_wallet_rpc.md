@@ -2160,6 +2160,9 @@ N. | Name | Default |  Description
 
 
 ## sendfrom
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```javascript
 let fromaccount, toaddress, amount;
@@ -2221,6 +2224,9 @@ N. | Name | Default |  Description
 
 
 ## sendmany
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```javascript
 let fromaccount, outputs, minconf, label, subtractFee;
@@ -2290,6 +2296,9 @@ N. | Name | Default |  Description
 
 
 ## sendtoaddress
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```javascript
 let address, amount, comment, comment_to, subtractFee;
@@ -2354,6 +2363,9 @@ N. | Name | Default |  Description
 
 
 ## settxfee
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```javascript
 let rate;

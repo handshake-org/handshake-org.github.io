@@ -753,10 +753,8 @@ const options = {
 
 Create, sign, and send a transaction.
 
-<aside class="warning">Be careful how you enter values and fee rates!<br>
-<code>value</code> and <code>rate</code> are expressed in subunits when using cURL or Javascript<br>
-<code>value</code> and <code>rate</code> are expressed in WHOLE HNS when using CLI<br>
-Watch carefully how values are entered in the examples, all examples send the same amount when executed
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
 </aside>
 
 ### HTTP Request
@@ -902,11 +900,10 @@ const options = {
 Create and template a transaction (useful for multisig).
 Does not broadcast or add to wallet.
 
-<aside class="warning">Be careful how you enter values and fee rates!<br>
-<code>value</code> and <code>rate</code> are expressed in subunits when using cURL or Javascript<br>
-<code>value</code> and <code>rate</code> are expressed in WHOLE HNS when using CLI<br>
-Watch carefully how values are entered in the examples, all examples send the same amount when executed
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
 </aside>
+
 
 ### HTTP Request
 
