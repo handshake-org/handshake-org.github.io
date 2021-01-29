@@ -742,6 +742,10 @@ name <br> _string_ | name
 
 ## Get Nonce for Bid
 
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+
 ```shell--vars
 id='primary'
 name='handshake'
@@ -808,6 +812,7 @@ id <br> _string_ | wallet id
 name <br> _string_ | name
 bid <br> _float_ | value of bid to blind
 address <br> _string_ | address controlling bid
+
 
 
 ## Send OPEN
@@ -925,6 +930,9 @@ broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
 
 ## Send BID
 
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 ```shell--vars
 id='primary'
 name='bread'

@@ -45,7 +45,7 @@ Included with `hsd` by default, but can be installed separately:
 
 `hsd-cli` params:
 
-### General configuration:
+## General configuration
 
 Config    | Options                      | Description
 --------- | -----------                  | -----------
@@ -53,7 +53,7 @@ network   | `main`, `testnet`, `regtest` | This will configure which network to 
 uri, url  | Base HTTP URI                | This can be used for custom port
 api-key   | _string_                     | Secret used by RPC for authorization
 
-### Wallet specific configuration:
+## Wallet specific configuration
 
 Config    | Options         | Description
 --------- | -----------     | -----------
@@ -66,15 +66,17 @@ token     | _string_        | Token specific wallet
 network: main
 prefix: ~/.hsd
 api-key: <api-key>
+no-wallet: true
 ```
 
-### hsd.conf and hsw.conf files
+## hsd.conf and hsw.conf files
 
 These files may contain any of the configuration parameters, and will be interpreted by hs-client at startup. The node and wallet clients look for their own respective conf files.
 
-[A sample hsd.conf file is included in the code repository](https://github.com/handshake-org/hsd/blob/master/etc/sample.conf)
+Command line flags should be formatted as <code>flag: true</code> in .conf files.
+<br>For example command line flag <code>--persistent-mempool</code> becomes <code>persistent-mempool: true</code> in hsd.conf.
 
-
+More information about .conf files can be found [here](https://hsd-dev.org/guides/config.html).
 
 
 <aside class="notice">

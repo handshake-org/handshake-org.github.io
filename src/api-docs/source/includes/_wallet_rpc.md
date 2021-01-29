@@ -2118,6 +2118,9 @@ N. | Name | Default |  Description
 
 
 ## sendfrom
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```javascript
 let fromaccount, toaddress, amount;
@@ -2178,6 +2181,9 @@ N. | Name | Default |  Description
 
 
 ## sendmany
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```javascript
 let fromaccount, outputs, minconf, label, subtractFee;
@@ -2244,8 +2250,138 @@ N. | Name | Default |  Description
 6 | subtractfee | Optional | (bool) Subtract the transaction fee equally from the output amounts
 
 
+## createsendtoaddress
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+
+```javascript
+let address, amount, comment, comment_to, subtractFee;
+```
+
+```shell--vars
+address='rs1qkk62444euknkya4qws9cg3ej3au24n635n4qye'
+amount=1.010101
+comment="this_is_ignored"
+comment_to="this_is_ignored"
+subtractfee=true
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14039 \
+  -X POST \
+  --data '{
+    "method": "createsendtoaddress",
+    "params": [ "'$address'", '$amount', "'$comment'", "'$comment_to'", '$subtractfee' ]
+  }'
+```
+
+```shell--cli
+hsw-rpc createsendtoaddress $address $amount $comment $commnt_to $subtractfee
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+
+(async () => {
+  const result = await walletClient.execute('createsendtoaddress', [address, amount, comment, comment_to, subtractfee]);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON "result" like this:
+
+```
+{
+  "hash": "5be265aa80f064cbb59e94cb11f6e776a86c7d2d38e0312e37ba68fada837f8c",
+  "witnessHash": "26f507c272f678600477dae02dc0a9387235061cf5adb770d554a5b7ad2c52e2",
+  "fee": 2800,
+  "rate": 22764,
+  "mtime": 1613139645,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "0028bf4d6f924f3d0fd814fe8676cff797645e259641bf5d6a6dad4a3898bcd2",
+        "index": 0
+      },
+      "witness": [
+        "",
+        "0265154cccfb952c96ed76985d1c02a660aca300a936fc2407bfb51abfbb9c0e5f"
+      ],
+      "sequence": 4294967295,
+      "coin": {
+        "version": 0,
+        "height": 316,
+        "value": 2000000000,
+        "address": "rs1q9454p2e89yrywvatjq64rhl2lr89ule6zr887p",
+        "covenant": {
+          "type": 0,
+          "action": "NONE",
+          "items": []
+        },
+        "coinbase": true
+      },
+      "path": {
+        "name": "default",
+        "account": 0,
+        "change": false,
+        "derivation": "m/44'/5355'/0'/0/11"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "value": 1010101,
+      "address": "rs1qkk62444euknkya4qws9cg3ej3au24n635n4qye",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    },
+    {
+      "value": 1998987099,
+      "address": "rs1qepurdt8x5p7d69mgma5pyepxm6d47gw4sa3tg3",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    }
+  ],
+  "locktime": 0,
+  "hex": "00000000010028bf4d6f924f3d0fd814fe8676cff797645e259641bf5d6a6dad4a3898bcd200000000ffffffff02b5690f00000000000014b5b4aad6b9e5a76276a0740b8447328f78aacf5100005b1f2677000000000014c87836ace6a07cdd1768df68126426de9b5f21d50000000000000200210265154cccfb952c96ed76985d1c02a660aca300a936fc2407bfb51abfbb9c0e5f"
+}
+```
+
+Create transaction sending HNS to a given address without signing or broadcasting it.
+
+### Params
+N. | Name | Default |  Description
+--------- | --------- | --------- | -----------
+1 | address | Required | Handshake address to send funds to
+2 | amount | Required | Amount (in HNS) to send
+4 | comment | Optional | [Ignored but required if additional parameters are passed](#rpc-calls-wallet)
+5 | comment_to | Optional | [Ignored but required if additional parameters are passed](#rpc-calls-wallet)
+6 | subtractfee | Optional | (bool) Subtract the transaction fee equally from the output amount
+
+
+
 
 ## sendtoaddress
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```javascript
 let address, amount, comment, comment_to, subtractFee;
@@ -2309,6 +2445,9 @@ N. | Name | Default |  Description
 
 
 ## settxfee
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```javascript
 let rate;
