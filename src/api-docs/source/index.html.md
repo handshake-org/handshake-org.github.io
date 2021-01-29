@@ -172,6 +172,13 @@ they can not be recovered using the BIP44 process (which is computed exclusively
 a seed phrase plus blockchain data). [This issue is well-known](https://github.com/handshake-org/hsd/issues/378)
 and some solutions have been proposed to assist in wallet recovery of blinded bid data.
 
+<aside class="notice">
+In hsd balances, <code>confirmed</code> refers to the total balance of coins
+confirmed in the blockchain. <code>unconfirmed</code> refers to that total
+IN ADDITION to any transactions still unconfirmed in the mempool.
+Another way to think about it is your <code>unconfirmed</code> balance is the
+FUTURE total value of your wallet after everything is confirmed.
+</aside>
 
 # Authentication
 ## Auth
