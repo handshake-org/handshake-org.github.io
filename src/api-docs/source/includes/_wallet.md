@@ -913,7 +913,7 @@ Watch carefully how values are entered in the examples, all examples send the sa
 `POST /wallet/:id/create`
 
 ### Post Parameters
-Paramter | Description
+Parameter | Description
 --------- | ----------------
 outputs <br> _array_ | An array of outputs to send for the transaction
 passphrase <br> _string_ | passphrase to unlock the account
@@ -1322,7 +1322,7 @@ Note that imported keys do not exist anywhere in the wallet's HD tree. They can 
 `POST /wallet/:id/import`
 
 ### Body Parameters
-Paramter | Description
+Parameter | Description
 -------- | -------------------------
 id <br> _string_ | id of target wallet to import key into
 privateKey <br> _string_ | Bech32 encoded private key
@@ -1389,7 +1389,7 @@ The HTTP endpoint is the same as for key imports.
 `POST /wallet/:id/import`
 
 ### Body Parameters
-Paramter | Description
+Parameter | Description
 -------- | -------------------------
 id <br> _string_ | id of target wallet to import key into
 address <br> _string_ | Bech32 encoded address
@@ -1573,7 +1573,7 @@ Response will return `addedKey: true` true if key was added on this request. Ret
 `PUT /wallet/:id/shared-key`
 
 ### Body Parameters
-Paramter | Description
+Parameter | Description
 ---------| --------------
 accountKey <br> _string_ | xpubkey to add to the multisig wallet
 account <br> _string_ | multisig account to add the xpubkey to (default='default')
@@ -1645,7 +1645,7 @@ Once a multisig wallet has the right number of keys to create m-of-n addresses, 
 `DEL /wallet/:id/shared-key`
 
 ### Body Parameters
-Paramter | Description
+Parameter | Description
 ---------| --------------
 accountKey <br> _string_ | xpubkey to add to the multisig wallet
 account <br> _string_ | multisig account to remove the key from (default='default')
