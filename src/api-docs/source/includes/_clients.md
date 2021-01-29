@@ -89,13 +89,11 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -113,7 +111,6 @@ Custom port numbers are also configurable by the user.
 
 Config    | Type                         | Description
 --------- | -----------                  | -----------
-network   | _string_ | Network to use: `main`, `testnet`, `regtest`
 port      | _int_                          | hsd socket port (defaults specific for each network)
 host      | _string_ | hsd API host URI (defaults to 127.0.0.1)
 apiKey    | _string_                       | API secret

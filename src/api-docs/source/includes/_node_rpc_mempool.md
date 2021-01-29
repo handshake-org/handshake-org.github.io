@@ -20,7 +20,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -84,7 +83,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -189,7 +187,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -293,7 +290,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -367,7 +363,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -463,7 +458,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -525,7 +519,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -582,7 +575,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -639,7 +631,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -699,7 +690,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
