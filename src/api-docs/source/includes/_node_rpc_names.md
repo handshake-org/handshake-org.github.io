@@ -83,7 +83,7 @@ week | int | estimated number of weeks after mainnet launch that name will becom
 start | int | exact block number that name will become available for bidding (if not reserved)
 state | string | the current auction state of the name (BIDDING, REVEAL, CLOSED, REVOKED, TRANSFER)
 height | int | block height at which auction started
-renewal | int | block height at which rewnewal period begins
+renewal | int | block height at which renewal period begins
 owner | int | UTXO to which the name belongs
 value | int | penultimate bid amount, paid by winner
 highest | int | highest bid amount, made by winner
