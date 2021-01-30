@@ -36,38 +36,35 @@ const client = new NodeClient(clientOptions);
 {
   "result": {
     "start": {
-      "reserved":false,
-      "week":20,
-      "start":3024
+      "reserved": false,
+      "week": 20,
+      "start": 3024
     },
-	"info": {
-    "name": "pi",
-    "nameHash": "512da52b8aba40722262447a53ff36f1ab854a5dd1ea1bf92d0aed18a50ebca9",
-    "state": "CLOSED",
-    "height": 7203,
-    "renewal": 14636,
-    "owner": {
-      "hash": "47510cf5ba035cfc97f3e2e6cbe9c06e536fa87e81350343d30f2d021dc1dd36",
-      "index": 0
-    },
-    "value": 1000000,
-    "highest": 2000000,
-    "data": "0000a8030a526567697374657265640477697468086e616d656261736501344765080d0980208120822e696f2f",
-    "transfer": 0,
-    "revoked": 0,
-    "claimed": false,
-    "weak": false,
-    "stats": {
-      "renewalPeriodStart": 14636,
-      "renewalPeriodEnd": 23276,
-      "blocksUntilExpire": 6154,
-      "daysUntilExpire": 21.37
+    "info": {
+      "name": "pi",
+      "nameHash": "512da52b8aba40722262447a53ff36f1ab854a5dd1ea1bf92d0aed18a50ebca9",
+      "state": "CLOSED",
+      "height": 7203,
+      "renewal": 14636,
+      "owner": {
+        "hash": "47510cf5ba035cfc97f3e2e6cbe9c06e536fa87e81350343d30f2d021dc1dd36",
+        "index": 0
+      },
+      "value": 1000000,
+      "highest": 2000000,
+      "data": "0000a8030a526567697374657265640477697468086e616d656261736501344765080d0980208120822e696f2f",
+      "transfer": 0,
+      "revoked": 0,
+      "claimed": false,
+      "weak": false,
+      "stats": {
+        "renewalPeriodStart": 14636,
+        "renewalPeriodEnd": 23276,
+        "blocksUntilExpire": 6154,
+        "daysUntilExpire": 21.37
+      }
     }
   }
-}
-  },
-  "error":null,
-  "id":null
 }
 ```
 
