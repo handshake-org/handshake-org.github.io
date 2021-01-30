@@ -111,14 +111,16 @@ It is recommended to use the wallet HTTP API in multiprocess/multithreaded envir
 
 ## Values
 
-Handshake currency HNS has smallest unit — one millionth of the whole, called dollarydoo. 
-<br>So <code>1 HNS = 1 000 000 dollarydoos</code>.
-<br>Different APIs require <code>value</code> and <code>rate</code> parameters nominated either in dollarydoos
-(subunits) which are integer values or in the whole HNS, which are floats.
+The smallest unit of the Handshake currency (HNS) is called the "dollarydoo" — one millionth of the whole.
+<br>So 1 HNS = 1,000,000 dollarydoos.
+<br>Different APIs require <code>value</code> and <code>fee</code> rate parameters denominated either in dollarydoos (subunits) which are integer values or in whole HNS, which are floats.
 
-<code>value</code> and <code>rate</code> are expressed in dollarydoos when using cURL or Javascript.<br>
-<code>value</code> and <code>rate</code> are expressed in whole HNS when using CLI and RPC.
+When using HTTP API endpoints:
+<br><code>value</code> and <code>rate</code> are expressed in dollarydoos when using cURL or Javascript.
+<br><code>value</code> and <code>rate</code> are expressed in whole HNS when using CLI commands.
 
+When using RPC API commands:
+<br><code>value</code> and <code>rate</code> are always expressed in whole HNS, no matter the entry method.
 
 ## Indexing
 

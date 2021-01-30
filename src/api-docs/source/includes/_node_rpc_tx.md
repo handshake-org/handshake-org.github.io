@@ -358,6 +358,7 @@ N. | Name | Default |  Description
 
 ## sendrawtransaction
 
+
 ```javascript
 let rawtx;
 ```
@@ -414,6 +415,9 @@ N. | Name | Default |  Description
 
 
 ## createrawtransaction
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```javascript
 let txhash, txindex, amount, address, data;
@@ -479,10 +483,6 @@ Note: Transaction in example doesn't specify change output,
 you can do it by specifying another <code>address: amount</code> pair.
 </aside>
 
-<aside class="warning">
-Amounts are expressed in FULL HNS (not subunits) in all three interface methods.
-</aside>
-
 Creates raw, unsigned transaction without any formal verification.
 
 ### Params
@@ -498,7 +498,9 @@ N. | Name | Default |  Description
 
 
 ## signrawtransaction
-
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 ```javascript
 let rawtx, txhash, txindex, scriptPubKey, amount, privkey;
 ```
