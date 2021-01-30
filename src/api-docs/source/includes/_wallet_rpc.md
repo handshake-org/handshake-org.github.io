@@ -2348,7 +2348,7 @@ const walletClient = new WalletClient(walletOptions);
 552006b288266ab26fa30d9048b758a469a4101fd8235eff2384141ca5cf604d
 ```
 
-Create transaction createsending HNS to a given address without broadcasting it.
+Create transaction sending HNS to a given address without signing or broadcasting it.
 
 ### Params
 N. | Name | Default |  Description

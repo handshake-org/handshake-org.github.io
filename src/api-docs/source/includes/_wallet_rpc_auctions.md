@@ -1434,7 +1434,7 @@ const client = new WalletClient(clientOptions);
   "hex": "0000000001837b802fbad06cab6c8f789c4745cc56d1498a651a04973c8b3db310d90fec4200000000ffffffff0200000000000000000014b5b4aad6b9e5a76276a0740b8447328f78aacf5102032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04000000000b706f73736962696c69747928bb9a3b000000000014cb8e33e158f5441ddaeed9b9a9587776d1947e970000000000000241cc603c24fd90881b00899751d634fad8cfc67ac1289de2475f5c09117db3037335eb9983d38113be4d7c1895514f7d0ff411d2e72dc3ebb444e811146958ebc6012103b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
 }
 ```
-Creates `OPEN` transaction without broadcasting it.
+Creates `OPEN` transaction without signing or broadcasting it.
 
 ### Params
 Name | Default |  Description
@@ -1527,7 +1527,7 @@ const client = new WalletClient(clientOptions);
   "hex": "00000000015f7892816226f3f753dfd003eea4f565fa699a5b29bafde27b6628b1a296691000000000ffffffff0280969800000000000014946419b0703f520ddc20ecd9f263db551bce9a5503042001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d30700000b706f73736962696c69747920001361beb541240738829f101e842c76b9666d1bc4a87299a8ed6a9d2127ed61cc46023b0000000000146f8c678273a0033de39d6de622941a811a9400e90000000000000241bfab12daf81378ad40c46d037a52ffd4f3374c6f71cd6997b067ea9b498e29ac359cf9b267265f31741b28916a7d3da3021ca60539473d59cef3dc88b25c9e98012103b9843c1c40c210790e55052c3e8c56b49d2f0f1d00e8bdeb0237f076a128365a"
 }
 ```
-Create `BID` transaction without broadcasting it.
+Create `BID` transaction without signing or broadcasting it.
 
 ### Params
 Name | Default |  Description
@@ -1641,7 +1641,7 @@ const client = new WalletClient(clientOptions);
   "hex": "000000000222ebf77857e063c45dd0656ade0b8c5a29e255fefe55b1905fb799a9d075a55200000000ffffffff85bce02cc5cb8ba9ff4e23d84ce389310f50074a6b9a8b20b8643a56a4cb9f9a00000000ffffffff03808d5b00000000000014d4af1e4a45ea8f06082ceabfddc00431d9bf1c5904032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d3070000205b0e235bdc68fd23cc4877b566831490ea5be1a309af991027c89ff7be6822a8404b4c00000000000014946419b0703f520ddc20ecd9f263db551bce9a5504032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04d3070000206cffbc155303695d2d974155bfd1dac48b267b41238a7d7ff4b39d1d23affe2a10bba70000000000001467551625234ec7c3e78264c0d3438dc2b1a4f87f00000000000002415a43e3d1b90e28a550cca1da5950f846f82dc71d2f61b78ca1a4aadfef7d963e30fb33f1866139f02d24470948120e92a35ea3d6f7fa3ab569e9893f9983f868012103b98187d5521400df71917c0cded095e12a0134532e9db36b2f2d5e7958c9ef650241286caf0d7901660c5c6efffede32be2ba4811495c6afdc23ece3f53537aed85f4829e7c47516d15e02456f1efb798e0692a43ca06d96499c01954d2f23ac0a680121023bedd07f6cd16dc2699ec2b2451e2d8004fab99666e8e6dbc7286ed24be01f08"
 }
 ```
-Create `REVEAL` transaction without broadcasting it.
+Create `REVEAL` transaction without signing or broadcasting it.
 
 ### Params
 Name | Default |  Description
@@ -1739,7 +1739,7 @@ const client = new WalletClient(clientOptions);
   "hex": "000000000276ad90abcde417d41d017b8d15b6980a804405aff72537c5cb99eb61a60cfee000000000ffffffff00c61039848c77220ecafdef2e189c30093ae086c5ed5fce473bd1ec0d0f37fd00000000ffffffff0280841e00000000000014f178550cc4e9b3294460271f635c5d234d6a8f99050220a761e2b31b2a10714810b3cb439b1ffe347a1019af1932db7e8ac4c62a34224a040c000000d0cc9a3b000000000014378892430e1ba4e3ea0131cee6dd1397bf2b0cd20000000000000241c5af2d7cee71f3079ec24d4e20387388ec44f6617b068e86a495f0b5649f99e916618d25be6d04a038071de074429bd4dbeda021916fc98e4a5a7c0a4e03ca2801210329d8c1750b74815e568f2c57ac5492a8e93b3b919334025d37c239b4669885900241264a2153120ae936dd1dd75a0d2174089158b99e77f10db34253ed87216a76de13baa857f0ae5e1c77ac85f0402d74cd3d3154cfafe06e59e07b15c6958c5b410121020eb07bca66b10617ffb17fe298a104a21789f4990cedee84577f66fe69656458"
 }
 ```
-Create `REDEEM` transaction without broadcasting it.
+Create `REDEEM` transaction without signing or broadcasting it.
 
 ### Params
 Name | Default |  Description
@@ -1832,7 +1832,7 @@ const client = new WalletClient(clientOptions);
 }
 ```
 
-Create `UPDATE` transaction without broadcasting it.
+Create `UPDATE` transaction without signing or broadcasting it.
 
 See the [Resource Object section](#resource-object) for details on formatting the name resource data.
 
@@ -1931,7 +1931,7 @@ const client = new WalletClient(clientOptions);
 }
 ```
 
-Create `RENEW` transaction without broadcasting it.
+Create `RENEW` transaction without signing or broadcasting it.
 
 
 ### Params
@@ -2035,7 +2035,7 @@ const client = new WalletClient(clientOptions);
 
 ```
 
-Create `TRANSFER` transaction without broadcasting it.
+Create `TRANSFER` transaction without signing or broadcasting it.
 
 
 ### Params
@@ -2138,7 +2138,7 @@ const client = new WalletClient(clientOptions);
 }
 ```
 
-Create `FINALIZE` transaction without broadcasting it.
+Create `FINALIZE` transaction without signing or broadcasting it.
 
 
 ### Params
@@ -2241,7 +2241,7 @@ const client = new WalletClient(clientOptions);
 }
 ```
 
-Create `CANCEL` transaction without broadcasting it.
+Create `CANCEL` transaction without signing or broadcasting it.
 
 
 ### Params
@@ -2340,7 +2340,7 @@ const client = new WalletClient(clientOptions);
   "hex": "0000000002c7fc96fa1b865a6139286b29626edf00ff286cb242c5fc65b3a78e0db1613a0400000000ffffffff5e0a26e6ba89dfafd7cd5436ddd5c26180f8619dd8dfebfe27459c4b4ac2093f00000000ffffffff02c0c62d00000000000014e63a33c0867b57154f70d5afa891e6c221df57d20b022008141335637fff1366102f06f2f7d7ac306e5d85c6d8e0f979c765db6a9ec894048b000000cccb9a3b000000000014b1400edb5b007df4b7cd3052d9adb78643e34bd40000000000000241078cf39beab769eb3331b00c1d6c92f152883fcd3ee62f54c69db5b33dd2919d568e52f89ac1d3cd0cb88cba6e88b703a872d61d7a953886bb4b8dce4938e33e012102896c8c128f86f155e61b74aced241304dd7f94feee6510d22f70e1d1b6e42fff0241cf4ce38d371515c47bc51d28476adc288bcd06d39a1d1acf85bc6d39fd88799d578768e873263723e4012f181f071dcde145998107f1d37ad476b6c594cf7de4012103fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
 }
 ```
-Create `REVOKE` transaction without broadcasting it.
+Create `REVOKE` transaction without signing or broadcasting it.
 
 
 ### Params
