@@ -136,6 +136,24 @@ along with its index in that transaction.
 Address indexer: enabled by `--index-address=true`. Allows lookup of all transactions
 involving a certain address.
 
+## Wallet plugin
+
+The main purpose of hsd node is to store blockchain data and to exchange messages with other nodes, for example
+messages about new blocks.
+
+Strictly speaking, any additional functionality is not part of the node itself. So the wallet is implemented as hsd node plugin. 
+
+By default hsd runs with wallet plugin activated, but it can be disabled by providing command line flag <code>--no-wallet</code>
+<br>(<code>no-wallet: true</code> in [hsd.conf](#hsd-conf-and-hsw-conf-files)).
+
+Wallet runs its own server, which listens for requests.
+
+Wallet can also be run as a standalone application, connecting to local or external node:
+`wallet --node-host=127.0.0.1`
+
+More information about available arguments and flags can be found [here](https://hsd-dev.org/guides/config.html).
+
+
 
 ## Wallet: BIP44
 
