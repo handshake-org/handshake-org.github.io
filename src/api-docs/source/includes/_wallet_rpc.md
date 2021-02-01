@@ -160,9 +160,7 @@ const walletClient = new WalletClient(walletOptions);
     "unlocked_until": 0,
     "paytxfee": 0,
     "height": 50
-  },
-  "error": null,
-  "id": null
+  }
 }
 ```
 
