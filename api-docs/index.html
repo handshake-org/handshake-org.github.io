@@ -6736,14 +6736,24 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <span class="p">})();</span>
 </code></pre>
 <blockquote>
-<p>getnameresource returns JSON structured like this: (&quot;info&quot; is empty if name has no stored resource data).</p>
+<p>getnameresource returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"compat"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">172800</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"ns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="s2">"ns1.example.com.@1.2.3.4"</span><span class="w">
+  </span><span class="s2">"records"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GLUE4"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ns"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ns1.handshake."</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"44.231.6.183"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GLUE4"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ns"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ns2.handshake."</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"23.239.11.203"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NS"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ns"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ns1.handshake."</span><span class="w">
+    </span><span class="p">}</span><span class="w">
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
