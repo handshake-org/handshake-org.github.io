@@ -245,15 +245,25 @@ const client = new NodeClient(clientOptions);
 })();
 ```
 
-> getnameresource returns JSON structured like this: ("info" is empty if name has no stored resource data).
+> getnameresource returns JSON structured like this:
 
 ```json
 {
-  "version": 0,
-  "compat": false,
-  "ttl": 172800,
-  "ns": [
-    "ns1.example.com.@1.2.3.4"
+  "records": [
+    {
+      "type": "GLUE4",
+      "ns": "ns1.handshake.",
+      "address": "44.231.6.183"
+    },
+    {
+      "type": "GLUE4",
+      "ns": "ns2.handshake.",
+      "address": "23.239.11.203"
+    },
+    {
+      "type": "NS",
+      "ns": "ns1.handshake."
+    }
   ]
 }
 ```
