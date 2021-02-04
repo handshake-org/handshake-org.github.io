@@ -59,10 +59,10 @@
    \/__/  
 </pre>
 
-<h2 id="hsd-configuration">HSD Configuration</h2>
-<p>By default, the mainnet hsd config files will reside in <code>~/.hsd/hsd.conf</code> and <code>~/.hsd/hsw.conf</code>. Any parameter passed to hsd at startup will have precedence over the config file. Even if you are just running <code>hs-client</code> without hsd installed (to access a remote server, for example) the configuration files would still reside in <code>~/.hsd/</code></p>
+<h1 id="hsd-configuration">HSD Configuration</h1>
+<p>By default, the mainnet hsd config files will reside in <code>~/.hsd/hsd.conf</code> (node) and <code>~/.hsd/hsw.conf</code> (wallet). Any parameter passed to hsd at startup will have precedence over the config file. Even if you are just running <code>hs-client</code> without hsd installed (to access a remote server, for example) the configuration files would still reside in <code>~/.hsd/</code></p>
 <p>For example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">hsd</span> --network=regtest --api-key=menace --daemon</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">hsd</span> --network=regtest --api-key=menace</span></code></pre></div>
 <p>…will read the config file at <code>~/.hsd/regtest/hsd.conf</code> and ignore any <code>network</code> or <code>api-key</code> parameters listed in that file.</p>
 <p>All hsd configuration options work in the config file, CLI arguments, process environment, and in the constructor parameters when instantiating new <code>node</code> objects in JavaScript. Each method has slightly different formatting. Note specifically the usage of hyphens and capital letters. See the examples below:</p>
 <table>
@@ -96,8 +96,17 @@
 </tbody>
 </table>
 <h2 id="datadirprefix">Datadir/Prefix</h2>
-<p>The hsd datadir is determined by the <code>prefix</code> option. The following example wiil create a datadir of <code>~/.hsd_spv</code>, containing a chain database, wallet database and log file.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="ex">hsd</span> --prefix ~/.hsd_spv --spv</span></code></pre></div>
+<p>The hsd datadir is determined by the <code>prefix</code> option. The following example wiil create a datadir of <code>~/.hsd_test</code>, containing a chain database, wallet database and log file.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="ex">hsd</span> --prefix ~/.hsd_test</span></code></pre></div>
+<h2 id="preprocessor-options">Preprocessor Options</h2>
+<p>The following configuration settings are only available for the command line when hsd is launched. They WILL NOT be read from a <code>hsd.conf</code> file or pulled from the shell environment. This is because they are processed directly by the <code>$PATH</code> command which executes scripts in the repository at <code>bin/hsd</code> and <code>bin/node</code>.</p>
+<ul>
+<li><code>--no-wallet</code>: Launches hsd without a wallet plugin, allowing <code>hs-wallet</code> to be run in a separate process.</li>
+<li><code>--spv</code>: Launches hsd in SPV (Simplified Payment Verification) mode, aka <a href="https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki">BIP37</a>.</li>
+<li><code>--daemon</code>: Launches hsd in the background (a detached child process of the command script).</li>
+<li><code>--help</code>: Displays help information about hsd and quits.</li>
+<li><code>--version</code>: Displays the version of hsd set in its package.json and quits.</li>
+</ul>
 <h2 id="common-options">Common Options</h2>
 <ul>
 <li><code>config</code>: Points to a custom config file, not in the prefix directory.</li>
@@ -111,15 +120,14 @@
 <li><code>prefix</code>: The data directory (stores databases, logs, and configs) (default=~/.hsd).</li>
 <li><code>max-files</code>: Max open files for leveldb. Higher generally means more disk page cache benefits, but also more memory usage (default: 64).</li>
 <li><code>cache-size</code>: Size (in MB) of leveldb cache and write buffer (default: 32mb).</li>
-<li><code>spv</code>: Enable Simplified Payments Verification (SPV) mode</li>
 </ul>
-<h2 id="logger-options">Logger Options</h2>
+<h3 id="logger-options">Logger Options</h3>
 <ul>
 <li><code>log-level</code>: <code>error</code>, <code>warning</code>, <code>info</code>, <code>debug</code>, or <code>spam</code> (default: debug).</li>
 <li><code>log-console</code>: <code>true</code> or <code>false</code> - whether to actually write to stdout/stderr if foregrounded (default: true).</li>
 <li><code>log-file</code>: Whether to use a log file (default: true).</li>
 </ul>
-<h2 id="chain-options">Chain Options</h2>
+<h3 id="chain-options">Chain Options</h3>
 <p>Note that certain chain options affect the format and indexing of the chain database and must be passed in consistently each time.</p>
 <ul>
 <li><code>prune</code>: Prune from the last 288 blocks (default: false).</li>
@@ -128,12 +136,12 @@
 <li><code>index-tx</code>: Index transactions (enables transaction endpoints in REST api) (default: false).</li>
 <li><code>index-address</code>: Index transactions and utxos by address (default: false).</li>
 </ul>
-<h2 id="mempool-options">Mempool Options</h2>
+<h3 id="mempool-options">Mempool Options</h3>
 <ul>
 <li><code>mempool-size</code>: Max mempool size in MB (default: 100).</li>
 <li><code>persistent-mempool</code>: Save mempool to disk and read into memory on boot (default: false).</li>
 </ul>
-<h2 id="pool-options">Pool Options</h2>
+<h3 id="pool-options">Pool Options</h3>
 <ul>
 <li><code>selfish</code>: Enable “selfish” mode (no relaying of txes or blocks) (default: false).</li>
 <li><code>compact</code>: Enable compact block relay (default: true).</li>
@@ -150,7 +158,7 @@
 <li><code>public-port</code>: Public port to advertise on network.</li>
 <li><code>nodes</code>: List of target nodes to connect to (comma-separated).</li>
 </ul>
-<h2 id="miner-options">Miner Options</h2>
+<h3 id="miner-options">Miner Options</h3>
 <ul>
 <li><code>coinbase-flags</code>: Coinbase flags (default: mined by hsd).</li>
 <li><code>coinbase-address</code>: List of payout addresses, randomly selected during block creation (comma-separated).</li>
@@ -158,7 +166,7 @@
 <li><code>reserved-weight</code>: Amount of space reserved for coinbase (default: 4000).</li>
 <li><code>reserved-sigops</code>: Amount of sigops reserved for coinbase (default: 400).</li>
 </ul>
-<h2 id="http">HTTP</h2>
+<h3 id="http">HTTP</h3>
 <ul>
 <li><code>http-host</code>: HTTP host to listen on (default: 127.0.0.1).</li>
 <li><code>http-port</code>: HTTP port to listen on (default: 12037 for mainnet).</li>
@@ -170,7 +178,7 @@
 </ul>
 <p>Note: For security <code>cors</code> should not be used with <code>no-auth</code>.<br />
 If enabled you should also enable <code>wallet-auth</code> and set <code>api-key</code>.</p>
-<h2 id="dns-resolver-options">DNS Resolver options</h2>
+<h3 id="dns-resolver-options">DNS Resolver options</h3>
 <ul>
 <li><code>ns-host</code>: Host for authoritative nameserver to listen on (default: 127.0.0.1)</li>
 <li><code>ns-port</code>: Port for authoritative nameserver to listen on (default: 5349 for mainnet)</li>
@@ -216,19 +224,184 @@ http-host: 0.0.0.0</code></pre>
 <li><code>wallet-auth</code>: Enable token auth for wallets (default: false).</li>
 <li><code>admin-token</code>: Token required if <code>wallet-auth</code> is enabled: restricts access to <a href="https://handshake-org.github.io/api-docs/#wallet-admin-commands">all wallet admin routes.</a></li>
 </ul>
-<h3 id="example-configuration-file">Example configuration file</h3>
-<p>The following file could be placed at <code>~/.hsd/hsd.conf</code> for use with a mainnet hsd node. It could (for example) be placed at <code>~/.hsd/testnet/hsd.conf</code> if the node is started with <code>hsd --network=testnet</code>. All the settings in the example below are defaults, meaning you do NOT need to use this <code>hsd.conf</code> if you do not need to change any of the values. It is provided only as an example of the configuration file syntax:</p>
-<ul>
-<li>Configuration options are newline delimited.</li>
-<li>The key/value pairs are delimited by a colon.</li>
-<li>All options can be set via command line, environment variable or the config file. (See top of page)</li>
-</ul>
-<pre><code>max-inbound: 8
-max-outbound: 8
-log-level: debug
-prune: false
-checkpoints: true
-rs-port: 5350</code></pre>
+<h2 id="example-configurations">Example Configurations</h2>
+<p><em>NOTE: unless otherwise specified in <a href="#preprocessor-options">Preprocessor Options</a>, only one set of options is needed to run with the example configuration. For example if you choose to use a <code>hsd.conf</code> file, you will not need to use the command line options.</em></p>
+<h3 id="full-node-with-wallet">Full Node with wallet</h3>
+<p>This may require up to 200 MB of disk space per day. It is the most private and secure way to use Handshake for transactions and auctions.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsd.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hsd</code></td>
+<td>(none, default parameters are OK)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="spv-node-with-wallet">SPV Node with wallet</h3>
+<p>This may require up to 60 kB of disk space per day. SPV leaks some privacy and relies on being connecting to at least one “honest” full node, which may weaken overall security assumptions.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsd.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hsd --spv</code></td>
+<td>(none, must use command line argument)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pruned-full-node-with-wallet">Pruned full node with wallet</h3>
+<p>This will never require more than 400 MB total. Only the last 288 blocks are saved to disk. Wallet rescans are impossible in this mode. This node will not relay historical blocks to new bootstrapping nodes but otherwise is fully validating and just as private and secure as any full node.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsd.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hsd --prune</code></td>
+<td><code>prune: true</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-node-with-wallet-as-separate-process-on-same-machine">Full Node with wallet as separate process on same machine</h3>
+<p>Both of these commands must be executed to run full node and wallet separately.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsd.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hsd --no-wallet</code></td>
+<td>(none, must use command line argument)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsw.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hs-wallet</code></td>
+<td>(none, default parameters are OK)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-node-with-wallet-as-separate-process-on-different-machine">Full Node with wallet as separate process on DIFFERENT machine</h3>
+<p>Both of these commands must be executed to run full node and wallet separately. To run wallet and node remotely, you MUST use a strong <code>&lt;API key&gt;</code> and enforce SSL on the full node. <code>&lt;https://URL&gt;</code> MUST be a resolvable domain name secured by legacy certificate authority SSL.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsd.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hsd --no-wallet \</code><br> <code>--api-key=&lt;API KEY&gt; \</code><br><code>--http-host=&lt;https://URL&gt; \</code><br><code>--ssl=true \</code><br><code>--ssl-cert=&lt;path&gt; \</code><br><code>--ssl-key=&lt;path&gt;</code></td>
+<td><br><code>api-key:&lt;API key&gt;</code><br><code>http-host: &lt;https://URL&gt;</code><br><code>ssl: true</code><br><code>ssl-cert: &lt;path&gt;</code><br><code>ssl-key: &lt;path&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsw.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hs-wallet \</code><br><code>--node-host=&lt;https://URL&gt; \</code><br><code>--node-ssl: true \</code><br><code>--node-api-key: &lt;API key&gt;</code></td>
+<td><br><code>node-host: &lt;https://URL&gt;</code><br><code>node-ssl: true</code><br><code>node-api-key: &lt;API key&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-node-that-allows-inbound-connections-from-other-full-and-light-clients-like-hnsd">Full Node that allows inbound connections from other full and light clients like <code>hnsd</code></h3>
+<p><code>&lt;IP address&gt;</code> MUST be your external IP address, publicly accessible by the internet.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsd.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hsd \</code> <br> <code>--bip37=true \</code> <br> <code>--listen=true \</code> <br> <code>--public-host=&lt;IP address&gt; \</code><br><code>--max-inbound=100</code></td>
+<td><br><code>bip37:true</code><br><code>listen:true</code><br><code>public-host: &lt;IP address&gt;</code><br><code>max-inbound: 100</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-node-with-public-hns-recursive-resolver">Full Node with public HNS recursive resolver</h3>
+<p>Note: if you configure this way it is strongly recommended to enable a firewall on your system to mitigate <a href="https://www.cloudflare.com/learning/ddos/dns-amplification-ddos-attack/">amplification attacks</a>. This is not a recommended configuration for a fully public server. If your hsd node is running locally (on your home network or LAN) that should be OK. <code>&lt;IP address&gt;</code> MUST be publicly accessible by the internet (or just your local network if applicable). You could use <code>0.0.0.0</code> for this but that may disrupt other DNS services using port 53 on the same machine.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsd.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hsd \</code><br><code>--rs-host=&lt;IP address&gt; \</code> <br> <code>--rs-port=53</code></td>
+<td><br><code>rs-host: &lt;IP address&gt;</code><br><code>rs-port: 53</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-node-in-nerd-mode">Full Node in “nerd mode”</h3>
+<p>Useful if you are running a block explorer service or otherwise need access to all the data hsd could possibly provide.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th><code>~/.hsd/hsd.conf</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hsd \</code><br><code>--index-tx=true \</code><br><code>--index-address=true \</code><br><code>--log-level=spam</code></td>
+<td><br><code>index-tx: true</code><br><code>index-address: true</code><br><code>log-level: spam</code></td>
+</tr>
+</tbody>
+</table>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>

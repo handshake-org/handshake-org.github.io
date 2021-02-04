@@ -1,7 +1,7 @@
-## HSD Configuration
+# HSD Configuration
 
-By default, the mainnet hsd config files will reside in `~/.hsd/hsd.conf` and
-`~/.hsd/hsw.conf`. Any parameter passed to hsd at startup will have precedence
+By default, the mainnet hsd config files will reside in `~/.hsd/hsd.conf` (node) and
+`~/.hsd/hsw.conf` (wallet). Any parameter passed to hsd at startup will have precedence
 over the config file. Even if you are just running `hs-client` without hsd
 installed (to access a remote server, for example) the configuration files
 would still reside in `~/.hsd/`
@@ -9,7 +9,7 @@ would still reside in `~/.hsd/`
 For example:
 
 ``` bash
-hsd --network=regtest --api-key=menace --daemon
+hsd --network=regtest --api-key=menace
 ```
 
 ...will read the config file at `~/.hsd/regtest/hsd.conf` and ignore any
@@ -30,13 +30,25 @@ specifically the usage of hyphens and capital letters. See the examples below:
 ## Datadir/Prefix
 
 The hsd datadir is determined by the `prefix` option. The following example
-wiil create a datadir of `~/.hsd_spv`, containing a chain database, wallet
+wiil create a datadir of `~/.hsd_test`, containing a chain database, wallet
 database and log file.
 
 ``` bash
-$ hsd --prefix ~/.hsd_spv --spv
+$ hsd --prefix ~/.hsd_test
 ```
 
+## Preprocessor Options
+
+The following configuration settings are only available for the command line when
+hsd is launched. They WILL NOT be read from a `hsd.conf` file or pulled from the
+shell environment. This is because they are processed directly by the `$PATH` command
+which executes scripts in the repository at `bin/hsd` and `bin/node`.
+
+- `--no-wallet`: Launches hsd without a wallet plugin, allowing `hs-wallet` to be run in a separate process.
+- `--spv`: Launches hsd in SPV (Simplified Payment Verification) mode, aka [BIP37](https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki).
+- `--daemon`: Launches hsd in the background (a detached child process of the command script).
+- `--help`: Displays help information about hsd and quits.
+- `--version`: Displays the version of hsd set in its package.json and quits.
 
 ## Common Options
 
@@ -51,15 +63,14 @@ $ hsd --prefix ~/.hsd_spv --spv
 - `prefix`: The data directory (stores databases, logs, and configs) (default=~/.hsd).
 - `max-files`: Max open files for leveldb. Higher generally means more disk page cache benefits, but also more memory usage (default: 64).
 - `cache-size`: Size (in MB) of leveldb cache and write buffer (default: 32mb).
-- `spv`: Enable Simplified Payments Verification (SPV) mode
 
-## Logger Options
+### Logger Options
 
 - `log-level`: `error`, `warning`, `info`, `debug`, or `spam` (default: debug).
 - `log-console`: `true` or `false` - whether to actually write to stdout/stderr if foregrounded (default: true).
 - `log-file`: Whether to use a log file (default: true).
 
-## Chain Options
+### Chain Options
 
 Note that certain chain options affect the format and indexing of the chain database and must be passed in consistently each time.
 
@@ -69,12 +80,12 @@ Note that certain chain options affect the format and indexing of the chain data
 - `index-tx`: Index transactions (enables transaction endpoints in REST api) (default: false).
 - `index-address`: Index transactions and utxos by address (default: false).
 
-## Mempool Options
+### Mempool Options
 
 - `mempool-size`: Max mempool size in MB (default: 100).
 - `persistent-mempool`: Save mempool to disk and read into memory on boot (default: false).
 
-## Pool Options
+### Pool Options
 
 - `selfish`: Enable "selfish" mode (no relaying of txes or blocks) (default: false).
 - `compact`: Enable compact block relay (default: true).
@@ -91,7 +102,7 @@ Note that certain chain options affect the format and indexing of the chain data
 - `public-port`: Public port to advertise on network.
 - `nodes`: List of target nodes to connect to (comma-separated).
 
-## Miner Options
+### Miner Options
 
 - `coinbase-flags`: Coinbase flags (default: mined by hsd).
 - `coinbase-address`: List of payout addresses, randomly selected during block creation (comma-separated).
@@ -99,7 +110,7 @@ Note that certain chain options affect the format and indexing of the chain data
 - `reserved-weight`: Amount of space reserved for coinbase (default: 4000).
 - `reserved-sigops`: Amount of sigops reserved for coinbase (default: 400).
 
-## HTTP
+### HTTP
 
 - `http-host`: HTTP host to listen on (default: 127.0.0.1).
 - `http-port`: HTTP port to listen on (default: 12037 for mainnet).
@@ -112,7 +123,7 @@ Note that certain chain options affect the format and indexing of the chain data
 Note: For security `cors` should not be used with `no-auth`.\
 If enabled you should also enable `wallet-auth` and set `api-key`.
 
-## DNS Resolver options
+### DNS Resolver options
 
 - `ns-host`: Host for authoritative nameserver to listen on (default: 127.0.0.1)
 - `ns-port`: Port for authoritative nameserver to listen on (default: 5349 for mainnet)
@@ -174,26 +185,95 @@ $ HSD_NETWORK=testnet HSD_HTTP_HOST=0.0.0.0 HSD_WALLET_HTTP_HOST=0.0.0.0 HSD_WAL
 - `wallet-auth`: Enable token auth for wallets (default: false).
 - `admin-token`: Token required if `wallet-auth` is enabled: restricts access to [all wallet admin routes.](https://handshake-org.github.io/api-docs/#wallet-admin-commands)
 
-### Example configuration file
+## Example Configurations
 
-The following file could be placed at `~/.hsd/hsd.conf` for use with a mainnet hsd node.
-It could (for example) be placed at `~/.hsd/testnet/hsd.conf` if the node is started with `hsd --network=testnet`.
-All the settings in the example below are defaults, meaning you do NOT need to use
-this `hsd.conf` if you do not need to change any of the values. It is
-provided only as an example of the configuration file syntax:
+_NOTE: unless otherwise specified in [Preprocessor Options](#preprocessor-options), only one set of options is needed to run with the example configuration.
+For example if you choose to use a `hsd.conf` file, you will not need to use the command line options._
 
-- Configuration options are newline delimited.
-- The key/value pairs are delimited by a colon.
-- All options can be set via command line, environment variable or the config file.
-(See top of page)
+### Full Node with wallet
 
-```
-max-inbound: 8
-max-outbound: 8
-log-level: debug
-prune: false
-checkpoints: true
-rs-port: 5350
-```
+This may require up to 200 MB of disk space per day. It is the most private and
+secure way to use Handshake for transactions and auctions.
+
+| Command | `~/.hsd/hsd.conf` |
+|-|-|
+| `hsd` | (none, default parameters are OK) |
+
+### SPV Node with wallet
+
+This may require up to 60 kB of disk space per day. SPV leaks some privacy
+and relies on being connecting to at least one "honest" full node, which may
+weaken overall security assumptions.
+
+| Command | `~/.hsd/hsd.conf` |
+|-|-|
+| `hsd --spv` | (none, must use command line argument) |
+
+### Pruned full node with wallet
+
+This will never require more than 400 MB total. Only the last 288 blocks are saved
+to disk. Wallet rescans are impossible in this mode. This node will not relay
+historical blocks to new bootstrapping nodes but otherwise is fully validating and
+just as private and secure as any full node.
+
+| Command | `~/.hsd/hsd.conf` |
+|-|-|
+| `hsd --prune` | `prune: true` |
+
+### Full Node with wallet as separate process on same machine
+
+Both of these commands must be executed to run full node and wallet separately.
+
+| Command | `~/.hsd/hsd.conf` |
+|-|-|
+| `hsd --no-wallet` | (none, must use command line argument) |
+
+| Command | `~/.hsd/hsw.conf` |
+|-|-|
+| `hs-wallet` | (none, default parameters are OK) |
+
+### Full Node with wallet as separate process on DIFFERENT machine
+
+Both of these commands must be executed to run full node and wallet separately.
+To run wallet and node remotely, you MUST use a strong `<API key>` and enforce SSL
+on the full node. `<https://URL>` MUST be a resolvable domain name secured by legacy certificate authority SSL.
+
+| Command | `~/.hsd/hsd.conf` |
+|-|-|
+| `hsd --no-wallet \`<br> `--api-key=<API KEY> \`<br>`--http-host=<https://URL> \`<br>`--ssl=true \`<br>`--ssl-cert=<path> \`<br>`--ssl-key=<path>` | <br>`api-key:<API key>`<br>`http-host: <https://URL>`<br>`ssl: true`<br>`ssl-cert: <path>`<br>`ssl-key: <path>` |
+
+| Command | `~/.hsd/hsw.conf` |
+|-|-|
+| `hs-wallet \`<br>`--node-host=<https://URL> \`<br>`--node-ssl: true \`<br>`--node-api-key: <API key>` | <br>`node-host: <https://URL>`<br>`node-ssl: true`<br>`node-api-key: <API key>` |
+
+### Full Node that allows inbound connections from other full and light clients like `hnsd`
+
+`<IP address>` MUST be your external IP address, publicly accessible by the internet.
+
+| Command | `~/.hsd/hsd.conf` |
+|-|-|
+| `hsd \` <br> `--bip37=true \` <br> `--listen=true \` <br> `--public-host=<IP address> \`<br>`--max-inbound=100` | <br>`bip37:true`<br>`listen:true`<br>`public-host: <IP address>`<br>`max-inbound: 100` |
+
+### Full Node with public HNS recursive resolver
+
+Note: if you configure this way it is strongly recommended to enable a firewall on your system to mitigate
+[amplification attacks](https://www.cloudflare.com/learning/ddos/dns-amplification-ddos-attack/).
+This is not a recommended configuration for a fully public server.
+If your hsd node is running locally (on your home network or LAN) that should be OK.
+`<IP address>` MUST be publicly accessible by the internet
+(or just your local network if applicable). You could use `0.0.0.0` for this but that
+may disrupt other DNS services using port 53 on the same machine.
 
 
+| Command | `~/.hsd/hsd.conf` |
+|-|-|
+| `hsd \`<br>`--rs-host=<IP address> \` <br> `--rs-port=53` |<br>`rs-host: <IP address>`<br>`rs-port: 53` |
+
+### Full Node in "nerd mode"
+
+Useful if you are running a block explorer service or otherwise need access to all
+the data hsd could possibly provide.
+
+| Command | `~/.hsd/hsd.conf` |
+|-|-|
+| `hsd \`<br>`--index-tx=true \`<br>`--index-address=true \`<br>`--log-level=spam` | <br>`index-tx: true`<br>`index-address: true`<br>`log-level: spam` |
