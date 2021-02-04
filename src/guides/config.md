@@ -39,7 +39,7 @@ $ hsd --prefix ~/.hsd_test
 
 ## Preprocessor Options
 
-These are configuration settings that MUST be included on the command line when
+The following configuration settings are only available for the command line when
 hsd is launched. They WILL NOT be read from a `hsd.conf` file or pulled from the
 shell environment. This is because they are processed directly by the `$PATH` command
 which executes scripts in the repository at `bin/hsd` and `bin/node`.
@@ -256,7 +256,7 @@ on the full node. `<https://URL>` MUST be a resolvable domain name secured by le
 
 ### Full Node with public HNS recursive resolver
 
-Note: if you configure this way you MUST enable a firewall on your system to mitigate
+Note: if you configure this way it is strongly recommended to enable a firewall on your system to mitigate
 [amplification attacks](https://www.cloudflare.com/learning/ddos/dns-amplification-ddos-attack/).
 This is not a recommended configuration for a fully public server.
 If your hsd node is running locally (on your home network or LAN) that should be OK.
