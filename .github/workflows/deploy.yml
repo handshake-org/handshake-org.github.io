@@ -20,22 +20,20 @@ jobs:
         bundler-cache: true
 
     - run: ./bin/build
-    # Temporary disabled. See #545 on handshake-org/hsd
-    # - uses: actions/checkout@v2
-    #   with:
-    #     repository: handshake-org/hsd
-    #     ref: master
-    #     path: hsd
-    # - run: |
-    #     cd hsd
-    #     npm i -D jsdoc
-    #     node node_modules/.bin/jsdoc -c jsdoc.json
-    #     cp -r ./docs/reference ../build/docs
+    - uses: actions/checkout@v2
+      with:
+        repository: handshake-org/hsd
+        ref: e270b8cef3f4552c35f744d04594ebe8896d5141
+        path: hsd
+    - run: |
+        cd hsd
+        npm i -D jsdoc
+        node node_modules/.bin/jsdoc -c jsdoc.json
+        cp -r ./docs/reference ../build/docs
     - name: Deploy
       if: github.ref == 'refs/heads/master'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build
-        keep_files: true  # this will keep the old jsdocs while handshake-org/hsd/pull/545 is not merged
         cname: hsd-dev.org
