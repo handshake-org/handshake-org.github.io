@@ -27,8 +27,8 @@ jobs:
         path: hsd
     - run: |
         cd hsd
-        npm i -D jsdoc
-        node node_modules/.bin/jsdoc -c jsdoc.json
+        npm install -g jsdoc
+        jsdoc -c jsdoc.json
         cp -r ./docs/reference ../build/docs
     - name: Deploy
       if: github.ref == 'refs/heads/master'
