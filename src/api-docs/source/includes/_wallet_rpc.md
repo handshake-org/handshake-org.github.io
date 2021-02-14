@@ -7,7 +7,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc <method> <params>
+hsw-rpc <method> <params>
 ```
 
 ```javascript
@@ -80,7 +80,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc selectwallet $id
+hsw-rpc selectwallet $id
 ```
 
 ```javascript
@@ -126,7 +126,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getwalletinfo
+hsw-rpc getwalletinfo
 ```
 
 ```javascript
@@ -203,7 +203,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```shell--cli
 options='{"changeAddress": "rs1qew8r8c2c74zpmkhwmxu6jkrhwmgegl5h6cfaz3", "feeRate": 0.001000}'
 
-hsw-cli rpc fundrawtransaction $tx "$options"
+hsw-rpc fundrawtransaction $tx "$options"
 ```
 
 ```javascript
@@ -262,7 +262,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc resendwallettransactions
+hsw-rpc resendwallettransactions
 ```
 
 ```javascript
@@ -326,7 +326,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc abandontransaction $tx
+hsw-rpc abandontransaction $tx
 ```
 
 ```javascript
@@ -382,7 +382,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc backupwallet $path
+hsw-rpc backupwallet $path
 ```
 
 ```javascript
@@ -439,7 +439,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc dumpprivkey $address
+hsw-rpc dumpprivkey $address
 ```
 
 ```javascript
@@ -497,7 +497,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc dumpwallet $path
+hsw-rpc dumpwallet $path
 ```
 
 ```javascript
@@ -573,7 +573,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc encryptwallet $passphrase
+hsw-rpc encryptwallet $passphrase
 ```
 
 ```javascript
@@ -633,7 +633,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getaccountaddress $account
+hsw-rpc getaccountaddress $account
 ```
 
 ```javascript
@@ -690,7 +690,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getaccount $address
+hsw-rpc getaccount $address
 ```
 
 ```javascript
@@ -747,7 +747,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getaddressesbyaccount $account
+hsw-rpc getaddressesbyaccount $account
 ```
 
 ```javascript
@@ -798,7 +798,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getbalance 
+hsw-rpc getbalance 
 ```
 
 ```javascript
@@ -855,7 +855,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getnewaddress $account
+hsw-rpc getnewaddress $account
 ```
 
 ```javascript
@@ -901,7 +901,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getrawchangeaddress
+hsw-rpc getrawchangeaddress
 ```
 
 ```javascript
@@ -959,7 +959,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getreceivedbyaccount $account $minconf
+hsw-rpc getreceivedbyaccount $account $minconf
 ```
 
 ```javascript
@@ -1020,7 +1020,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getreceivedbyaddress $address $minconf
+hsw-rpc getreceivedbyaddress $address $minconf
 ```
 
 ```javascript
@@ -1079,7 +1079,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc gettransaction $txid
+hsw-rpc gettransaction $txid
 ```
 
 ```javascript
@@ -1146,7 +1146,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getunconfirmedbalance
+hsw-rpc getunconfirmedbalance
 ```
 
 ```javascript
@@ -1212,7 +1212,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc importprivkey $key $label $rescan
+hsw-rpc importprivkey $key $label $rescan
 ```
 
 ```javascript
@@ -1272,7 +1272,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc importwallet $file $rescan
+hsw-rpc importwallet $file $rescan
 ```
 
 ```javascript
@@ -1330,10 +1330,10 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc importaddress $address
+hsw-rpc importaddress $address
 
 # P2SH example, imports script as address rs1qdph22fv5u38yqdpqza94n5gqfwnc5t9e9uhcl7rtnezn66t22fwswttnsx
-hsw-cli rpc importaddress 76a9145e50fb5b7475ebe2f7276ed3f29662e5321d1d7288ac "this_is_ignored" true true
+hsw-rpc importaddress 76a9145e50fb5b7475ebe2f7276ed3f29662e5321d1d7288ac "this_is_ignored" true true
 ```
 
 ```javascript
@@ -1395,7 +1395,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc importprunedfunds $rawtx $txoutproof
+hsw-rpc importprunedfunds $rawtx $txoutproof
 ```
 
 ```javascript
@@ -1457,7 +1457,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc importpubkey $pubkey
+hsw-rpc importpubkey $pubkey
 ```
 
 ```javascript
@@ -1516,7 +1516,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc listaccounts $minconf $watchonly
+hsw-rpc listaccounts $minconf $watchonly
 ```
 
 ```javascript
@@ -1588,10 +1588,10 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```shell--cli
 outputs='[{ "txid": "3962a06342fc62a733700d74c075a5d24c4f44f7108f6d9a318b66e92e3bdc72", "vout": 1 }]'
 
-hsw-cli rpc lockunspent $unlock "$outputs"
+hsw-rpc lockunspent $unlock "$outputs"
 
 # unlock all coins
-hsw-cli rpc lockunspent true
+hsw-rpc lockunspent true
 ```
 
 ```javascript
@@ -1639,7 +1639,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc listlockunspent
+hsw-rpc listlockunspent
 ```
 
 ```javascript
@@ -1704,7 +1704,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc listreceivedbyaccount $minconf $includeEmpty $watchOnly
+hsw-rpc listreceivedbyaccount $minconf $includeEmpty $watchOnly
 ```
 
 ```javascript
@@ -1787,7 +1787,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc listreceivedbyaddress $minconf $includeEmpty $watchOnly 
+hsw-rpc listreceivedbyaddress $minconf $includeEmpty $watchOnly 
 ```
 
 ```javascript
@@ -1874,7 +1874,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc listsinceblock $block $minconf $watchOnly 
+hsw-rpc listsinceblock $block $minconf $watchOnly 
 ```
 
 ```javascript
@@ -1989,7 +1989,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc listtransactions $account
+hsw-rpc listtransactions $account
 ```
 
 ```javascript
@@ -2109,7 +2109,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```shell--cli
 addrs='["rs1q3qm3e6sxd0mzax54jx6p3th0p2adzxdx2tm3zl"]'
 
-hsw-cli rpc listunspent $minconf $maxconf $addrs
+hsw-rpc listunspent $minconf $maxconf $addrs
 ```
 
 ```javascript
@@ -2184,7 +2184,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc sendfrom $fromaccount $toaddress $amount
+hsw-rpc sendfrom $fromaccount $toaddress $amount
 ```
 
 ```javascript
@@ -2254,7 +2254,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```shell--cli
 outputs='{"rs1qkk62444euknkya4qws9cg3ej3au24n635n4qye": 0.123, "rs1qew8r8c2c74zpmkhwmxu6jkrhwmgegl5h6cfaz3": 0.321}'
 
-hsw-cli rpc sendmany $fromaccount "$outputs" $minconf $label $subtractfee
+hsw-rpc sendmany $fromaccount "$outputs" $minconf $label $subtractfee
 ```
 
 ```javascript
@@ -2321,7 +2321,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc createsendtoaddress $address $amount $comment $commnt_to $subtractfee
+hsw-rpc createsendtoaddress $address $amount $comment $commnt_to $subtractfee
 ```
 
 ```javascript
@@ -2449,7 +2449,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc sendtoaddress $address $amount $comment $commnt_to $subtractfee
+hsw-rpc sendtoaddress $address $amount $comment $commnt_to $subtractfee
 ```
 
 ```javascript
@@ -2512,7 +2512,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc settxfee $rate
+hsw-rpc settxfee $rate
 ```
 
 ```javascript
@@ -2571,7 +2571,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc signmessage $address $message
+hsw-rpc signmessage $address $message
 ```
 
 ```javascript
@@ -2621,7 +2621,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc walletlock
+hsw-rpc walletlock
 ```
 
 ```javascript
@@ -2680,7 +2680,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc walletpassphrasechange $old $passphrase
+hsw-rpc walletpassphrasechange $old $passphrase
 ```
 
 ```javascript
@@ -2739,7 +2739,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc walletpassphrase $passphrase $timeout
+hsw-rpc walletpassphrase $passphrase $timeout
 ```
 
 ```javascript
@@ -2797,7 +2797,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc removeprunedfunds $txid
+hsw-rpc removeprunedfunds $txid
 ```
 
 ```javascript
@@ -2844,7 +2844,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc getmemoryinfo
+hsw-rpc getmemoryinfo
 ```
 
 ```javascript
@@ -2908,7 +2908,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc setloglevel $level
+hsw-rpc setloglevel $level
 ```
 
 ```javascript
@@ -2957,7 +2957,7 @@ curl http://x:api-key@127.0.0.1:14039 \
 ```
 
 ```shell--cli
-hsw-cli rpc stop
+hsw-rpc stop
 ```
 
 ```javascript

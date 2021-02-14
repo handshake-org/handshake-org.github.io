@@ -4,7 +4,7 @@
 ## getnames (hsw)
 
 ```shell--cli
-hsw-cli rpc getnames
+hsw-rpc getnames
 ```
 
 ```javascript
@@ -115,7 +115,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc getauctioninfo $name
+hsw-rpc getauctioninfo $name
 ```
 
 ```javascript
@@ -181,7 +181,7 @@ name | Required | name to get auction info of
 
 
 ```shell--cli
-hsw-cli rpc getbids
+hsw-rpc getbids
 ```
 
 ```javascript
@@ -242,7 +242,7 @@ none
 ## getreveals
 
 ```shell--cli
-hsw-cli rpc getreveals
+hsw-rpc getreveals
 ```
 
 ```javascript
@@ -305,7 +305,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc sendopen $name
+hsw-rpc sendopen $name
 ```
 
 ```javascript
@@ -398,7 +398,7 @@ lockup=10.000000
 ```
 
 ```shell--cli
-hsw-cli rpc sendbid $name $amount $lockup
+hsw-rpc sendbid $name $amount $lockup
 ```
 
 ```javascript
@@ -487,7 +487,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc sendreveal $name
+hsw-rpc sendreveal $name
 ```
 
 ```javascript
@@ -599,7 +599,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc sendredeem $name
+hsw-rpc sendredeem $name
 ```
 
 ```javascript
@@ -700,7 +700,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc sendupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}'
+hsw-rpc sendupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}'
 ```
 
 ```javascript
@@ -795,7 +795,7 @@ data | Required | JSON-encoded resource
 ## sendrenewal
 
 ```shell--cli
-hsw-cli rpc sendrenewal $name
+hsw-rpc sendrenewal $name
 ```
 
 ```javascript
@@ -900,7 +900,7 @@ address='rs1qhrnda3ct3237e6hl0vyh4tz2e90wvaxnmdldfq'
 ```
 
 ```shell--cli
-hsw-cli rpc sendtransfer $name $address
+hsw-rpc sendtransfer $name $address
 ```
 
 ```javascript
@@ -1007,7 +1007,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc sendfinalize $name
+hsw-rpc sendfinalize $name
 ```
 
 ```javascript
@@ -1110,7 +1110,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc sendcancel $name
+hsw-rpc sendcancel $name
 ```
 
 ```javascript
@@ -1212,7 +1212,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc sendrevoke $name
+hsw-rpc sendrevoke $name
 ```
 
 ```javascript
@@ -1318,7 +1318,7 @@ bid=1.123456
 ```
 
 ```shell--cli
-hsw-cli rpc importnonce $name $address $bid
+hsw-rpc importnonce $name $address $bid
 ```
 
 ```javascript
@@ -1363,7 +1363,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc createopen $name
+hsw-rpc createopen $name
 ```
 
 ```javascript
@@ -1456,7 +1456,7 @@ lockup=10.000000
 ```
 
 ```shell--cli
-hsw-cli rpc createbid $name $amount $lockup
+hsw-rpc createbid $name $amount $lockup
 ```
 
 ```javascript
@@ -1545,7 +1545,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc createreveal $name
+hsw-rpc createreveal $name
 ```
 
 ```javascript
@@ -1657,7 +1657,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc createredeem $name
+hsw-rpc createredeem $name
 ```
 
 ```javascript
@@ -1755,7 +1755,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc createupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}'
+hsw-rpc createupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}'
 ```
 
 ```javascript
@@ -1847,7 +1847,7 @@ data | Required | JSON-encoded resource
 ## createrenewal
 
 ```shell--cli
-hsw-cli rpc createrenewal $name
+hsw-rpc createrenewal $name
 ```
 
 ```javascript
@@ -1949,7 +1949,7 @@ address='rs1qhrnda3ct3237e6hl0vyh4tz2e90wvaxnmdldfq'
 ```
 
 ```shell--cli
-hsw-cli rpc createtransfer $name $address
+hsw-rpc createtransfer $name $address
 ```
 
 ```javascript
@@ -2052,7 +2052,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc createfinalize $name
+hsw-rpc createfinalize $name
 ```
 
 ```javascript
@@ -2157,7 +2157,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc createcancel $name
+hsw-rpc createcancel $name
 ```
 
 ```javascript
@@ -2258,7 +2258,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-cli rpc createrevoke $name
+hsw-rpc createrevoke $name
 ```
 
 ```javascript
@@ -2356,7 +2356,7 @@ height=100
 ```
 
 ```shell--cli
-hsw-cli rpc importname $name $height
+hsw-rpc importname $name $height
 ```
 
 ```javascript
