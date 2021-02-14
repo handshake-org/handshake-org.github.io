@@ -74,7 +74,7 @@ no-wallet: true
 These files may contain any of the configuration parameters, and will be interpreted by hs-client at startup. The node and wallet clients look for their own respective conf files.
 
 Command line flags should be formatted as <code>flag: true</code> in .conf files.
-<br>For example command line flag <code>--no-wallet</code> becomes <code>no-wallet: true</code> in hsd.conf.
+<br>For example command line flag <code>--persistent-mempool</code> becomes <code>persistent-mempool: true</code> in hsd.conf.
 
 More information about .conf files can be found [here](https://hsd-dev.org/guides/config.html).
 

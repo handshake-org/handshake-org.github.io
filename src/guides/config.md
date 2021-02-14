@@ -12,7 +12,7 @@ For example:
 hsd --network=regtest --api-key=menace --daemon
 ```
 
-...will read the config file at `~/.hsd/regtest/hsd.conf` and ignore any
+will read the config file at `~/.hsd/regtest/hsd.conf` and ignore any
 `network` or `api-key` parameters listed in that file.
 
 All hsd configuration options work in the config file, CLI arguments, process
@@ -22,9 +22,13 @@ specifically the usage of hyphens and capital letters. See the examples below:
 
 | config file | CLI parameter | environment variable | JS object constructor |
 |---|---|---|---|
-| `network: testnet` | `--network=testnet` | `HSD_NETWORK=testnet` | `{network: 'testnet'}` |
-| `log-level: debug` | `--log-level=debug` | `HSD_LOG_LEVEL=debug` | `{logLevel: 'debug'}` |
-| `max-outbound: 8`  | `--max-outbound=8`  | `HSD_MAX_OUTBOUND=8`  | `{maxOutbound: 8}`|
+| `network: testnet` | `--network=testnet` | `export HSD_NETWORK=testnet` | `{network: 'testnet'}` |
+| `log-level: debug` | `--log-level=debug` | `export HSD_LOG_LEVEL=debug` | `{logLevel: 'debug'}` |
+| `max-outbound: 8`  | `--max-outbound=8`  | `export HSD_MAX_OUTBOUND=8`  | `{maxOutbound: 8}`|
+| `cors: true`  | `--cors`  | `export HSD_CORS=true`  | `{cors: true}`|
+
+Keep in mind, that setting bash environment variable which will be passed to the `hsd` or `hs-client` subprocesses requires `export` command:
+`export HSD_NETWORK=testnet`. 
 
 
 ## Datadir/Prefix

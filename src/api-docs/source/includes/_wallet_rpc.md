@@ -2345,7 +2345,67 @@ const walletClient = new WalletClient(walletOptions);
 > The above command returns JSON "result" like this:
 
 ```
-552006b288266ab26fa30d9048b758a469a4101fd8235eff2384141ca5cf604d
+{
+  "hash": "5be265aa80f064cbb59e94cb11f6e776a86c7d2d38e0312e37ba68fada837f8c",
+  "witnessHash": "26f507c272f678600477dae02dc0a9387235061cf5adb770d554a5b7ad2c52e2",
+  "fee": 2800,
+  "rate": 22764,
+  "mtime": 1613139645,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "0028bf4d6f924f3d0fd814fe8676cff797645e259641bf5d6a6dad4a3898bcd2",
+        "index": 0
+      },
+      "witness": [
+        "",
+        "0265154cccfb952c96ed76985d1c02a660aca300a936fc2407bfb51abfbb9c0e5f"
+      ],
+      "sequence": 4294967295,
+      "coin": {
+        "version": 0,
+        "height": 316,
+        "value": 2000000000,
+        "address": "rs1q9454p2e89yrywvatjq64rhl2lr89ule6zr887p",
+        "covenant": {
+          "type": 0,
+          "action": "NONE",
+          "items": []
+        },
+        "coinbase": true
+      },
+      "path": {
+        "name": "default",
+        "account": 0,
+        "change": false,
+        "derivation": "m/44'/5355'/0'/0/11"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "value": 1010101,
+      "address": "rs1qkk62444euknkya4qws9cg3ej3au24n635n4qye",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    },
+    {
+      "value": 1998987099,
+      "address": "rs1qepurdt8x5p7d69mgma5pyepxm6d47gw4sa3tg3",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    }
+  ],
+  "locktime": 0,
+  "hex": "00000000010028bf4d6f924f3d0fd814fe8676cff797645e259641bf5d6a6dad4a3898bcd200000000ffffffff02b5690f00000000000014b5b4aad6b9e5a76276a0740b8447328f78aacf5100005b1f2677000000000014c87836ace6a07cdd1768df68126426de9b5f21d50000000000000200210265154cccfb952c96ed76985d1c02a660aca300a936fc2407bfb51abfbb9c0e5f"
+}
 ```
 
 Create transaction sending HNS to a given address without signing or broadcasting it.
