@@ -1360,10 +1360,12 @@ value | Required | value of the bid (in HNS)
 
 ```shell--vars
 name='possibility'
+force=true
+account=default
 ```
 
 ```shell--cli
-hsw-rpc createopen $name
+hsw-rpc createopen $name $force $account
 ```
 
 ```javascript
@@ -1440,6 +1442,7 @@ Creates `OPEN` transaction without signing or broadcasting it.
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to open bidding on
+force *(bool)* account| Optional | force account to use
 
 
 
@@ -1535,6 +1538,7 @@ Name | Default |  Description
 name | Required | name to bid on
 amount | Required | amount to bid (in HNS)
 lockup | Required | amount to lock up to blind your bid (must be greater than bid amount)
+account | Optional | account to use
 
 
 
@@ -1647,6 +1651,7 @@ Create `REVEAL` transaction without signing or broadcasting it.
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to reveal bid for (`null` for all names)
+account | Optional | account to use
 
 
 
@@ -1745,6 +1750,7 @@ Create `REDEEM` transaction without signing or broadcasting it.
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to redeem a losing bid for (`null` for all names)
+account | Optional | account to use
 
 
 
@@ -1841,6 +1847,7 @@ Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to update the data for
 data | Required | JSON-encoded resource
+account | Optional | account to use
 
 
 
@@ -1938,6 +1945,7 @@ Create `RENEW` transaction without signing or broadcasting it.
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to renew ownership of
+account | Optional | account to use
 
 
 
@@ -2043,6 +2051,7 @@ Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to transfer
 address | Required | address to transfer name ownership to
+account | Optional | account to use
 
 
 ## createfinalize
@@ -2145,6 +2154,7 @@ Create `FINALIZE` transaction without signing or broadcasting it.
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to finalize
+account | Optional | account to use
 
 
 
@@ -2248,6 +2258,7 @@ Create `CANCEL` transaction without signing or broadcasting it.
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to cancel the in-progress transfer of
+account | Optional | account to use
 
 
 
@@ -2347,6 +2358,7 @@ Create `REVOKE` transaction without signing or broadcasting it.
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to revoke the in-progress transfer of
+account | Optional | account to use
 
 ## importname
 
