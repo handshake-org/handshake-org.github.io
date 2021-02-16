@@ -700,7 +700,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-rpc sendupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}'
+hsw-rpc sendupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com."} ]}'
 ```
 
 ```javascript
@@ -721,7 +721,7 @@ const client = new WalletClient(clientOptions);
     'sendupdate',
     [
       name,
-      {records: [ {type: "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}
+      {records: [ {type: "NS", "ns": "ns1.example.com."} ]}
     ]
   );
   console.log(result);
@@ -1761,7 +1761,7 @@ name='possibility'
 ```
 
 ```shell--cli
-hsw-rpc createupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}'
+hsw-rpc createupdate $name '{"records": [ {"type": "NS", "ns": "ns1.example.com."} ]}'
 ```
 
 ```javascript
@@ -1781,7 +1781,7 @@ const client = new WalletClient(clientOptions);
     'createupdate',
     [
       name,
-      {records: [ {type: "NS", "ns": "ns1.example.com.", "address": "1.2.3.4"} ]}
+      {records: [ {type: "NS", "ns": "ns1.example.com."} ]}
     ]
   );
   console.log(result);
