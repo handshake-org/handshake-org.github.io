@@ -24,10 +24,13 @@ jobs:
 
     - run: ./bin/build
     - uses: actions/checkout@v2
+      if: ${{ contains(github.event.pull_request.labels.*.name, 'build:jsdocs') }}
       with:
         repository: handshake-org/hsd
         path: hsd
-    - run: |
+    - name: Build JSDocs
+      if: ${{ contains(github.event.pull_request.labels.*.name, 'build:jsdocs') }}
+      run: |
         cd hsd
         npm install -g jsdoc
         jsdoc -c jsdoc.json
