@@ -63,9 +63,15 @@
 <p>By default, the mainnet hsd config files will reside in <code>~/.hsd/hsd.conf</code> (node) and <code>~/.hsd/hsw.conf</code> (wallet). Any parameter passed to hsd at startup will have precedence over the config file. Even if you are just running <code>hs-client</code> without hsd installed (to access a remote server, for example) the configuration files would still reside in <code>~/.hsd/</code></p>
 <p>For example:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">hsd</span> --network=regtest --api-key=menace</span></code></pre></div>
-<p>…will read the config file at <code>~/.hsd/regtest/hsd.conf</code> and ignore any <code>network</code> or <code>api-key</code> parameters listed in that file.</p>
+<p>will read the config file at <code>~/.hsd/regtest/hsd.conf</code> and ignore any <code>network</code> or <code>api-key</code> parameters listed in that file.</p>
 <p>All hsd configuration options work in the config file, CLI arguments, process environment, and in the constructor parameters when instantiating new <code>node</code> objects in JavaScript. Each method has slightly different formatting. Note specifically the usage of hyphens and capital letters. See the examples below:</p>
 <table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>config file</th>
@@ -78,23 +84,30 @@
 <tr class="odd">
 <td><code>network: testnet</code></td>
 <td><code>--network=testnet</code></td>
-<td><code>HSD_NETWORK=testnet</code></td>
+<td><code>export HSD_NETWORK=testnet</code></td>
 <td><code>{network: 'testnet'}</code></td>
 </tr>
 <tr class="even">
 <td><code>log-level: debug</code></td>
 <td><code>--log-level=debug</code></td>
-<td><code>HSD_LOG_LEVEL=debug</code></td>
+<td><code>export HSD_LOG_LEVEL=debug</code></td>
 <td><code>{logLevel: 'debug'}</code></td>
 </tr>
 <tr class="odd">
 <td><code>max-outbound: 8</code></td>
 <td><code>--max-outbound=8</code></td>
-<td><code>HSD_MAX_OUTBOUND=8</code></td>
+<td><code>export HSD_MAX_OUTBOUND=8</code></td>
 <td><code>{maxOutbound: 8}</code></td>
+</tr>
+<tr class="even">
+<td><code>cors: true</code></td>
+<td><code>--cors</code></td>
+<td><code>export HSD_CORS=true</code></td>
+<td><code>{cors: true}</code></td>
 </tr>
 </tbody>
 </table>
+<p>Keep in mind, that setting bash environment variable which will be passed to the <code>hsd</code> or <code>hs-client</code> subprocesses requires <code>export</code> command: <code>export HSD_NETWORK=testnet</code>.</p>
 <h2 id="datadirprefix">Datadir/Prefix</h2>
 <p>The hsd datadir is determined by the <code>prefix</code> option. The following example wiil create a datadir of <code>~/.hsd_test</code>, containing a chain database, wallet database and log file.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="ex">hsd</span> --prefix ~/.hsd_test</span></code></pre></div>
