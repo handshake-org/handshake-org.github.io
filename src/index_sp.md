@@ -16,9 +16,10 @@ El último código fuente está disponible en [GitHub](https://github.com/handsh
 
 Handshake utiliza un sistema de utilidad de monedas para el registro de nombres. Handshake depende de la comunidad libre y de código abierto para asumir la propiedad y descentralizar el sistema [https://handshake.org](https://handshake.org).
 
-### IRC
+### Comunidades de Desarrolladores
 
-Existe un canal de IRC comunitario en Freenode irc.freenode.net:#handshake.
+-   IRC: irc.freenode.net:#handshake.
+-   Telegram: [Handshake Dev Chat](https://t.me/hns_tech).
 
 ### ¿Ves un fallo? Abre un pull request.
 
