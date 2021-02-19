@@ -16,13 +16,10 @@ El último código fuente está disponible en [GitHub](https://github.com/handsh
 
 Handshake utiliza un sistema de utilidad de monedas para el registro de nombres. Handshake depende de la comunidad libre y de código abierto para asumir la propiedad y descentralizar el sistema [https://handshake.org](https://handshake.org).
 
-### Lista de correo
-
-Puede suscribirse a la lista de correo de Mailman de GNU enviando un correo electrónico con ‘subscribe’  a [devs@handshake.org](mailto:devs@handshake.org)
-
 ### IRC
 
 Existe un canal de IRC comunitario en Freenode irc.freenode.net:#handshake.
 
 ### ¿Ves un fallo? Abre un pull request.
+
 https://github.com/handshake-org/handshake-org.github.io/blob/master/src/index.md
