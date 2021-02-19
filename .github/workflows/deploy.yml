@@ -11,6 +11,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+          node-version: 12.x
     - uses: r-lib/actions/setup-pandoc@v1
       with:
         pandoc-version: '2.7.3'
@@ -20,16 +23,16 @@ jobs:
         bundler-cache: true
 
     - run: ./bin/build
-    # - uses: actions/checkout@v2
-    #   with:
-    #     repository: handshake-org/hsd
-    #     ref: e270b8cef3f4552c35f744d04594ebe8896d5141
-    #     path: hsd
-    # - run: |
-    #     cd hsd
-    #     npm install -g jsdoc
-    #     jsdoc -c jsdoc.json
-    #     cp -r ./docs/reference ../build/docs
+    - uses: actions/checkout@v2
+      with:
+        repository: handshake-org/hsd
+        ref: v2.3.0
+        path: hsd
+    - run: |
+        cd hsd
+        npm install -g jsdoc
+        jsdoc -c jsdoc.json
+        cp -r ./docs/reference ../build/docs
     - name: Deploy
       if: github.ref == 'refs/heads/master'
       uses: peaceiris/actions-gh-pages@v3
