@@ -143,8 +143,7 @@ messages about new blocks.
 
 Strictly speaking, any additional functionality is not part of the node itself. So the wallet is implemented as hsd node plugin. 
 
-By default hsd runs with wallet plugin activated, but it can be disabled by providing command line flag <code>--no-wallet</code>
-<br>(<code>no-wallet: true</code> in [hsd.conf](#hsd-conf-and-hsw-conf-files)), this flag works **only** in
+By default hsd runs with wallet plugin activated, but it can be disabled by providing command line flag <code>--no-wallet</code>. This flag works **only** in
 command line mode.
 
 Wallet runs its own server, which listens for requests.

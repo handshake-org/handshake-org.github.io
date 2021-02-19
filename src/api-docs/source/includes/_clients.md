@@ -66,7 +66,7 @@ token     | _string_        | Token specific wallet
 network: main
 prefix: ~/.hsd
 api-key: <api-key>
-no-wallet: true
+index-tx: true
 ```
 
 ## hsd.conf and hsw.conf files
