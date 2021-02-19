@@ -18,7 +18,7 @@ Handshake utiliza un sistema de utilidad de monedas para el registro de nombres.
 
 ### Comunidades de Desarrolladores
 
--   IRC: irc.freenode.net:#handshake.
+-   IRC: irc.freenode.net: #handshake.
 -   Telegram: [Handshake Dev Chat](https://t.me/hns_tech).
 
 ### ¿Ves un fallo? Abre un pull request.
