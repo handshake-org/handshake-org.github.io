@@ -32,6 +32,7 @@ Handshake utilizes a utility coin system for name registration.
 Handshake depends on the free and open source community to take ownership
 and decentralize the system [https://handshake.org](https://handshake.org).
 
-### IRC
+### Developer Communities
 
-A community IRC channel exists on Freenode in irc.freenode.net:#handshake.
+-   IRC: irc.freenode.net:#handshake.
+-   Telegram: [Handshake Dev Chat](https://t.me/hns_tech).
