@@ -619,6 +619,9 @@ If you have never set a passphrase for this wallet before, you need to omit the 
 </aside>
 
 ## Send a transaction
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 
 ```shell--cli
 id="primary"
@@ -744,11 +747,6 @@ const options = {
 
 Create, sign, and send a transaction.
 
-<aside class="warning">Be careful how you enter values and fee rates!<br>
-<code>value</code> and <code>rate</code> are expressed in subunits when using cURL or Javascript<br>
-<code>value</code> and <code>rate</code> are expressed in WHOLE HNS when using CLI<br>
-Watch carefully how values are entered in the examples, all examples send the same amount when executed
-</aside>
 
 ### HTTP Request
 
@@ -772,6 +770,9 @@ value <br> _int_ (or _float_) | Value to send in subunits (or whole HNS, see war
 address <br> _string_ | destination address for transaction
 
 ## Create a Transaction
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
 ```shell--cli
 id="multisig1"
 passphrase="multisecret123"
@@ -892,11 +893,7 @@ const options = {
 Create and template a transaction (useful for multisig).
 Does not broadcast or add to wallet.
 
-<aside class="warning">Be careful how you enter values and fee rates!<br>
-<code>value</code> and <code>rate</code> are expressed in subunits when using cURL or Javascript<br>
-<code>value</code> and <code>rate</code> are expressed in WHOLE HNS when using CLI<br>
-Watch carefully how values are entered in the examples, all examples send the same amount when executed
-</aside>
+
 
 ### HTTP Request
 

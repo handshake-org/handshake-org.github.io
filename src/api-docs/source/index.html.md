@@ -109,7 +109,20 @@ Note that if multiple user-agents are using the wallet at the same time,
 the wallet RPC API is not safe as it maintains global state (more on this below)
 It is recommended to use the wallet HTTP API in multiprocess/multithreaded environments.
 
-**Indexing**
+## Values
+
+The smallest unit of the Handshake currency (HNS) is called the "dollarydoo" — one millionth of the whole.
+<br>So 1 HNS = 1 000 000 dollarydoos.
+<br>Different APIs require <code>value</code> and <code>fee</code> rate parameters denominated either in dollarydoos (subunits) which are integer values or in whole HNS, which are floats.
+
+When using HTTP API endpoints:
+<br><code>value</code> and <code>rate</code> are expressed in dollarydoos when using cURL or Javascript.
+<br><code>value</code> and <code>rate</code> are expressed in whole HNS when using CLI commands.
+
+When using RPC API commands:
+<br><code>value</code> and <code>rate</code> are always expressed in whole HNS, no matter the entry method.
+
+## Indexing
 
 hsd has two indexer modules that are inactive by default. When turned on, the indexers
 enable additional API calls.
@@ -123,8 +136,26 @@ along with its index in that transaction.
 Address indexer: enabled by `--index-address=true`. Allows lookup of all transactions
 involving a certain address.
 
+## Wallet plugin
 
-**Wallet: BIP44**
+The main purpose of hsd node is to store blockchain data and to exchange messages with other nodes, for example
+messages about new blocks.
+
+Strictly speaking, any additional functionality is not part of the node itself. So the wallet is implemented as hsd node plugin. 
+
+By default hsd runs with wallet plugin activated, but it can be disabled by providing command line flag <code>--no-wallet</code>. This flag works **only** in
+command line mode.
+
+Wallet runs its own server, which listens for requests.
+
+Wallet can also be run as a standalone application, connecting to local or external node:
+`wallet --node-host=127.0.0.1`
+
+More information about available arguments and flags can be found [here](https://hsd-dev.org/guides/config.html).
+
+
+
+## Wallet: BIP44
 
 The hsd wallet follows a [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)
 structure with cointype `5353` for mainnet. A single hsd instance can have multiple BIP44
@@ -149,7 +180,7 @@ Pay-to-Witness-Scripthash has a 32 byte hash of a script and can be spent if the
 reveals the script along with any additional data required to satisfy the script.
 
 
-**Wallet: rpc selectwallet vs --id=...**
+## Wallet: rpc selectwallet vs --id=...
 
 The wallet RPC module is STATEFUL, and is always focused on one single wallet.
 On boot, the `primary` wallet and its `default` account are the target of all
@@ -159,7 +190,7 @@ before making the command for that specific wallet.
 The wallet HTTP module is NOT stateful, meaning API calls can target any wallet,
 specified on-the-fly by adding the command line argument `--id=<wallet>`
 
-**Wallet: recovery**
+## Wallet: recovery
 
 There are [known issues](https://github.com/bcoin-org/bcoin/issues/835) with the hsd
 wallet that may make wallet recovery difficult in some cases. The fact that addresses can
