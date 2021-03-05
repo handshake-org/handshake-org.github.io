@@ -18,7 +18,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -37,38 +36,35 @@ const client = new NodeClient(clientOptions);
 {
   "result": {
     "start": {
-      "reserved":false,
-      "week":20,
-      "start":3024
+      "reserved": false,
+      "week": 20,
+      "start": 3024
     },
-	"info": {
-    "name": "pi",
-    "nameHash": "512da52b8aba40722262447a53ff36f1ab854a5dd1ea1bf92d0aed18a50ebca9",
-    "state": "CLOSED",
-    "height": 7203,
-    "renewal": 14636,
-    "owner": {
-      "hash": "47510cf5ba035cfc97f3e2e6cbe9c06e536fa87e81350343d30f2d021dc1dd36",
-      "index": 0
-    },
-    "value": 1000000,
-    "highest": 2000000,
-    "data": "0000a8030a526567697374657265640477697468086e616d656261736501344765080d0980208120822e696f2f",
-    "transfer": 0,
-    "revoked": 0,
-    "claimed": false,
-    "weak": false,
-    "stats": {
-      "renewalPeriodStart": 14636,
-      "renewalPeriodEnd": 23276,
-      "blocksUntilExpire": 6154,
-      "daysUntilExpire": 21.37
+    "info": {
+      "name": "pi",
+      "nameHash": "512da52b8aba40722262447a53ff36f1ab854a5dd1ea1bf92d0aed18a50ebca9",
+      "state": "CLOSED",
+      "height": 7203,
+      "renewal": 14636,
+      "owner": {
+        "hash": "47510cf5ba035cfc97f3e2e6cbe9c06e536fa87e81350343d30f2d021dc1dd36",
+        "index": 0
+      },
+      "value": 1000000,
+      "highest": 2000000,
+      "data": "0000a8030a526567697374657265640477697468086e616d656261736501344765080d0980208120822e696f2f",
+      "transfer": 0,
+      "revoked": 0,
+      "claimed": false,
+      "weak": false,
+      "stats": {
+        "renewalPeriodStart": 14636,
+        "renewalPeriodEnd": 23276,
+        "blocksUntilExpire": 6154,
+        "daysUntilExpire": 21.37
+      }
     }
   }
-}
-  },
-  "error":null,
-  "id":null
 }
 ```
 
@@ -87,7 +83,7 @@ week | int | estimated number of weeks after mainnet launch that name will becom
 start | int | exact block number that name will become available for bidding (if not reserved)
 state | string | the current auction state of the name (BIDDING, REVEAL, CLOSED, REVOKED, TRANSFER)
 height | int | block height at which auction started
-renewal | int | block height at which rewnewal period begins
+renewal | int | block height at which renewal period begins
 owner | int | UTXO to which the name belongs
 value | int | penultimate bid amount, paid by winner
 highest | int | highest bid amount, made by winner
@@ -108,7 +104,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -192,7 +187,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -239,7 +233,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -252,15 +245,25 @@ const client = new NodeClient(clientOptions);
 })();
 ```
 
-> getnameresource returns JSON structured like this: ("info" is empty if name has no stored resource data).
+> getnameresource returns JSON structured like this:
 
 ```json
 {
-  "version": 0,
-  "compat": false,
-  "ttl": 172800,
-  "ns": [
-    "ns1.example.com.@1.2.3.4"
+  "records": [
+    {
+      "type": "GLUE4",
+      "ns": "ns1.handshake.",
+      "address": "44.231.6.183"
+    },
+    {
+      "type": "GLUE4",
+      "ns": "ns2.handshake.",
+      "address": "23.239.11.203"
+    },
+    {
+      "type": "NS",
+      "ns": "ns1.handshake."
+    }
   ]
 }
 ```
@@ -286,7 +289,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -367,7 +369,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -417,7 +418,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -458,7 +458,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -512,7 +511,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -567,7 +565,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }
@@ -610,7 +607,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }

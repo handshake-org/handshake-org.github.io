@@ -143,8 +143,7 @@ messages about new blocks.
 
 Strictly speaking, any additional functionality is not part of the node itself. So the wallet is implemented as hsd node plugin. 
 
-By default hsd runs with wallet plugin activated, but it can be disabled by providing command line flag <code>--no-wallet</code>
-<br>(<code>no-wallet: true</code> in [hsd.conf](#hsd-conf-and-hsw-conf-files)), this flag works **only** in
+By default hsd runs with wallet plugin activated, but it can be disabled by providing command line flag <code>--no-wallet</code>. This flag works **only** in
 command line mode.
 
 Wallet runs its own server, which listens for requests.
@@ -204,6 +203,13 @@ they can not be recovered using the BIP44 process (which is computed exclusively
 a seed phrase plus blockchain data). [This issue is well-known](https://github.com/handshake-org/hsd/issues/378)
 and some solutions have been proposed to assist in wallet recovery of blinded bid data.
 
+<aside class="notice">
+In hsd balances, <code>confirmed</code> refers to the total balance of coins
+confirmed in the blockchain. <code>unconfirmed</code> refers to that total
+IN ADDITION to any transactions still unconfirmed in the mempool.
+Another way to think about it is your <code>unconfirmed</code> balance is the
+FUTURE total value of your wallet after everything is confirmed.
+</aside>
 
 # Authentication
 ## Auth
@@ -229,7 +235,6 @@ const network = Network.get('regtest');
 
 // network type derived from hsd object, client object stores API key
 const clientOptions = {
-  network: network.type,
   port: network.rpcPort,
   apiKey: 'api-key'
 }

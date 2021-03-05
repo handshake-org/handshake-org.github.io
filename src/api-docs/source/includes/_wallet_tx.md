@@ -25,7 +25,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -141,7 +140,7 @@ Abandon single pending transaction. Confirmed transactions will throw an error.
 
 `DEL /wallet/:id/tx/:hash`
 
-Paramters | Description
+Parameters | Description
 ----------| --------------------
 id <br> _string_ | id of wallet where the transaction is that you want to remove
 hash <br> _string_ | hash of transaction you would like to remove.
@@ -170,7 +169,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -255,7 +253,7 @@ Get wallet TX history. Returns array of tx details.
 `GET /wallet/:id/tx/history`
 
 ### Request Parameters
-Paramter | Description
+Parameter | Description
 -------- | -------------------------
 id <br> _string_ | id of wallet to get history of
 
@@ -283,7 +281,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -304,7 +301,7 @@ Get pending wallet transactions. Returns array of tx details.
 `GET /wallet/:id/tx/unconfirmed`
 
 ### Request Parameters
-Paramter | Description
+Parameter | Description
 -------- | -------------------------
 id <br> _string_ | id of wallet to get pending/unconfirmed txs
 
@@ -335,7 +332,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const walletOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -423,7 +419,7 @@ Note that there are other options documented that `getRange` accepts in the opti
 `GET /wallet/:id/tx/range`
 
 ### Body Parameters
-Paramter | Description
+Parameter | Description
 -------- | -------------------------
 account <br>_string_ | account to get the tx history from
 start <br> _int_ | start time to get range from

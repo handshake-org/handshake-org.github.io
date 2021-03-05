@@ -13,7 +13,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -124,7 +123,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -190,7 +188,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -251,7 +248,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -314,7 +310,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -407,7 +402,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -496,7 +490,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -608,7 +601,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -709,7 +701,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -804,7 +795,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -909,7 +899,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1016,7 +1005,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1119,7 +1107,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1221,7 +1208,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1327,7 +1313,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }
@@ -1442,7 +1427,8 @@ Creates `OPEN` transaction without signing or broadcasting it.
 Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to open bidding on
-force *(bool)* account| Optional | force account to use
+force *(bool)* | Optional | _currently ignored but required if additional parameters are passed_
+account| Optional | account to use
 
 
 
@@ -2377,7 +2363,6 @@ const {Network} = require('hsd');
 const network = Network.get('regtest');
 
 const clientOptions = {
-  network: network.type,
   port: network.walletPort,
   apiKey: 'api-key'
 }

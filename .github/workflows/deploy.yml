@@ -1,0 +1,39 @@
+name: build
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  job1:
+    name: Build docs
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: r-lib/actions/setup-pandoc@v1
+      with:
+        pandoc-version: '2.7.3'
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+        bundler-cache: true
+
+    - run: ./bin/build
+    # - uses: actions/checkout@v2
+    #   with:
+    #     repository: handshake-org/hsd
+    #     ref: e270b8cef3f4552c35f744d04594ebe8896d5141
+    #     path: hsd
+    # - run: |
+    #     cd hsd
+    #     npm install -g jsdoc
+    #     jsdoc -c jsdoc.json
+    #     cp -r ./docs/reference ../build/docs
+    - name: Deploy
+      if: github.ref == 'refs/heads/master'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build
+        cname: hsd-dev.org
