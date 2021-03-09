@@ -141,7 +141,6 @@ const wallet = walletClient.wallet(id);
 {
   "name": "default",
   "initialized": true,
-  "witness": false,
   "watchOnly": false,
   "type": "pubkeyhash",
   "m": 1,
@@ -258,7 +257,6 @@ Create account with specified account name.
 Parameter | Description
 --------- | -----------------
 name <br> _string_ | name to give the account. Option can be `account` or `name`
-witness <br> _bool_ | whether or not to act as segregated witness wallet account
 accountKey <br> _string_ | the extended public key for the account. This is ignored for non watch only wallets. Watch only accounts can't accept private keys for import (or sign transactions)
 type <br> _string_ | what type of wallet to make it ('multisig', 'pubkeyhash')
 m <br> _int_ | for multisig accounts, what to make `m` in m-of-n
