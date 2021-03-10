@@ -7408,31 +7408,28 @@ hsw-cli get
 <aside class="warning">
 Accounts within the same wallet are all related by deterministic hierarchy. However, wallets are not related to each other in any way. This means that when a wallet seed is backed up, all of its accounts (and their keys) can be derived from that backup. However, each newly created wallet must be backed up separately.
 </aside>
-<h2 id='create-a-wallet'>Create A Wallet</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">passphrase</span><span class="p">,</span> <span class="nx">witness</span><span class="p">,</span> <span class="nx">watchOnly</span><span class="p">,</span> <span class="nx">accountKey</span><span class="p">;</span>
+<h2 id='create-a-wallet'>Create A Wallet</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">passphrase</span><span class="p">,</span> <span class="nx">watchOnly</span><span class="p">,</span> <span class="nx">accountKey</span><span class="p">;</span>
 
 <span class="nx">id</span><span class="o">=</span><span class="s1">'newWallet'</span>
 <span class="nx">passphrase</span><span class="o">=</span><span class="s1">'secret456'</span>
-<span class="nx">witness</span><span class="o">=</span><span class="kc">false</span>
 <span class="nx">watchOnly</span><span class="o">=</span><span class="kc">true</span>
 <span class="nx">accountKey</span><span class="o">=</span><span class="s1">'rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'</span>
 </code></pre><pre class="highlight shell tab-shell--curl"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'newWallet'</span>
 <span class="nv">passphrase</span><span class="o">=</span><span class="s1">'secret456'</span>
-<span class="nv">witness</span><span class="o">=</span><span class="nb">false
-</span><span class="nv">watchOnly</span><span class="o">=</span><span class="nb">true
+<span class="nv">watchOnly</span><span class="o">=</span><span class="nb">true
 </span><span class="nv">accountKey</span><span class="o">=</span><span class="s1">'rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'</span>
 
 curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span> <span class="se">\</span>
   -X PUT <span class="se">\</span>
-  --data <span class="s1">'{"witness":'</span><span class="nv">$witness</span><span class="s1">', "passphrase":"'</span><span class="nv">$passphrase</span><span class="s1">'", "watchOnly": '</span><span class="nv">$watchOnly</span><span class="s1">', "accountKey":"'</span><span class="nv">$accountKey</span><span class="s1">'"}'</span>
+  --data <span class="s1">'{"passphrase":"'</span><span class="nv">$passphrase</span><span class="s1">'", "watchOnly": '</span><span class="nv">$watchOnly</span><span class="s1">', "accountKey":"'</span><span class="nv">$accountKey</span><span class="s1">'"}'</span>
 </code></pre><pre class="highlight shell tab-shell--cli"><code><span class="nv">id</span><span class="o">=</span><span class="s1">'newWallet'</span>
 <span class="nv">passphrase</span><span class="o">=</span><span class="s1">'secret456'</span>
-<span class="nv">witness</span><span class="o">=</span><span class="nb">false
-</span><span class="nv">watch</span><span class="o">=</span><span class="nb">true
+<span class="nv">watch</span><span class="o">=</span><span class="nb">true
 </span><span class="nv">key</span><span class="o">=</span><span class="s1">'rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'</span>
 
 <span class="c"># watchOnly defaults to true if --key flag is set</span>
 
-hsw-cli mkwallet <span class="nv">$id</span> --witness<span class="o">=</span><span class="nv">$witness</span> --passphrase<span class="o">=</span><span class="nv">$passphrase</span> --watch<span class="o">=</span><span class="nv">$watch</span> --key<span class="o">=</span><span class="nv">$key</span>
+hsw-cli mkwallet <span class="nv">$id</span> --passphrase<span class="o">=</span><span class="nv">$passphrase</span> --watch<span class="o">=</span><span class="nv">$watch</span> --key<span class="o">=</span><span class="nv">$key</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -7446,7 +7443,6 @@ hsw-cli mkwallet <span class="nv">$id</span> --witness<span class="o">=</span><s
 
 <span class="kr">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">passphrase</span><span class="p">:</span> <span class="nx">passphrase</span><span class="p">,</span>
-  <span class="na">witness</span><span class="p">:</span> <span class="nx">witness</span><span class="p">,</span>
   <span class="na">watchOnly</span><span class="p">:</span> <span class="nx">watchOnly</span><span class="p">,</span>
   <span class="na">accountKey</span><span class="p">:</span> <span class="nx">accountKey</span>
 <span class="p">};</span>
@@ -9617,7 +9613,6 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"initialized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"witness"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
   </span><span class="s2">"watchOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
   </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pubkeyhash"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
@@ -9727,10 +9722,6 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <tr>
 <td>name <br> <em>string</em></td>
 <td>name to give the account. Option can be <code>account</code> or <code>name</code></td>
-</tr>
-<tr>
-<td>witness <br> <em>bool</em></td>
-<td>whether or not to act as segregated witness wallet account</td>
 </tr>
 <tr>
 <td>accountKey <br> <em>string</em></td>
