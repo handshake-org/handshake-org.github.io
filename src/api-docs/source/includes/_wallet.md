@@ -230,11 +230,10 @@ Accounts within the same wallet are all related by deterministic hierarchy. Howe
 ## Create A Wallet
 
 ```javascript
-let id, passphrase, witness, watchOnly, accountKey;
+let id, passphrase, watchOnly, accountKey;
 
 id='newWallet'
 passphrase='secret456'
-witness=false
 watchOnly=true
 accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
 ```
@@ -242,25 +241,23 @@ accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTR
 ```shell--curl
 id='newWallet'
 passphrase='secret456'
-witness=false
 watchOnly=true
 accountKey='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
 
 curl http://x:api-key@127.0.0.1:14039/wallet/$id \
   -X PUT \
-  --data '{"witness":'$witness', "passphrase":"'$passphrase'", "watchOnly": '$watchOnly', "accountKey":"'$accountKey'"}'
+  --data '{"passphrase":"'$passphrase'", "watchOnly": '$watchOnly', "accountKey":"'$accountKey'"}'
 ```
 
 ```shell--cli
 id='newWallet'
 passphrase='secret456'
-witness=false
 watch=true
 key='rpubKBAoFrCN1HzSEDye7jcQaycA8L7MjFGmJD1uuvUZ21d9srAmAxmB7o1tCZRyXmTRuy5ZDQDV6uxtcxfHAadNFtdK7J6RV9QTcHTCEoY5FtQD'
 
 # watchOnly defaults to true if --key flag is set
 
-hsw-cli mkwallet $id --witness=$witness --passphrase=$passphrase --watch=$watch --key=$key
+hsw-cli mkwallet $id --passphrase=$passphrase --watch=$watch --key=$key
 ```
 
 ```javascript
@@ -277,7 +274,6 @@ const walletClient = new WalletClient(walletOptions);
 
 const options = {
   passphrase: passphrase,
-  witness: witness,
   watchOnly: watchOnly,
   accountKey: accountKey
 };
