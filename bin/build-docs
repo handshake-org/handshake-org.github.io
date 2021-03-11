@@ -27,5 +27,5 @@ echo "building docs"
 rm -rf docs
 jsdoc -c jsdoc.json
 cd $destDir
-rm -rf ./docs
-cp -r "$buildDir/docs/reference" ./docs
+rm -rf ./hsd
+cp -r "$buildDir/docs/reference" ./hsd
