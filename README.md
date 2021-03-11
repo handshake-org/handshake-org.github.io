@@ -18,7 +18,7 @@ just run gem install bundler:1.16.3 in a terminal.
 
 ## Build
 
-Build site and slate api docs:
+Build site and slate API docs from the project's root directory:
 ```bash
 ./bin/build
 ```
@@ -29,8 +29,13 @@ Build jsdoc:
 ```
 
 ## Run
-To view the site locally, run a simple http server from the project's
-root directory. 
+
+To view the site locally, execute the build command first, and then run a simple
+http server from the project's `/build` directory:
+
+```bash
+$ cd build
+```
 
 Python2:
 
