@@ -165,11 +165,10 @@ $ HSD_NETWORK=testnet HSD_HTTP_HOST=0.0.0.0 HSD_WALLET_HTTP_HOST=0.0.0.0 HSD_WAL
 ```
 
 ### hsd client:
-
-- `node-host`: Location of hsd node HTTP server (default: localhost).
-- `node-port`: Port of hsd node HTTP server (defaults to RPC port of network).
-- `node-ssl`: Whether to use SSL (default: false).
-- `node-api-key`: API-key for hsd HTTP server.
+- `http-host`: Location of hsd node HTTP server (default: localhost).
+- `http-port`: Port of hsd node HTTP server (defaults to RPC port of network).
+- `ssl`: Whether to use SSL (default: false).
+- `api-key`: API-key for hsd HTTP server.
 
 ### Wallet database:
 
