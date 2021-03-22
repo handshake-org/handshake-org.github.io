@@ -183,11 +183,23 @@ that signs the set with the HNS root ZSK and pushes the RRSIG back onto the answ
 this.ns.signRRSet(res.answer, type);
 ```
 
-### `middle(String, wire.Message)`
+### `middle(String, wire.Message, Object)`
 
-An optional `function`, settable by a plugin, that is called with the TLD and the
-full request _before_ checking the cache, the blacklist, the HNS root zone, or the
-ICANN reserved TLD list. If there is no function provided or if the provided function
+An optional `function`, settable by a plugin, that is called with the TLD, the
+full request, and the request info _before_ checking the cache, the blacklist, the HNS root zone, or the
+ICANN reserved TLD list. `rinfo` is a JSON object passed from the DNS Server and has
+the following shape:
+
+```
+{
+  tcp: (bool),
+  family: (string, "IPv4" or "IPv6"),
+  address: (string, IP address),
+  port: (int, port number)
+};
+```
+
+If there is no function provided or if the provided function
 returns `null`, the root resolver lookup proceeds as by default. The function may
 also return a
 [`Message`](https://github.com/chjj/bns/blob/25a2330322b740fa96ed67e5c0d8f0a1de89da55/lib/wire.js#L165)
@@ -197,7 +209,7 @@ be flagged as authoritative where applicable and signed by the HNS root zone-sig
 key where applicable.
 
 ```js
-this.ns.middle = (tld, req) => {
+this.ns.middle = (tld, req, rinfo) => {
   const [qs] = req.question;
   const name = qs.name.toLowerCase();
   const type = qs.type;
