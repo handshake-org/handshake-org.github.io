@@ -170,29 +170,36 @@ $ hsd</code></pre>
 <h3 id="signrrsetarraywire.record-int"><code>signRRSet(Array[wire.Record], Int)</code></h3>
 <p>A <code>function</code> that is called with an RR set (<code>Array[wire.Record]</code>) and type (<code>wire.types</code>) that signs the set with the HNS root ZSK and pushes the RRSIG back onto the answer (there is no return value).</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">this</span>.<span class="va">ns</span>.<span class="at">signRRSet</span>(<span class="va">res</span>.<span class="at">answer</span><span class="op">,</span> type)<span class="op">;</span></span></code></pre></div>
-<h3 id="middlestring-wire.message"><code>middle(String, wire.Message)</code></h3>
-<p>An optional <code>function</code>, settable by a plugin, that is called with the TLD and the full request <em>before</em> checking the cache, the blacklist, the HNS root zone, or the ICANN reserved TLD list. If there is no function provided or if the provided function returns <code>null</code>, the root resolver lookup proceeds as by default. The function may also return a <a href="https://github.com/chjj/bns/blob/25a2330322b740fa96ed67e5c0d8f0a1de89da55/lib/wire.js#L165"><code>Message</code></a> which is then returned directly to the resolver that made the query. Records in these responses will appear to come directly from the HNS root zone, so they should be flagged as authoritative where applicable and signed by the HNS root zone-signing key where applicable.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">this</span>.<span class="va">ns</span>.<span class="at">middle</span> <span class="op">=</span> (tld<span class="op">,</span> req) <span class="kw">=&gt;</span> <span class="op">{</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>  <span class="kw">const</span> [qs] <span class="op">=</span> <span class="va">req</span>.<span class="at">question</span><span class="op">;</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a>  <span class="kw">const</span> name <span class="op">=</span> <span class="va">qs</span>.<span class="va">name</span>.<span class="at">toLowerCase</span>()<span class="op">;</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="kw">const</span> type <span class="op">=</span> <span class="va">qs</span>.<span class="at">type</span><span class="op">;</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="kw">const</span> wire <span class="op">=</span> <span class="kw">this</span>.<span class="va">ns</span>.<span class="at">wire</span><span class="op">;</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a></span>
-<span id="cb12-7"><a href="#cb12-7"></a>  <span class="cf">if</span> (tld <span class="op">===</span> <span class="st">&#39;bit&#39;</span>) <span class="op">{</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>    <span class="kw">const</span> res <span class="op">=</span> <span class="kw">new</span> <span class="va">wire</span>.<span class="at">Message</span>()<span class="op">;</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a></span>
-<span id="cb12-10"><a href="#cb12-10"></a>    <span class="co">// Lookup the full name from the request using a Namecoin full node</span></span>
-<span id="cb12-11"><a href="#cb12-11"></a>    <span class="va">res</span>.<span class="at">answer</span> <span class="op">=</span> <span class="kw">this</span>.<span class="va">namecoinClient</span>.<span class="at">lookup</span>(name)<span class="op">;</span></span>
-<span id="cb12-12"><a href="#cb12-12"></a></span>
-<span id="cb12-13"><a href="#cb12-13"></a>    <span class="co">// Sign the answer with the HNS root ZSK</span></span>
-<span id="cb12-14"><a href="#cb12-14"></a>    <span class="kw">this</span>.<span class="va">ns</span>.<span class="at">signRRSet</span>(<span class="va">res</span>.<span class="at">answer</span><span class="op">,</span> type)<span class="op">;</span></span>
-<span id="cb12-15"><a href="#cb12-15"></a></span>
-<span id="cb12-16"><a href="#cb12-16"></a>    <span class="cf">return</span> res<span class="op">;</span></span>
-<span id="cb12-17"><a href="#cb12-17"></a>  <span class="op">}</span></span>
-<span id="cb12-18"><a href="#cb12-18"></a></span>
-<span id="cb12-19"><a href="#cb12-19"></a>  <span class="co">// Bypass if the plugin doesn&#39;t care about the name</span></span>
-<span id="cb12-20"><a href="#cb12-20"></a>  <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
-<span id="cb12-21"><a href="#cb12-21"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="middlestring-wire.message-object"><code>middle(String, wire.Message, Object)</code></h3>
+<p>An optional <code>function</code>, settable by a plugin, that is called with the TLD, the full request, and the request info <em>before</em> checking the cache, the blacklist, the HNS root zone, or the ICANN reserved TLD list. <code>rinfo</code> is a JSON object passed from the DNS Server and has the following shape:</p>
+<pre><code>{
+  tcp: (bool),
+  family: (string, &quot;IPv4&quot; or &quot;IPv6&quot;),
+  address: (string, IP address),
+  port: (int, port number)
+};</code></pre>
+<p>If there is no function provided or if the provided function returns <code>null</code>, the root resolver lookup proceeds as by default. The function may also return a <a href="https://github.com/chjj/bns/blob/25a2330322b740fa96ed67e5c0d8f0a1de89da55/lib/wire.js#L165"><code>Message</code></a> which is then returned directly to the resolver that made the query. Records in these responses will appear to come directly from the HNS root zone, so they should be flagged as authoritative where applicable and signed by the HNS root zone-signing key where applicable.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">this</span>.<span class="va">ns</span>.<span class="at">middle</span> <span class="op">=</span> (tld<span class="op">,</span> req<span class="op">,</span> rinfo) <span class="kw">=&gt;</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="kw">const</span> [qs] <span class="op">=</span> <span class="va">req</span>.<span class="at">question</span><span class="op">;</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="kw">const</span> name <span class="op">=</span> <span class="va">qs</span>.<span class="va">name</span>.<span class="at">toLowerCase</span>()<span class="op">;</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="kw">const</span> type <span class="op">=</span> <span class="va">qs</span>.<span class="at">type</span><span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="kw">const</span> wire <span class="op">=</span> <span class="kw">this</span>.<span class="va">ns</span>.<span class="at">wire</span><span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a>  <span class="cf">if</span> (tld <span class="op">===</span> <span class="st">&#39;bit&#39;</span>) <span class="op">{</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>    <span class="kw">const</span> res <span class="op">=</span> <span class="kw">new</span> <span class="va">wire</span>.<span class="at">Message</span>()<span class="op">;</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a></span>
+<span id="cb13-10"><a href="#cb13-10"></a>    <span class="co">// Lookup the full name from the request using a Namecoin full node</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>    <span class="va">res</span>.<span class="at">answer</span> <span class="op">=</span> <span class="kw">this</span>.<span class="va">namecoinClient</span>.<span class="at">lookup</span>(name)<span class="op">;</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a></span>
+<span id="cb13-13"><a href="#cb13-13"></a>    <span class="co">// Sign the answer with the HNS root ZSK</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a>    <span class="kw">this</span>.<span class="va">ns</span>.<span class="at">signRRSet</span>(<span class="va">res</span>.<span class="at">answer</span><span class="op">,</span> type)<span class="op">;</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a></span>
+<span id="cb13-16"><a href="#cb13-16"></a>    <span class="cf">return</span> res<span class="op">;</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a>  <span class="op">}</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a></span>
+<span id="cb13-19"><a href="#cb13-19"></a>  <span class="co">// Bypass if the plugin doesn&#39;t care about the name</span></span>
+<span id="cb13-20"><a href="#cb13-20"></a>  <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb13-21"><a href="#cb13-21"></a><span class="op">}</span></span></code></pre></div>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>
