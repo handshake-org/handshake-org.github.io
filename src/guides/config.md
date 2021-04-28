@@ -189,6 +189,18 @@ $ HSD_NETWORK=testnet HSD_HTTP_HOST=0.0.0.0 HSD_WALLET_HTTP_HOST=0.0.0.0 HSD_WAL
 - `wallet-auth`: Enable token auth for wallets (default: false).
 - `admin-token`: Token required if `wallet-auth` is enabled: restricts access to [all wallet admin routes.](https://handshake-org.github.io/api-docs/#wallet-admin-commands)
 
+## Default ports
+
+| | main | testnet | regtest | simnet |
+|-|-|-|-|-|
+| clearnet p2p  | 12038 | 13038 | 14038 | 15038 |
+| brontide p2p  | 44806 | 45806 | 46806 | 47806 |
+| node http     | 12037 | 13037 | 14037 | 15037 |
+| wallet http   | 12039 | 13039 | 14039 | 15039 |
+| root authoritative resolver | 5349  | 15349 | 25349 | 35349 |
+| recursive resolver | 5350  | 15350 | 25350 | 35350 |
+
+
 ## Example Configurations
 
 _NOTE: unless otherwise specified in [Preprocessor Options](#preprocessor-options), only one set of options is needed to run with the example configuration.
