@@ -12,12 +12,12 @@ NULLCMD = :
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /opt/hostedtoolcache/Ruby/2.6.6/x64/include/ruby-2.6.0
+topdir = /opt/hostedtoolcache/Ruby/2.6.7/x64/include/ruby-2.6.0
 hdrdir = $(topdir)
-arch_hdrdir = /opt/hostedtoolcache/Ruby/2.6.6/x64/include/ruby-2.6.0/x86_64-linux
+arch_hdrdir = /opt/hostedtoolcache/Ruby/2.6.7/x64/include/ruby-2.6.0/x86_64-linux
 PATH_SEPARATOR = :
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
-prefix = $(DESTDIR)/opt/hostedtoolcache/Ruby/2.6.6/x64
+prefix = $(DESTDIR)/opt/hostedtoolcache/Ruby/2.6.7/x64
 rubysitearchprefix = $(rubylibprefix)/$(sitearch)
 rubyarchprefix = $(rubylibprefix)/$(arch)
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
@@ -31,8 +31,8 @@ rubyhdrdir = $(includedir)/$(RUBY_VERSION_NAME)
 vendorarchdir = $(vendorlibdir)/$(sitearch)
 vendorlibdir = $(vendordir)/$(ruby_version)
 vendordir = $(rubylibprefix)/vendor_ruby
-sitearchdir = $(DESTDIR)./.gem.20210322-2190-10vptaq
-sitelibdir = $(DESTDIR)./.gem.20210322-2190-10vptaq
+sitearchdir = $(DESTDIR)./.gem.20210428-2165-ajoh5g
+sitelibdir = $(DESTDIR)./.gem.20210428-2165-ajoh5g
 sitedir = $(rubylibprefix)/site_ruby
 rubyarchdir = $(rubylibdir)/$(arch)
 rubylibdir = $(rubylibprefix)/$(ruby_version)
@@ -87,10 +87,10 @@ CCDLFLAGS = -fPIC
 CFLAGS   = $(CCDLFLAGS) $(cflags)  -fPIC $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
 DEFS     = 
-CPPFLAGS = -DBUILD_FOR_RUBY -DOS_UNIX -I/opt/hostedtoolcache/Ruby/2.6.6/x64/include -DENABLE_PATH_CHECK=0 $(DEFS) $(cppflags)
+CPPFLAGS = -DBUILD_FOR_RUBY -DOS_UNIX -I/opt/hostedtoolcache/Ruby/2.6.7/x64/include -DENABLE_PATH_CHECK=0 $(DEFS) $(cppflags)
 CXXFLAGS = $(CCDLFLAGS) $(cxxflags) $(ARCH_FLAG)
-ldflags  = -L. -L/opt/hostedtoolcache/Ruby/2.6.6/x64/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic
-dldflags = -L/opt/hostedtoolcache/Ruby/2.6.6/x64/lib  -Wl,--compress-debug-sections=zlib 
+ldflags  = -L. -L/opt/hostedtoolcache/Ruby/2.6.7/x64/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic
+dldflags = -L/opt/hostedtoolcache/Ruby/2.6.7/x64/lib  -Wl,--compress-debug-sections=zlib 
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
 LDSHARED = $(CXX) -shared

@@ -239,6 +239,62 @@ http-host: 0.0.0.0</code></pre>
 <li><code>wallet-auth</code>: Enable token auth for wallets (default: false).</li>
 <li><code>admin-token</code>: Token required if <code>wallet-auth</code> is enabled: restricts access to <a href="https://handshake-org.github.io/api-docs/#wallet-admin-commands">all wallet admin routes.</a></li>
 </ul>
+<h2 id="default-ports">Default ports</h2>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>main</th>
+<th>testnet</th>
+<th>regtest</th>
+<th>simnet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>clearnet p2p</td>
+<td>12038</td>
+<td>13038</td>
+<td>14038</td>
+<td>15038</td>
+</tr>
+<tr class="even">
+<td>brontide p2p</td>
+<td>44806</td>
+<td>45806</td>
+<td>46806</td>
+<td>47806</td>
+</tr>
+<tr class="odd">
+<td>node http</td>
+<td>12037</td>
+<td>13037</td>
+<td>14037</td>
+<td>15037</td>
+</tr>
+<tr class="even">
+<td>wallet http</td>
+<td>12039</td>
+<td>13039</td>
+<td>14039</td>
+<td>15039</td>
+</tr>
+<tr class="odd">
+<td>root authoritative resolver</td>
+<td>5349</td>
+<td>15349</td>
+<td>25349</td>
+<td>35349</td>
+</tr>
+<tr class="even">
+<td>recursive resolver</td>
+<td>5350</td>
+<td>15350</td>
+<td>25350</td>
+<td>35350</td>
+</tr>
+</tbody>
+</table>
 <h2 id="example-configurations">Example Configurations</h2>
 <p><em>NOTE: unless otherwise specified in <a href="#preprocessor-options">Preprocessor Options</a>, only one set of options is needed to run with the example configuration. For example if you choose to use a <code>hsd.conf</code> file, you will not need to use the command line options.</em></p>
 <h3 id="full-node-with-wallet">Full Node with wallet</h3>

@@ -12,12 +12,12 @@ NULLCMD = :
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /opt/hostedtoolcache/Ruby/2.6.6/x64/include/ruby-2.6.0
+topdir = /opt/hostedtoolcache/Ruby/2.6.7/x64/include/ruby-2.6.0
 hdrdir = $(topdir)
-arch_hdrdir = /opt/hostedtoolcache/Ruby/2.6.6/x64/include/ruby-2.6.0/x86_64-linux
+arch_hdrdir = /opt/hostedtoolcache/Ruby/2.6.7/x64/include/ruby-2.6.0/x86_64-linux
 PATH_SEPARATOR = :
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
-prefix = $(DESTDIR)/opt/hostedtoolcache/Ruby/2.6.6/x64
+prefix = $(DESTDIR)/opt/hostedtoolcache/Ruby/2.6.7/x64
 rubysitearchprefix = $(rubylibprefix)/$(sitearch)
 rubyarchprefix = $(rubylibprefix)/$(arch)
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
@@ -31,8 +31,8 @@ rubyhdrdir = $(includedir)/$(RUBY_VERSION_NAME)
 vendorarchdir = $(vendorlibdir)/$(sitearch)
 vendorlibdir = $(vendordir)/$(ruby_version)
 vendordir = $(rubylibprefix)/vendor_ruby
-sitearchdir = $(DESTDIR)./.gem.20210322-2190-12gwzw3
-sitelibdir = $(DESTDIR)./.gem.20210322-2190-12gwzw3
+sitearchdir = $(DESTDIR)./.gem.20210428-2165-8jwc9b
+sitelibdir = $(DESTDIR)./.gem.20210428-2165-8jwc9b
 sitedir = $(rubylibprefix)/site_ruby
 rubyarchdir = $(rubylibdir)/$(arch)
 rubylibdir = $(rubylibprefix)/$(ruby_version)
@@ -87,10 +87,10 @@ CCDLFLAGS = -fPIC
 CFLAGS   = $(CCDLFLAGS) $(cflags)  -fPIC -fvisibility=hidden $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
 DEFS     = 
-CPPFLAGS =  -I/opt/hostedtoolcache/Ruby/2.6.6/x64/include -DENABLE_PATH_CHECK=0 $(DEFS) $(cppflags)
+CPPFLAGS =  -I/opt/hostedtoolcache/Ruby/2.6.7/x64/include -DENABLE_PATH_CHECK=0 $(DEFS) $(cppflags)
 CXXFLAGS = $(CCDLFLAGS) $(cxxflags) $(ARCH_FLAG)
-ldflags  = -L. -L/opt/hostedtoolcache/Ruby/2.6.6/x64/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic
-dldflags = -L/opt/hostedtoolcache/Ruby/2.6.6/x64/lib  -Wl,--compress-debug-sections=zlib 
+ldflags  = -L. -L/opt/hostedtoolcache/Ruby/2.6.7/x64/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic
+dldflags = -L/opt/hostedtoolcache/Ruby/2.6.7/x64/lib  -Wl,--compress-debug-sections=zlib 
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
 LDSHARED = $(CC) -shared
@@ -141,7 +141,7 @@ LIBS = $(LIBRUBYARG_SHARED)  -lm   -lc
 ORIG_SRCS = autolink.c buffer.c houdini_href_e.c houdini_html_e.c html.c html_smartypants.c markdown.c rc_markdown.c rc_render.c stack.c
 SRCS = $(ORIG_SRCS) 
 OBJS = autolink.o buffer.o houdini_href_e.o houdini_html_e.o html.o html_smartypants.o markdown.o rc_markdown.o rc_render.o stack.o
-HDRS = $(srcdir)/html.h $(srcdir)/markdown.h $(srcdir)/buffer.h $(srcdir)/autolink.h $(srcdir)/stack.h $(srcdir)/houdini.h $(srcdir)/redcarpet.h $(srcdir)/html_blocks.h
+HDRS = $(srcdir)/stack.h $(srcdir)/markdown.h $(srcdir)/html_blocks.h $(srcdir)/houdini.h $(srcdir)/autolink.h $(srcdir)/redcarpet.h $(srcdir)/html.h $(srcdir)/buffer.h
 LOCAL_HDRS = 
 TARGET = redcarpet
 TARGET_NAME = redcarpet

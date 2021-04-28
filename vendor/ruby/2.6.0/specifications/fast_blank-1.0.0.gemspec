@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
   s.files = ["ext/fast_blank/extconf.rb".freeze]
   s.homepage = "https://github.com/SamSaffron/fast_blank".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "3.0.3".freeze
+  s.rubygems_version = "3.0.3.1".freeze
   s.summary = "Fast String blank? implementation".freeze
 
-  s.installed_by_version = "3.0.3" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.0.3.1" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

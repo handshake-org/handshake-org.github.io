@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
   s.email = ["me@tdreyno.com".freeze, "ben@benhollis.net".freeze, "karlfreeman@gmail.com".freeze]
   s.homepage = "https://github.com/middleman/middleman-sprockets".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "3.0.3".freeze
+  s.rubygems_version = "3.0.3.1".freeze
   s.summary = "Sprockets support for Middleman".freeze
 
-  s.installed_by_version = "3.0.3" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.0.3.1" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

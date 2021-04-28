@@ -12,10 +12,10 @@ Gem::Specification.new do |s|
   s.description = "EventMachine based WebSocket server".freeze
   s.email = ["ilya@igvita.com".freeze, "me@mloughran.com".freeze]
   s.homepage = "http://github.com/igrigorik/em-websocket".freeze
-  s.rubygems_version = "3.0.3".freeze
+  s.rubygems_version = "3.0.3.1".freeze
   s.summary = "EventMachine based WebSocket server".freeze
 
-  s.installed_by_version = "3.0.3" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.0.3.1" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
