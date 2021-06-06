@@ -453,6 +453,66 @@ N. | Name | Default |  Description
 2 | signature | Required | Signature of signed message
 3 | message | Required | Message that was signed
 
+## verifymessagewithname
+
+```javascript
+let name, signature, message;
+```
+
+```shell--vars
+name='handshake';
+signature='arjD5y4glPea270IiExx04E+tTvryHKhWZcA2oy8svVHr9q/AvGA647UF2ICaIGJHazbRyyj3draiNnBns9aWQ==';
+message='hello';
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14037 \
+  -X POST \
+  --data '{
+    "method": "verifymessagewithname",
+    "params": [ "'$name'", "'$signature'", "'$message'" ]
+  }'
+```
+
+```shell--cli
+hsd-cli rpc verifymessagewithname $name $signature "$message"
+```
+
+```javascript
+const {NodeClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  port: network.rpcPort,
+  apiKey: 'api-key'
+}
+
+const client = new NodeClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('verifymessagewithname', [ name, signature, message ]);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON "result" like this:
+
+```json
+true
+```
+
+Retrieves the address that owns a name and verify signature.
+<aside>Note: Due to behavior of some shells like bash, if your message contains spaces you may need to add additional quotes like this: <code>"'"$message"'"</code></aside>
+
+
+### Params
+N. | Name | Default |  Description
+--------- | --------- | --------- | -----------
+1 | name | Required | Name to retrieve the address used to sign
+2 | signature | Required | Signature of signed message
+3 | message | Required | Message that was signed
+
 ## setmocktime
 
 ```javascript
