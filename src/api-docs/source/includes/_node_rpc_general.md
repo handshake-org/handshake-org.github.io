@@ -502,7 +502,7 @@ const client = new NodeClient(clientOptions);
 true
 ```
 
-Retrieves the address that owns a name and verify signature.
+Retrieves the address that owns a name and verifies signature.
 <aside>Note: Due to behavior of some shells like bash, if your message contains spaces you may need to add additional quotes like this: <code>"'"$message"'"</code></aside>
 
 
