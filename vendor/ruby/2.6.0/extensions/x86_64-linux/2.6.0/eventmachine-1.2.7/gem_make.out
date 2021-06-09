@@ -1,5 +1,5 @@
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/eventmachine-1.2.7/ext/fastfilereader
-/opt/hostedtoolcache/Ruby/2.6.7/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.7/x64/lib/ruby/2.6.0 -r ./siteconf20210428-2165-15jt5gg.rb extconf.rb
+/opt/hostedtoolcache/Ruby/2.6.7/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.7/x64/lib/ruby/2.6.0 -r ./siteconf20210609-2146-1tw56ix.rb extconf.rb
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/eventmachine-1.2.7/ext/fastfilereader
@@ -25,4 +25,4 @@ linking shared-object fastfilereaderext.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/eventmachine-1.2.7/ext/fastfilereader
 make "DESTDIR=" install
-/usr/bin/install -c -m 0755 fastfilereaderext.so ./.gem.20210428-2165-ajoh5g
+/usr/bin/install -c -m 0755 fastfilereaderext.so ./.gem.20210609-2146-1ycq3j4

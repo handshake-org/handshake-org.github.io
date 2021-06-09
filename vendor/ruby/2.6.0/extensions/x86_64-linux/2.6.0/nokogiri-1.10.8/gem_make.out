@@ -1,5 +1,5 @@
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/nokogiri-1.10.8/ext/nokogiri
-/opt/hostedtoolcache/Ruby/2.6.7/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.7/x64/lib/ruby/2.6.0 -r ./siteconf20210428-2165-rqq1zb.rb extconf.rb
+/opt/hostedtoolcache/Ruby/2.6.7/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.7/x64/lib/ruby/2.6.0 -r ./siteconf20210609-2146-1cubnw2.rb extconf.rb
 checking if the C compiler accepts ... yes
 Building nokogiri using packaged libraries.
 Using mini_portile version 2.4.0
@@ -436,4 +436,4 @@ rm -rf /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/v
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/nokogiri-1.10.8/ext/nokogiri
 make "DESTDIR=" install
-/usr/bin/install -c -m 0755 nokogiri.so ./.gem.20210428-2165-1vtmrjj/nokogiri
+/usr/bin/install -c -m 0755 nokogiri.so ./.gem.20210609-2146-ih71jj/nokogiri
