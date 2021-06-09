@@ -2565,6 +2565,67 @@ N. | Name | Default |  Description
 
 
 
+## signmessagewithname
+
+```javascript
+let name, message;
+```
+
+```shell--vars
+name='handshake'
+message='Satoshi'
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14039 \
+  -X POST \
+  --data '{
+    "method": "signmessagewithname",
+    "params": [ "'$name'", "'$message'" ]
+  }'
+```
+
+```shell--cli
+hsw-rpc signmessagewithname $name $message
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+
+(async () => {
+  const result = await walletClient.execute('signmessagewithname', [name, message]);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON "result" like this:
+
+```
+MEUCIQC5Zzr+JoenWHy7m9XxpbDVVeg3DvKvJVQNyYPvLOuB2gIgP/BT3dRItxarNbE8ajEoTI66q3eB4lo+/SLsp7bbP70=
+```
+
+Sign an arbitrary message with the private key corresponding to a
+Handshake address that owns the specified name in the wallet.
+
+<aside>Note: Due to behavior of some shells like bash, if your message contains spaces you may need to add additional quotes like this: <code>"'"$message"'"</code></aside>
+
+### Params
+N. | Name | Default |  Description
+--------- | --------- | --------- | -----------
+1 | name | Required | Name to use for signing
+2 | message | Required | The message to sign
+
+
+
 ## walletlock
 
 ```shell--curl
