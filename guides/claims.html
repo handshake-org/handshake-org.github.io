@@ -114,10 +114,10 @@ example.com. 1800 IN RRSIG TXT 5 2 1800 20190615140933 20180615131108 ...</code>
 <p>If you already have DNSSEC setup, you can avoid publishing a TXT record publicly by creating the proof locally. This requires that you have direct access to your zone-signing keys. The private keys themselves must be stored in BIND’s private key format (v1.3) and naming convention.</p>
 <p>We use [bns] for this task, which includes a command-line tool for creating ownership proofs.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="ex">npm</span> install bns</span>
-<span id="cb5-2"><a href="#cb5-2"></a>$ <span class="ex">bns-prove</span> -x -K /path/to/keys example.com. \</span>
+<span id="cb5-2"><a href="#cb5-2"></a>$ <span class="ex">bns-prove</span> -b -K /path/to/keys example.com. \</span>
 <span id="cb5-3"><a href="#cb5-3"></a>  <span class="st">&#39;hns-claim:qnPxvMRKAAAAAAAA+4mmSeRmfY/8TOEF+ux&#39;</span></span></code></pre></div>
-<p>The above will output a hex string which can then be passed to the RPC:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="ex">hsd-cli</span> rpc sendrawclaim <span class="st">&#39;hex-string&#39;</span></span></code></pre></div>
+<p>The above will output a base64 string which can then be passed to the RPC:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="ex">hsd-cli</span> rpc sendrawclaim <span class="st">&#39;base64-string&#39;</span></span></code></pre></div>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>
