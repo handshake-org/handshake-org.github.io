@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Handshake Developer Documentation</title>
+
+<meta name="generator" content="pandoc">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="icon" type="image/ico" href="/img/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="/css/github-markdown.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+</head>
+
+<body>
+<header>
+  <a href="/"><img alt="Handshake logo" src="/img/logo.svg" /></a>
+</header>
+
+<main>
+<nav><div class="wrapper">
+  <ul>
+    <li><strong>INSTALL</strong></li>
+    <li><a id="install-mac"   href="/guides/mac-install.html">macOS</a></li>
+    <li><a id="install-linux"   href="/guides/linux-install.html">Linux</a></li>
+    <li><a id="install-win"   href="/guides/win-install.html">Windows</a></li>
+  </ul>
+  <ul>
+    <li><strong>GUIDES</strong></li>
+    <li><a id="guides-config"   href="/guides/config.html">HSD Configuration</a></li>
+    <li><a id="guides-events"   href="/guides/events.html">Events & Sockets</a></li>
+    <li><a id="guides-claims"   href="/guides/claims.html">Name Claims</a></li>
+    <li><a id="guides-auctions"   href="/guides/auctions.html">Name Auctions</a></li>
+    <li><a id="guides-wallet"   href="/guides/wallet.html">Wallet Setup</a></li>
+    <li><a id="guides-resource"   href="/guides/resource-records.html">HNS Resource Records</a></li>
+    <li><a id="guides-resource"   href="/guides/plugins.html">Developing Plugins</a></li>
+  </ul>
+  <ul>
+    <li><strong>DOCUMENTATION</strong></li>
+    <li><a href="/api-docs">API Docs</a></li>
+    <li><a href="/hsd">Full Documentation</a></li>
+  </ul>
+  <ul>
+    <li><strong>PROTOCOL</strong></li>
+    <li><a href="/files/handshake.txt">Paper</a></li>
+    <li><a id="protocol-summary"   href="/protocol/summary.html">Summary</a></li>
+    <li><a id="protocol-merkle"  class="active"  href="/protocol/merkle.html">Merkle Tree</a></li>
+    <li><a href="/HIPs">Improvement Proposals</a></li>
+  </ul>
+</div></nav>
+
+<section class="markdown-body">
+<pre class="lynx">
+    ___   
+   /\__\  
+  /:/__/_ 
+ /::\/\__\
+ \/\::/  /
+   /:/  / 
+   \/__/  
+</pre>
+
+<h1 id="hsd---merkle-tree">HSD - Merkle Tree</h1>
+<p>Merkle hash trees are used to audit/verify large data structures. Handshake, Bitcoin and many other protocols use it with transaction hashes to provide efficient proofs of inclusion in blocks.</p>
+<p>Handshake uses a different Merkle hash tree than Bitcoin for transactions. The Handshake hash tree is based on <a href="https://tools.ietf.org/html/rfc6962#section-2.1">RFC 6962</a> and integrates a padding idea from <a href="https://tools.ietf.org/html/rfc7574#section-5.1">RFC 7574</a>. The motivation to switch Merkle tree algorithms was to fix known issues with the Bitcoin Merkle tree: <a href="https://github.com/handshake-org/hsd/issues/5">hsd discussion</a>, <a href="https://bitslog.com/2018/06/09/leaf-node-weakness-in-bitcoin-merkle-tree-design/">attack description</a>.</p>
+<h2 id="how-it-works">How it works</h2>
+<p>The Handshake Merkle tree uses <code>blake2b</code> as the hash function. In general it follows the flow described in <a href="https://tools.ietf.org/html/rfc6962#section-2.1">RFC 6962</a>:</p>
+<ol type="1">
+<li><p>Define <code>EMPTY_HASH = blake2b(EMPTY_BUFFER)</code></p></li>
+<li><p>Given <code>n</code> inputs <code>d[0...n]</code>, each input is hashed as <code>blake2b(0x00 || d[i])</code>. These inputs are transaction hashes (txid).</p></li>
+<li><p>All internal nodes are hashed using <code>blake2b(0x01 || leftHash || rightHash)</code>, but if <code>rightHash</code> is missing then <code>EMPTY_HASH</code> is used instead. This is similar to <a href="https://tools.ietf.org/html/rfc7574#section-5.1">RFC 7574</a>.</p></li>
+</ol>
+<h3 id="example-1">Example 1</h3>
+<p>Block with 4 transactions:</p>
+<pre class="text"><code>      Merkle root     
+          / \         
+         /   \        
+        /     \       
+       /       \      
+      e         f     
+     / \       / \    
+    /   \     /   \   
+   a     b   c     d  
+   |     |   |     |  
+   d0    d1  d2    d3 </code></pre>
+<ul>
+<li><code>a</code> = <code>blake2b(0x00 || d0)</code></li>
+<li><code>b</code> = <code>blake2b(0x00 || d1)</code></li>
+<li><code>c</code> = <code>blake2b(0x00 || d2)</code></li>
+<li><code>d</code> = <code>blake2b(0x00 || d3)</code></li>
+<li><code>e</code> = <code>blake2b(0x01 || a || b)</code></li>
+<li><code>f</code> = <code>blake2b(0x01 || c || d)</code></li>
+<li><code>Merkle root</code> = <code>blake2b(0x01 || e || f)</code></li>
+</ul>
+<h3 id="example-2">Example 2</h3>
+<p>Block with 6 transactions:</p>
+<pre class="text"><code>                Merkle root                        
+               /           \                       
+              /             \                      
+             /               \                     
+            /                 \                    
+           j                   k                   
+          / \                 / \                  
+         /   \               /   \                 
+        /     \             /     \                
+       /       \           /       \               
+      g         h         i         EMPTY_HASH
+     / \       / \       / \                       
+    /   \     /   \     /   \                      
+   a     b   c     d   e     f                     
+   |     |   |     |   |     |                     
+   d0    d1  d2    d3  d4    d5                    </code></pre>
+<ul>
+<li><code>a</code> = <code>blake2b(0x00 || d0)</code></li>
+<li><code>b</code> = <code>blake2b(0x00 || d1)</code></li>
+<li><code>c</code> = <code>blake2b(0x00 || d2)</code></li>
+<li><code>d</code> = <code>blake2b(0x00 || d3)</code></li>
+<li><code>e</code> = <code>blake2b(0x00 || d4)</code></li>
+<li><code>f</code> = <code>blake2b(0x00 || d5)</code></li>
+<li><code>g</code> = <code>blake2b(0x01 || a || b)</code></li>
+<li><code>h</code> = <code>blake2b(0x01 || c || d)</code></li>
+<li><code>i</code> = <code>blake2b(0x01 || e || f)</code></li>
+<li><code>j</code> = <code>blake2b(0x01 || g || h)</code></li>
+<li><code>k</code> = <code>blake2b(0x01 || i || EMPTY_HASH)</code></li>
+<li><code>Merkle root</code> = <code>blake2b(0x01 || j || k)</code></li>
+</ul>
+<h3 id="example-3">Example 3</h3>
+<p>Block with 5 transactions:</p>
+<pre class="text"><code>                Merkle root                        
+               /           \                       
+              /             \                      
+             /               \                     
+            /                 \                    
+           i                   j                   
+          / \                 / \                  
+         /   \               /   \                 
+        /     \             /     \                
+       /       \           /       \               
+      f         g         h         EMPTY_HASH 
+     / \       / \       / \                       
+    /   \     /   \     /   \                      
+   a     b   c     d   e     EMPTY_HASH        
+   |     |   |     |   |                           
+   d0    d1  d2    d3  d4                          </code></pre>
+<ul>
+<li><code>a</code> = <code>blake2b(0x00 || d0)</code></li>
+<li><code>b</code> = <code>blake2b(0x00 || d1)</code></li>
+<li><code>c</code> = <code>blake2b(0x00 || d2)</code></li>
+<li><code>d</code> = <code>blake2b(0x00 || d3)</code></li>
+<li><code>e</code> = <code>blake2b(0x00 || d4)</code></li>
+<li><code>f</code> = <code>blake2b(0x01 || a || b)</code></li>
+<li><code>g</code> = <code>blake2b(0x01 || c || d)</code></li>
+<li><code>h</code> = <code>blake2b(0x01 || e || EMPTY_HASH)</code></li>
+<li><code>i</code> = <code>blake2b(0x01 || f || g)</code></li>
+<li><code>j</code> = <code>blake2b(0x01 || h || EMPTY_HASH)</code></li>
+<li><code>Merkle root</code> = <code>blake2b(0x01 || i || j)</code></li>
+</ul>
+<h3 id="example-5">Example 5</h3>
+<p>Block with 1 transaction:</p>
+<pre class="text"><code>  Merkle root
+      |
+      d0</code></pre>
+<ul>
+<li><code>Merkle root</code> = <code>blake2b(0x00 || d0)</code></li>
+</ul>
+
+<hr/>
+<h4>See a mistake? Open a pull request.</h4>
+<a href="https://github.com/handshake-org/handshake-org.github.io/blob/master/src/protocol/merkle.md">https://github.com/handshake-org/handshake-org.github.io/blob/master/src/protocol/merkle.md</a>
+</section>
+</main>
+
+<footer id="footer">
+  &copy;&nbsp;2018 Handshake Community<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">(Creative Commons Attribution-ShareAlike 4.0 International License)</a>
+</footer>
+</body>
+
+</html>

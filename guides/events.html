@@ -46,6 +46,7 @@
     <li><strong>PROTOCOL</strong></li>
     <li><a href="/files/handshake.txt">Paper</a></li>
     <li><a id="protocol-summary"   href="/protocol/summary.html">Summary</a></li>
+    <li><a id="protocol-merkle"   href="/protocol/merkle.html">Merkle Tree</a></li>
     <li><a href="/HIPs">Improvement Proposals</a></li>
   </ul>
 </div></nav>
@@ -61,7 +62,7 @@
    \/__/  
 </pre>
 
-<h2 id="events-and-sockets">Events and Sockets</h2>
+<h1 id="events-and-sockets">Events and Sockets</h1>
 <p>To listen for and react to events in hsd, a listener must be added in the runtime script. If you are running a full node (for example) you might already be familiar with <a href="https://github.com/handshake-org/hsd/blob/master/bin/node">the hsd full node launch script</a>, which instantiates a <code>FullNode</code> object, adds a wallet, and begins the connection and synchronization process. The script ends with an <code>async</code> function that actually starts these processes, and this is a good place to add event listeners. <a href="#events-directory">Using the table below</a> you can discover which object needs to be listened <code>on</code> for each event type. Notice that because the wallet is added as a plugin, its object hierarchy path is a little… awkward :-)</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">// Based on https://github.com/handshake-org/hsd/blob/master/bin/node</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a></span>

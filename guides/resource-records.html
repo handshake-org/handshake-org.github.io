@@ -46,6 +46,7 @@
     <li><strong>PROTOCOL</strong></li>
     <li><a href="/files/handshake.txt">Paper</a></li>
     <li><a id="protocol-summary"   href="/protocol/summary.html">Summary</a></li>
+    <li><a id="protocol-merkle"   href="/protocol/merkle.html">Merkle Tree</a></li>
     <li><a href="/HIPs">Improvement Proposals</a></li>
   </ul>
 </div></nav>
@@ -61,7 +62,7 @@
    \/__/  
 </pre>
 
-<h2 id="handshake-resource-record-guide">Handshake Resource Record Guide</h2>
+<h1 id="handshake-resource-record-guide">Handshake Resource Record Guide</h1>
 <p>Handshake has resource records that represent DNS resource records. Some of them map one-to-one with DNS resource record types, while others do not. These resource records are included in <code>REGISTER</code> or <code>UPDATE</code> outputs and written to the Urkel tree so that proofs can be served to light clients.</p>
 <p>Each Handshake name stores a single <code>Resource</code> with the maximum size of 512 bytes.</p>
 <p>Note that the blockchain records are designed to be referral-only, meaning you’ll need a conventional nameserver running somewhere to host records like A, AAAA, CNAME, etc.</p>

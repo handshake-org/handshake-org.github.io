@@ -1,5 +1,5 @@
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/fast_blank-1.0.0/ext/fast_blank
-/opt/hostedtoolcache/Ruby/2.6.7/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.7/x64/lib/ruby/2.6.0 -r ./siteconf20210625-2167-vk3bu3.rb extconf.rb
+/opt/hostedtoolcache/Ruby/2.6.7/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.7/x64/lib/ruby/2.6.0 -r ./siteconf20210625-2180-1f1vwyz.rb extconf.rb
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/fast_blank-1.0.0/ext/fast_blank
@@ -12,4 +12,4 @@ linking shared-object fast_blank.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/fast_blank-1.0.0/ext/fast_blank
 make "DESTDIR=" install
-/usr/bin/install -c -m 0755 fast_blank.so ./.gem.20210625-2167-f24t9d
+/usr/bin/install -c -m 0755 fast_blank.so ./.gem.20210625-2180-o2qga
