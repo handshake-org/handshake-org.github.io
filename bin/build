@@ -9,7 +9,6 @@ cd ../
 echo 'converting markdown files to html...'
 
 mkdir -p ./build/install
-mkdir -p ./build/guides
 cp -r ./static/* ./build
 
 # find ./src -iname '*.md' | grep -v './src/api-docs.*$'
@@ -37,7 +36,7 @@ do
   fi
 
   output="./build/${dir_path}${prefix}.html"
-  mkdir -pv `dirname $output`
+  mkdir -p `dirname $output`
 
   pandoc $file -T $prefix \
     -V "active${dir_class_prefix}-$prefix:true" \
