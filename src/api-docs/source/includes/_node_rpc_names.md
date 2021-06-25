@@ -449,7 +449,7 @@ name | Required | name for which you wish to broadcast your ownership proof
 ## sendrawclaim
 
 ```shell--cli
-hsd-rpc sendrawclaim <hex-string>
+hsd-rpc sendrawclaim <base64-string>
 ```
 
 ```javascript
@@ -465,7 +465,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendrawclaim', [ 'hex-string' ]);
+  const result = await client.execute('sendrawclaim', [ 'base64-string' ]);
   console.log(result);
 })();
 ```
@@ -483,7 +483,7 @@ See the [README](https://github.com/handshake-org/hsd) for hsd or the [Name Clai
 ### Params
 Name | Default |  Description
 --------- | --------- | --------- | -----------
-claim | Required | raw serialized hex-string
+claim | Required | raw serialized base64-string
 
 ## getdnssecproof
 
