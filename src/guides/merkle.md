@@ -1,35 +1,36 @@
 # HSD - Merkle Tree
 
 Merkle hash trees are used to audit/verify large data structures. Handshake,
-Bitcoin and many other protocols use it for transaction hashes to provide
-efficient proofs of inclusion.
+Bitcoin and many other protocols use it with transaction hashes to provide
+efficient proofs of inclusion in blocks.
 
-Handshake uses different merkle hash tree for transactions from bitcoin.
-Hash tree is based on [RFC 6962][rfc6962] and integrates padding idea from
-[RFC 7574][rfc7574]. Motivation to change to different merkle tree
-is to fix problems of the bitcoin merkle tree.
+Handshake uses a different Merkle hash tree than Bitcoin for transactions.
+The Handshake hash tree is based on [RFC 6962][rfc6962] and integrates a padding
+idea from [RFC 7574][rfc7574]. The motivation to switch Merkle tree algorithms
+was to fix known issues with the Bitcoin Merkle tree: [hsd discussion][issue5],
+[attack description][merkleattack].
 
 ## How it works
 
-Handshake merkle tree uses `blake2b` as the hash function for the tree.
-In general it follows flow described in [RFC 6962][rfc6962].
+The Handshake Merkle tree uses `blake2b` as the hash function.
+In general it follows the flow described in [RFC 6962][rfc6962]:
 
-Given `n` inputs `d[0...n]`, first each of them is hashed as
-`blake2b(0x00 || d[i])`.   
-All internal nodes are hashed using
+1. Define `EMPTY_HASH = blake2b(EMPTY_BUFFER)`
+
+2. Given `n` inputs `d[0...n]`, each input is hashed as `blake2b(0x00 || d[i])`.
+These inputs are transaction hashes (txid).
+
+3. All internal nodes are hashed using
 `blake2b(0x01 || leftHash || rightHash)`, but if `rightHash` is
 missing then `EMPTY_HASH` is used instead. This is similar to
 [RFC 7574][rfc7574].
 
-  - `EMPTY_HASH = blake2b(EMPTY_BUFFER)`
-
-
 ### Example 1
 
-Block with 4 transactions
+Block with 4 transactions:
 
 ```text
-      merkle root     
+      Merkle root     
           / \         
          /   \        
         /     \       
@@ -47,14 +48,14 @@ Block with 4 transactions
  - `d` = `blake2b(0x00 || d3)`
  - `e` = `blake2b(0x01 || a || b)`
  - `f` = `blake2b(0x01 || c || d)`
- - `merkle root` = `blake2b(0x01 || e || f)`
+ - `Merkle root` = `blake2b(0x01 || e || f)`
 
 ### Example 2
 
-Block with 6 transactions
+Block with 6 transactions:
 
 ```text
-                merkle root                        
+                Merkle root                        
                /           \                       
               /             \                      
              /               \                     
@@ -64,7 +65,7 @@ Block with 6 transactions
          /   \               /   \                 
         /     \             /     \                
        /       \           /       \               
-      g         h         i         blake2b(empty) 
+      g         h         i         EMPTY_HASH
      / \       / \       / \                       
     /   \     /   \     /   \                      
    a     b   c     d   e     f                     
@@ -83,13 +84,14 @@ Block with 6 transactions
   - `i` = `blake2b(0x01 || e || f)`
   - `j` = `blake2b(0x01 || g || h)`
   - `k` = `blake2b(0x01 || i || EMPTY_HASH)`
-  - `merkle root` = `blake2b(0x01 || j || k)`
+  - `Merkle root` = `blake2b(0x01 || j || k)`
 
 ### Example 3
-Block with 5 transactions
+
+Block with 5 transactions:
 
 ```text
-                merkle root                        
+                Merkle root                        
                /           \                       
               /             \                      
              /               \                     
@@ -99,10 +101,10 @@ Block with 5 transactions
          /   \               /   \                 
         /     \             /     \                
        /       \           /       \               
-      f         g         h         blake2b(empty) 
+      f         g         h         EMPTY_HASH 
      / \       / \       / \                       
     /   \     /   \     /   \                      
-   a     b   c     d   e     blake2b(empty)        
+   a     b   c     d   e     EMPTY_HASH        
    |     |   |     |   |                           
    d0    d1  d2    d3  d4                          
 ```
@@ -116,17 +118,21 @@ Block with 5 transactions
   - `h` = `blake2b(0x01 || e || EMPTY_HASH)`
   - `i` = `blake2b(0x01 || f || g)`
   - `j` = `blake2b(0x01 || h || EMPTY_HASH)`
-  - `merkle root` = `blake2b(0x01 || i || j)`
+  - `Merkle root` = `blake2b(0x01 || i || j)`
       
 ### Example 5
-Block with 1 transaction.
+
+Block with 1 transaction:
+
 ```text
-  merkle root
+  Merkle root
       |
       d0
 ```
-  - `merkle root` = `blake2b(0x00 || d0)`
+  - `Merkle root` = `blake2b(0x00 || d0)`
 
 [gh-issue]: https://github.com/handshake-org/hsd/issues/5
 [rfc6962]: https://tools.ietf.org/html/rfc6962#section-2.1
 [rfc7574]: https://tools.ietf.org/html/rfc7574#section-5.1
+[issue5]: https://github.com/handshake-org/hsd/issues/5
+[merkleattack]: https://bitslog.com/2018/06/09/leaf-node-weakness-in-bitcoin-merkle-tree-design/
