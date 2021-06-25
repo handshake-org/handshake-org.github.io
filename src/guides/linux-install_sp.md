@@ -1,4 +1,4 @@
-## Linux Install Guide
+# Linux Install Guide
 
 El conjunto de software Handshake consta de un nodo completo (`hsd`) y un
 cliente ligero (`hnsd`). El nodo completo permite a los usuarios registrar,

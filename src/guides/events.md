@@ -1,4 +1,4 @@
-## Events and Sockets
+# Events and Sockets
 
 To listen for and react to events in hsd, a listener must be added in the runtime script.
 If you are running a full node (for example) you might already be familiar with [the hsd

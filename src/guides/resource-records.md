@@ -1,4 +1,4 @@
-## Handshake Resource Record Guide
+# Handshake Resource Record Guide
 
 Handshake has resource records that represent DNS resource records.
 Some of them map one-to-one with DNS resource record types,

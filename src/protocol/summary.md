@@ -1,4 +1,4 @@
-## Handshake Protocol Summary
+# Handshake Protocol Summary
 
 This guide is intended for developers with a working knowledge of the Bitcoin
 protocol and its general consensus parameters. All values below describe mainnet

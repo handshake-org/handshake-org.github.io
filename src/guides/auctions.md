@@ -1,4 +1,4 @@
-## How to Participate in a Name Auction
+# How to Participate in a Name Auction
 
 First we should look at the current status of a name we want.
 

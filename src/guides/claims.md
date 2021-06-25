@@ -1,4 +1,4 @@
-## How to Claim a Name
+# How to Claim a Name
 
 If you own a name in the existing root zone, or the Alexa top 100k, or you
 reserved your name through a trademark claim, it is waiting for you on the

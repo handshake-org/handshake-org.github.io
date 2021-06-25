@@ -1,4 +1,4 @@
-## Windows Install Guide
+# Windows Install Guide
 
 The Handshake software suite consists of a full node (`hsd`) and a light
 client (`hnsd`). The full node allows users to register, update, transfer,
