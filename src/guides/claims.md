@@ -128,12 +128,12 @@ ownership proofs.
 
 ``` bash
 $ npm install bns
-$ bns-prove -x -K /path/to/keys example.com. \
+$ bns-prove -b -K /path/to/keys example.com. \
   'hns-claim:qnPxvMRKAAAAAAAA+4mmSeRmfY/8TOEF+ux'
 ```
 
-The above will output a hex string which can then be passed to the RPC:
+The above will output a base64 string which can then be passed to the RPC:
 
 ``` bash
-$ hsd-cli rpc sendrawclaim 'hex-string'
+$ hsd-cli rpc sendrawclaim 'base64-string'
 ```
