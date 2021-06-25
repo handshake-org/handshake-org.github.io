@@ -131,6 +131,12 @@ Block with 1 transaction:
 ```
   - `Merkle root` = `blake2b(0x00 || d0)`
 
+## Implementations
+
+[Bitcoin Merkle Tree](https://github.com/bcoin-org/bcrypto/blob/master/lib/merkle.js)
+
+[Handshake Merkle Tree](https://github.com/bcoin-org/bcrypto/blob/master/lib/mrkl.js)
+
 [gh-issue]: https://github.com/handshake-org/hsd/issues/5
 [rfc6962]: https://tools.ietf.org/html/rfc6962#section-2.1
 [rfc7574]: https://tools.ietf.org/html/rfc7574#section-5.1
