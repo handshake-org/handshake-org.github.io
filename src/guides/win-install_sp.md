@@ -1,4 +1,4 @@
-## Guía de instalación en Windows
+# Guía de instalación en Windows
 
 El conjunto de software Handshake consta de un nodo completo (`hsd`) y un
 cliente ligero (`hnsd`). El nodo completo permite a los usuarios registrar,

@@ -1,4 +1,4 @@
-## Setting up a Handshake Wallet 
+# Setting up a Handshake Wallet 
 
 *This guide is heavily copied from [Wallets and Accounts and Keys, Oh My!](https://bcoin.io/guides/wallets.html)
 by Daniel McNally with edits specific to Handshake.*
