@@ -7105,7 +7105,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <td>name for which you wish to broadcast your ownership proof</td>
 </tr>
 </tbody></table>
-<h2 id='sendrawclaim'>sendrawclaim</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc sendrawclaim &lt;hex-string&gt;
+<h2 id='sendrawclaim'>sendrawclaim</h2><pre class="highlight shell tab-shell--cli"><code>hsd-rpc sendrawclaim &lt;base64-string&gt;
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span><span class="nx">NodeClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hs-client'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'hsd'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'regtest'</span><span class="p">);</span>
@@ -7118,7 +7118,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendrawclaim'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'hex-string'</span> <span class="p">]);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="s1">'sendrawclaim'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'base64-string'</span> <span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre>
@@ -7140,7 +7140,7 @@ hsd-cli rpc generatetoaddress <span class="nv">$numblocks</span> <span class="nv
 <tr>
 <td>claim</td>
 <td>Required</td>
-<td>raw serialized hex-string</td>
+<td>raw serialized base64-string</td>
 </tr>
 </tbody></table>
 <h2 id='getdnssecproof'>getdnssecproof</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">name</span><span class="p">;</span>

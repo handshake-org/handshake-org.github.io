@@ -274,7 +274,7 @@ checked program was:
 /* end */
 
 "gcc -o conftest -I/opt/hostedtoolcache/Ruby/2.6.7/x64/include/ruby-2.6.0/x86_64-linux -I/opt/hostedtoolcache/Ruby/2.6.7/x64/include/ruby-2.6.0/ruby/backward -I/opt/hostedtoolcache/Ruby/2.6.7/x64/include/ruby-2.6.0 -I.  -I/opt/hostedtoolcache/Ruby/2.6.7/x64/include -DENABLE_PATH_CHECK=0   -O3 -ggdb3 -Wall -Wextra -Wdeclaration-after-statement -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wrestrict -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC  conftest.c  -L. -L/opt/hostedtoolcache/Ruby/2.6.7/x64/lib -Wl,-rpath,/opt/hostedtoolcache/Ruby/2.6.7/x64/lib -L. -L/opt/hostedtoolcache/Ruby/2.6.7/x64/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lffi  -lffi -Wl,-rpath,/opt/hostedtoolcache/Ruby/2.6.7/x64/lib -L/opt/hostedtoolcache/Ruby/2.6.7/x64/lib -lruby -lffi  -lffi -lm   -lc"
-/usr/bin/ld: /tmp/cc8uMZVF.o: in function `t':
+/usr/bin/ld: /tmp/ccZDOMxn.o: in function `t':
 /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/ffi-1.10.0/ext/ffi_c/conftest.c:15: undefined reference to `rb_thread_blocking_region'
 collect2: error: ld returned 1 exit status
 checked program was:
