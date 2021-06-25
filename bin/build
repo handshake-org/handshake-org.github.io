@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 # enter project root dir
@@ -9,21 +9,43 @@ cd ../
 echo 'converting markdown files to html...'
 
 mkdir -p ./build/install
-mkdir -p ./build/guides
 cp -r ./static/* ./build
 
-for file in ./src/*.md
-do
-    PREFIX=$(basename "$file" | cut -d. -f1)
-    pandoc $file -T $PREFIX -V "active-$PREFIX:true" -V "ghpath:$PREFIX" -V "pagetitle:$PREFIX" -w html5 -o "./build/$PREFIX.html" --template ./src/templates/layout.html
-done
+# find ./src -iname '*.md' | grep -v './src/api-docs.*$'
+files=`find ./src -iname '*.md' | grep -v '^./src/api-docs.*$'`
 
-for file in ./src/guides/*.md
+for file in $files;
 do
-    PREFIX=$(basename "$file" | cut -d. -f1)
-    pandoc $file -T $PREFIX -V "active-guides-$PREFIX:true" -V "ghpath:guides/$PREFIX" -V "pagetitle:$PREFIX" -w html5 -o "./build/guides/$PREFIX.html" --template ./src/templates/layout.html
+  prefix=`basename $file | cut -d. -f1`
+  # e.g. ./src/guides or ./src
+  dirname=`dirname $file`
+  # e.g. /guides or empty (if ./src)
+  dir_prefix=${dirname/#.\/src/}
+
+  dir_class_prefix=""
+  dir_path=""
+
+  if [[ $dir_prefix != "" ]]; then
+    # replace / with - (that's why we left it there)
+    # makes /guides to -guides (/guides/something to -guides-something)
+    dir_class_prefix=${dir_prefix//\//-}
+
+    # clean version (w/o prefix)
+    # /guides to guides/ (/guides/something to guides/something/)
+    dir_path=${dir_prefix/#\//}/
+  fi
+
+  output="./build/${dir_path}${prefix}.html"
+  mkdir -p `dirname $output`
+
+  pandoc $file -T $prefix \
+    -V "active${dir_class_prefix}-$prefix:true" \
+    -V "ghpath:${dir_path}${prefix}" \
+    -V "pagetitle:${prefix}" \
+    -o "./build/${dir_path}${prefix}.html" \
+    -w html5 --template ./src/templates/layout.html
 done
-echo 'finished'
+echo "Finished."
 
 # build API documentation
 echo 'building api documentation...'
