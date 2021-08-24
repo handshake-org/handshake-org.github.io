@@ -2,8 +2,11 @@
 
 ## getnameinfo
 
+```shell--vars
+name='pi'
+```
+
 ```shell--curl
-name='pi';
 
 curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
@@ -11,7 +14,7 @@ curl http://x:api-key@127.0.0.1:14037 \
 ```
 
 ```shell--cli
-hsd-rpc getnameinfo pi
+hsd-rpc getnameinfo "$name"
 ```
 
 ```javascript
@@ -494,7 +497,7 @@ let name;
 ```
 
 ```shell--vars
-name='foo.bar';
+name='foo.bar'
 ```
 
 ```shell--cli
