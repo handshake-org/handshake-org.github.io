@@ -3,9 +3,11 @@
 ## getnameinfo
 
 ```shell--curl
+name='pi';
+
 curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
-  --data '{ "method": "getnameinfo", "params": [ '$name'] }'
+  --data '{ "method": "getnameinfo", "params": ["'$name'"] }'
 ```
 
 ```shell--cli
