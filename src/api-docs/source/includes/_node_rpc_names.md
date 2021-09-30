@@ -7,7 +7,6 @@ name='pi'
 ```
 
 ```shell--curl
-
 curl http://x:api-key@127.0.0.1:14037 \
   -X POST \
   --data '{ "method": "getnameinfo", "params": ["'$name'"] }'
@@ -30,7 +29,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnameinfo', [ '$name' ]);
+  const result = await client.execute('getnameinfo', [ name ]);
   console.log(result);
 })();
 ```
@@ -182,6 +181,17 @@ Returns info for all names that have been opened or claimed. NOTE: this is prima
 
 ## getnamebyhash
 
+```shell--vars
+namehash='e4dfb97162995a696714a84f3bd3f242b02f5f071c1c6670a24f5ae1e1235007'
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14037 \
+  -X POST \
+  --data '{ "method": "getnamebyhash", "params": ["'$namehash'"] }'
+```
+
+
 ```shell--cli
 hsd-rpc getnamebyhash $namehash
 ```
@@ -199,7 +209,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnamebyhash', [ '$namehash' ]);
+  const result = await client.execute('getnamebyhash', [ namehash ]);
   console.log(result);
 })();
 ```
@@ -208,7 +218,7 @@ const client = new NodeClient(clientOptions);
 
 ```json
 
-name
+test-txt
 
 ```
 
@@ -228,6 +238,16 @@ name | String
 
 ## getnameresource
 
+```shell--vars
+name='test-txt'
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14037 \
+  -X POST \
+  --data '{ "method": "getnameresource", "params": ["'$name'"] }'
+```
+
 ```shell--cli
 hsd-rpc getnameresource $name
 ```
@@ -245,7 +265,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnameresource', [ '$name' ]);
+  const result = await client.execute('getnameresource', [ name ]);
   console.log(result);
 })();
 ```
@@ -284,6 +304,16 @@ name | Required | name for resource records.
 
 ## getnameproof
 
+```shell--vars
+name='test-txt'
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14037 \
+  -X POST \
+  --data '{ "method": "getnameproof", "params": ["'$name'"] }'
+```
+
 ```shell--cli
 hsd-rpc getnameproof $name
 ```
@@ -301,7 +331,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnameproof', [ '$name' ]);
+  const result = await client.execute('getnameproof', [ name ]);
   console.log(result);
 })();
 ```
@@ -359,102 +389,20 @@ Type | Description
 'TYPE_UNKNOWN' | Some error occured.
 
 
-
-
-
-## createclaim
-
-```shell--cli
-hsd-rpc createclaim $name
-```
-
-```javascript
-const {NodeClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  port: network.rpcPort,
-  apiKey: 'api-key'
-}
-
-const client = new NodeClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('createclaim', [ '$name' ]);
-  console.log(result);
-})();
-```
-
-> createclaim returns the txt record to be signed and added to your name's zone file (using nytimes as example).
-
-```json
-{
-  "name": "nytimes",
-  "target": "nytimes.com.",
-  "value": 1133774245,
-  "size": 5120,
-  "fee": 25600,
-  "address": "rs1qgm0z8pa6l2zxhapddk9gh00wzhgjjcjfh2drjy",
-  "txt": "hns-regtest:_QBkABRG3iOHuvqEa_QtbYqLve4V0SliSQA"
-}
-
-```
-`createclaim` is for claiming a names in the existing root zone or the Alexa top 100k. These names are reserved and can be claimed by publishing a DNSSEC ownership proof -- a cryptographic proof that you own the name on ICANN's system.
-
-The command returns the TXT record to be signed and added to your name's zone file. It includes a commitment to the handshake address you  want the name to be associated with, along with the fee that you are willing to pay the miner to mine our claim. This TXT record must be added to our name's zone file and signed. See [How to Claim a Name](https://handshake-org.github.io/guides/claims.html) for a more detailed guide.
-
-
-### Params
-Name | Default |  Description
---------- | --------- | --------- | -----------
-name | Required | the reserved name for which you want to create a claim
-
-
-## sendclaim
-
-```shell--cli
-hsd-rpc sendclaim $name
-```
-
-```javascript
-const {NodeClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const clientOptions = {
-  port: network.rpcPort,
-  apiKey: 'api-key'
-}
-
-const client = new NodeClient(clientOptions);
-
-(async () => {
-  const result = await client.execute('sendclaim', [ '$name' ]);
-  console.log(result);
-})();
-```
-
-> sendclaim broadcasts your ownership proof.
-
-```json
-```
-
-Once our proof is published on the DNS layer, we can use `sendclaim` to crawl the relevant zones and create the proof.
-
-`sendclaim` will create and broadcast the proof to all of your peers, ultimately ending up in a miner's mempool. Your claim should be mined within 5-20 minutes. Once mined, you must wait several blocks before your claim is considered "mature".
-
-See the [README](https://github.com/handshake-org/hsd) for hsd or the [Name Claims](https://handshake-org.github.io/guides/claims.html) guide for more.
-
-### Params
-Name | Default |  Description
---------- | --------- | --------- | -----------
-name | Required | name for which you wish to broadcast your ownership proof
-
 ## sendrawclaim
 
+```shell--vars
+base64_string='AwEAAd334XDnsXiofaipnUTULW5CW4VZlWzNKXDzQKsaCyFQEd28I9Xx'
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14037 \
+  -X POST \
+  --data '{ "method": "sendrawclaim", "params": ["'base64_string'"] }'
+```
+
 ```shell--cli
-hsd-rpc sendrawclaim <base64-string>
+hsd-rpc sendrawclaim $base64_string
 ```
 
 ```javascript
@@ -470,14 +418,15 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendrawclaim', [ 'base64-string' ]);
+  const result = await client.execute('sendrawclaim', [ base64_string ]);
   console.log(result);
 })();
 ```
 
-> send rawclaim allows you to publish your claim directly
+> send rawclaim allows you to publish your claim directly and returns the claim ID
 
-```json
+```
+0ba16efc2ace2b38726206e3b05ddeccbfbf87d191510d137a72ea4eceaded77
 ```
 
 If you already have DNSSEC setup, you can avoid publishing a TXT record publicly by creating the proof locally. This requires that you have direct access to your zone-signing keys. The private keys themselves must be stored in BIND's private key format and naming convention.
@@ -490,14 +439,11 @@ Name | Default |  Description
 --------- | --------- | --------- | -----------
 claim | Required | raw serialized base64-string
 
+
 ## getdnssecproof
 
-```javascript
-let name;
-```
-
 ```shell--vars
-name='foo.bar'
+name='icann.org'
 ```
 
 ```shell--cli
@@ -507,7 +453,7 @@ hsd-rpc getdnssecproof "$name"
 ```shell--curl
 curl http://x:api-key@127.0.0.1:14037 \
     -X POST \
-    --data '{"method":"getdnssecproof","params":["'$name'"]}'
+    --data '{ "method": "getdnssecproof" , "params": ["'$name'"] }'
 ```
 
 ```javascript
@@ -560,8 +506,19 @@ verbose | true | Returns hex when false
 
 ## sendrawairdrop
 
+```shell--vars
+base64_string='6XzakHKLJGuK3kgyCOEfJ8XPT1IJtvZZL9zaTC5x6QxqQIqfhSnqy3guOtwuMWs'
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14037 \
+  -X POST \
+  --data '{ "method": "sendrawairdrop", "params": ["'$base64_string'"] }'
+```
+
+
 ```shell--cli
-hsd-rpc sendrawairdrop <base64-string>
+hsd-rpc sendrawairdrop $base64_string
 ```
 
 ```javascript
@@ -577,7 +534,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('sendrawairdrop', [ 'base64-string' ]);
+  const result = await client.execute('sendrawairdrop', [ base64_string ]);
   console.log(result);
 })();
 ```
@@ -602,6 +559,17 @@ claim | Required | raw serialized base64-string
 
 ## grindname
 
+```shell--vars
+length=4
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14037 \
+  -X POST \
+  --data '{ "method": "grindname", "params": [ '$length' ] }'
+```
+
+
 ```shell--cli
 hsd-rpc grindname $length
 ```
@@ -619,7 +587,7 @@ const clientOptions = {
 const client = new NodeClient(clientOptions);
 
 (async () => {
-  const result = await client.execute('getnameresource', [ $length ]);
+  const result = await client.execute('grindname', [ length ]);
   console.log(result);
 })();
 ```
@@ -627,7 +595,7 @@ const client = new NodeClient(clientOptions);
 > grindname returns a randomly derived available name
 
 ```json
-girnktqvqn
+girn
 ```
 
 Grind a rolled-out available name.
