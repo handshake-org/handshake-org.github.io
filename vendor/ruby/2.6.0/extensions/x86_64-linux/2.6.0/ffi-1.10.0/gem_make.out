@@ -1,5 +1,5 @@
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/ffi-1.10.0/ext/ffi_c
-/opt/hostedtoolcache/Ruby/2.6.7/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.7/x64/lib/ruby/2.6.0 -r ./siteconf20210625-2190-w72xn9.rb extconf.rb
+/opt/hostedtoolcache/Ruby/2.6.8/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.8/x64/lib/ruby/2.6.0 -r ./siteconf20210930-3342-11uw0to.rb extconf.rb
 checking for ffi_call() in -lffi... yes
 checking for ffi_closure_alloc()... yes
 checking for ffi_raw_call()... yes
@@ -55,4 +55,4 @@ linking shared-object ffi_c.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/ffi-1.10.0/ext/ffi_c
 make "DESTDIR=" install
-/usr/bin/install -c -m 0755 ffi_c.so ./.gem.20210625-2190-4cmq5r
+/usr/bin/install -c -m 0755 ffi_c.so ./.gem.20210930-3342-188e483

@@ -1,5 +1,5 @@
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/http_parser.rb-0.6.0/ext/ruby_http_parser
-/opt/hostedtoolcache/Ruby/2.6.7/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.7/x64/lib/ruby/2.6.0 -r ./siteconf20210625-2190-1lfgasc.rb extconf.rb
+/opt/hostedtoolcache/Ruby/2.6.8/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.8/x64/lib/ruby/2.6.0 -r ./siteconf20210930-3342-18m7qqh.rb extconf.rb
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/http_parser.rb-0.6.0/ext/ruby_http_parser
@@ -48,4 +48,4 @@ linking shared-object ruby_http_parser.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/http_parser.rb-0.6.0/ext/ruby_http_parser
 make "DESTDIR=" install
-/usr/bin/install -c -m 0755 ruby_http_parser.so ./.gem.20210625-2190-1x47q5j
+/usr/bin/install -c -m 0755 ruby_http_parser.so ./.gem.20210930-3342-103a0tf
