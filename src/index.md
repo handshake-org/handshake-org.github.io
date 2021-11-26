@@ -34,5 +34,5 @@ and decentralize the system [https://handshake.org](https://handshake.org).
 
 ### Developer Communities
 
--   IRC: irc.freenode.net: #handshake.
+-   IRC: libera.chat: [#handshake](https://web.libera.chat#handshake)
 -   Telegram: [Handshake Dev Chat](https://t.me/hns_tech).
