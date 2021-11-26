@@ -1,5 +1,5 @@
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/redcarpet-3.4.0/ext/redcarpet
-/opt/hostedtoolcache/Ruby/2.6.8/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.8/x64/lib/ruby/2.6.0 -r ./siteconf20210930-3342-1myxt2g.rb extconf.rb
+/opt/hostedtoolcache/Ruby/2.6.9/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.6.9/x64/lib/ruby/2.6.0 -r ./siteconf20211126-2345-ys2q0a.rb extconf.rb
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/redcarpet-3.4.0/ext/redcarpet
@@ -103,4 +103,4 @@ linking shared-object redcarpet.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/2.6.0/gems/redcarpet-3.4.0/ext/redcarpet
 make "DESTDIR=" install
-/usr/bin/install -c -m 0755 redcarpet.so ./.gem.20210930-3342-3izezo
+/usr/bin/install -c -m 0755 redcarpet.so ./.gem.20211126-2345-10sbtv7
