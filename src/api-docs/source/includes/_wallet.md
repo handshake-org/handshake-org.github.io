@@ -1098,7 +1098,7 @@ Remove all pending transactions older than a specified age.
 Paramaters | Description
 ----------- | -------------
 account <br> _string_ or _number_ | account to zap from
-age <br> _number_ | age threshold to zap up to (unix time)
+age <br> _number_ | age threshold to zap up to (seconds)
 
 ## Unlock Wallet
 
