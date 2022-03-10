@@ -2016,7 +2016,7 @@ Create, sign, and send a FINALIZE.
 
 ### HTTP Request
 
-`POST /wallet/:id/finalize`
+`POST /wallet/:id/revoke`
 
 ### Post Parameters
 Parameter | Description
