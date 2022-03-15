@@ -2145,7 +2145,7 @@ updates or transfers. The name can be reopened with a new auction after a set ti
 
 ### HTTP Request
 
-`POST /wallet/:id/finalize`
+`POST /wallet/:id/revoke`
 
 ### Post Parameters
 Parameter | Description
