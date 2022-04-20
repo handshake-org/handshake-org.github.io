@@ -11,7 +11,7 @@ sin los requisitos de recursos informáticos de ejecutar un nodo completo.
 ### `hsd`
 
 Para instalar `hsd`, siga las instrucciones
-[aquí](https://github.com/handshake-org/hsd#install).
+[aquí](https://github.com/handshake-org/hsd/blob/master/docs/install.md).
 
 ### `hnsd`
 

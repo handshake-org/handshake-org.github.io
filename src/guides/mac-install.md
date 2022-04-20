@@ -9,7 +9,7 @@ requirements of running a full node.
 ### `hsd`
 
 To install `hsd`, follow the instructions
-[here](https://github.com/handshake-org/hsd#install).
+[here](https://github.com/handshake-org/hsd/blob/master/docs/install.md).
 
 ### `hnsd`
 
