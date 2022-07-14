@@ -1,3 +1,0 @@
-fails:Module#alias_method aliasing special methods keeps initialize_clone private when aliasing
-fails:Module#alias_method aliasing special methods keeps initialize_dup private when aliasing
-fails:Module#alias_method aliasing special methods keeps respond_to_missing? private when aliasing
