@@ -815,6 +815,197 @@ address <br> _string_ | address controlling bid
 
 
 
+## Create Auction Transactions
+
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+
+```shell--vars
+id='primary'
+name='bread'
+passphrase='secret123'
+broadcastBid=true
+sign=true
+bid=1234000
+lockup=4567000
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/auction \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "name":"'$name'",
+    "broadcastBid":'$broadcastBid',
+    "sign":'$sign',
+    "bid":'$bid',
+    "lockup":'$lockup'
+  }'
+```
+
+```shell--cli
+hsw-cli mkauctiontxs $name $bid $lockup $broadcastBid
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {passphrase, name, broadcastBid, sign, bid, lockup};
+
+(async () => {
+  const result = await wallet.createAuctionTxs(options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "bid": {
+    "hash": "10c407bb1e6a0d0dcbab0ddf49aa08294ad0bf3bd6152b81cdfc62907314d0a0",
+    "witnessHash": "ad77ea70597bd73baedaf71a6c125fecc502ea3da0935e3d92190ff9da3d7dc8",
+    "mtime": 1651427559,
+    "version": 0,
+    "inputs": [
+      {
+        "prevout": {
+          "hash": "f3e2e4063e8d043257445d876fe98d85c5a0ce00644f30b352fb794b37cfd6da",
+          "index": 0
+        },
+        "witness": [
+          "8a5cbb894354b8a360ce10c7b1f34758140d5f2058b840ec5213febba31b561168b2fb111017f707c61d6c09dfca434aca911fa565f8ef663a6dc3a9ab0d970901",
+          "02814c58de377368bea87237f46ac724bb11d4c77586e25c63a6c6583fb643b69b"
+        ],
+        "sequence": 4294967295,
+        "address": "rs1qzjjz55uxvqaj0t3ydl3t9z0q785kxghj0s4q48"
+      }
+    ],
+    "outputs": [
+      {
+        "value": 4567000,
+        "address": "rs1qvh3pgxwt8y6pnt9rk5rpyunf6c4v9x4xpg8d73",
+        "covenant": {
+          "type": 3,
+          "action": "BID",
+          "items": [
+            "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+            "5b000000",
+            "6272656164",
+            "ebaa2b017f895b43065f418b051dc9d93999fd97a6a6af1182f85421ed228447"
+          ]
+        }
+      },
+      {
+        "value": 1995432340,
+        "address": "rs1q25jevu4txctxljch3gcz2mcnnls6cm06z036yk",
+        "covenant": {
+          "type": 0,
+          "action": "NONE",
+          "items": []
+        }
+      }
+    ],
+    "locktime": 0,
+    "hex": "0000000001f3e2e4063e8d043257445d876fe98d85c5a0ce00644f30b352fb794b37cfd6da00000000ffffffff02d8af450000000000001465e21419cb393419aca3b506127269d62ac29aa6030420e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a045b00000005627265616420ebaa2b017f895b43065f418b051dc9d93999fd97a6a6af1182f85421ed22844794e1ef7600000000001455259672ab36166fcb178a30256f139fe1ac6dfa00000000000002418a5cbb894354b8a360ce10c7b1f34758140d5f2058b840ec5213febba31b561168b2fb111017f707c61d6c09dfca434aca911fa565f8ef663a6dc3a9ab0d9709012102814c58de377368bea87237f46ac724bb11d4c77586e25c63a6c6583fb643b69b"
+  },
+  "reveal": {
+    "hash": "4b28461244fd97386e9105bcfaa0ce5f6446b2dbed5bdd34e5d5d36f4cacc3bc",
+    "witnessHash": "5bc63fa4a0e5d64734967ef27c1f42df505a0241347bfaff0117c4c82ffbb6cd",
+    "fee": 4220,
+    "rate": 20000,
+    "mtime": 1651427559,
+    "version": 0,
+    "inputs": [
+      {
+        "prevout": {
+          "hash": "10c407bb1e6a0d0dcbab0ddf49aa08294ad0bf3bd6152b81cdfc62907314d0a0",
+          "index": 0
+        },
+        "witness": [
+          "f6ed9f4eea4c7ebc820db84f73879bf549463edcb9a11ef86cce55c32210cba715e7c8895851642c8b236f28052b4da29f6c9b419b43da04929a4cc79ab3c55501",
+          "0254c0a8397058f934979de1147ef5ada72af93619b9979fcc88a7b4bdec378f2c"
+        ],
+        "sequence": 4294967295,
+        "coin": {
+          "version": 0,
+          "height": -1,
+          "value": 4567000,
+          "address": "rs1qvh3pgxwt8y6pnt9rk5rpyunf6c4v9x4xpg8d73",
+          "covenant": {
+            "type": 3,
+            "action": "BID",
+            "items": [
+              "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+              "5b000000",
+              "6272656164",
+              "ebaa2b017f895b43065f418b051dc9d93999fd97a6a6af1182f85421ed228447"
+            ]
+          },
+          "coinbase": false
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "value": 1234000,
+        "address": "rs1qvh3pgxwt8y6pnt9rk5rpyunf6c4v9x4xpg8d73",
+        "covenant": {
+          "type": 4,
+          "action": "REVEAL",
+          "items": [
+            "e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a",
+            "5b000000",
+            "d5c90238841f4cd57e0874c82920670b2c188cff5255902253c7c83895beae50"
+          ]
+        }
+      },
+      {
+        "value": 3328780,
+        "address": "rs1q25jevu4txctxljch3gcz2mcnnls6cm06z036yk",
+        "covenant": {
+          "type": 0,
+          "action": "NONE",
+          "items": []
+        }
+      }
+    ],
+    "locktime": 0,
+    "hex": "000000000110c407bb1e6a0d0dcbab0ddf49aa08294ad0bf3bd6152b81cdfc62907314d0a000000000ffffffff0250d4120000000000001465e21419cb393419aca3b506127269d62ac29aa6040320e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a045b00000020d5c90238841f4cd57e0874c82920670b2c188cff5255902253c7c83895beae500ccb320000000000001455259672ab36166fcb178a30256f139fe1ac6dfa0000000000000241f6ed9f4eea4c7ebc820db84f73879bf549463edcb9a11ef86cce55c32210cba715e7c8895851642c8b236f28052b4da29f6c9b419b43da04929a4cc79ab3c55501210254c0a8397058f934979de1147ef5ada72af93619b9979fcc88a7b4bdec378f2c"
+  }
+}
+```
+
+Create BID and REVEAL transactions in advance. Optionally sign and broadcast the bid.
+
+### HTTP Request
+
+`POST /wallet/:id/auction`
+
+### Post Parameters
+Parameter | Description
+--------- | ------------------
+id <br> _string_ | wallet id
+passphrase <br> _string_ | passphrase to unlock the wallet
+name <br> _string_  | name to BID / REVEAL
+sign <br> _bool_ | whether to sign the transaction
+broadcastBid <br> _bool_ | whether to broadcast the bid tx (must sign if true)
+bid <br> _int_ | value (in dollarydoos) to bid for name
+lockup <br> _int_ | value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value
+
+
+
 ## Send OPEN
 
 ```shell--vars
