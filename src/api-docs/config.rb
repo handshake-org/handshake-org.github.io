@@ -25,7 +25,9 @@ ready do
   require './lib/multilang.rb'
 end
 
-activate :sprockets
+activate :sprockets do |sprockets|
+  sprockets.supported_output_extensions = ['.js']
+end
 activate :livereload
 
 activate :autoprefixer do |config|
