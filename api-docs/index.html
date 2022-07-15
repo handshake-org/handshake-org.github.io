@@ -805,6 +805,9 @@
                     <a href="#get-nonce-for-bid" class="toc-h2 toc-link" data-title="Wallet - Auctions">Get Nonce for Bid</a>
                   </li>
                   <li>
+                    <a href="#create-auction-transactions" class="toc-h2 toc-link" data-title="Wallet - Auctions">Create Auction Transactions</a>
+                  </li>
+                  <li>
                     <a href="#send-open" class="toc-h2 toc-link" data-title="Wallet - Auctions">Send OPEN</a>
                   </li>
                   <li>
@@ -10879,6 +10882,203 @@ starting the process in the background.</p>
 <td>address controlling bid</td>
 </tr>
 </tbody></table>
+<h2 id='create-auction-transactions'>Create Auction Transactions</h2>
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+<div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
+<span class="nv">name</span><span class="o">=</span><span class="s1">'bread'</span>
+<span class="nv">passphrase</span><span class="o">=</span><span class="s1">'secret123'</span>
+<span class="nv">broadcastBid</span><span class="o">=</span><span class="nb">true
+</span><span class="nv">sign</span><span class="o">=</span><span class="nb">true
+</span><span class="nv">bid</span><span class="o">=</span>1234000
+<span class="nv">lockup</span><span class="o">=</span>4567000
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/auction <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'{
+    "passphrase":"'</span><span class="nv">$passphrase</span><span class="s1">'",
+    "name":"'</span><span class="nv">$name</span><span class="s1">'",
+    "broadcastBid":'</span><span class="nv">$broadcastBid</span><span class="s1">',
+    "sign":'</span><span class="nv">$sign</span><span class="s1">',
+    "bid":'</span><span class="nv">$bid</span><span class="s1">',
+    "lockup":'</span><span class="nv">$lockup</span><span class="s1">'
+  }'</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-cli mkauctiontxs <span class="nv">$name</span> <span class="nv">$bid</span> <span class="nv">$lockup</span> <span class="nv">$broadcastBid</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span><span class="nx">passphrase</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">broadcastBid</span><span class="p">,</span> <span class="nx">sign</span><span class="p">,</span> <span class="nx">bid</span><span class="p">,</span> <span class="nx">lockup</span><span class="p">};</span>
+
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">createAuctionTxs</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre></div>
+<blockquote>
+<p>Sample response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"bid"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10c407bb1e6a0d0dcbab0ddf49aa08294ad0bf3bd6152b81cdfc62907314d0a0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"witnessHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ad77ea70597bd73baedaf71a6c125fecc502ea3da0935e3d92190ff9da3d7dc8"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"mtime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1651427559</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f3e2e4063e8d043257445d876fe98d85c5a0ce00644f30b352fb794b37cfd6da"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"8a5cbb894354b8a360ce10c7b1f34758140d5f2058b840ec5213febba31b561168b2fb111017f707c61d6c09dfca434aca911fa565f8ef663a6dc3a9ab0d970901"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"02814c58de377368bea87237f46ac724bb11d4c77586e25c63a6c6583fb643b69b"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">4294967295</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qzjjz55uxvqaj0t3ydl3t9z0q785kxghj0s4q48"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">4567000</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qvh3pgxwt8y6pnt9rk5rpyunf6c4v9x4xpg8d73"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BID"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"5b000000"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"6272656164"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ebaa2b017f895b43065f418b051dc9d93999fd97a6a6af1182f85421ed228447"</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1995432340</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q25jevu4txctxljch3gcz2mcnnls6cm06z036yk"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NONE"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"locktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000001f3e2e4063e8d043257445d876fe98d85c5a0ce00644f30b352fb794b37cfd6da00000000ffffffff02d8af450000000000001465e21419cb393419aca3b506127269d62ac29aa6030420e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a045b00000005627265616420ebaa2b017f895b43065f418b051dc9d93999fd97a6a6af1182f85421ed22844794e1ef7600000000001455259672ab36166fcb178a30256f139fe1ac6dfa00000000000002418a5cbb894354b8a360ce10c7b1f34758140d5f2058b840ec5213febba31b561168b2fb111017f707c61d6c09dfca434aca911fa565f8ef663a6dc3a9ab0d9709012102814c58de377368bea87237f46ac724bb11d4c77586e25c63a6c6583fb643b69b"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"reveal"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4b28461244fd97386e9105bcfaa0ce5f6446b2dbed5bdd34e5d5d36f4cacc3bc"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"witnessHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5bc63fa4a0e5d64734967ef27c1f42df505a0241347bfaff0117c4c82ffbb6cd"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">4220</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"rate"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"mtime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1651427559</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10c407bb1e6a0d0dcbab0ddf49aa08294ad0bf3bd6152b81cdfc62907314d0a0"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"f6ed9f4eea4c7ebc820db84f73879bf549463edcb9a11ef86cce55c32210cba715e7c8895851642c8b236f28052b4da29f6c9b419b43da04929a4cc79ab3c55501"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"0254c0a8397058f934979de1147ef5ada72af93619b9979fcc88a7b4bdec378f2c"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">4294967295</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"coin"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">4567000</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qvh3pgxwt8y6pnt9rk5rpyunf6c4v9x4xpg8d73"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BID"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="s2">"e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"5b000000"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"6272656164"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"ebaa2b017f895b43065f418b051dc9d93999fd97a6a6af1182f85421ed228447"</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"coinbase"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234000</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qvh3pgxwt8y6pnt9rk5rpyunf6c4v9x4xpg8d73"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"REVEAL"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"5b000000"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"d5c90238841f4cd57e0874c82920670b2c188cff5255902253c7c83895beae50"</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">3328780</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q25jevu4txctxljch3gcz2mcnnls6cm06z036yk"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NONE"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"locktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"000000000110c407bb1e6a0d0dcbab0ddf49aa08294ad0bf3bd6152b81cdfc62907314d0a000000000ffffffff0250d4120000000000001465e21419cb393419aca3b506127269d62ac29aa6040320e7a31a66848e215f978d8354f09ef148f17e1aa0812584dee98a128e9ec9222a045b00000020d5c90238841f4cd57e0874c82920670b2c188cff5255902253c7c83895beae500ccb320000000000001455259672ab36166fcb178a30256f139fe1ac6dfa0000000000000241f6ed9f4eea4c7ebc820db84f73879bf549463edcb9a11ef86cce55c32210cba715e7c8895851642c8b236f28052b4da29f6c9b419b43da04929a4cc79ab3c55501210254c0a8397058f934979de1147ef5ada72af93619b9979fcc88a7b4bdec378f2c"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Create BID and REVEAL transactions in advance. Optionally sign and broadcast the bid.</p>
+<h3 id='http-request-11'>HTTP Request</h3>
+<p><code>POST /wallet/:id/auction</code></p>
+<h3 id='post-parameters'>Post Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id <br> <em>string</em></td>
+<td>wallet id</td>
+</tr>
+<tr>
+<td>passphrase <br> <em>string</em></td>
+<td>passphrase to unlock the wallet</td>
+</tr>
+<tr>
+<td>name <br> <em>string</em></td>
+<td>name to BID / REVEAL</td>
+</tr>
+<tr>
+<td>sign <br> <em>bool</em></td>
+<td>whether to sign the transaction</td>
+</tr>
+<tr>
+<td>broadcastBid <br> <em>bool</em></td>
+<td>whether to broadcast the bid tx (must sign if true)</td>
+</tr>
+<tr>
+<td>bid <br> <em>int</em></td>
+<td>value (in dollarydoos) to bid for name</td>
+</tr>
+<tr>
+<td>lockup <br> <em>int</em></td>
+<td>value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value</td>
+</tr>
+</tbody></table>
 <h2 id='send-open'>Send OPEN</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
 <span class="nv">name</span><span class="o">=</span><span class="s1">'bread'</span>
 <span class="nv">passphrase</span><span class="o">=</span><span class="s1">'secret123'</span>
@@ -10963,9 +11163,9 @@ starting the process in the background.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create, sign, and send a name OPEN.</p>
-<h3 id='http-request-11'>HTTP Request</h3>
+<h3 id='http-request-12'>HTTP Request</h3>
 <p><code>POST /wallet/:id/open</code></p>
-<h3 id='post-parameters'>Post Parameters</h3>
+<h3 id='post-parameters-2'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11086,9 +11286,9 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create, sign, and send a name BID.</p>
-<h3 id='http-request-12'>HTTP Request</h3>
+<h3 id='http-request-13'>HTTP Request</h3>
 <p><code>POST /wallet/:id/bid</code></p>
-<h3 id='post-parameters-2'>Post Parameters</h3>
+<h3 id='post-parameters-3'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11227,9 +11427,9 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 <p>Create, sign, and send a name REVEAL. If multiple bids were placed on a name,
 all bids will be revealed by this transaction. If no value is passed in for <code>name</code>,
 all reveals for all names in the wallet will be sent.</p>
-<h3 id='http-request-13'>HTTP Request</h3>
+<h3 id='http-request-14'>HTTP Request</h3>
 <p><code>POST /wallet/:id/reveal</code></p>
-<h3 id='post-parameters-3'>Post Parameters</h3>
+<h3 id='post-parameters-4'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11370,9 +11570,9 @@ all reveals for all names in the wallet will be sent.</p>
 bids back into the wallet. If multiple bids (and reveals) were placed on a name,
 all losing bids will be redeemed by this transaction. If no value is passed in for <code>name</code>,
 all qualifying bids are redeemed.</p>
-<h3 id='http-request-14'>HTTP Request</h3>
+<h3 id='http-request-15'>HTTP Request</h3>
 <p><code>POST /wallet/:id/redeem</code></p>
-<h3 id='post-parameters-4'>Post Parameters</h3>
+<h3 id='post-parameters-5'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11509,9 +11709,9 @@ type</span><span class="o">=</span><span class="s1">'TXT'</span>
 associated with a given name.</p>
 
 <aside>Note: Due to behavior of some shells like bash, if your TXT value contains spaces you may need to add additional quotes like this: <code>"'"$value"'"</code></aside>
-<h3 id='http-request-15'>HTTP Request</h3>
+<h3 id='http-request-16'>HTTP Request</h3>
 <p><code>POST /wallet/:id/update</code></p>
-<h3 id='post-parameters-5'>Post Parameters</h3>
+<h3 id='post-parameters-6'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11684,9 +11884,9 @@ record type. Depending on the type, the record object may have various additiona
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create, sign, and send a RENEW.</p>
-<h3 id='http-request-16'>HTTP Request</h3>
+<h3 id='http-request-17'>HTTP Request</h3>
 <p><code>POST /wallet/:id/renew</code></p>
-<h3 id='post-parameters-6'>Post Parameters</h3>
+<h3 id='post-parameters-7'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11813,9 +12013,9 @@ record type. Depending on the type, the record object may have various additiona
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create, sign, and send a TRANSFER.</p>
-<h3 id='http-request-17'>HTTP Request</h3>
+<h3 id='http-request-18'>HTTP Request</h3>
 <p><code>POST /wallet/:id/transfer</code></p>
-<h3 id='post-parameters-7'>Post Parameters</h3>
+<h3 id='post-parameters-8'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11947,9 +12147,9 @@ record type. Depending on the type, the record object may have various additiona
 <p>This transaction is not a unique covenant type, but spends from a TRANSFER to an
 UPDATE covenant (with an empty resource object) in order to cancel a transfer
 already in progress.</p>
-<h3 id='http-request-18'>HTTP Request</h3>
+<h3 id='http-request-19'>HTTP Request</h3>
 <p><code>POST /wallet/:id/cancel</code></p>
-<h3 id='post-parameters-8'>Post Parameters</h3>
+<h3 id='post-parameters-9'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -12077,9 +12277,9 @@ already in progress.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create, sign, and send a FINALIZE.</p>
-<h3 id='http-request-19'>HTTP Request</h3>
+<h3 id='http-request-20'>HTTP Request</h3>
 <p><code>POST /wallet/:id/finalize</code></p>
-<h3 id='post-parameters-9'>Post Parameters</h3>
+<h3 id='post-parameters-10'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -12207,9 +12407,9 @@ already in progress.</p>
 control of their name. Before the transfer is finalized, a REVOKE can be sent
 that not only cancels the transfer, but burns the name preventing any further
 updates or transfers. The name can be reopened with a new auction after a set time.</p>
-<h3 id='http-request-20'>HTTP Request</h3>
+<h3 id='http-request-21'>HTTP Request</h3>
 <p><code>POST /wallet/:id/revoke</code></p>
-<h3 id='post-parameters-10'>Post Parameters</h3>
+<h3 id='post-parameters-11'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
