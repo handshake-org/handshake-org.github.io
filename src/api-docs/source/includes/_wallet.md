@@ -754,7 +754,7 @@ Parameter | Description
 outputs <br> _array_ | An array of outputs to send for the transaction
 account <br> _string_ | account to use for transaction
 passphrase <br> _string_ | passphrase to unlock the account
-smart <br> _bool_  | whether or not to choose smart coins, will also used unconfirmed transactions
+smart <br> _bool_  | If set, will spend unconfirmed change outputs (only from transactions sent from this wallet).
 blocks <br> _int_ | number of blocks to use for fee estimation.
 rate <br> _int_ | the rate for transaction fees. Denominated in subunits per kb
 maxFee <br> _int_ |  maximum fee you're willing to pay
@@ -900,7 +900,7 @@ Parameter | Description
 --------- | ----------------
 outputs <br> _array_ | An array of outputs to send for the transaction
 passphrase <br> _string_ | passphrase to unlock the account
-smart <br> _bool_  | whether or not to choose smart coins, will also used unconfirmed transactions
+smart <br> _bool_  | If set, will spend unconfirmed change outputs (only from transactions sent from this wallet).
 rate <br> _int_ | the rate for transaction fees. Denominated in subunits per kb
 maxFee <br> _int_ |  maximum fee you're willing to pay
 subtractFee <br> _bool_ | whether to subtract fee from outputs (evenly)
