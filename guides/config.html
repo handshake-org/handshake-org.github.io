@@ -112,7 +112,7 @@
 </table>
 <p>Keep in mind, that setting bash environment variable which will be passed to the <code>hsd</code> or <code>hs-client</code> subprocesses requires <code>export</code> command: <code>export HSD_NETWORK=testnet</code>.</p>
 <h2 id="datadirprefix">Datadir/Prefix</h2>
-<p>The hsd datadir is determined by the <code>prefix</code> option. The following example wiil create a datadir of <code>~/.hsd_test</code>, containing a chain database, wallet database and log file.</p>
+<p>The hsd datadir is determined by the <code>prefix</code> option. The following example will create a datadir of <code>~/.hsd_test</code>, containing a chain database, wallet database and log file.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="ex">hsd</span> --prefix ~/.hsd_test</span></code></pre></div>
 <h2 id="preprocessor-options">Preprocessor Options</h2>
 <p>The following configuration settings are only available for the command line when hsd is launched. They WILL NOT be read from a <code>hsd.conf</code> file or pulled from the shell environment. This is because they are processed directly by the <code>$PATH</code> command which executes scripts in the repository at <code>bin/hsd</code> and <code>bin/node</code>.</p>
