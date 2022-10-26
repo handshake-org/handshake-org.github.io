@@ -34,7 +34,7 @@ Keep in mind, that setting bash environment variable which will be passed to the
 ## Datadir/Prefix
 
 The hsd datadir is determined by the `prefix` option. The following example
-wiil create a datadir of `~/.hsd_test`, containing a chain database, wallet
+will create a datadir of `~/.hsd_test`, containing a chain database, wallet
 database and log file.
 
 ``` bash
