@@ -293,7 +293,7 @@ The IP address is decoded from the base32 string and returned as a DNS answer.
 
 #### `SYNTH6`
 
-The `SYNTH6` Handshake resource record is the same as `GLUE4` but with IPv6.
+The `SYNTH6` Handshake resource record is the same as `SYNTH4` but with IPv6.
 The `AAAA` data is explicitly encoded in the record, and the `NS` name is
 synthesized on the fly by the Handshake root name server.
 
