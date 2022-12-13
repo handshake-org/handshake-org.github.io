@@ -12,8 +12,8 @@ Gem::Specification.new do |s|
   s.description = "This library provides contracts for Ruby. Contracts let you clearly express how your code behaves, and free you from writing tons of boilerplate, defensive code.".freeze
   s.email = "bluemangroupie@gmail.com".freeze
   s.homepage = "http://github.com/egonSchiele/contracts.ruby".freeze
-  s.rubygems_version = "3.3.7".freeze
+  s.rubygems_version = "3.3.26".freeze
   s.summary = "Contracts for Ruby.".freeze
 
-  s.installed_by_version = "3.3.7" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.3.26" if s.respond_to? :installed_by_version
 end

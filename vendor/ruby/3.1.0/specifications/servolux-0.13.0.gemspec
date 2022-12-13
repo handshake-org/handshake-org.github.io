@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
   s.files = ["History.txt".freeze]
   s.homepage = "http://rubygems.org/gems/servolux".freeze
   s.rdoc_options = ["--main".freeze, "README.md".freeze]
-  s.rubygems_version = "3.3.7".freeze
+  s.rubygems_version = "3.3.26".freeze
   s.summary = "A collection of tools for working with processes".freeze
 
-  s.installed_by_version = "3.3.7" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.3.26" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

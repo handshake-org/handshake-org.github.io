@@ -76,8 +76,8 @@
 <li><a href="#ns"><code>NS</code></a></li>
 <li><a href="#glue4"><code>GLUE4</code></a></li>
 <li><a href="#glue6"><code>GLUE6</code></a></li>
-<li><code>SYNTH4</code></li>
-<li><code>SYNTH6</code></li>
+<li><a href="#synth4"><code>SYNTH4</code></a></li>
+<li><a href="#synth6"><code>SYNTH6</code></a></li>
 <li><a href="#txt"><code>TXT</code></a></li>
 </ul>
 <h4 id="ds"><code>DS</code></h4>
@@ -161,58 +161,117 @@
 <span id="cb7-6"><a href="#cb7-6"></a>  <span class="fu">}</span><span class="ot">]</span></span>
 <span id="cb7-7"><a href="#cb7-7"></a><span class="fu">}</span></span></code></pre></div>
 <p>This is the same as <code>GLUE4</code> but with IPv6.</p>
-<h4 id="txt"><code>TXT</code></h4>
-<p>The <code>TXT</code> Handshake resource record corresponds to the DNS <code>TXT</code> record. It is used to store arbitrary data and many protocols are built on top of it. <code>TXT</code> records are defined in <a href="https://tools.ietf.org/html/rfc1035">RFC 1035</a>. It is useful for placing arbitrary data on chain. The Handshake <code>TXT</code> record must contain the fields <code>type</code> and <code>text</code>. The <code>text</code> field must be an array of strings.</p>
+<h4 id="synth4"><code>SYNTH4</code></h4>
+<p>The <code>SYNTH4</code> Handshake resource record explicitly encodes the <code>A</code> glue record for a nameserver. The actual name of the nameserver (normally encoded in an <code>NS</code> record) is <em>synthesized</em> on the fly by the Handshake root nameserver. The result is an <code>NS</code> record with glue like a <code>GLUE4</code> record, but using <code>SYNTH4</code> we can save blockchain space by leaving out the <code>NS</code>, which is not critical data during recursion anyway.</p>
+<p>The synthesis algorithm encodes the IP address as a lower-case base32 string, prepended by an underscore and followed by a “magic” pseudo-TLD <code>._synth</code>.</p>
+<p>Synthesized records are not a legacy DNS standard and may not be correctly supported by non-Handshake software.</p>
 <p>Example:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">{</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a>  <span class="dt">&quot;records&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;TXT&quot;</span><span class="fu">,</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;my text record&quot;</span><span class="ot">]</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;SYNTH4&quot;</span><span class="fu">,</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>      <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;45.77.219.32&quot;</span></span>
 <span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">}</span><span class="ot">]</span></span>
 <span id="cb8-6"><a href="#cb8-6"></a><span class="fu">}</span></span></code></pre></div>
-<p>The name <code>easyhandshake</code> is set up here with two <code>TXT</code> records.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">{</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>  <span class="st">&quot;records&quot;</span>:<span class="bu"> [</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>    {</span>
-<span id="cb9-4"><a href="#cb9-4"></a>      <span class="st">&quot;type&quot;</span>: <span class="st">&quot;TXT&quot;</span>,</span>
-<span id="cb9-5"><a href="#cb9-5"></a>      <span class="st">&quot;txt&quot;</span>: [</span>
-<span id="cb9-6"><a href="#cb9-6"></a>        <span class="st">&quot;imagine if gold turned to lead when stolen, if thief gives back, it turns to gold again&quot;</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a>      ]</span>
-<span id="cb9-8"><a href="#cb9-8"></a>    },</span>
-<span id="cb9-9"><a href="#cb9-9"></a>    {</span>
-<span id="cb9-10"><a href="#cb9-10"></a>      <span class="st">&quot;type&quot;</span>: <span class="st">&quot;TXT&quot;</span>,</span>
-<span id="cb9-11"><a href="#cb9-11"></a>      <span class="st">&quot;txt&quot;</span>: [</span>
-<span id="cb9-12"><a href="#cb9-12"></a>        <span class="st">&quot;proof of&quot;</span>,</span>
-<span id="cb9-13"><a href="#cb9-13"></a>        <span class="st">&quot;work speaks&quot;</span>,</span>
-<span id="cb9-14"><a href="#cb9-14"></a>        <span class="st">&quot;for itself&quot;</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a>      ]</span>
-<span id="cb9-16"><a href="#cb9-16"></a>    }</span>
-<span id="cb9-17"><a href="#cb9-17"></a>  ]</span>
-<span id="cb9-18"><a href="#cb9-18"></a>}</span></code></pre></div>
-<p>It will resolve via both the authoritative name server and recursive name server like this:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a>$ <span class="ex">dig</span> @127.0.0.1 -p 25349 easyhandshake TXT</span>
+<p>The name <code>omnitude</code> is set up here with both <code>SYNTH4</code> and <code>SYNTH6</code> records.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a>$ <span class="ex">hsd-rpc</span> getnameresource omnitude</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="kw">{</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="st">&quot;records&quot;</span>:<span class="bu"> [</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    {</span>
+<span id="cb9-5"><a href="#cb9-5"></a>      <span class="st">&quot;type&quot;</span>: <span class="st">&quot;SYNTH4&quot;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6"></a>      <span class="st">&quot;address&quot;</span>: <span class="st">&quot;45.77.219.32&quot;</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>    },</span>
+<span id="cb9-8"><a href="#cb9-8"></a>    {</span>
+<span id="cb9-9"><a href="#cb9-9"></a>      <span class="st">&quot;type&quot;</span>: <span class="st">&quot;SYNTH6&quot;</span>,</span>
+<span id="cb9-10"><a href="#cb9-10"></a>      <span class="st">&quot;address&quot;</span>: <span class="st">&quot;2001:19f0:5:450c:5400:3ff:fe31:2ccc&quot;</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>    }</span>
+<span id="cb9-12"><a href="#cb9-12"></a>  ]</span>
+<span id="cb9-13"><a href="#cb9-13"></a>}</span></code></pre></div>
+<p>These records will resolve via the authoritative name server like this:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a>$ <span class="ex">dig</span> @127.0.0.1 -p 5349 omnitude </span>
 <span id="cb10-2"><a href="#cb10-2"></a></span>
-<span id="cb10-3"><a href="#cb10-3"></a>; <span class="op">&lt;&lt;&gt;&gt;</span> <span class="ex">DiG</span> 9.16.2 <span class="op">&lt;&lt;&gt;&gt;</span> @127.0.0.1 -p 25349 easyhandshake TXT</span>
+<span id="cb10-3"><a href="#cb10-3"></a>; <span class="op">&lt;&lt;&gt;&gt;</span> <span class="ex">DiG</span> 9.10.6 <span class="op">&lt;&lt;&gt;&gt;</span> @127.0.0.1 -p 9591 omnitude</span>
 <span id="cb10-4"><a href="#cb10-4"></a>; <span class="kw">(</span><span class="ex">1</span> server found<span class="kw">)</span></span>
 <span id="cb10-5"><a href="#cb10-5"></a>;; <span class="ex">global</span> options: +cmd</span>
 <span id="cb10-6"><a href="#cb10-6"></a>;; <span class="ex">Got</span> answer:</span>
-<span id="cb10-7"><a href="#cb10-7"></a>;; <span class="ex">-</span><span class="op">&gt;&gt;</span>HEADER<span class="op">&lt;&lt;- opcode:</span> <span class="ex">QUERY</span>, status: NOERROR, id: 8003</span>
-<span id="cb10-8"><a href="#cb10-8"></a>;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1</span>
+<span id="cb10-7"><a href="#cb10-7"></a>;; <span class="ex">-</span><span class="op">&gt;&gt;</span>HEADER<span class="op">&lt;&lt;- opcode:</span> <span class="ex">QUERY</span>, status: NOERROR, id: 53785</span>
+<span id="cb10-8"><a href="#cb10-8"></a>;; flags: qr rd; QUERY: 1, ANSWER: 0, AUTHORITY: 2, ADDITIONAL: 3</span>
 <span id="cb10-9"><a href="#cb10-9"></a>;; WARNING: recursion requested but not available</span>
 <span id="cb10-10"><a href="#cb10-10"></a></span>
 <span id="cb10-11"><a href="#cb10-11"></a>;; OPT PSEUDOSECTION:</span>
 <span id="cb10-12"><a href="#cb10-12"></a>; EDNS: version: 0, flags:; udp: 4096</span>
 <span id="cb10-13"><a href="#cb10-13"></a>;; QUESTION SECTION:</span>
-<span id="cb10-14"><a href="#cb10-14"></a>;easyhandshake.         IN  TXT</span>
+<span id="cb10-14"><a href="#cb10-14"></a>;omnitude.      IN  A</span>
 <span id="cb10-15"><a href="#cb10-15"></a></span>
-<span id="cb10-16"><a href="#cb10-16"></a>;; ANSWER SECTION:</span>
-<span id="cb10-17"><a href="#cb10-17"></a>easyhandshake.      21600   IN  TXT &quot;imagine if gold turned to lead when stolen, if thief gives back, it turns to gold again&quot;</span>
-<span id="cb10-18"><a href="#cb10-18"></a>easyhandshake.      21600   IN  TXT &quot;proof of&quot; &quot;work speaks&quot; &quot;for itself&quot;</span>
+<span id="cb10-16"><a href="#cb10-16"></a>;; AUTHORITY SECTION:</span>
+<span id="cb10-17"><a href="#cb10-17"></a>omnitude.   21600 IN  NS  _5l6tm80._synth.</span>
+<span id="cb10-18"><a href="#cb10-18"></a>omnitude.   21600 IN  NS  _400hjs000l2gol000fvvsc9cpg._synth.</span>
 <span id="cb10-19"><a href="#cb10-19"></a></span>
-<span id="cb10-20"><a href="#cb10-20"></a>;; Query time: 3 msec</span>
-<span id="cb10-21"><a href="#cb10-21"></a>;; SERVER: 127.0.0.1#25349(127.0.0.1)</span>
-<span id="cb10-22"><a href="#cb10-22"></a>;; WHEN: Wed May 13 22:59:28 PDT 2020</span>
-<span id="cb10-23"><a href="#cb10-23"></a>;; MSG SIZE  rcvd: 186</span></code></pre></div>
+<span id="cb10-20"><a href="#cb10-20"></a>;; ADDITIONAL SECTION:</span>
+<span id="cb10-21"><a href="#cb10-21"></a>_5l6tm80._synth.  21600 IN  A 45.77.219.32</span>
+<span id="cb10-22"><a href="#cb10-22"></a>_400hjs000l2gol000fvvsc9cpg._synth. 21600 IN AAAA 2001:19f0:5:450c:5400:3ff:fe31:2ccc</span>
+<span id="cb10-23"><a href="#cb10-23"></a></span>
+<span id="cb10-24"><a href="#cb10-24"></a>;; Query time: 0 msec</span>
+<span id="cb10-25"><a href="#cb10-25"></a>;; SERVER: 127.0.0.1#5349(127.0.0.1)</span>
+<span id="cb10-26"><a href="#cb10-26"></a>;; WHEN: Fri Nov 11 11:26:35 EST 2022</span>
+<span id="cb10-27"><a href="#cb10-27"></a>;; MSG SIZE  rcvd: 152</span></code></pre></div>
+<p>Handshake root name servers SHOULD support direct querying of synth domains:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a>$ <span class="ex">dig</span> @127.0.0.1 -p 5349 _400hjs000l2gol000fvvsc9cpg._synth. AAAA +short</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="ex">2001</span>:19f0:5:450c:5400:3ff:fe31:2ccc</span></code></pre></div>
+<p>Note that decoding the synth domain does not require any “lookups” of any kind. The IP address is decoded from the base32 string and returned as a DNS answer.</p>
+<h4 id="synth6"><code>SYNTH6</code></h4>
+<p>The <code>SYNTH6</code> Handshake resource record is the same as <code>SYNTH4</code> but with IPv6. The <code>AAAA</code> data is explicitly encoded in the record, and the <code>NS</code> name is synthesized on the fly by the Handshake root name server.</p>
+<h4 id="txt"><code>TXT</code></h4>
+<p>The <code>TXT</code> Handshake resource record corresponds to the DNS <code>TXT</code> record. It is used to store arbitrary data and many protocols are built on top of it. <code>TXT</code> records are defined in <a href="https://tools.ietf.org/html/rfc1035">RFC 1035</a>. It is useful for placing arbitrary data on chain. The Handshake <code>TXT</code> record must contain the fields <code>type</code> and <code>text</code>. The <code>text</code> field must be an array of strings.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="dt">&quot;records&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;TXT&quot;</span><span class="fu">,</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;my text record&quot;</span><span class="ot">]</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="fu">}</span></span></code></pre></div>
+<p>The name <code>easyhandshake</code> is set up here with two <code>TXT</code> records.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">{</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="st">&quot;records&quot;</span>:<span class="bu"> [</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>    {</span>
+<span id="cb13-4"><a href="#cb13-4"></a>      <span class="st">&quot;type&quot;</span>: <span class="st">&quot;TXT&quot;</span>,</span>
+<span id="cb13-5"><a href="#cb13-5"></a>      <span class="st">&quot;txt&quot;</span>: [</span>
+<span id="cb13-6"><a href="#cb13-6"></a>        <span class="st">&quot;imagine if gold turned to lead when stolen, if thief gives back, it turns to gold again&quot;</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>      ]</span>
+<span id="cb13-8"><a href="#cb13-8"></a>    },</span>
+<span id="cb13-9"><a href="#cb13-9"></a>    {</span>
+<span id="cb13-10"><a href="#cb13-10"></a>      <span class="st">&quot;type&quot;</span>: <span class="st">&quot;TXT&quot;</span>,</span>
+<span id="cb13-11"><a href="#cb13-11"></a>      <span class="st">&quot;txt&quot;</span>: [</span>
+<span id="cb13-12"><a href="#cb13-12"></a>        <span class="st">&quot;proof of&quot;</span>,</span>
+<span id="cb13-13"><a href="#cb13-13"></a>        <span class="st">&quot;work speaks&quot;</span>,</span>
+<span id="cb13-14"><a href="#cb13-14"></a>        <span class="st">&quot;for itself&quot;</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a>      ]</span>
+<span id="cb13-16"><a href="#cb13-16"></a>    }</span>
+<span id="cb13-17"><a href="#cb13-17"></a>  ]</span>
+<span id="cb13-18"><a href="#cb13-18"></a>}</span></code></pre></div>
+<p>It will resolve via both the authoritative name server and recursive name server like this:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a>$ <span class="ex">dig</span> @127.0.0.1 -p 25349 easyhandshake TXT</span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a>; <span class="op">&lt;&lt;&gt;&gt;</span> <span class="ex">DiG</span> 9.16.2 <span class="op">&lt;&lt;&gt;&gt;</span> @127.0.0.1 -p 25349 easyhandshake TXT</span>
+<span id="cb14-4"><a href="#cb14-4"></a>; <span class="kw">(</span><span class="ex">1</span> server found<span class="kw">)</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>;; <span class="ex">global</span> options: +cmd</span>
+<span id="cb14-6"><a href="#cb14-6"></a>;; <span class="ex">Got</span> answer:</span>
+<span id="cb14-7"><a href="#cb14-7"></a>;; <span class="ex">-</span><span class="op">&gt;&gt;</span>HEADER<span class="op">&lt;&lt;- opcode:</span> <span class="ex">QUERY</span>, status: NOERROR, id: 8003</span>
+<span id="cb14-8"><a href="#cb14-8"></a>;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1</span>
+<span id="cb14-9"><a href="#cb14-9"></a>;; WARNING: recursion requested but not available</span>
+<span id="cb14-10"><a href="#cb14-10"></a></span>
+<span id="cb14-11"><a href="#cb14-11"></a>;; OPT PSEUDOSECTION:</span>
+<span id="cb14-12"><a href="#cb14-12"></a>; EDNS: version: 0, flags:; udp: 4096</span>
+<span id="cb14-13"><a href="#cb14-13"></a>;; QUESTION SECTION:</span>
+<span id="cb14-14"><a href="#cb14-14"></a>;easyhandshake.         IN  TXT</span>
+<span id="cb14-15"><a href="#cb14-15"></a></span>
+<span id="cb14-16"><a href="#cb14-16"></a>;; ANSWER SECTION:</span>
+<span id="cb14-17"><a href="#cb14-17"></a>easyhandshake.      21600   IN  TXT &quot;imagine if gold turned to lead when stolen, if thief gives back, it turns to gold again&quot;</span>
+<span id="cb14-18"><a href="#cb14-18"></a>easyhandshake.      21600   IN  TXT &quot;proof of&quot; &quot;work speaks&quot; &quot;for itself&quot;</span>
+<span id="cb14-19"><a href="#cb14-19"></a></span>
+<span id="cb14-20"><a href="#cb14-20"></a>;; Query time: 3 msec</span>
+<span id="cb14-21"><a href="#cb14-21"></a>;; SERVER: 127.0.0.1#25349(127.0.0.1)</span>
+<span id="cb14-22"><a href="#cb14-22"></a>;; WHEN: Wed May 13 22:59:28 PDT 2020</span>
+<span id="cb14-23"><a href="#cb14-23"></a>;; MSG SIZE  rcvd: 186</span></code></pre></div>
 
 <hr/>
 <h4>See a mistake? Open a pull request.</h4>
