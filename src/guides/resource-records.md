@@ -40,8 +40,8 @@ every 36 blocks.
 - [`NS`](#ns)
 - [`GLUE4`](#glue4)
 - [`GLUE6`](#glue6)
-- `SYNTH4`
-- `SYNTH6`
+- [`SYNTH4`](#synth4)
+- [`SYNTH6`](#synth6)
 - [`TXT`](#txt)
 
 #### `DS`
@@ -203,6 +203,99 @@ Example:
 ```
 
 This is the same as `GLUE4` but with IPv6.
+
+#### `SYNTH4`
+
+The `SYNTH4` Handshake resource record explicitly encodes the `A` glue record
+for a nameserver. The actual name of the nameserver (normally encoded in an `NS`
+record) is *synthesized* on the fly by the Handshake root nameserver. The result
+is an `NS` record with glue like a `GLUE4` record, but using `SYNTH4` we can
+save blockchain space by leaving out the `NS`, which is not critical data
+during recursion anyway.
+
+The synthesis algorithm encodes the IP address as a lower-case base32 string,
+prepended by an underscore and followed by a "magic" pseudo-TLD `._synth`.
+
+Synthesized records are not a legacy DNS standard and may not be correctly
+supported by non-Handshake software.
+
+Example:
+
+```json
+{
+  "records": [{
+      "type": "SYNTH4",
+      "address": "45.77.219.32"
+  }]
+}
+```
+
+The name `omnitude` is set up here with both `SYNTH4` and `SYNTH6` records.
+
+```bash
+$ hsd-rpc getnameresource omnitude
+{
+  "records": [
+    {
+      "type": "SYNTH4",
+      "address": "45.77.219.32"
+    },
+    {
+      "type": "SYNTH6",
+      "address": "2001:19f0:5:450c:5400:3ff:fe31:2ccc"
+    }
+  ]
+}
+```
+
+These records will resolve via the authoritative name server like this:
+
+```bash
+$ dig @127.0.0.1 -p 5349 omnitude 
+
+; <<>> DiG 9.10.6 <<>> @127.0.0.1 -p 9591 omnitude
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 53785
+;; flags: qr rd; QUERY: 1, ANSWER: 0, AUTHORITY: 2, ADDITIONAL: 3
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;omnitude.      IN  A
+
+;; AUTHORITY SECTION:
+omnitude.   21600 IN  NS  _5l6tm80._synth.
+omnitude.   21600 IN  NS  _400hjs000l2gol000fvvsc9cpg._synth.
+
+;; ADDITIONAL SECTION:
+_5l6tm80._synth.  21600 IN  A 45.77.219.32
+_400hjs000l2gol000fvvsc9cpg._synth. 21600 IN AAAA 2001:19f0:5:450c:5400:3ff:fe31:2ccc
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#5349(127.0.0.1)
+;; WHEN: Fri Nov 11 11:26:35 EST 2022
+;; MSG SIZE  rcvd: 152
+
+```
+
+Handshake root name servers SHOULD support direct querying of synth domains:
+
+```bash
+$ dig @127.0.0.1 -p 5349 _400hjs000l2gol000fvvsc9cpg._synth. AAAA +short
+2001:19f0:5:450c:5400:3ff:fe31:2ccc
+```
+
+Note that decoding the synth domain does not require any "lookups" of any kind.
+The IP address is decoded from the base32 string and returned as a DNS answer.
+
+#### `SYNTH6`
+
+The `SYNTH6` Handshake resource record is the same as `SYNTH4` but with IPv6.
+The `AAAA` data is explicitly encoded in the record, and the `NS` name is
+synthesized on the fly by the Handshake root name server.
 
 #### `TXT`
 
