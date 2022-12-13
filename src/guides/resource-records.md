@@ -283,8 +283,8 @@ _400hjs000l2gol000fvvsc9cpg._synth. 21600 IN AAAA 2001:19f0:5:450c:5400:3ff:fe31
 
 Handshake root name servers SHOULD support direct querying of synth domains:
 
-```
-> dig @127.0.0.1 -p 5349 _400hjs000l2gol000fvvsc9cpg._synth. AAAA +short
+```bash
+$ dig @127.0.0.1 -p 5349 _400hjs000l2gol000fvvsc9cpg._synth. AAAA +short
 2001:19f0:5:450c:5400:3ff:fe31:2ccc
 ```
 
