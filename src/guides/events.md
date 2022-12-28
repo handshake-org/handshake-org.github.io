@@ -125,7 +125,7 @@ nodeSocket.on('connect', async (e) => {
     // `auth` must be called before any other actions
     console.log('Node - Attempting auth:\n', await nodeSocket.call('auth', apiKey));
 
-    // `watch chain` subscirbes us to chain events like `block`
+    // `watch chain` subscribes us to chain events like `block`
     console.log('Node - Attempting watch chain:\n', await nodeSocket.call('watch chain'));
 
     // Some calls simply request information from the server like an http request
