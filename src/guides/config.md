@@ -104,7 +104,8 @@ Note that certain chain options affect the format and indexing of the chain data
 - `brontide-port`: Port for encrypted p2p server to listen on (default: 44806 for mainnet).
 - `public-host`: Public host to advertise on network.
 - `public-port`: Public port to advertise on network.
-- `nodes`: List of target nodes to connect to (comma-separated).
+- `nodes`: List of target priority nodes to connect to (comma-separated).
+- `only`: List of target exclusive nodes to connect to (comma-separated).
 
 ### Miner Options
 
