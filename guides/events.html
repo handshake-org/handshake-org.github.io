@@ -296,7 +296,7 @@
 <span id="cb2-15"><a href="#cb2-15"></a>    <span class="co">// `auth` must be called before any other actions</span></span>
 <span id="cb2-16"><a href="#cb2-16"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Attempting auth:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="cf">await</span> <span class="va">nodeSocket</span>.<span class="at">call</span>(<span class="st">&#39;auth&#39;</span><span class="op">,</span> apiKey))<span class="op">;</span></span>
 <span id="cb2-17"><a href="#cb2-17"></a></span>
-<span id="cb2-18"><a href="#cb2-18"></a>    <span class="co">// `watch chain` subscirbes us to chain events like `block`</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="co">// `watch chain` subscribes us to chain events like `block`</span></span>
 <span id="cb2-19"><a href="#cb2-19"></a>    <span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;Node - Attempting watch chain:</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">,</span> <span class="cf">await</span> <span class="va">nodeSocket</span>.<span class="at">call</span>(<span class="st">&#39;watch chain&#39;</span>))<span class="op">;</span></span>
 <span id="cb2-20"><a href="#cb2-20"></a></span>
 <span id="cb2-21"><a href="#cb2-21"></a>    <span class="co">// Some calls simply request information from the server like an http request</span></span>

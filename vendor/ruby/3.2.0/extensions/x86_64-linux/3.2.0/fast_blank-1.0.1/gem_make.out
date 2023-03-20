@@ -1,0 +1,18 @@
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/fast_blank-1.0.1/ext/fast_blank
+/opt/hostedtoolcache/Ruby/3.2.1/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/3.2.1/x64/lib/ruby/3.2.0 extconf.rb
+creating Makefile
+
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/fast_blank-1.0.1/ext/fast_blank
+make DESTDIR\= sitearchdir\=./.gem.20230320-2074-xvk588 sitelibdir\=./.gem.20230320-2074-xvk588 clean
+
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/fast_blank-1.0.1/ext/fast_blank
+make DESTDIR\= sitearchdir\=./.gem.20230320-2074-xvk588 sitelibdir\=./.gem.20230320-2074-xvk588
+compiling fast_blank.c
+linking shared-object fast_blank.so
+
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/fast_blank-1.0.1/ext/fast_blank
+make DESTDIR\= sitearchdir\=./.gem.20230320-2074-xvk588 sitelibdir\=./.gem.20230320-2074-xvk588 install
+/usr/bin/install -c -m 0755 fast_blank.so ./.gem.20230320-2074-xvk588
+
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/fast_blank-1.0.1/ext/fast_blank
+make DESTDIR\= sitearchdir\=./.gem.20230320-2074-xvk588 sitelibdir\=./.gem.20230320-2074-xvk588 clean
