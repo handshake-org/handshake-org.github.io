@@ -13,12 +13,12 @@ NULLCMD = :
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /opt/hostedtoolcache/Ruby/3.2.1/x64/include/ruby-3.2.0
+topdir = /opt/hostedtoolcache/Ruby/3.2.0/x64/include/ruby-3.2.0
 hdrdir = $(topdir)
-arch_hdrdir = /opt/hostedtoolcache/Ruby/3.2.1/x64/include/ruby-3.2.0/x86_64-linux
+arch_hdrdir = /opt/hostedtoolcache/Ruby/3.2.0/x64/include/ruby-3.2.0/x86_64-linux
 PATH_SEPARATOR = :
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
-prefix = $(DESTDIR)/opt/hostedtoolcache/Ruby/3.2.1/x64
+prefix = $(DESTDIR)/opt/hostedtoolcache/Ruby/3.2.0/x64
 rubysitearchprefix = $(rubylibprefix)/$(sitearch)
 rubyarchprefix = $(rubylibprefix)/$(arch)
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
@@ -88,10 +88,10 @@ CCDLFLAGS = -fPIC
 CFLAGS   = $(CCDLFLAGS) $(cflags)  -fPIC -std=c99 -Wno-declaration-after-statement -g -Winline -Wmissing-noreturn $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
 DEFS     = 
-CPPFLAGS = -DHAVE_XMLPARSEDOC -DHAVE_XSLTPARSESTYLESHEETDOC -DHAVE_EXSLTFUNCREGISTER -DHAVE_GUMBO_PARSE_WITH_OPTIONS -DHAVE_XMLHASFEATURE -DHAVE_XMLFIRSTELEMENTCHILD -DHAVE_XMLRELAXNGSETPARSERSTRUCTUREDERRORS -DHAVE_XMLRELAXNGSETVALIDSTRUCTUREDERRORS -DHAVE_XMLSCHEMASETVALIDSTRUCTUREDERRORS -DHAVE_XMLSCHEMASETPARSERSTRUCTUREDERRORS -DHAVE_RB_GC_LOCATION -DHAVE_RB_CATEGORY_WARNING -DHAVE_VASPRINTF -I/home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ports/x86_64-linux/libxml2/2.10.3/include/libxml2 -I/home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ports/x86_64-linux/libxslt/1.1.37/include -I/home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ports/x86_64-linux/libxml2/2.10.3/include/libxml2 -I/opt/hostedtoolcache/Ruby/3.2.1/x64/include -DENABLE_PATH_CHECK=0 $(DEFS) $(cppflags) -DNOKOGIRI_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATCHES="\"0001-Remove-script-macro-support.patch 0002-Update-entities-to-remove-handling-of-ssi.patch 0003-libxml2.la-is-in-top_builddir.patch 0005-avoid-isnan-isinf.patch 0009-allow-wildcard-namespaces.patch\"" -DNOKOGIRI_LIBXSLT_PATCHES="\"0001-update-automake-files-for-arm64.patch\"" -I/home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri/ports/x86_64-linux/libgumbo/1.0.0-nokogiri/include -DNOKOGIRI_OTHER_LIBRARY_VERSIONS="\"libgumbo:1.0.0-nokogiri\""
+CPPFLAGS = -DHAVE_XMLPARSEDOC -DHAVE_XSLTPARSESTYLESHEETDOC -DHAVE_EXSLTFUNCREGISTER -DHAVE_GUMBO_PARSE_WITH_OPTIONS -DHAVE_XMLHASFEATURE -DHAVE_XMLFIRSTELEMENTCHILD -DHAVE_XMLRELAXNGSETPARSERSTRUCTUREDERRORS -DHAVE_XMLRELAXNGSETVALIDSTRUCTUREDERRORS -DHAVE_XMLSCHEMASETVALIDSTRUCTUREDERRORS -DHAVE_XMLSCHEMASETPARSERSTRUCTUREDERRORS -DHAVE_RB_GC_LOCATION -DHAVE_RB_CATEGORY_WARNING -DHAVE_VASPRINTF -I/home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ports/x86_64-linux/libxml2/2.10.3/include/libxml2 -I/home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ports/x86_64-linux/libxslt/1.1.37/include -I/home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ports/x86_64-linux/libxml2/2.10.3/include/libxml2 -I/opt/hostedtoolcache/Ruby/3.2.0/x64/include -DENABLE_PATH_CHECK=0 $(DEFS) $(cppflags) -DNOKOGIRI_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATCHES="\"0001-Remove-script-macro-support.patch 0002-Update-entities-to-remove-handling-of-ssi.patch 0003-libxml2.la-is-in-top_builddir.patch 0005-avoid-isnan-isinf.patch 0009-allow-wildcard-namespaces.patch\"" -DNOKOGIRI_LIBXSLT_PATCHES="\"0001-update-automake-files-for-arm64.patch\"" -I/home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri/ports/x86_64-linux/libgumbo/1.0.0-nokogiri/include -DNOKOGIRI_OTHER_LIBRARY_VERSIONS="\"libgumbo:1.0.0-nokogiri\""
 CXXFLAGS = $(CCDLFLAGS)  $(ARCH_FLAG)
-ldflags  = -L. -L/opt/hostedtoolcache/Ruby/3.2.1/x64/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic -Wl,--no-as-needed
-dldflags = -L/opt/hostedtoolcache/Ruby/3.2.1/x64/lib  -Wl,--compress-debug-sections=zlib 
+ldflags  = -L. -L/opt/hostedtoolcache/Ruby/3.2.0/x64/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic -Wl,--no-as-needed
+dldflags = -L/opt/hostedtoolcache/Ruby/3.2.0/x64/lib  -Wl,--compress-debug-sections=zlib 
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
 LDSHARED = $(CC) -shared

@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/rtomayko/tilt/".freeze
   s.licenses = ["MIT".freeze]
   s.rdoc_options = ["--line-numbers".freeze, "--inline-source".freeze, "--title".freeze, "Tilt".freeze, "--main".freeze, "Tilt".freeze]
-  s.rubygems_version = "3.4.6".freeze
+  s.rubygems_version = "3.4.1".freeze
   s.summary = "Generic interface to multiple Ruby template engines".freeze
 
-  s.installed_by_version = "3.4.6" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.4.1" if s.respond_to? :installed_by_version
 end

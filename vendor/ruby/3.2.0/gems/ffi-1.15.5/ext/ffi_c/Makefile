@@ -13,12 +13,12 @@ NULLCMD = :
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /opt/hostedtoolcache/Ruby/3.2.1/x64/include/ruby-3.2.0
+topdir = /opt/hostedtoolcache/Ruby/3.2.0/x64/include/ruby-3.2.0
 hdrdir = $(topdir)
-arch_hdrdir = /opt/hostedtoolcache/Ruby/3.2.1/x64/include/ruby-3.2.0/x86_64-linux
+arch_hdrdir = /opt/hostedtoolcache/Ruby/3.2.0/x64/include/ruby-3.2.0/x86_64-linux
 PATH_SEPARATOR = :
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
-prefix = $(DESTDIR)/opt/hostedtoolcache/Ruby/3.2.1/x64
+prefix = $(DESTDIR)/opt/hostedtoolcache/Ruby/3.2.0/x64
 rubysitearchprefix = $(rubylibprefix)/$(sitearch)
 rubyarchprefix = $(rubylibprefix)/$(arch)
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
@@ -88,10 +88,10 @@ CCDLFLAGS = -fPIC
 CFLAGS   = $(CCDLFLAGS) $(cflags)  -fPIC  $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir) 
 DEFS     = 
-CPPFLAGS = -DRUBY_EXTCONF_H=\"$(RUBY_EXTCONF_H)\" -I/opt/hostedtoolcache/Ruby/3.2.1/x64/include -DENABLE_PATH_CHECK=0 $(DEFS) $(cppflags)
+CPPFLAGS = -DRUBY_EXTCONF_H=\"$(RUBY_EXTCONF_H)\" -I/opt/hostedtoolcache/Ruby/3.2.0/x64/include -DENABLE_PATH_CHECK=0 $(DEFS) $(cppflags)
 CXXFLAGS = $(CCDLFLAGS)   $(ARCH_FLAG)
-ldflags  = -L. -L/opt/hostedtoolcache/Ruby/3.2.1/x64/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic -Wl,--no-as-needed  -pthread
-dldflags = -L/opt/hostedtoolcache/Ruby/3.2.1/x64/lib  -Wl,--compress-debug-sections=zlib 
+ldflags  = -L. -L/opt/hostedtoolcache/Ruby/3.2.0/x64/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic -Wl,--no-as-needed  -pthread
+dldflags = -L/opt/hostedtoolcache/Ruby/3.2.0/x64/lib  -Wl,--compress-debug-sections=zlib 
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
 LDSHARED = $(CC) -shared

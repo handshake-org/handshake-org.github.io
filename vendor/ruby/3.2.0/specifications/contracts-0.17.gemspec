@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
   s.licenses = ["BSD-2-Clause".freeze]
   s.post_install_message = "\n    0.16.x will be the supporting Ruby 2.x and be feature frozen (only fixes will be released)\n    For Ruby 3.x use 0.17.x or later (might not be released yet)\n  ".freeze
   s.required_ruby_version = Gem::Requirement.new([">= 3.0".freeze, "< 4".freeze])
-  s.rubygems_version = "3.4.6".freeze
+  s.rubygems_version = "3.4.1".freeze
   s.summary = "Contracts for Ruby.".freeze
 
-  s.installed_by_version = "3.4.6" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.4.1" if s.respond_to? :installed_by_version
 end

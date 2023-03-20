@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT".freeze]
   s.post_install_message = "\nHEADS UP! i18n 1.1 changed fallbacks to exclude default locale.\nBut that may break your application.\n\nPlease check your Rails app for 'config.i18n.fallbacks = true'.\nIf you're using I18n (>= 1.1.0) and Rails (< 5.2.2), this should be\n'config.i18n.fallbacks = [I18n.default_locale]'.\nIf not, fallbacks will be broken in your app by I18n 1.1.x.\n\nFor more info see:\nhttps://github.com/svenfuchs/i18n/releases/tag/v1.1.0\n\n".freeze
   s.required_ruby_version = Gem::Requirement.new(">= 2.3.0".freeze)
-  s.rubygems_version = "3.4.6".freeze
+  s.rubygems_version = "3.4.1".freeze
   s.summary = "New wave Internationalization support for Ruby".freeze
 
-  s.installed_by_version = "3.4.6" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.4.1" if s.respond_to? :installed_by_version
 
   s.specification_version = 4
 

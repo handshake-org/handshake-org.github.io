@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
   s.licenses = ["Apache-2.0".freeze]
   s.rdoc_options = ["--main".freeze, "README.md".freeze]
   s.required_ruby_version = Gem::Requirement.new(">= 2.2".freeze)
-  s.rubygems_version = "3.4.6".freeze
+  s.rubygems_version = "3.4.1".freeze
   s.summary = "URI Implementation".freeze
 
-  s.installed_by_version = "3.4.6" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.4.1" if s.respond_to? :installed_by_version
 
   s.specification_version = 4
 

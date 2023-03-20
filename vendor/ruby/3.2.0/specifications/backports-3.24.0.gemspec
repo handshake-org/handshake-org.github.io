@@ -14,8 +14,8 @@ Gem::Specification.new do |s|
   s.email = ["github@marc-andre.ca".freeze]
   s.homepage = "http://github.com/marcandre/backports".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "3.4.6".freeze
+  s.rubygems_version = "3.4.1".freeze
   s.summary = "Backports of Ruby features for older Ruby.".freeze
 
-  s.installed_by_version = "3.4.6" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.4.1" if s.respond_to? :installed_by_version
 end
