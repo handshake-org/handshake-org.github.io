@@ -1,12 +1,12 @@
-current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.5.1/ext/redcarpet
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
 /opt/hostedtoolcache/Ruby/3.2.0/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/3.2.0/x64/lib/ruby/3.2.0 extconf.rb
 creating Makefile
 
-current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.5.1/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20230320-2019-ohd01x sitelibdir\=./.gem.20230320-2019-ohd01x clean
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
+make DESTDIR\= sitearchdir\=./.gem.20230321-2030-cvxatk sitelibdir\=./.gem.20230321-2030-cvxatk clean
 
-current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.5.1/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20230320-2019-ohd01x sitelibdir\=./.gem.20230320-2019-ohd01x
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
+make DESTDIR\= sitearchdir\=./.gem.20230321-2030-cvxatk sitelibdir\=./.gem.20230321-2030-cvxatk
 compiling autolink.c
 compiling buffer.c
 buffer.c: In function ‘bufcstr’:
@@ -56,15 +56,6 @@ cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
 compiling markdown.c
-In file included from markdown.c:46:
-html_blocks.h: In function ‘hash_block_tag’:
-html_blocks.h:91:1: warning: old-style function definition [-Wold-style-definition]
-   91 | hash_block_tag (str, len)
-      | ^~~~~~~~~~~~~~
-html_blocks.h: In function ‘find_block_tag’:
-html_blocks.h:139:1: warning: old-style function definition [-Wold-style-definition]
-  139 | find_block_tag (str, len)
-      | ^~~~~~~~~~~~~~
 markdown.c: In function ‘char_link’:
 markdown.c:1094:33: warning: this ‘else’ clause does not guard... [-Wmisleading-indentation]
  1094 |                                 else nb_p--; i++;
@@ -73,11 +64,11 @@ markdown.c:1094:46: note: ...this statement, but the latter is misleadingly inde
  1094 |                                 else nb_p--; i++;
       |                                              ^
 markdown.c: In function ‘sd_markdown_render’:
-markdown.c:2836:66: warning: passing argument 1 of ‘is_codefence’ discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
- 2836 |                 if (codefences_enabled && (is_codefence(document + beg, doc_size - beg, NULL) != 0))
+markdown.c:2867:66: warning: passing argument 1 of ‘is_codefence’ discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+ 2867 |                 if (codefences_enabled && (is_codefence(document + beg, doc_size - beg, &fence_delim, NULL) != 0))
       |                                                         ~~~~~~~~~^~~~~
-markdown.c:1389:23: note: expected ‘uint8_t *’ {aka ‘unsigned char *’} but argument is of type ‘const uint8_t *’ {aka ‘const unsigned char *’}
- 1389 | is_codefence(uint8_t *data, size_t size, struct buf *syntax)
+markdown.c:1402:23: note: expected ‘uint8_t *’ {aka ‘unsigned char *’} but argument is of type ‘const uint8_t *’ {aka ‘const unsigned char *’}
+ 1402 | is_codefence(uint8_t *data, size_t size, struct buf *curdelim, struct buf *syntax)
       |              ~~~~~~~~~^~~~
 markdown.c: At top level:
 markdown.c:94:15: warning: ‘char_underline’ declared ‘static’ but never defined [-Wunused-function]
@@ -97,12 +88,12 @@ cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may 
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
 compiling rc_render.c
 rc_render.c: In function ‘rndr_link_attributes’:
-rc_render.c:287:35: warning: variable ‘rndr’ set but not used [-Wunused-but-set-variable]
-  287 |         struct rb_redcarpet_rndr *rndr;
+rc_render.c:306:35: warning: variable ‘rndr’ set but not used [-Wunused-but-set-variable]
+  306 |         struct rb_redcarpet_rndr *rndr;
       |                                   ^~~~
 rc_render.c: In function ‘Init_redcarpet_rndr’:
-rc_render.c:552:6: warning: old-style function definition [-Wold-style-definition]
-  552 | void Init_redcarpet_rndr()
+rc_render.c:571:6: warning: old-style function definition [-Wold-style-definition]
+  571 | void Init_redcarpet_rndr()
       |      ^~~~~~~~~~~~~~~~~~~
 rc_render.c: At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
@@ -111,9 +102,9 @@ cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ 
 compiling stack.c
 linking shared-object redcarpet.so
 
-current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.5.1/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20230320-2019-ohd01x sitelibdir\=./.gem.20230320-2019-ohd01x install
-/usr/bin/install -c -m 0755 redcarpet.so ./.gem.20230320-2019-ohd01x
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
+make DESTDIR\= sitearchdir\=./.gem.20230321-2030-cvxatk sitelibdir\=./.gem.20230321-2030-cvxatk install
+/usr/bin/install -c -m 0755 redcarpet.so ./.gem.20230321-2030-cvxatk
 
-current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.5.1/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20230320-2019-ohd01x sitelibdir\=./.gem.20230320-2019-ohd01x clean
+current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
+make DESTDIR\= sitearchdir\=./.gem.20230321-2030-cvxatk sitelibdir\=./.gem.20230321-2030-cvxatk clean
