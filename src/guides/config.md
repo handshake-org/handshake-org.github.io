@@ -91,6 +91,7 @@ Note that certain chain options affect the format and indexing of the chain data
 
 ### Pool Options
 
+- `agent`: Custom user agent comment (default is no comment). Example: `--agent bob-wallet:2.0.0` will make it `/hsd:5.0.1/bob-wallet:2.0.0/` while by default it's `/hsd:5.0.1/`. The whole user agent string must be not more than 255 characters long.
 - `compact`: Enable compact block relay (default: true).
 - `bip37`: Enable serving of bip37 merkleblocks (default: false).
 - `listen`: Accept incoming connections (default: false).
