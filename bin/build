@@ -50,5 +50,5 @@ echo "Finished."
 # build API documentation
 echo 'building api documentation...'
 cd ./src/api-docs
-bundle install --path=../../build/vendor
-bundle exec middleman build --clean --build-dir=../../build/api-docs
+BUNDLE_PATH="../../build/vendor" bundle install --jobs 4
+BUNDLE_PATH="../../build/vendor" bundle exec middleman build --clean --build-dir=../../build/api-docs
