@@ -91,20 +91,25 @@ Note that certain chain options affect the format and indexing of the chain data
 
 ### Pool Options
 
-- `selfish`: Enable "selfish" mode (no relaying of txes or blocks) (default: false).
 - `compact`: Enable compact block relay (default: true).
 - `bip37`: Enable serving of bip37 merkleblocks (default: false).
 - `listen`: Accept incoming connections (default: false).
 - `max-outbound`: Max number of outbound connections (default: 8).
 - `max-inbound`: Max number of inbound connections (default: 30).
 - `max-proof-rps`: Max `getproof` DNS requests per second (default: 100).
+- `proxy`: SOCKS proxy used to connect to nodes (using proxy sets listen: false).
+- `onion`: Connect to tor nodes (default: false, requires proxy if true).
+- `brontide-only`: Only connect to brontide nodes (default: false).
+- `upnp`: Attempt to open ports on gateway with UPnP (default: false).
 - `seeds`: Custom list of DNS seeds (comma-separated).
 - `host`: Host to listen on (default: 0.0.0.0).
 - `port`: Port to listen on (default: 12038 for mainnet).
 - `brontide-port`: Port for encrypted p2p server to listen on (default: 44806 for mainnet).
 - `public-host`: Public host to advertise on network.
 - `public-port`: Public port to advertise on network.
+- `public-brontide-port`: Public brontide port to advertise on network.
 - `nodes`: List of target nodes to connect to (comma-separated).
+- `only`: Exclusive list of nodes to connect to (comma-separated, overrides `nodes` list).
 
 ### Miner Options
 
