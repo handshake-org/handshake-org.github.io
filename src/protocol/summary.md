@@ -138,7 +138,7 @@ can still be changed.
 Transfers are locked for
 [about two days](https://github.com/handshake-org/hsd/blob/56c83ca7344def512ef861f452bff91d43bc8f52/lib/protocol/networks.js#L319)
 before `FINALIZE` is allowed. At any point during that phase, the original owner can `REVOKE`.
-A revoked name can be re-opened with a new auction after it expires, but the current
+A revoked name can be re-opened with a new auction after ~29 days (4176 blocks), but the current
 chain of ownership is terminated.
 
 Names must be renewed within
