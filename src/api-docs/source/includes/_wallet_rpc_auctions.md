@@ -1291,6 +1291,116 @@ Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to revoke the in-progress transfer of
 
+## sendbatch
+
+```shell--vars
+batch='[["TRANSFER","probability", "hs1qafnywhh4s3rpf60cfs22j20j7k6pmpzngknskm"],["OPEN","possibility"]]'
+```
+
+```shell--cli
+hsw-rpc sendbatch $batch
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const client = new WalletClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('sendbatch', [ batch ]);
+  console.log(result);
+})();
+```
+
+> sendbatch returns JSON structured like this: 
+
+```json
+{
+  "hash": "fb7761c46161c736853f56d1be41e76ff8f004b7a4b5f096b880221544ee99f8",
+  "witnessHash": "2fc85765999cd443f660b8af1c44e86d755ad706f8cb9f21632eaebc165ec9c0",
+  "mtime": 1538011729,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "c7fc96fa1b865a6139286b29626edf00ff286cb242c5fc65b3a78e0db1613a04",
+        "index": 0
+      },
+      "witness": [
+        "078cf39beab769eb3331b00c1d6c92f152883fcd3ee62f54c69db5b33dd2919d568e52f89ac1d3cd0cb88cba6e88b703a872d61d7a953886bb4b8dce4938e33e01",
+        "02896c8c128f86f155e61b74aced241304dd7f94feee6510d22f70e1d1b6e42fff"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qucar8syx0dt32nms6kh63y0xcgsa747jaexn40"
+    },
+    {
+      "prevout": {
+        "hash": "5e0a26e6ba89dfafd7cd5436ddd5c26180f8619dd8dfebfe27459c4b4ac2093f",
+        "index": 0
+      },
+      "witness": [
+        "cf4ce38d371515c47bc51d28476adc288bcd06d39a1d1acf85bc6d39fd88799d578768e873263723e4012f181f071dcde145998107f1d37ad476b6c594cf7de401",
+        "03fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qj6340u3vv0vqe0uyjjlnlvqaljv07nydvdz2jv"
+    }
+  ],
+  "outputs": [
+    {
+      "value": 3000000,
+      "address": "rs1qucar8syx0dt32nms6kh63y0xcgsa747jaexn40",
+      "covenant": {
+        "type": 11,
+        "action": "REVOKE",
+        "items": [
+          "08141335637fff1366102f06f2f7d7ac306e5d85c6d8e0f979c765db6a9ec894",
+          "8b000000"
+        ]
+      }
+    },
+    {
+      "value": 1000000460,
+      "address": "rs1qk9qqak6mqp7lfd7dxpfdntdhsep7xj75ajracs",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    }
+  ],
+  "locktime": 0,
+  "hex": "0000000002c7fc96fa1b865a6139286b29626edf00ff286cb242c5fc65b3a78e0db1613a0400000000ffffffff5e0a26e6ba89dfafd7cd5436ddd5c26180f8619dd8dfebfe27459c4b4ac2093f00000000ffffffff02c0c62d00000000000014e63a33c0867b57154f70d5afa891e6c221df57d20b022008141335637fff1366102f06f2f7d7ac306e5d85c6d8e0f979c765db6a9ec894048b000000cccb9a3b000000000014b1400edb5b007df4b7cd3052d9adb78643e34bd40000000000000241078cf39beab769eb3331b00c1d6c92f152883fcd3ee62f54c69db5b33dd2919d568e52f89ac1d3cd0cb88cba6e88b703a872d61d7a953886bb4b8dce4938e33e012102896c8c128f86f155e61b74aced241304dd7f94feee6510d22f70e1d1b6e42fff0241cf4ce38d371515c47bc51d28476adc288bcd06d39a1d1acf85bc6d39fd88799d578768e873263723e4012f181f071dcde145998107f1d37ad476b6c594cf7de4012103fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
+}
+```
+
+Send a batch of any combination of the above transactions. The batch is an array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.  
+
+### Params
+Name | Default |  Description
+--------- | --------- | ---------
+batch | Required | array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.
+
+### Batch Types
+Type | Params | Description
+--------- | --------- | ---------
+NONE | [address, value] | Send a transaction with no covenant (used for sending HNS to an address)
+OPEN | [name] | Open a name for bidding
+BID | [name, bid, value] | Place a bid on a name
+REVEAL | [name] | Reveal a bid on a name
+REDEEM | [name] | Redeem bids on a name
+UPDATE | [name, data] | Update a name's data
+TRANSFER | [name, address] | Transfer a name to a new address
+FINALIZE | [name] | Finalize a name transfer
+CANCEL | [name] | Cancel a name transfer
+REVOKE | [name] | Revoke a name transfer
 
 ## importnonce
 <aside class="warning">
