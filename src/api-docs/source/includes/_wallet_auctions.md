@@ -433,10 +433,10 @@ List all bids for all names known to the wallet.
 `GET /wallet/:id/bid`
 
 
-Parameters | Description
----------- | -----------
+Parameters       | Description
+----------       | -----------
 id <br> _string_ | wallet id
-own <br> _bool_ | whether to only show bids from this wallet
+own <br> _bool_  | whether to only show bids from this wallet
 
 
 ## Get Wallet Bids by Name

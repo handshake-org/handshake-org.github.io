@@ -140,9 +140,9 @@ Abandon single pending transaction. Confirmed transactions will throw an error.
 
 `DEL /wallet/:id/tx/:hash`
 
-Parameters | Description
-----------| --------------------
-id <br> _string_ | id of wallet where the transaction is that you want to remove
+Parameters         | Description
+------------------ | --------------------
+id <br> _string_   | id of wallet where the transaction is that you want to remove
 hash <br> _string_ | hash of transaction you would like to remove.
 
 ## Get Wallet TX History

@@ -4,24 +4,24 @@
 
 Complete list of commands:
 
-Command     				|cURL method	| Description
-----------------------------|---------------|------------
-[`/`](#get-server-info)							| `GET`			| get info
-[`/coin/address/:address`](#get-coins-by-address)	| `GET`			| UTXO by address
-[`/coin/:hash/:index`](#get-coin-by-outpoint)		| `GET`			| UTXO by txid
-[`/coin/address`](#get-coins-by-addresses)				| `POST`		| Bulk read UTXOs
-[`/tx/:hash`](#get-tx-by-txhash)				| `GET`			| TX by hash
-[`/tx/address/:address`](#get-tx-by-address)		| `GET`			| TX by address
-[`/tx/address`](#get-tx-by-addresses)				| `POST`		| Bulk read TXs
-[`/block/:block`](#get-block-by-hash-or-height)			| `GET`			| Block by hash or height
-[`/header/:block`](#get-header-by-hash-or-height)			| `GET`			| Header by hash or height
-[`/mempool`](#get-mempool-snapshot)					| `GET`			| Mempool snapshot
-[`/mempool/invalid`](#get-mempool-rejects-filter)         | `GET`     | Mempool rejects filter
-[`/mempool/invalid/:hash`](#test-mempool-rejects-filter)         | `GET`     | Test mempool rejects filter
-[`/broadcast`](#broadcast-transaction)				| `POST`		| Broadcast TX
-[`/claim`](#broadcast-claim)        | `POST`    | Broadcast Claim
-[`/fee`](#estimate-fee)						| `GET`			| Estimate fee
-[`/reset`](#reset-blockchain)					| `POST`		| Reset chain to specific height
+method  | Command                                                  | Description
+------- | -------------------------------------------------------- | ------------
+`GET`   | [`/`](#get-server-info)                                  | Get info
+`GET`   | [`/coin/address/:address`](#get-coins-by-address)        | UTXO by address
+`GET`   | [`/coin/:hash/:index`](#get-coin-by-outpoint)            | UTXO by txid
+`POST`  | [`/coin/address`](#get-coins-by-addresses)               | Bulk read UTXOs
+`GET`   | [`/tx/:hash`](#get-tx-by-txhash)                         | TX by hash
+`GET`   | [`/tx/address/:address`](#get-tx-by-address)             | TX by address
+`POST`  | [`/tx/address`](#get-tx-by-addresses)                    | Bulk read TXs
+`GET`   | [`/block/:block`](#get-block-by-hash-or-height)          | Block by hash or height
+`GET`   | [`/header/:block`](#get-header-by-hash-or-height)        | Header by hash or height
+`GET`   | [`/mempool`](#get-mempool-snapshot)                      | Mempool snapshot
+`GET`   | [`/mempool/invalid`](#get-mempool-rejects-filter)        | Mempool rejects filter
+`GET`   | [`/mempool/invalid/:hash`](#test-mempool-rejects-filter) | Test mempool rejects filter
+`POST`  | [`/broadcast`](#broadcast-transaction)                   | Broadcast TX
+`POST`  | [`/claim`](#broadcast-claim)                             | Broadcast Claim
+`GET`   | [`/fee`](#estimate-fee)                                  | Estimate fee
+`POST`  | [`/reset`](#reset-blockchain)                            | Reset chain to specific height
 
 
 
@@ -200,7 +200,7 @@ Get mempool rejects filter (a Bloom filter used to store rejected TX hashes).
 
 Parameter | Description
 --------- | -----------
-verbose | _(bool)_ Returns entire Bloom Filter in `filter` property, hex-encoded.
+verbose   | _(bool)_ Returns entire Bloom Filter in `filter` property, hex-encoded.
 
 
 ## Test mempool rejects filter
@@ -235,7 +235,7 @@ Test a TX hash against the mempool rejects filter.
 
 Parameter | Description
 --------- | -----------
-:hash | Transaction hash
+:hash     | Transaction hash
 
 
 ## Get block by hash or height
@@ -347,8 +347,8 @@ Returns block info by block hash or height.
 
 ### URL Parameters
 
-Parameter | Description
---------- | -----------
+Parameter          | Description
+------------------ | -----------
 :blockhashOrHeight | Hash or Height of block
 
 ## Get Header by hash or height
@@ -404,8 +404,8 @@ Returns block header by block hash or height.
 
 ### URL Parameters
 
-Parameter | Description
---------- | -----------
+Parameter          | Description
+------------------ | -----------
 :blockhashOrHeight | Hash or Height of header
 
 ## Broadcast transaction
@@ -462,7 +462,7 @@ Broadcast a transaction by adding it to the node's mempool. If mempool verificat
 ### POST Parameters (JSON)
 Parameter | Description
 --------- | -----------
-tx | raw transaction in hex
+tx        | Raw transaction in hex
 
 
 ## Broadcast claim
@@ -519,7 +519,7 @@ Broadcast a claim by adding it to the node's mempool.
 ### POST Parameters (JSON)
 Parameter | Description
 --------- | -----------
-claim | raw claim in hex
+claim     | raw claim in hex
 
 
 ## Estimate fee
@@ -573,7 +573,7 @@ Estimate the fee required (in dollarydoos per kB) for a transaction to be confir
 ### GET Parameters
 Parameter | Description
 --------- | -----------
-blocks | Number of blocks to target confirmation
+blocks    | Number of blocks to target confirmation
 
 
 ## Reset blockchain
@@ -633,5 +633,5 @@ way to rescan the blockchain is to re-request [merkle]blocks from peers.
 ### POST Parameters (JSON)
 Parameter | Description
 --------- | -----------
-height | block height to reset chain to 
+height    | block height to reset chain to
 
