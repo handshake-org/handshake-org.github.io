@@ -57,28 +57,51 @@ const client = new NodeClient(clientOptions);
 
 ```json
 {
-  "version": "2.0.1",
+  "version": "7.99.0",
   "network": "regtest",
   "chain": {
-    "height": 1,
-    "tip": "6b054a7a561fdfa7c2f11550db4d5341d101be044df24dd58c465b2abac94c3f",
+    "height": 0,
+    "tip": "ae3895cf597eff05b19e02a70ceeeecb9dc72dbfe6504a50e9343a72f06a87c5",
     "treeRoot": "0000000000000000000000000000000000000000000000000000000000000000",
-    "progress": 0.6125905181398805,
+    "treeRootHeight": 0,
+    "progress": 0,
+    "indexers": {
+      "indexTX": false,
+      "indexAddress": false
+    },
+    "options": {
+      "spv": false,
+      "prune": false
+    },
+    "treeCompaction": {
+      "compacted": false,
+      "compactOnInit": false,
+      "compactInterval": null,
+      "lastCompaction": null,
+      "nextCompaction": null
+    },
     "state": {
-      "tx": 2,
-      "coin": 1360,
-      "value": 237416588368270,
+      "tx": 1,
+      "coin": 1,
+      "value": 2002210000,
       "burned": 0
     }
   },
   "pool": {
     "host": "0.0.0.0",
     "port": 14038,
+    "brontidePort": 46806,
     "identitykey": "aorsxa4ylaacshipyjkfbvzfkh3jhh4yowtoqdt64nzemqtiw2whk",
-    "agent": "/hsd:2.0.1/",
+    "agent": "/hsd:7.99.0/",
     "services": "1",
     "outbound": 0,
-    "inbound": 0
+    "inbound": 0,
+    "public": {
+      "listen": false,
+      "host": null,
+      "port": null,
+      "brontidePort": null
+    }
   },
   "mempool": {
     "tx": 0,
@@ -88,17 +111,17 @@ const client = new NodeClient(clientOptions);
     "orphans": 0
   },
   "time": {
-    "uptime": 3,
-    "system": 1581299165,
-    "adjusted": 1581299165,
+    "uptime": 268,
+    "system": 1736238026,
+    "adjusted": 1736238026,
     "offset": 0
   },
   "memory": {
-    "total": 78,
-    "jsHeap": 11,
-    "jsHeapTotal": 29,
-    "nativeHeap": 49,
-    "external": 14
+    "total": 112,
+    "jsHeap": 16,
+    "jsHeapTotal": 18,
+    "nativeHeap": 93,
+    "external": 13
   }
 }
 ```
