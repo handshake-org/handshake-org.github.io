@@ -434,7 +434,7 @@ List all bids for all names known to the wallet.
 
 
 Parameters       | Description
-----------       | -----------
+---------------- | -----------
 id <br> _string_ | wallet id
 own <br> _bool_  | whether to only show bids from this wallet
 
@@ -993,16 +993,16 @@ Create BID and REVEAL transactions in advance. Optionally sign and broadcast the
 
 `POST /wallet/:id/auction`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
+### POST Parameters
+Parameter                | Description
+------------------------ | ------------------
+id <br> _string_         | wallet id
 passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name to BID / REVEAL
-sign <br> _bool_ | whether to sign the transaction
+name <br> _string_       | name to BID / REVEAL
+sign <br> _bool_         | whether to sign the transaction
 broadcastBid <br> _bool_ | whether to broadcast the bid tx (must sign if true)
-bid <br> _int_ | value (in dollarydoos) to bid for name
-lockup <br> _int_ | value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value
+bid <br> _int_           | value (in dollarydoos) to bid for name
+lockup <br> _int_        | value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value
 
 
 
@@ -1109,14 +1109,19 @@ Create, sign, and send a name OPEN.
 
 `POST /wallet/:id/open`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name to OPEN
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters
+
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter             | Default  | Description
+--------------------- | -------  | ------------------
+name <br> _string_    | Required | name to OPEN
+sign <br> _bool_      | `true`   | whether to sign the transaction
+broadcast <br> _bool_ | `true`   | whether to broadcast the transaction (must sign if true)
 
 
 ## Send BID
@@ -1230,16 +1235,20 @@ Create, sign, and send a name BID.
 
 `POST /wallet/:id/bid`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name to BID on
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
-bid <br> _int_ | value (in dollarydoos) to bid for name
-lockup <br> _int_ | value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter                | Default  | Description
+------------------------ | -------  | ------------------
+name <br> _string_       | Required | name to BID on
+bid <br> _int_           | Required | value (in dollarydoos) to bid for name
+lockup <br> _int_        | Required | value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value
+sign <br> _bool_         | `true`   | whether to sign the transaction
+broadcast <br> _bool_    | `true`   | whether to broadcast the transaction (must sign if true)
 
 
 ## Send REVEAL
@@ -1364,14 +1373,19 @@ all reveals for all names in the wallet will be sent.
 
 `POST /wallet/:id/reveal`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name to REVEAL bids for (or `null` for all names)
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters
+
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter             | Default  | Description
+--------------------- | -------  | ------------------
+name <br> _string_    | Required | name to REVEAL bids for (or `null` for all names)
+sign <br> _bool_      | `true`   | whether to sign the transaction
+broadcast <br> _bool_ | `true`   | whether to broadcast the transaction (must sign if true)
 
 
 ## Send REDEEM
@@ -1506,14 +1520,19 @@ all qualifying bids are redeemed.
 
 `POST /wallet/:id/redeem`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name to REDEEM bids for (or `null` for all names)
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters
+
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter             | Default  | Description
+--------------------- | -------  | ------------------
+name <br> _string_    | Required | name to REDEEM bids for (or `null` for all names)
+sign <br> _bool_      | `true`   | whether to sign the transaction
+broadcast <br> _bool_ | `true`   | whether to broadcast the transaction (must sign if true)
 
 
 ## Send UPDATE
@@ -1644,23 +1663,23 @@ associated with a given name.
 
 `POST /wallet/:id/update`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name to UPDATE
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
-data <br> _object_ | JSON object containing an array of DNS records (see next section)
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters
+
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter             | Default  | Description
+--------------------- | -------  | ------------------
+name <br> _string_    | Required | name to UPDATE
+data <br> _object_    | Required | JSON object containing an array of DNS records (see [next section](#resource-object))
+sign <br> _bool_      | `true`   | whether to sign the transaction
+broadcast <br> _bool_ | `true`   | whether to broadcast the transaction (must sign if true)
 
 
 ## Resource Object
-
-The resource object must contain one property `records`, which is an array
-of record objects. Each record object must have a property `type` which defines the DNS
-record type. Depending on the type, the record object may have various additional properties.
-
 
 ```
 // Example of a valid resource object
@@ -1706,6 +1725,9 @@ record type. Depending on the type, the record object may have various additiona
 }
 ```
 
+The resource object must contain one property `records`, which is an array
+of record objects. Each record object must have a property `type` which defines the DNS
+record type. Depending on the type, the record object may have various additional properties.
 
 ## Send RENEW
 
@@ -1822,14 +1844,19 @@ Create, sign, and send a RENEW.
 
 `POST /wallet/:id/renew`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name to RENEW
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters
+
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter             | Default  | Description
+--------------------- | -------  | ------------------
+name <br> _string_    | Required | name to RENEW
+sign <br> _bool_      | `true`   | whether to sign the transaction
+broadcast <br> _bool_ | `true`   | whether to broadcast the transaction (must sign if true)
 
 
 ## Send TRANSFER
@@ -1950,16 +1977,20 @@ Create, sign, and send a TRANSFER.
 
 `POST /wallet/:id/transfer`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name to TRANSFER
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
-address <br> _string_  | address to transfer name ownership to
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
 
+### POST Parameters
+
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter             | Default  | Description
+--------------------- | -------  | ------------------
+name <br> _string_    | Required | name to TRANSFER
+address <br> _string_ | Required | address to transfer name ownership to
+sign <br> _bool_      | `true`   | whether to sign the transaction
+broadcast <br> _bool_ | `true`   | whether to broadcast the transaction (must sign if true)
 
 ## Cancel TRANSFER
 
@@ -2080,14 +2111,19 @@ already in progress.
 
 `POST /wallet/:id/cancel`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name in transferred state to cancel transfer for
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters
+
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter             | Default  | Description
+--------------------- | -------  | ------------------
+name <br> _string_    | Required | Name in transferred state to cancel transfer for
+sign <br> _bool_      | `true`   | whether to sign the transaction
+broadcast <br> _bool_ | `true`   | whether to broadcast the transaction (must sign if true)
 
 
 ## Send FINALIZE
@@ -2209,14 +2245,19 @@ Create, sign, and send a FINALIZE.
 
 `POST /wallet/:id/finalize`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name in transferred state to finalize transfer for
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters
+
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter             | Default  | Description
+--------------------- | -------  | ------------------
+name <br> _string_    | Required | name in transferred state to finalize transfer for
+sign <br> _bool_      | `true`   | whether to sign the transaction
+broadcast <br> _bool_ | `true`   | whether to broadcast the transaction (must sign if true)
 
 
 ## Send REVOKE
@@ -2338,11 +2379,16 @@ updates or transfers. The name can be reopened with a new auction after a set ti
 
 `POST /wallet/:id/revoke`
 
-### Post Parameters
-Parameter | Description
---------- | ------------------
-id <br> _string_ | wallet id
-passphrase <br> _string_ | passphrase to unlock the wallet
-name <br> _string_  | name in transferred state to revoke transfer for
-sign <br> _bool_ | whether to sign the transaction
-broadcast <br> _bool_ | whether to broadcast the transaction (must sign if true)
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters
+
+See [Create a transaction](#create-a-transaction) for the more options.
+
+Parameter             | Default  | Description
+--------------------- | -------  | ------------------
+name <br> _string_    | Required | Name in transferred state to revoke transfer for
+sign <br> _bool_      | `true`   | whether to sign the transaction
+broadcast <br> _bool_ | `true`   | whether to broadcast the transaction (must sign if true)

@@ -255,7 +255,7 @@ Create account with specified account name.
 
 Parameter                | Description
 ------------------------ | -----------------
-id <br> _string_         | id of wallet you would like to add new account to
+id <br> _string_         | Wallet ID
 name <br> _string_       | Name to give the account. Option can be `account` or `name`
 
 ### PUT Options (JSON)

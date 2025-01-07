@@ -305,10 +305,13 @@ const options = {
     "p": 0
   },
   "balance": {
+    "account": -1,
     "tx": 0,
     "coin": 0,
     "unconfirmed": 0,
-    "confirmed": 0
+    "confirmed": 0,
+    "lockedUnconfirmed": 0,
+    "lockedConfirmed": 0
   }
 }
 ```
@@ -319,21 +322,22 @@ Create a new wallet with a specified ID.
 
 `PUT /wallet/:id`
 
-### Parameters:
-Name | Type | Default | Description
----------- | ----------- | -------------- | -------------
-id | String |  | Wallet ID (used for storage)
-type | String | `'pubkeyhash'` |Type of wallet (pubkeyhash, multisig)
-master | HDPrivateKey | | Master HD key. If not present, it will be generated
-mnemonic | String | | A mnemonic phrase to use to instantiate an hd private key. One will be generated if none provided
-m | Number | `1` | m value for multisig (`m-of-n`)
-n | Number | `1` | n value for multisig (`m-of-n`)
-passphrase | String | | A strong passphrase used to encrypt the wallet
-watchOnly | Boolean | `false` | (`watch` for CLI)
-accountKey | String | | The extended public key for the primary account in the new wallet. This value is ignored if `watchOnly` is `false` <br> (`key` for CLI)
-accountDepth* | Number | `0` | The index of the _next_ [BIP44 account index](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#Account)
+Parameter | Description
+--------- | -----------
+id        | Wallet ID (used for storage)
 
-_(*) options are only available in Javascript usage, not CLI or curl_
+### PUT options (JSON)
+
+Parameter                | Default        | Description
+------------------------ | -------------- | -------------
+type <br> _string_       | `'pubkeyhash'` | Type of wallet (pubkeyhash, multisig)
+master <br> _base58_     | Optional       | Master HD key. If not present, it will be generated
+mnemonic <br> _string_   | Optional       | A mnemonic phrase to use to instantiate an hd private key. One will be generated if none provided
+m <br> _int_             | 1              | m value for multisig (`m-of-n`)
+n <br> _int_             | 1              | n value for multisig (`m-of-n`)
+passphrase <br> _string_ |                | A strong passphrase used to encrypt the wallet
+watchOnly <br> _bool_    | false          | (`watch` for CLI)
+accountKey <br> _base58_ |                | The extended public key for the primary account in the new wallet. This value is ignored if `watchOnly` is `false` <br> (`key` for CLI)
 
 
 ## Reset Authentication Token
@@ -464,8 +468,8 @@ Get wallet info by ID. If no id is passed in the CLI it assumes an id of `primar
 ### HTTP Request
 `GET /wallet/:id`
 
-Parameters | Description
----------- | -----------
+Parameters       | Description
+---------------- | -----------
 id <br> _string_ | named id of the wallet whose info you would like to retrieve
 
 ## Get Master HD Key
@@ -546,8 +550,8 @@ Once a passphrase has been set for a wallet, the API will not reveal the unencry
 
 `GET /wallet/:id/master`
 
-Parameters | Description
----------- | -----------
+Parameters       | Description
+---------------- | -----------
 id <br> _string_ | named id of the wallet whose info you would like to retrieve
 
 
@@ -604,15 +608,188 @@ Change wallet passphrase. Encrypt if unencrypted.
 
 `POST /wallet/:id/passphrase`
 
-### Body Parameters
-Parameters | Description
---------- | ---------------------
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Options (JSON)
+Parameters        | Description
+---------         | ---------------------
 old <br> _string_ | Old passphrase. Pass in empty string if none
 new <br> _string_ | New passphrase
 
 <aside class="notice">
 If you have never set a passphrase for this wallet before, you need to omit the <code>old</code> argument and just send a new <nobr><code>passphrase</code></nobr>
 </aside>
+
+## Create a Transaction
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+```shell--cli
+id="multisig1"
+passphrase="multisecret123"
+rate=0.00000500
+value=0.05000000
+address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
+
+hsw-cli mktx --id=$id --value=$value --address=$address ---passphrase=$passphrase
+```
+
+```shell--curl
+id="multisig1"
+passphrase="multisecret123"
+rate=500
+value=5000000
+address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap
+
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/create \
+  -X POST \
+  --data '{
+    "passphrase":"'$passphrase'",
+    "rate":'$rate',
+    "outputs":[
+      {"address":"'$address'", "value":'$value'}
+    ]
+  }'
+```
+
+```javascript
+let id, passphrase, rate, value, address;
+id="multisig1"
+passphrase="multisecret123"
+rate=500
+value=5000000
+address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
+
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+
+const options = {
+  passphrase: passphrase,
+  rate: rate,
+  outputs: [{ value: value, address: address }]
+};
+
+(async () => {
+  const result = await wallet.createTX(options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "hash": "ce2b8ea52f54f2d170ce0e32b4dfb5f6553e7aad065413a570ce9d683ab14abc",
+  "witnessHash": "980923fa0e9fa634e2c0bbc4d34a6303c7967b65173c2a36fe0b458f40bd070d",
+  "fee": 2800,
+  "rate": 20000,
+  "mtime": 1528470021,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9",
+        "index": 1
+      },
+      "witness": [
+        "b25cb7e4d1269410d1bd625aaea3b23a3c6397549d708e3970e6dd9b40ce87bc579b6bf216b328bf58e5397a7480967d909e14e95bc7a5a3044e5994e460224301",
+        "03d2a6f3eea124947217d0b0e56d81dc665df1fc08c4585269d706ec960cecb28f"
+      ],
+      "sequence": 4294967295,
+      "coin": {
+        "version": 0,
+        "height": 5,
+        "value": 399997200,
+        "address": "rs1q5rjhy20r2hmcxjpc8zv70xkck05pecdew6a798",
+        "covenant": {
+          "type": 0,
+          "items": []
+        },
+        "coinbase": false
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "value": 5000000,
+      "address": "rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap",
+      "covenant": {
+        "type": 0,
+        "items": []
+      }
+    },
+    {
+      "value": 394994400,
+      "address": "rs1q4s4lnf94su2padkt3wsgv9xenlyh8qygyl9j0x",
+      "covenant": {
+        "type": 0,
+        "items": []
+      }
+    }
+  ],
+  "locktime": 0,
+  "hex": "0000000001580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9010000000241b25cb7e4d1269410d1bd625aaea3b23a3c6397549d708e3970e6dd9b40ce87bc579b6bf216b328bf58e5397a7480967d909e14e95bc7a5a3044e5994e4602243012103d2a6f3eea124947217d0b0e56d81dc665df1fc08c4585269d706ec960cecb28fffffffff02404b4c00000000000014f0d9374a2ce80c377187f4bc6c68993c561cb1360000e0228b17000000000014ac2bf9a4b587141eb6cb8ba08614d99fc9738088000000000000"
+}
+```
+
+Create and template a transaction (useful for multisig).
+Does not broadcast or add to wallet.
+
+
+
+### HTTP Request
+
+`POST /wallet/:id/create`
+
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+
+### POST Parameters (JSON)
+
+General tx creation/send options.
+
+Parameter                                               | Default        | Description
+---------                                               | -------        | ------------------
+outputs <br> _array_                                    | Required       | An array of outputs to send for the transaction
+account <br> _string_                                   | `'default'`    | account to use for transaction
+blocks <br> _int_                                       | `1` (fullnode) | number of blocks to use for fee estimation. Used for automatic estimation.
+depth <br> _int_                                        | Optional       | number of confirmation for coins to spend
+hardFee <br> _int_                                      | Optional       | Specify fixed fee instead of dynamically calculating it
+locktime <br> _int_                                     | Optional       | Locktime for the transaction.
+maxFee <br> _int_                                       | Optional       | maximum fee you're willing to pay
+passphrase <br> _string_                                | `''`           | passphrase to unlock the account
+paths <br> _bool_                                       | `false`        | If set, owned outputs will contain derivation paths.
+rate <br> _int_                                         | auto           | the rate for transaction fees. Denominated in subunits per kb. Will use automatic estimation by default.
+selection <br> _enum_ - `all`, `random`, `age`, `value` | `'value'`      | How to select coins
+smart <br> _bool_                                       | `false`        | If set, will spend unconfirmed change outputs (only from transactions sent from this wallet).
+subtractFee <br> _bool_                                 | `false`        | whether to subtract fee from outputs (evenly)
+subtractIndex <br> _int_                                | `null`         | subtract only from specified output index
+
+#### Outputs object
+
+Parameter                     | Default  | Description
+----------------------------- | -------  | --------------
+address <br> _string_         | Required | destination address for transaction
+value <br> _int_ (or _float_) | Required | Value to send in subunits (or whole HNS, see warning above)
+covenant <br> _object_        | NONE     | Covenant object
+
+### POST Parameters - Create only
+
+Parameter        | Default | Description
+---------------- | ------- | --------------
+sign <br> _bool_ | true    | Whether to sign transaction.
 
 ## Send a transaction
 <aside class="warning">
@@ -748,169 +925,9 @@ Create, sign, and send a transaction.
 
 `POST /wallet/:id/send`
 
-### Post Paramaters
-Parameter | Description
---------- | ------------------
-outputs <br> _array_ | An array of outputs to send for the transaction
-account <br> _string_ | account to use for transaction
-passphrase <br> _string_ | passphrase to unlock the account
-smart <br> _bool_  | If set, will spend unconfirmed change outputs (only from transactions sent from this wallet).
-blocks <br> _int_ | number of blocks to use for fee estimation.
-rate <br> _int_ | the rate for transaction fees. Denominated in subunits per kb
-maxFee <br> _int_ |  maximum fee you're willing to pay
-subtractFee <br> _bool_ | whether to subtract fee from outputs (evenly)
-subtractIndex <br> _int_ | subtract only from specified output index
-selection <br> _enum_ - `all`, `random`, `age`, `value`| How to select coins
-depth <br> _int_  | number of confirmation for coins to spend
-value <br> _int_ (or _float_) | Value to send in subunits (or whole HNS, see warning above)
-address <br> _string_ | destination address for transaction
+### POST Paramaters
 
-## Create a Transaction
-<aside class="warning">
-This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
-</aside>
-```shell--cli
-id="multisig1"
-passphrase="multisecret123"
-rate=0.00000500
-value=0.05000000
-address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
-
-hsw-cli mktx --id=$id --value=$value --address=$address ---passphrase=$passphrase
-```
-
-```shell--curl
-id="multisig1"
-passphrase="multisecret123"
-rate=500
-value=5000000
-address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap
-
-curl http://x:api-key@127.0.0.1:14039/wallet/$id/create \
-  -X POST \
-  --data '{
-    "passphrase":"'$passphrase'",
-    "rate":'$rate',
-    "outputs":[
-      {"address":"'$address'", "value":'$value'}
-    ]
-  }'
-```
-
-```javascript
-let id, passphrase, rate, value, address;
-id="multisig1"
-passphrase="multisecret123"
-rate=500
-value=5000000
-address="rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"
-
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const walletOptions = {
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const walletClient = new WalletClient(walletOptions);
-const wallet = walletClient.wallet(id);
-
-const options = {
-  passphrase: passphrase,
-  rate: rate,
-  outputs: [{ value: value, address: address }]
-};
-
-(async () => {
-  const result = await wallet.createTX(options);
-  console.log(result);
-})();
-```
-
-> Sample response:
-
-```json
-{
-  "hash": "ce2b8ea52f54f2d170ce0e32b4dfb5f6553e7aad065413a570ce9d683ab14abc",
-  "witnessHash": "980923fa0e9fa634e2c0bbc4d34a6303c7967b65173c2a36fe0b458f40bd070d",
-  "fee": 2800,
-  "rate": 20000,
-  "mtime": 1528470021,
-  "version": 0,
-  "inputs": [
-    {
-      "prevout": {
-        "hash": "580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9",
-        "index": 1
-      },
-      "witness": [
-        "b25cb7e4d1269410d1bd625aaea3b23a3c6397549d708e3970e6dd9b40ce87bc579b6bf216b328bf58e5397a7480967d909e14e95bc7a5a3044e5994e460224301",
-        "03d2a6f3eea124947217d0b0e56d81dc665df1fc08c4585269d706ec960cecb28f"
-      ],
-      "sequence": 4294967295,
-      "coin": {
-        "version": 0,
-        "height": 5,
-        "value": 399997200,
-        "address": "rs1q5rjhy20r2hmcxjpc8zv70xkck05pecdew6a798",
-        "covenant": {
-          "type": 0,
-          "items": []
-        },
-        "coinbase": false
-      }
-    }
-  ],
-  "outputs": [
-    {
-      "value": 5000000,
-      "address": "rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap",
-      "covenant": {
-        "type": 0,
-        "items": []
-      }
-    },
-    {
-      "value": 394994400,
-      "address": "rs1q4s4lnf94su2padkt3wsgv9xenlyh8qygyl9j0x",
-      "covenant": {
-        "type": 0,
-        "items": []
-      }
-    }
-  ],
-  "locktime": 0,
-  "hex": "0000000001580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9010000000241b25cb7e4d1269410d1bd625aaea3b23a3c6397549d708e3970e6dd9b40ce87bc579b6bf216b328bf58e5397a7480967d909e14e95bc7a5a3044e5994e4602243012103d2a6f3eea124947217d0b0e56d81dc665df1fc08c4585269d706ec960cecb28fffffffff02404b4c00000000000014f0d9374a2ce80c377187f4bc6c68993c561cb1360000e0228b17000000000014ac2bf9a4b587141eb6cb8ba08614d99fc9738088000000000000"
-}
-```
-
-Create and template a transaction (useful for multisig).
-Does not broadcast or add to wallet.
-
-
-
-### HTTP Request
-
-`POST /wallet/:id/create`
-
-### Post Parameters
-Parameter | Description
---------- | ----------------
-outputs <br> _array_ | An array of outputs to send for the transaction
-passphrase <br> _string_ | passphrase to unlock the account
-smart <br> _bool_  | If set, will spend unconfirmed change outputs (only from transactions sent from this wallet).
-rate <br> _int_ | the rate for transaction fees. Denominated in subunits per kb
-maxFee <br> _int_ |  maximum fee you're willing to pay
-subtractFee <br> _bool_ | whether to subtract fee from outputs (evenly)
-subtractIndex <br> _int_ | subtract only from specified output index
-selection <br> _enum_ - `all`, `random`, `age`, `value`| How to select coins
-depth <br> _int_  | number of confirmation for coins to spend
-value <br> _int_ (or _float_) | Value to send in subunits (or whole HNS, see warning above)
-address <br> _string_ | destination address for transaction
-
-
+See [Create a transaction](#create-a-transaction) for the parameter list.
 
 ## Sign Transaction
 ```javascript
