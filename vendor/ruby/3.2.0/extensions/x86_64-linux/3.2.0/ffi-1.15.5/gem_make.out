@@ -9,10 +9,10 @@ creating extconf.h
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/ffi-1.15.5/ext/ffi_c
-make DESTDIR\= sitearchdir\=./.gem.20250109-3247-wmc2kl sitelibdir\=./.gem.20250109-3247-wmc2kl clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3248-hllcm5 sitelibdir\=./.gem.20250109-3248-hllcm5 clean
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/ffi-1.15.5/ext/ffi_c
-make DESTDIR\= sitearchdir\=./.gem.20250109-3247-wmc2kl sitelibdir\=./.gem.20250109-3247-wmc2kl
+make DESTDIR\= sitearchdir\=./.gem.20250109-3248-hllcm5 sitelibdir\=./.gem.20250109-3248-hllcm5
 compiling AbstractMemory.c
 compiling ArrayType.c
 compiling Buffer.c
@@ -39,8 +39,8 @@ compiling ffi.c
 linking shared-object ffi_c.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/ffi-1.15.5/ext/ffi_c
-make DESTDIR\= sitearchdir\=./.gem.20250109-3247-wmc2kl sitelibdir\=./.gem.20250109-3247-wmc2kl install
-/usr/bin/install -c -m 0755 ffi_c.so ./.gem.20250109-3247-wmc2kl
+make DESTDIR\= sitearchdir\=./.gem.20250109-3248-hllcm5 sitelibdir\=./.gem.20250109-3248-hllcm5 install
+/usr/bin/install -c -m 0755 ffi_c.so ./.gem.20250109-3248-hllcm5
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/ffi-1.15.5/ext/ffi_c
-make DESTDIR\= sitearchdir\=./.gem.20250109-3247-wmc2kl sitelibdir\=./.gem.20250109-3247-wmc2kl clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3248-hllcm5 sitelibdir\=./.gem.20250109-3248-hllcm5 clean

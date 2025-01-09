@@ -3,10 +3,10 @@ current directory: /home/runner/work/handshake-org.github.io/handshake-org.githu
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20250109-3247-tmwi1e sitelibdir\=./.gem.20250109-3247-tmwi1e clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3248-i2akfl sitelibdir\=./.gem.20250109-3248-i2akfl clean
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20250109-3247-tmwi1e sitelibdir\=./.gem.20250109-3247-tmwi1e
+make DESTDIR\= sitearchdir\=./.gem.20250109-3248-i2akfl sitelibdir\=./.gem.20250109-3248-i2akfl
 compiling autolink.c
 compiling buffer.c
 buffer.c: In function ‘bufcstr’:
@@ -103,8 +103,8 @@ compiling stack.c
 linking shared-object redcarpet.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20250109-3247-tmwi1e sitelibdir\=./.gem.20250109-3247-tmwi1e install
-/usr/bin/install -c -m 0755 redcarpet.so ./.gem.20250109-3247-tmwi1e
+make DESTDIR\= sitearchdir\=./.gem.20250109-3248-i2akfl sitelibdir\=./.gem.20250109-3248-i2akfl install
+/usr/bin/install -c -m 0755 redcarpet.so ./.gem.20250109-3248-i2akfl
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20250109-3247-tmwi1e sitelibdir\=./.gem.20250109-3247-tmwi1e clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3248-i2akfl sitelibdir\=./.gem.20250109-3248-i2akfl clean
