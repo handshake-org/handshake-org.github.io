@@ -888,6 +888,9 @@
                     <a href="#sendrevoke" class="toc-h2 toc-link" data-title="RPC Calls - Wallet Auctions">sendrevoke</a>
                   </li>
                   <li>
+                    <a href="#sendbatch" class="toc-h2 toc-link" data-title="RPC Calls - Wallet Auctions">sendbatch</a>
+                  </li>
+                  <li>
                     <a href="#importnonce" class="toc-h2 toc-link" data-title="RPC Calls - Wallet Auctions">importnonce</a>
                   </li>
                   <li>
@@ -14040,11 +14043,187 @@ the name transfer. This renders the name&#39;s output forever unspendable, and p
 <td>name to revoke the in-progress transfer of</td>
 </tr>
 </tbody></table>
-<h2 id='importnonce'>importnonce</h2>
+<h2 id='sendbatch'>sendbatch</h2><div class="highlight"><pre class="highlight shell tab-shell--cli"><code><span class="nv">batch</span><span class="o">=</span><span class="s1">'[["TRANSFER", "probability", "rs1qsjl5c967nw3hcsfl65p67kv6zr35qmq8jgrv3x"], ["OPEN", "possibility"]]'</span>
+
+hsw-rpc sendbatch <span class="nv">$batch</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">batch</span><span class="p">;</span>
+
+<span class="nx">batch</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">[</span><span class="dl">"</span><span class="s2">TRANSFER</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">probability</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">rs1qsjl5c967nw3hcsfl65p67kv6zr35qmq8jgrv3x</span><span class="dl">"</span><span class="p">],</span>
+  <span class="p">[</span><span class="dl">"</span><span class="s2">OPEN</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">possibility</span><span class="dl">"</span><span class="p">]</span>
+<span class="p">];</span>
+
+<span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">clientOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">clientOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="dl">'</span><span class="s1">sendbatch</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span> <span class="nx">batch</span> <span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre></div>
+<blockquote>
+<p>sendbatch returns JSON structured like this: </p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"37a1e2a12ac27458f68666880893d8aa1e2a44754067e05ff90e001ada02300e"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"witnessHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"03aab8ad186179b2cd3dec911f9a13f2bc66673b94612d94015ebdf2b99436fb"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"mtime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736421443</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11be5660810c3feb46d592fad6a4c4aa11a51f125e077fedde1a55d966e3531e"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"4f68995585028c1d09a807183a1adc35065c583053e1d9e2bf0467cd13b9294c6467610d083982ab76b7a6b3caa13c6798017f90458804c8414cf6cfdda68f1c01"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"02742d367750ec18d235e885d53b652fed8f6bad8311d0b47a2a48e3ed3bf92544"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">4294967295</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qgn3vg5p7csa5f5a4war5t0fv0f6plkg2dzlh7k"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c78bce05f9dc83d90734a373924b685a1f8c9417289951016c223b690f4f12a3"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"0cd1784f3c32d1b474a4a7d5f5065612faff401989d50f5bc1e41c92529a5564704627a155fe74d93430b2f46094ec780be05880996abef897045338671f34bc01"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"0354c965c77096a31fbdd2deb132b465b3c4789f1dd45a1857f7b457954e9df7d6"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">4294967295</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qvscqlrwy7dz0f8twec4e8gmtcz074lq8dwddat"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qgn3vg5p7csa5f5a4war5t0fv0f6plkg2dzlh7k"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TRANSFER"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"7d3bb2c8a86dc01939586a5db6566e6fa60a24dccebae4dcdf9de27256ecfa54"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"65000000"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"00"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"84bf4c175e9ba37c413fd503af599a10e3406c07"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qf0xarqn8e367hd0mqz792vemx27hda6at4cnhm"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OPEN"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"00000000"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"706f73736962696c697479"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1999998560</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qdqnwu4a05exl8q6gtfvctk4x57tnsefprkc9r0"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NONE"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"locktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"000000000211be5660810c3feb46d592fad6a4c4aa11a51f125e077fedde1a55d966e3531e00000000ffffffffc78bce05f9dc83d90734a373924b685a1f8c9417289951016c223b690f4f12a300000000ffffffff030000000000000000001444e2c4503ec43b44d3b5774745bd2c7a741fd90a0904207d3bb2c8a86dc01939586a5db6566e6fa60a24dccebae4dcdf9de27256ecfa54046500000001001484bf4c175e9ba37c413fd503af599a10e3406c07000000000000000000144bcdd18267cc75ebb5fb00bc55333b32bd76f75d02032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04000000000b706f73736962696c697479608e35770000000000146826ee57afa64df383485a5985daa6a79738652100000000000002414f68995585028c1d09a807183a1adc35065c583053e1d9e2bf0467cd13b9294c6467610d083982ab76b7a6b3caa13c6798017f90458804c8414cf6cfdda68f1c012102742d367750ec18d235e885d53b652fed8f6bad8311d0b47a2a48e3ed3bf9254402410cd1784f3c32d1b474a4a7d5f5065612faff401989d50f5bc1e41c92529a5564704627a155fe74d93430b2f46094ec780be05880996abef897045338671f34bc01210354c965c77096a31fbdd2deb132b465b3c4789f1dd45a1857f7b457954e9df7d6"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
 <aside class="warning">
 This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
 </aside>
-<div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">name</span><span class="o">=</span><span class="s1">'possibility'</span>
+
+<p>Send a batch of any combination of the above transactions. The batch is an array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.  </p>
+<h3 id='params-14'>Params</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>batch</td>
+<td>Required</td>
+<td>array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.</td>
+</tr>
+</tbody></table>
+<h3 id='batch-types'>Batch Types</h3>
+<table><thead>
+<tr>
+<th>Type</th>
+<th>Params</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>NONE</td>
+<td>[address, value]</td>
+<td>Send a transaction with no covenant (used for sending HNS to an address)</td>
+</tr>
+<tr>
+<td>OPEN</td>
+<td>[name]</td>
+<td>Open a name for bidding</td>
+</tr>
+<tr>
+<td>BID</td>
+<td>[name, bid, value]</td>
+<td>Place a bid on a name</td>
+</tr>
+<tr>
+<td>REVEAL</td>
+<td>[name]</td>
+<td>Reveal a bid on a name</td>
+</tr>
+<tr>
+<td>REDEEM</td>
+<td>[name]</td>
+<td>Redeem bids on a name</td>
+</tr>
+<tr>
+<td>UPDATE</td>
+<td>[name, data]</td>
+<td>Update a name&#39;s data, See the <a href="#resource-object">Resource Object section</a> for details on formatting the name resource data.</td>
+</tr>
+<tr>
+<td>TRANSFER</td>
+<td>[name, address]</td>
+<td>Transfer a name to a new address</td>
+</tr>
+<tr>
+<td>FINALIZE</td>
+<td>[name]</td>
+<td>Finalize a name transfer</td>
+</tr>
+<tr>
+<td>CANCEL</td>
+<td>[name]</td>
+<td>Cancel a name transfer</td>
+</tr>
+<tr>
+<td>REVOKE</td>
+<td>[name]</td>
+<td>Revoke a name transfer</td>
+</tr>
+</tbody></table>
+<h2 id='importnonce'>importnonce</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">name</span><span class="o">=</span><span class="s1">'possibility'</span>
 <span class="nv">address</span><span class="o">=</span><span class="s1">'rs1qhrnda3ct3237e6hl0vyh4tz2e90wvaxnmdldfq'</span>
 <span class="nv">bid</span><span class="o">=</span>1.123456
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-rpc importnonce <span class="nv">$name</span> <span class="nv">$address</span> <span class="nv">$bid</span>
@@ -14069,8 +14248,12 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </blockquote>
 <div class="highlight"><pre class="highlight plaintext"><code>064802bfe52159d6c744625b17b887834d26dcc04605190fb82e4b41862adf60
 </code></pre></div>
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+
 <p>Deterministically regenerate the nonce for a bid.</p>
-<h3 id='params-14'>Params</h3>
+<h3 id='params-15'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -14165,7 +14348,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Creates <code>OPEN</code> transaction without signing or broadcasting it.</p>
-<h3 id='params-15'>Params</h3>
+<h3 id='params-16'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -14260,7 +14443,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create <code>BID</code> transaction without signing or broadcasting it.</p>
-<h3 id='params-16'>Params</h3>
+<h3 id='params-17'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -14383,7 +14566,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create <code>REVEAL</code> transaction without signing or broadcasting it.</p>
-<h3 id='params-17'>Params</h3>
+<h3 id='params-18'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -14482,7 +14665,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create <code>REDEEM</code> transaction without signing or broadcasting it.</p>
-<h3 id='params-18'>Params</h3>
+<h3 id='params-19'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -14578,7 +14761,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 <p>Create <code>UPDATE</code> transaction without signing or broadcasting it.</p>
 
 <p>See the <a href="#resource-object">Resource Object section</a> for details on formatting the name resource data.</p>
-<h3 id='params-19'>Params</h3>
+<h3 id='params-20'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -14682,7 +14865,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create <code>RENEW</code> transaction without signing or broadcasting it.</p>
-<h3 id='params-20'>Params</h3>
+<h3 id='params-21'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -14785,7 +14968,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 
 </span></code></pre></div>
 <p>Create <code>TRANSFER</code> transaction without signing or broadcasting it.</p>
-<h3 id='params-21'>Params</h3>
+<h3 id='params-22'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -14892,7 +15075,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create <code>FINALIZE</code> transaction without signing or broadcasting it.</p>
-<h3 id='params-22'>Params</h3>
+<h3 id='params-23'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -14992,7 +15175,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create <code>CANCEL</code> transaction without signing or broadcasting it.</p>
-<h3 id='params-23'>Params</h3>
+<h3 id='params-24'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -15091,7 +15274,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create <code>REVOKE</code> transaction without signing or broadcasting it.</p>
-<h3 id='params-24'>Params</h3>
+<h3 id='params-25'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -15147,7 +15330,7 @@ in the rescan or the wallet will not track BIDs on the name.</p>
 
 <p>Once the auction is rescanned, <a href="#getbids"><code>rpc getbids</code></a> can be used to return
 all current BIDs on a name, even if the wallet has not placed any BIDs itself.</p>
-<h3 id='params-25'>Params</h3>
+<h3 id='params-26'>Params</h3>
 <table><thead>
 <tr>
 <th>Name</th>

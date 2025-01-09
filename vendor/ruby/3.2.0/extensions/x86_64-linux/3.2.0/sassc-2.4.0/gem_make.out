@@ -3,10 +3,10 @@ current directory: /home/runner/work/handshake-org.github.io/handshake-org.githu
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/sassc-2.4.0/ext
-make DESTDIR\= sitearchdir\=./.gem.20250109-3248-w02i9m sitelibdir\=./.gem.20250109-3248-w02i9m clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3346-o72pzp sitelibdir\=./.gem.20250109-3346-o72pzp clean
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/sassc-2.4.0/ext
-make DESTDIR\= sitearchdir\=./.gem.20250109-3248-w02i9m sitelibdir\=./.gem.20250109-3248-w02i9m
+make DESTDIR\= sitearchdir\=./.gem.20250109-3346-o72pzp sitelibdir\=./.gem.20250109-3346-o72pzp
 compiling ./libsass/src/ast.cpp
 compiling ./libsass/src/ast2c.cpp
 compiling ./libsass/src/ast_fwd_decl.cpp
@@ -76,8 +76,8 @@ compiling ./libsass/src/values.cpp
 linking shared-object sassc/libsass.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/sassc-2.4.0/ext
-make DESTDIR\= sitearchdir\=./.gem.20250109-3248-w02i9m sitelibdir\=./.gem.20250109-3248-w02i9m install
-/usr/bin/install -c -m 0755 libsass.so ./.gem.20250109-3248-w02i9m/sassc
+make DESTDIR\= sitearchdir\=./.gem.20250109-3346-o72pzp sitelibdir\=./.gem.20250109-3346-o72pzp install
+/usr/bin/install -c -m 0755 libsass.so ./.gem.20250109-3346-o72pzp/sassc
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/sassc-2.4.0/ext
-make DESTDIR\= sitearchdir\=./.gem.20250109-3248-w02i9m sitelibdir\=./.gem.20250109-3248-w02i9m clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3346-o72pzp sitelibdir\=./.gem.20250109-3346-o72pzp clean
