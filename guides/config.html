@@ -159,20 +159,25 @@
 </ul>
 <h3 id="pool-options">Pool Options</h3>
 <ul>
-<li><code>selfish</code>: Enable “selfish” mode (no relaying of txes or blocks) (default: false).</li>
 <li><code>compact</code>: Enable compact block relay (default: true).</li>
 <li><code>bip37</code>: Enable serving of bip37 merkleblocks (default: false).</li>
 <li><code>listen</code>: Accept incoming connections (default: false).</li>
 <li><code>max-outbound</code>: Max number of outbound connections (default: 8).</li>
 <li><code>max-inbound</code>: Max number of inbound connections (default: 30).</li>
 <li><code>max-proof-rps</code>: Max <code>getproof</code> DNS requests per second (default: 100).</li>
+<li><code>proxy</code>: SOCKS proxy used to connect to nodes (using proxy sets listen: false).</li>
+<li><code>onion</code>: Connect to tor nodes (default: false, requires proxy if true).</li>
+<li><code>brontide-only</code>: Only connect to brontide nodes (default: false).</li>
+<li><code>upnp</code>: Attempt to open ports on gateway with UPnP (default: false).</li>
 <li><code>seeds</code>: Custom list of DNS seeds (comma-separated).</li>
 <li><code>host</code>: Host to listen on (default: 0.0.0.0).</li>
 <li><code>port</code>: Port to listen on (default: 12038 for mainnet).</li>
 <li><code>brontide-port</code>: Port for encrypted p2p server to listen on (default: 44806 for mainnet).</li>
 <li><code>public-host</code>: Public host to advertise on network.</li>
 <li><code>public-port</code>: Public port to advertise on network.</li>
+<li><code>public-brontide-port</code>: Public brontide port to advertise on network.</li>
 <li><code>nodes</code>: List of target nodes to connect to (comma-separated).</li>
+<li><code>only</code>: Exclusive list of nodes to connect to (comma-separated, overrides <code>nodes</code> list).</li>
 </ul>
 <h3 id="miner-options">Miner Options</h3>
 <ul>

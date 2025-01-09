@@ -3,16 +3,16 @@ current directory: /home/runner/work/handshake-org.github.io/handshake-org.githu
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/fast_blank-1.0.1/ext/fast_blank
-make DESTDIR\= sitearchdir\=./.gem.20250109-3279-atzr5j sitelibdir\=./.gem.20250109-3279-atzr5j clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3247-mlfnsm sitelibdir\=./.gem.20250109-3247-mlfnsm clean
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/fast_blank-1.0.1/ext/fast_blank
-make DESTDIR\= sitearchdir\=./.gem.20250109-3279-atzr5j sitelibdir\=./.gem.20250109-3279-atzr5j
+make DESTDIR\= sitearchdir\=./.gem.20250109-3247-mlfnsm sitelibdir\=./.gem.20250109-3247-mlfnsm
 compiling fast_blank.c
 linking shared-object fast_blank.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/fast_blank-1.0.1/ext/fast_blank
-make DESTDIR\= sitearchdir\=./.gem.20250109-3279-atzr5j sitelibdir\=./.gem.20250109-3279-atzr5j install
-/usr/bin/install -c -m 0755 fast_blank.so ./.gem.20250109-3279-atzr5j
+make DESTDIR\= sitearchdir\=./.gem.20250109-3247-mlfnsm sitelibdir\=./.gem.20250109-3247-mlfnsm install
+/usr/bin/install -c -m 0755 fast_blank.so ./.gem.20250109-3247-mlfnsm
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/fast_blank-1.0.1/ext/fast_blank
-make DESTDIR\= sitearchdir\=./.gem.20250109-3279-atzr5j sitelibdir\=./.gem.20250109-3279-atzr5j clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3247-mlfnsm sitelibdir\=./.gem.20250109-3247-mlfnsm clean
