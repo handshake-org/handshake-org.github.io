@@ -1291,12 +1291,142 @@ Name | Default |  Description
 --------- | --------- | ---------
 name | Required | name to revoke the in-progress transfer of
 
+## sendbatch
 
-## importnonce
+```shell--cli
+batch='[["TRANSFER", "probability", "rs1qsjl5c967nw3hcsfl65p67kv6zr35qmq8jgrv3x"], ["OPEN", "possibility"]]'
+
+hsw-rpc sendbatch $batch
+```
+
+```javascript
+let batch;
+
+batch = [
+  ["TRANSFER", "probability", "rs1qsjl5c967nw3hcsfl65p67kv6zr35qmq8jgrv3x"],
+  ["OPEN", "possibility"]
+];
+
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const clientOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const client = new WalletClient(clientOptions);
+
+(async () => {
+  const result = await client.execute('sendbatch', [ batch ]);
+  console.log(result);
+})();
+```
+
+> sendbatch returns JSON structured like this: 
+
+```json
+{
+  "hash": "37a1e2a12ac27458f68666880893d8aa1e2a44754067e05ff90e001ada02300e",
+  "witnessHash": "03aab8ad186179b2cd3dec911f9a13f2bc66673b94612d94015ebdf2b99436fb",
+  "mtime": 1736421443,
+  "version": 0,
+  "inputs": [
+    {
+      "prevout": {
+        "hash": "11be5660810c3feb46d592fad6a4c4aa11a51f125e077fedde1a55d966e3531e",
+        "index": 0
+      },
+      "witness": [
+        "4f68995585028c1d09a807183a1adc35065c583053e1d9e2bf0467cd13b9294c6467610d083982ab76b7a6b3caa13c6798017f90458804c8414cf6cfdda68f1c01",
+        "02742d367750ec18d235e885d53b652fed8f6bad8311d0b47a2a48e3ed3bf92544"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qgn3vg5p7csa5f5a4war5t0fv0f6plkg2dzlh7k"
+    },
+    {
+      "prevout": {
+        "hash": "c78bce05f9dc83d90734a373924b685a1f8c9417289951016c223b690f4f12a3",
+        "index": 0
+      },
+      "witness": [
+        "0cd1784f3c32d1b474a4a7d5f5065612faff401989d50f5bc1e41c92529a5564704627a155fe74d93430b2f46094ec780be05880996abef897045338671f34bc01",
+        "0354c965c77096a31fbdd2deb132b465b3c4789f1dd45a1857f7b457954e9df7d6"
+      ],
+      "sequence": 4294967295,
+      "address": "rs1qvscqlrwy7dz0f8twec4e8gmtcz074lq8dwddat"
+    }
+  ],
+  "outputs": [
+    {
+      "value": 0,
+      "address": "rs1qgn3vg5p7csa5f5a4war5t0fv0f6plkg2dzlh7k",
+      "covenant": {
+        "type": 9,
+        "action": "TRANSFER",
+        "items": [
+          "7d3bb2c8a86dc01939586a5db6566e6fa60a24dccebae4dcdf9de27256ecfa54",
+          "65000000",
+          "00",
+          "84bf4c175e9ba37c413fd503af599a10e3406c07"
+        ]
+      }
+    },
+    {
+      "value": 0,
+      "address": "rs1qf0xarqn8e367hd0mqz792vemx27hda6at4cnhm",
+      "covenant": {
+        "type": 2,
+        "action": "OPEN",
+        "items": [
+          "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
+          "00000000",
+          "706f73736962696c697479"
+        ]
+      }
+    },
+    {
+      "value": 1999998560,
+      "address": "rs1qdqnwu4a05exl8q6gtfvctk4x57tnsefprkc9r0",
+      "covenant": {
+        "type": 0,
+        "action": "NONE",
+        "items": []
+      }
+    }
+  ],
+  "locktime": 0,
+  "hex": "000000000211be5660810c3feb46d592fad6a4c4aa11a51f125e077fedde1a55d966e3531e00000000ffffffffc78bce05f9dc83d90734a373924b685a1f8c9417289951016c223b690f4f12a300000000ffffffff030000000000000000001444e2c4503ec43b44d3b5774745bd2c7a741fd90a0904207d3bb2c8a86dc01939586a5db6566e6fa60a24dccebae4dcdf9de27256ecfa54046500000001001484bf4c175e9ba37c413fd503af599a10e3406c07000000000000000000144bcdd18267cc75ebb5fb00bc55333b32bd76f75d02032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04000000000b706f73736962696c697479608e35770000000000146826ee57afa64df383485a5985daa6a79738652100000000000002414f68995585028c1d09a807183a1adc35065c583053e1d9e2bf0467cd13b9294c6467610d083982ab76b7a6b3caa13c6798017f90458804c8414cf6cfdda68f1c012102742d367750ec18d235e885d53b652fed8f6bad8311d0b47a2a48e3ed3bf9254402410cd1784f3c32d1b474a4a7d5f5065612faff401989d50f5bc1e41c92529a5564704627a155fe74d93430b2f46094ec780be05880996abef897045338671f34bc01210354c965c77096a31fbdd2deb132b465b3c4789f1dd45a1857f7b457954e9df7d6"
+}
+```
+
 <aside class="warning">
 This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
 </aside>
 
+Send a batch of any combination of the above transactions. The batch is an array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.  
+
+### Params
+Name  | Default  | Description
+----- | -------- | ---------
+batch | Required | array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.
+
+### Batch Types
+Type     | Params             | Description
+-------- | ------------------ | -----------
+NONE     | [address, value]   | Send a transaction with no covenant (used for sending HNS to an address)
+OPEN     | [name]             | Open a name for bidding
+BID      | [name, bid, value] | Place a bid on a name
+REVEAL   | [name]             | Reveal a bid on a name
+REDEEM   | [name]             | Redeem bids on a name
+UPDATE   | [name, data]       | Update a name's data, See the [Resource Object section](#resource-object) for details on formatting the name resource data.
+TRANSFER | [name, address]    | Transfer a name to a new address
+FINALIZE | [name]             | Finalize a name transfer
+CANCEL   | [name]             | Cancel a name transfer
+REVOKE   | [name]             | Revoke a name transfer
+
+## importnonce
 ```shell--vars
 name='possibility'
 address='rs1qhrnda3ct3237e6hl0vyh4tz2e90wvaxnmdldfq'
@@ -1330,6 +1460,11 @@ const client = new WalletClient(clientOptions);
 ```
 064802bfe52159d6c744625b17b887834d26dcc04605190fb82e4b41862adf60
 ```
+
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+
 
 Deterministically regenerate the nonce for a bid.
 
