@@ -148,19 +148,22 @@ hash <br> _string_ | hash of transaction you would like to remove.
 ## Get Wallet TX History
 
 ```javascript
-let id;
+let id, limit, time, reverse;
 ```
 
 ```shell--vars
 id='primary'
+limit=5
+time=1736413154
+reverse=true
 ```
 
 ```shell--cli
-hsw-cli --id=$id history
+hsw-cli --id=$id history --limit=$limit --time=$time --reverse=$reverse
 ```
 
 ```shell--curl
-curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/history
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/history?limit=$limit&time=$time&reverse=$reverse
 ```
 
 ```javascript
@@ -178,7 +181,12 @@ const wallet = walletClient.wallet(id);
 const account = 'default';
 
 (async () => {
-  const result = await wallet.getHistory(account);
+  const options = {
+    limit,
+    time,
+    reverse
+  };
+  const result = await wallet.getHistory(options);
   console.log(result);
 })();
 ```
@@ -247,32 +255,50 @@ const account = 'default';
 ]
 ```
 
-Get wallet TX history. Returns array of tx details.
+Get wallet transaction history chronologically (oldest to newest, unless reversed), including both confirmed and pending transactions. Returns an array of transaction details.
 
 ### HTTP Request
 `GET /wallet/:id/tx/history`
 
-### Request Parameters
-Parameter | Description
--------- | -------------------------
-id <br> _string_ | id of wallet to get history of
+Parameter        | Description
+---------------- | -----------
+id <br> _string_ | Wallet ID
+
+### Query Parameters
+
+Parameter             | Default   | Description
+--------------------- | -------   | -----------
+account <br> _string_ | Optional  | Account name to filter transactions. All TXs by default.
+after <br> _hex_      | Optional  | List transactions after this tx hash (priority 1)
+time <br> _int_       | Optional  | List transactions after this timestamp in epoch seconds (priority 2)
+limit <br> _int_      | `maxTXs`* | Maximum number of transactions to return
+reverse <br> _bool_   | `false`   | TX Ordering, whether it should reverse the chronological order (oldest to newest)
+
+Notes:
+
+  - When using `time`, the timestamp is indexed based on median-time-past (MTP).
+  - *`maxTXs` refers to wallet `maxHistoryTXs` configuration.
+  - `limit` can not exceed `maxHistoryTXs` configuration.
 
 ## Get Pending Transactions
 
 ```javascript
-let id;
+let id, limit, after, reverse;
 ```
 
 ```shell--vars
 id='primary'
+limit=5
+reverse=true
+after='6cfd18f4e5810cc4285964df3cda75b8249d336e3544c2db9b30f066d349d0cc'
 ```
 
 ```shell--cli
-hsw-cli --id=$id pending
+hsw-cli --id=$id pending --limit=$limit --after=$after --reverse=$reverse
 ```
 
 ```shell--curl
-curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/unconfirmed
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/unconfirmed?limit=$limit&after=$after&reverse=$reverse
 ```
 
 ```javascript
@@ -289,146 +315,94 @@ const walletClient = new WalletClient(walletOptions);
 const wallet = walletClient.wallet(id);
 
 (async () => {
-  const result = await wallet.getPending();
+  const options = {
+    limit,
+    reverse,
+    after
+  };
+  const result = await wallet.getPending(options);
   console.log(result);
 })();
 ```
 
-Get pending wallet transactions. Returns array of tx details.
-
-### HTTP Request
-
-`GET /wallet/:id/tx/unconfirmed`
-
-### Request Parameters
-Parameter | Description
--------- | -------------------------
-id <br> _string_ | id of wallet to get pending/unconfirmed txs
-
-
-## Get Range of Transactions
-```javascript
-let id, account, start, end;
-```
-
-```shell--vars
-id="primary"
-account="default"
-start="1527184612"
-end="1527186612"
-```
-
-```shell--cli
-# range not available in CLI
-```
-
-```shell--curl
-curl http://x:api-key@127.0.0.1:14039/wallet/$id/tx/range?start=$start'&'end=$end
-```
-
-```javascript
-const {WalletClient} = require('hs-client');
-const {Network} = require('hsd');
-const network = Network.get('regtest');
-
-const walletOptions = {
-  port: network.walletPort,
-  apiKey: 'api-key'
-}
-
-const walletClient = new WalletClient(walletOptions);
-const wallet = walletClient.wallet(id);
-
-(async () => {
-  const result = await wallet.getRange(account, {start: start, end: end});
-  console.log(result);
-})();
-```
 > Sample Response
 
 ```json
 [
   {
-    "hash": "bc0f93bb233fdf42a25a086ffb744fcb4f64afe6f5d4243da8e3745835fd57b3",
+    "hash": "57dd1e1b306de8da08d38b68b77e239bffe6d6b0b32bd734cf72684c21a03068",
     "height": -1,
     "block": null,
     "time": 0,
-    "mtime": 1528468930,
+    "mtime": 1736411031,
     "date": "1970-01-01T00:00:00Z",
-    "mdate": "2018-06-08T14:42:10Z",
+    "mdate": "2025-01-09T08:23:51Z",
     "size": 215,
     "virtualSize": 140,
-    "fee": 2800,
-    "rate": 20000,
+    "fee": 0,
+    "rate": 0,
     "confirmations": 0,
     "inputs": [
       {
-        "value": 500002800,
-        "address": "rs1q7qumafugfglg268djelwr7ps4l2uh2vsdpfnuc",
-        "path": {
-          "name": "default",
-          "account": 0,
-          "change": false,
-          "derivation": "m/0'/0/0"
-        }
+        "value": 0,
+        "address": "rs1qannv3v0wacekpsfk9ysa2p7mnepd86c63543sh",
+        "path": null
       }
     ],
     "outputs": [
       {
-        "value": 100000000,
-        "address": "rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap",
+        "value": 9000000,
+        "address": "rs1qgjpc0kpty45za0dwdf4jgqmw9e3yjtej3gvadw",
         "covenant": {
           "type": 0,
+          "action": "NONE",
           "items": []
         },
         "path": {
           "name": "default",
           "account": 0,
           "change": false,
-          "derivation": "m/0'/0/1"
+          "derivation": "m/0'/0/2"
         }
       },
       {
-        "value": 400000000,
-        "address": "rs1q2x2suqr44gjn2plm3f99v2ae6ead3rpat9qtzg",
+        "value": 1990997200,
+        "address": "rs1qpaf5s2qyl8pyu0upgpq95m68kfp7gnflgcscsr",
         "covenant": {
           "type": 0,
+          "action": "NONE",
           "items": []
         },
-        "path": {
-          "name": "default",
-          "account": 0,
-          "change": true,
-          "derivation": "m/0'/1/4"
-        }
+        "path": null
       }
     ],
-    "tx": "0000000001758758e600061e62b92831cb40163011e07bd42cac34467f7d34f57c4a921e35000000000241825ebb96f395c02d3cdce7f88594dab343347879dd96af29320bf020f2c5677d4ab7ef79349007d562a4cdafb54d8e1cbd538275deef1b78eb945155315ae648012102deb957b2e4ebb246e1ecb27a4dc7d142504e70a420adb3cf40f9fb5d3928fdf9ffffffff0200e1f505000000000014f0d9374a2ce80c377187f4bc6c68993c561cb13600000084d71700000000001451950e0075aa253507fb8a4a562bb9d67ad88c3d000000000000"
-  }
+    "tx": "00000000013e298505af6b7176afedcaa25528e0b118f263a7e0fff2318eb62800dc07497400000000ffffffff0240548900000000000014448387d82b25682ebdae6a6b24036e2e62492f320000d034ac760000000000140f53482804f9c24e3f8140405a6f47b243e44d3f000000000000024156129fcf21f7de6a7e4b62569b050495e1168c7a69f5e8db6dc37c41d216e3ed27842585b94fa353108981671068989a0b742225f3c93bfc4838352a165fefce0121027a7e5e2e8a0447e7e76d27247af1a7c2b2c19fbd3dc77512a8ee96dc3612c453"
+  },
   ...
 ]
 ```
-Get range of wallet transactions by timestamp. Returns array of tx details.
 
-<aside class="notice">
-Note that there are other options documented that `getRange` accepts in the options body, `limit` and `reverse`. At the time of writing however they do not have any effect.
-</aside>
+Get pending (unconfirmed) wallet transactions chronologically (oldest to newest, unless reversed). Returns an array of transaction details.
 
 ### HTTP Request
 
-`GET /wallet/:id/tx/range`
+`GET /wallet/:id/tx/unconfirmed`
 
-### Body Parameters
-Parameter | Description
--------- | -------------------------
-account <br>_string_ | account to get the tx history from
-start <br> _int_ | start time to get range from
-end <br> _int_ | end time to get range from
+Parameter        | Description
+---------------- | -----------
+id <br> _string_ | Wallet ID
 
-<!-- ##GET /wallet/:id/tx/last
+### Query Parameters
+Parameter             | Default   | Description
+--------------------- | --------  | -----------
+account <br> _string_ | None      | Account name to filter transactions
+after <br> _string_   | None      | List transactions after this transaction ID (Priority 1)
+time <br> _int_       | None      | List transactions after this timestamp in epoch seconds (Priority 2)
+limit <br> _int_      | `maxTXs`* | Maximum number of transactions to return
+reverse <br> _bool_   | `false`   | TX Ordering, whether it should reverse the chronological order (oldest to newest)
 
-Get last N wallet transactions.
+Notes:
 
-### HTTP Request
-
-`GET /wallet/:id/tx/last` -->
+  - For unconfirmed transactions, the `time` parameter is based on when the transaction was added to the wallet.
+  - *`maxTXs` refers to wallet `maxHistoryTXs` configuration
+  - `limit` can not exceed `maxHistoryTXs` configuration
