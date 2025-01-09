@@ -647,10 +647,10 @@
                     <a href="#change-passphrase" class="toc-h2 toc-link" data-title="Wallet">Change Passphrase</a>
                   </li>
                   <li>
-                    <a href="#send-a-transaction" class="toc-h2 toc-link" data-title="Wallet">Send a transaction</a>
+                    <a href="#create-a-transaction" class="toc-h2 toc-link" data-title="Wallet">Create a Transaction</a>
                   </li>
                   <li>
-                    <a href="#create-a-transaction" class="toc-h2 toc-link" data-title="Wallet">Create a Transaction</a>
+                    <a href="#send-a-transaction" class="toc-h2 toc-link" data-title="Wallet">Send a transaction</a>
                   </li>
                   <li>
                     <a href="#sign-transaction" class="toc-h2 toc-link" data-title="Wallet">Sign Transaction</a>
@@ -749,6 +749,9 @@
                   <li>
                     <a href="#create-new-wallet-account" class="toc-h2 toc-link" data-title="Wallet - Accounts">Create new wallet account</a>
                   </li>
+                  <li>
+                    <a href="#modify-wallet-account" class="toc-h2 toc-link" data-title="Wallet - Accounts">Modify wallet account</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -765,9 +768,6 @@
                   </li>
                   <li>
                     <a href="#get-pending-transactions" class="toc-h2 toc-link" data-title="Wallet - Transactions">Get Pending Transactions</a>
-                  </li>
-                  <li>
-                    <a href="#get-range-of-transactions" class="toc-h2 toc-link" data-title="Wallet - Transactions">Get Range of Transactions</a>
                   </li>
               </ul>
           </li>
@@ -1589,89 +1589,89 @@ Custom port numbers are also configurable by the user.</p>
 
 <table><thead>
 <tr>
+<th>method</th>
 <th>Command</th>
-<th>cURL method</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td><a href="#get-server-info"><code>/</code></a></td>
 <td><code>GET</code></td>
-<td>get info</td>
+<td><a href="#get-server-info"><code>/</code></a></td>
+<td>Get info</td>
 </tr>
 <tr>
-<td><a href="#get-coins-by-address"><code>/coin/address/:address</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#get-coins-by-address"><code>/coin/address/:address</code></a></td>
 <td>UTXO by address</td>
 </tr>
 <tr>
-<td><a href="#get-coin-by-outpoint"><code>/coin/:hash/:index</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#get-coin-by-outpoint"><code>/coin/:hash/:index</code></a></td>
 <td>UTXO by txid</td>
 </tr>
 <tr>
-<td><a href="#get-coins-by-addresses"><code>/coin/address</code></a></td>
 <td><code>POST</code></td>
+<td><a href="#get-coins-by-addresses"><code>/coin/address</code></a></td>
 <td>Bulk read UTXOs</td>
 </tr>
 <tr>
-<td><a href="#get-tx-by-txhash"><code>/tx/:hash</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#get-tx-by-txhash"><code>/tx/:hash</code></a></td>
 <td>TX by hash</td>
 </tr>
 <tr>
-<td><a href="#get-tx-by-address"><code>/tx/address/:address</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#get-tx-by-address"><code>/tx/address/:address</code></a></td>
 <td>TX by address</td>
 </tr>
 <tr>
-<td><a href="#get-tx-by-addresses"><code>/tx/address</code></a></td>
 <td><code>POST</code></td>
+<td><a href="#get-tx-by-addresses"><code>/tx/address</code></a></td>
 <td>Bulk read TXs</td>
 </tr>
 <tr>
-<td><a href="#get-block-by-hash-or-height"><code>/block/:block</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#get-block-by-hash-or-height"><code>/block/:block</code></a></td>
 <td>Block by hash or height</td>
 </tr>
 <tr>
-<td><a href="#get-header-by-hash-or-height"><code>/header/:block</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#get-header-by-hash-or-height"><code>/header/:block</code></a></td>
 <td>Header by hash or height</td>
 </tr>
 <tr>
-<td><a href="#get-mempool-snapshot"><code>/mempool</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#get-mempool-snapshot"><code>/mempool</code></a></td>
 <td>Mempool snapshot</td>
 </tr>
 <tr>
-<td><a href="#get-mempool-rejects-filter"><code>/mempool/invalid</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#get-mempool-rejects-filter"><code>/mempool/invalid</code></a></td>
 <td>Mempool rejects filter</td>
 </tr>
 <tr>
-<td><a href="#test-mempool-rejects-filter"><code>/mempool/invalid/:hash</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#test-mempool-rejects-filter"><code>/mempool/invalid/:hash</code></a></td>
 <td>Test mempool rejects filter</td>
 </tr>
 <tr>
-<td><a href="#broadcast-transaction"><code>/broadcast</code></a></td>
 <td><code>POST</code></td>
+<td><a href="#broadcast-transaction"><code>/broadcast</code></a></td>
 <td>Broadcast TX</td>
 </tr>
 <tr>
-<td><a href="#broadcast-claim"><code>/claim</code></a></td>
 <td><code>POST</code></td>
+<td><a href="#broadcast-claim"><code>/claim</code></a></td>
 <td>Broadcast Claim</td>
 </tr>
 <tr>
-<td><a href="#estimate-fee"><code>/fee</code></a></td>
 <td><code>GET</code></td>
+<td><a href="#estimate-fee"><code>/fee</code></a></td>
 <td>Estimate fee</td>
 </tr>
 <tr>
-<td><a href="#reset-blockchain"><code>/reset</code></a></td>
 <td><code>POST</code></td>
+<td><a href="#reset-blockchain"><code>/reset</code></a></td>
 <td>Reset chain to specific height</td>
 </tr>
 </tbody></table>
@@ -1697,28 +1697,51 @@ Custom port numbers are also configurable by the user.</p>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0.1"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7.99.0"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"regtest"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"chain"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"tip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6b054a7a561fdfa7c2f11550db4d5341d101be044df24dd58c465b2abac94c3f"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"tip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ae3895cf597eff05b19e02a70ceeeecb9dc72dbfe6504a50e9343a72f06a87c5"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"treeRoot"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000000000000000000000000000000000000000000000000000000000000"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"progress"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6125905181398805</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"treeRootHeight"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"progress"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"indexers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"indexTX"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"indexAddress"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"spv"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"prune"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"treeCompaction"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"compacted"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"compactOnInit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"compactInterval"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"lastCompaction"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"nextCompaction"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">},</span><span class="w">
     </span><span class="nl">"state"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">1360</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">237416588368270</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">2002210000</span><span class="p">,</span><span class="w">
       </span><span class="nl">"burned"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="nl">"pool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="nl">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.0.0"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">14038</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"brontidePort"</span><span class="p">:</span><span class="w"> </span><span class="mi">46806</span><span class="p">,</span><span class="w">
     </span><span class="nl">"identitykey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aorsxa4ylaacshipyjkfbvzfkh3jhh4yowtoqdt64nzemqtiw2whk"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"agent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/hsd:2.0.1/"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"agent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/hsd:7.99.0/"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"services"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"outbound"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"inbound"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="nl">"inbound"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"public"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"listen"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"host"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"brontidePort"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="nl">"mempool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="nl">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -1728,17 +1751,17 @@ Custom port numbers are also configurable by the user.</p>
     </span><span class="nl">"orphans"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"uptime"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"system"</span><span class="p">:</span><span class="w"> </span><span class="mi">1581299165</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"adjusted"</span><span class="p">:</span><span class="w"> </span><span class="mi">1581299165</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uptime"</span><span class="p">:</span><span class="w"> </span><span class="mi">268</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"system"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736238026</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"adjusted"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736238026</span><span class="p">,</span><span class="w">
     </span><span class="nl">"offset"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="nl">"memory"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">78</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"jsHeap"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"jsHeapTotal"</span><span class="p">:</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"nativeHeap"</span><span class="p">:</span><span class="w"> </span><span class="mi">49</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"external"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="w">
+    </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">112</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"jsHeap"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"jsHeapTotal"</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"nativeHeap"</span><span class="p">:</span><span class="w"> </span><span class="mi">93</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"external"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -2030,7 +2053,7 @@ curl http://x:api-key@127.0.0.1:14037/header/<span class="nv">$blockHeight</span
 </thead><tbody>
 <tr>
 <td>tx</td>
-<td>raw transaction in hex</td>
+<td>Raw transaction in hex</td>
 </tr>
 </tbody></table>
 <h2 id='broadcast-claim'>Broadcast claim</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">claim</span><span class="p">;</span>
@@ -7486,88 +7509,80 @@ hsw-cli mkwallet <span class="nv">$id</span> <span class="nt">--passphrase</span
     </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="nl">"balance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
     </span><span class="nl">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
     </span><span class="nl">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
     </span><span class="nl">"unconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"confirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="nl">"confirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lockedUnconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lockedConfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create a new wallet with a specified ID.</p>
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>PUT /wallet/:id</code></p>
-<h3 id='parameters'>Parameters:</h3>
+
 <table><thead>
 <tr>
-<th>Name</th>
-<th>Type</th>
-<th>Default</th>
+<th>Parameter</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>id</td>
-<td>String</td>
-<td></td>
 <td>Wallet ID (used for storage)</td>
 </tr>
+</tbody></table>
+<h3 id='put-options-json'>PUT options (JSON)</h3>
+<table><thead>
 <tr>
-<td>type</td>
-<td>String</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>type <br> <em>string</em></td>
 <td><code>&#39;pubkeyhash&#39;</code></td>
 <td>Type of wallet (pubkeyhash, multisig)</td>
 </tr>
 <tr>
-<td>master</td>
-<td>HDPrivateKey</td>
-<td></td>
+<td>master <br> <em>base58</em></td>
+<td>Optional</td>
 <td>Master HD key. If not present, it will be generated</td>
 </tr>
 <tr>
-<td>mnemonic</td>
-<td>String</td>
-<td></td>
+<td>mnemonic <br> <em>string</em></td>
+<td>Optional</td>
 <td>A mnemonic phrase to use to instantiate an hd private key. One will be generated if none provided</td>
 </tr>
 <tr>
-<td>m</td>
-<td>Number</td>
-<td><code>1</code></td>
+<td>m <br> <em>int</em></td>
+<td>1</td>
 <td>m value for multisig (<code>m-of-n</code>)</td>
 </tr>
 <tr>
-<td>n</td>
-<td>Number</td>
-<td><code>1</code></td>
+<td>n <br> <em>int</em></td>
+<td>1</td>
 <td>n value for multisig (<code>m-of-n</code>)</td>
 </tr>
 <tr>
-<td>passphrase</td>
-<td>String</td>
+<td>passphrase <br> <em>string</em></td>
 <td></td>
 <td>A strong passphrase used to encrypt the wallet</td>
 </tr>
 <tr>
-<td>watchOnly</td>
-<td>Boolean</td>
-<td><code>false</code></td>
+<td>watchOnly <br> <em>bool</em></td>
+<td>false</td>
 <td>(<code>watch</code> for CLI)</td>
 </tr>
 <tr>
-<td>accountKey</td>
-<td>String</td>
+<td>accountKey <br> <em>base58</em></td>
 <td></td>
 <td>The extended public key for the primary account in the new wallet. This value is ignored if <code>watchOnly</code> is <code>false</code> <br> (<code>key</code> for CLI)</td>
 </tr>
-<tr>
-<td>accountDepth*</td>
-<td>Number</td>
-<td><code>0</code></td>
-<td>The index of the <em>next</em> <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#Account">BIP44 account index</a></td>
-</tr>
 </tbody></table>
-
-<p><em>(*) options are only available in Javascript usage, not CLI or curl</em></p>
 <h2 id='reset-authentication-token'>Reset Authentication Token</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">;</span>
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
 <span class="nv">passphrase</span><span class="o">=</span><span class="s1">'secret123'</span>
@@ -7774,7 +7789,19 @@ Once a passphrase has been set for a wallet, the API will not reveal the unencry
 <p>Change wallet passphrase. Encrypt if unencrypted.</p>
 <h3 id='http-request-5'>HTTP Request</h3>
 <p><code>POST /wallet/:id/passphrase</code></p>
-<h3 id='body-parameters'>Body Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id <br> <em>string</em></td>
+<td>Wallet ID</td>
+</tr>
+</tbody></table>
+<h3 id='post-options-json'>POST Options (JSON)</h3>
 <table><thead>
 <tr>
 <th>Parameters</th>
@@ -7794,6 +7821,253 @@ Once a passphrase has been set for a wallet, the API will not reveal the unencry
 <aside class="notice">
 If you have never set a passphrase for this wallet before, you need to omit the <code>old</code> argument and just send a new <nobr><code>passphrase</code></nobr>
 </aside>
+<h2 id='create-a-transaction'>Create a Transaction</h2>
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+<div class="highlight"><pre class="highlight shell tab-shell--cli"><code><span class="nb">id</span><span class="o">=</span><span class="s2">"multisig1"</span>
+<span class="nv">passphrase</span><span class="o">=</span><span class="s2">"multisecret123"</span>
+<span class="nv">rate</span><span class="o">=</span>0.00000500
+<span class="nv">value</span><span class="o">=</span>0.05000000
+<span class="nv">address</span><span class="o">=</span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"</span>
+
+hsw-cli mktx <span class="nt">--id</span><span class="o">=</span><span class="nv">$id</span> <span class="nt">--value</span><span class="o">=</span><span class="nv">$value</span> <span class="nt">--address</span><span class="o">=</span><span class="nv">$address</span> <span class="nt">---passphrase</span><span class="o">=</span><span class="nv">$passphrase</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code><span class="nb">id</span><span class="o">=</span><span class="s2">"multisig1"</span>
+<span class="nv">passphrase</span><span class="o">=</span><span class="s2">"multisecret123"</span>
+<span class="nv">rate</span><span class="o">=</span>500
+<span class="nv">value</span><span class="o">=</span>5000000
+<span class="nv">address</span><span class="o">=</span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap
+
+curl http://x:api-key@127.0.0.1:14039/wallet/</span><span class="nv">$id</span><span class="s2">/create </span><span class="se">\</span><span class="s2">
+  -X POST </span><span class="se">\</span><span class="s2">
+  --data '{
+    "</span>passphrase<span class="s2">":"</span><span class="s1">'$passphrase'</span><span class="s2">",
+    "</span>rate<span class="s2">":'</span><span class="nv">$rate</span><span class="s2">',
+    "</span>outputs<span class="s2">":[
+      {"</span>address<span class="s2">":"</span><span class="s1">'$address'</span><span class="s2">", "</span>value<span class="s2">":'</span><span class="nv">$value</span><span class="s2">'}
+    ]
+  }'
+</span></code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">passphrase</span><span class="p">,</span> <span class="nx">rate</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">address</span><span class="p">;</span>
+<span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">multisig1</span><span class="dl">"</span>
+<span class="nx">passphrase</span><span class="o">=</span><span class="dl">"</span><span class="s2">multisecret123</span><span class="dl">"</span>
+<span class="nx">rate</span><span class="o">=</span><span class="mi">500</span>
+<span class="nx">value</span><span class="o">=</span><span class="mi">5000000</span>
+<span class="nx">address</span><span class="o">=</span><span class="dl">"</span><span class="s2">rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap</span><span class="dl">"</span>
+
+<span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">passphrase</span><span class="p">:</span> <span class="nx">passphrase</span><span class="p">,</span>
+  <span class="na">rate</span><span class="p">:</span> <span class="nx">rate</span><span class="p">,</span>
+  <span class="na">outputs</span><span class="p">:</span> <span class="p">[{</span> <span class="na">value</span><span class="p">:</span> <span class="nx">value</span><span class="p">,</span> <span class="na">address</span><span class="p">:</span> <span class="nx">address</span> <span class="p">}]</span>
+<span class="p">};</span>
+
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">createTX</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre></div>
+<blockquote>
+<p>Sample response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ce2b8ea52f54f2d170ce0e32b4dfb5f6553e7aad065413a570ce9d683ab14abc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"witnessHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"980923fa0e9fa634e2c0bbc4d34a6303c7967b65173c2a36fe0b458f40bd070d"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">2800</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"rate"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"mtime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1528470021</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"b25cb7e4d1269410d1bd625aaea3b23a3c6397549d708e3970e6dd9b40ce87bc579b6bf216b328bf58e5397a7480967d909e14e95bc7a5a3044e5994e460224301"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"03d2a6f3eea124947217d0b0e56d81dc665df1fc08c4585269d706ec960cecb28f"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">4294967295</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"coin"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">399997200</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q5rjhy20r2hmcxjpc8zv70xkck05pecdew6a798"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"coinbase"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">5000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">394994400</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q4s4lnf94su2padkt3wsgv9xenlyh8qygyl9j0x"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"locktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000001580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9010000000241b25cb7e4d1269410d1bd625aaea3b23a3c6397549d708e3970e6dd9b40ce87bc579b6bf216b328bf58e5397a7480967d909e14e95bc7a5a3044e5994e4602243012103d2a6f3eea124947217d0b0e56d81dc665df1fc08c4585269d706ec960cecb28fffffffff02404b4c00000000000014f0d9374a2ce80c377187f4bc6c68993c561cb1360000e0228b17000000000014ac2bf9a4b587141eb6cb8ba08614d99fc9738088000000000000"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Create and template a transaction (useful for multisig).
+Does not broadcast or add to wallet.</p>
+<h3 id='http-request-6'>HTTP Request</h3>
+<p><code>POST /wallet/:id/create</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id <br> <em>string</em></td>
+<td>Wallet ID</td>
+</tr>
+</tbody></table>
+<h3 id='post-parameters-json'>POST Parameters (JSON)</h3>
+<p>General tx creation/send options.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>outputs <br> <em>array</em></td>
+<td>Required</td>
+<td>An array of outputs to send for the transaction</td>
+</tr>
+<tr>
+<td>account <br> <em>string</em></td>
+<td><code>&#39;default&#39;</code></td>
+<td>account to use for transaction</td>
+</tr>
+<tr>
+<td>blocks <br> <em>int</em></td>
+<td><code>1</code> (fullnode)</td>
+<td>number of blocks to use for fee estimation. Used for automatic estimation.</td>
+</tr>
+<tr>
+<td>depth <br> <em>int</em></td>
+<td>Optional</td>
+<td>number of confirmation for coins to spend</td>
+</tr>
+<tr>
+<td>hardFee <br> <em>int</em></td>
+<td>Optional</td>
+<td>Specify fixed fee instead of dynamically calculating it</td>
+</tr>
+<tr>
+<td>locktime <br> <em>int</em></td>
+<td>Optional</td>
+<td>Locktime for the transaction.</td>
+</tr>
+<tr>
+<td>maxFee <br> <em>int</em></td>
+<td>Optional</td>
+<td>maximum fee you&#39;re willing to pay</td>
+</tr>
+<tr>
+<td>passphrase <br> <em>string</em></td>
+<td><code>&#39;&#39;</code></td>
+<td>passphrase to unlock the account</td>
+</tr>
+<tr>
+<td>paths <br> <em>bool</em></td>
+<td><code>false</code></td>
+<td>If set, owned outputs will contain derivation paths.</td>
+</tr>
+<tr>
+<td>rate <br> <em>int</em></td>
+<td>auto</td>
+<td>the rate for transaction fees. Denominated in subunits per kb. Will use automatic estimation by default.</td>
+</tr>
+<tr>
+<td>selection <br> <em>enum</em> - <code>all</code>, <code>random</code>, <code>age</code>, <code>value</code></td>
+<td><code>&#39;value&#39;</code></td>
+<td>How to select coins</td>
+</tr>
+<tr>
+<td>smart <br> <em>bool</em></td>
+<td><code>false</code></td>
+<td>If set, will spend unconfirmed change outputs (only from transactions sent from this wallet).</td>
+</tr>
+<tr>
+<td>subtractFee <br> <em>bool</em></td>
+<td><code>false</code></td>
+<td>whether to subtract fee from outputs (evenly)</td>
+</tr>
+<tr>
+<td>subtractIndex <br> <em>int</em></td>
+<td><code>null</code></td>
+<td>subtract only from specified output index</td>
+</tr>
+</tbody></table>
+<h4 id='outputs-object'>Outputs object</h4>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>address <br> <em>string</em></td>
+<td>Required</td>
+<td>destination address for transaction</td>
+</tr>
+<tr>
+<td>value <br> <em>int</em> (or <em>float</em>)</td>
+<td>Required</td>
+<td>Value to send in subunits (or whole HNS, see warning above)</td>
+</tr>
+<tr>
+<td>covenant <br> <em>object</em></td>
+<td>NONE</td>
+<td>Covenant object</td>
+</tr>
+</tbody></table>
+<h3 id='post-parameters-create-only'>POST Parameters - Create only</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>sign <br> <em>bool</em></td>
+<td>true</td>
+<td>Whether to sign transaction.</td>
+</tr>
+</tbody></table>
 <h2 id='send-a-transaction'>Send a transaction</h2>
 <aside class="warning">
 This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
@@ -7912,236 +8186,10 @@ curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/send <s
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Create, sign, and send a transaction.</p>
-<h3 id='http-request-6'>HTTP Request</h3>
-<p><code>POST /wallet/:id/send</code></p>
-<h3 id='post-paramaters'>Post Paramaters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>outputs <br> <em>array</em></td>
-<td>An array of outputs to send for the transaction</td>
-</tr>
-<tr>
-<td>account <br> <em>string</em></td>
-<td>account to use for transaction</td>
-</tr>
-<tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the account</td>
-</tr>
-<tr>
-<td>smart <br> <em>bool</em></td>
-<td>If set, will spend unconfirmed change outputs (only from transactions sent from this wallet).</td>
-</tr>
-<tr>
-<td>blocks <br> <em>int</em></td>
-<td>number of blocks to use for fee estimation.</td>
-</tr>
-<tr>
-<td>rate <br> <em>int</em></td>
-<td>the rate for transaction fees. Denominated in subunits per kb</td>
-</tr>
-<tr>
-<td>maxFee <br> <em>int</em></td>
-<td>maximum fee you&#39;re willing to pay</td>
-</tr>
-<tr>
-<td>subtractFee <br> <em>bool</em></td>
-<td>whether to subtract fee from outputs (evenly)</td>
-</tr>
-<tr>
-<td>subtractIndex <br> <em>int</em></td>
-<td>subtract only from specified output index</td>
-</tr>
-<tr>
-<td>selection <br> <em>enum</em> - <code>all</code>, <code>random</code>, <code>age</code>, <code>value</code></td>
-<td>How to select coins</td>
-</tr>
-<tr>
-<td>depth <br> <em>int</em></td>
-<td>number of confirmation for coins to spend</td>
-</tr>
-<tr>
-<td>value <br> <em>int</em> (or <em>float</em>)</td>
-<td>Value to send in subunits (or whole HNS, see warning above)</td>
-</tr>
-<tr>
-<td>address <br> <em>string</em></td>
-<td>destination address for transaction</td>
-</tr>
-</tbody></table>
-<h2 id='create-a-transaction'>Create a Transaction</h2>
-<aside class="warning">
-This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
-</aside>
-<div class="highlight"><pre class="highlight shell tab-shell--cli"><code><span class="nb">id</span><span class="o">=</span><span class="s2">"multisig1"</span>
-<span class="nv">passphrase</span><span class="o">=</span><span class="s2">"multisecret123"</span>
-<span class="nv">rate</span><span class="o">=</span>0.00000500
-<span class="nv">value</span><span class="o">=</span>0.05000000
-<span class="nv">address</span><span class="o">=</span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"</span>
-
-hsw-cli mktx <span class="nt">--id</span><span class="o">=</span><span class="nv">$id</span> <span class="nt">--value</span><span class="o">=</span><span class="nv">$value</span> <span class="nt">--address</span><span class="o">=</span><span class="nv">$address</span> <span class="nt">---passphrase</span><span class="o">=</span><span class="nv">$passphrase</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code><span class="nb">id</span><span class="o">=</span><span class="s2">"multisig1"</span>
-<span class="nv">passphrase</span><span class="o">=</span><span class="s2">"multisecret123"</span>
-<span class="nv">rate</span><span class="o">=</span>500
-<span class="nv">value</span><span class="o">=</span>5000000
-<span class="nv">address</span><span class="o">=</span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap
-
-curl http://x:api-key@127.0.0.1:14039/wallet/</span><span class="nv">$id</span><span class="s2">/create </span><span class="se">\</span><span class="s2">
-  -X POST </span><span class="se">\</span><span class="s2">
-  --data '{
-    "</span>passphrase<span class="s2">":"</span><span class="s1">'$passphrase'</span><span class="s2">",
-    "</span>rate<span class="s2">":'</span><span class="nv">$rate</span><span class="s2">',
-    "</span>outputs<span class="s2">":[
-      {"</span>address<span class="s2">":"</span><span class="s1">'$address'</span><span class="s2">", "</span>value<span class="s2">":'</span><span class="nv">$value</span><span class="s2">'}
-    ]
-  }'
-</span></code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">passphrase</span><span class="p">,</span> <span class="nx">rate</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">address</span><span class="p">;</span>
-<span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">multisig1</span><span class="dl">"</span>
-<span class="nx">passphrase</span><span class="o">=</span><span class="dl">"</span><span class="s2">multisecret123</span><span class="dl">"</span>
-<span class="nx">rate</span><span class="o">=</span><span class="mi">500</span>
-<span class="nx">value</span><span class="o">=</span><span class="mi">5000000</span>
-<span class="nx">address</span><span class="o">=</span><span class="dl">"</span><span class="s2">rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap</span><span class="dl">"</span>
-
-<span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
-  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
-<span class="p">}</span>
-
-<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-
-<span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">passphrase</span><span class="p">:</span> <span class="nx">passphrase</span><span class="p">,</span>
-  <span class="na">rate</span><span class="p">:</span> <span class="nx">rate</span><span class="p">,</span>
-  <span class="na">outputs</span><span class="p">:</span> <span class="p">[{</span> <span class="na">value</span><span class="p">:</span> <span class="nx">value</span><span class="p">,</span> <span class="na">address</span><span class="p">:</span> <span class="nx">address</span> <span class="p">}]</span>
-<span class="p">};</span>
-
-<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">createTX</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-<span class="p">})();</span>
-</code></pre></div>
-<blockquote>
-<p>Sample response:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ce2b8ea52f54f2d170ce0e32b4dfb5f6553e7aad065413a570ce9d683ab14abc"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"witnessHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"980923fa0e9fa634e2c0bbc4d34a6303c7967b65173c2a36fe0b458f40bd070d"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">2800</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"rate"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"mtime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1528470021</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="s2">"b25cb7e4d1269410d1bd625aaea3b23a3c6397549d708e3970e6dd9b40ce87bc579b6bf216b328bf58e5397a7480967d909e14e95bc7a5a3044e5994e460224301"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"03d2a6f3eea124947217d0b0e56d81dc665df1fc08c4585269d706ec960cecb28f"</span><span class="w">
-      </span><span class="p">],</span><span class="w">
-      </span><span class="nl">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">4294967295</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"coin"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">399997200</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q5rjhy20r2hmcxjpc8zv70xkck05pecdew6a798"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-        </span><span class="nl">"coinbase"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">],</span><span class="w">
-  </span><span class="nl">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">5000000</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">394994400</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q4s4lnf94su2padkt3wsgv9xenlyh8qygyl9j0x"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">],</span><span class="w">
-  </span><span class="nl">"locktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000001580d7de114490f623fe6cc395540be80495e6cb5b0f5a176df89325465d789b9010000000241b25cb7e4d1269410d1bd625aaea3b23a3c6397549d708e3970e6dd9b40ce87bc579b6bf216b328bf58e5397a7480967d909e14e95bc7a5a3044e5994e4602243012103d2a6f3eea124947217d0b0e56d81dc665df1fc08c4585269d706ec960cecb28fffffffff02404b4c00000000000014f0d9374a2ce80c377187f4bc6c68993c561cb1360000e0228b17000000000014ac2bf9a4b587141eb6cb8ba08614d99fc9738088000000000000"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>Create and template a transaction (useful for multisig).
-Does not broadcast or add to wallet.</p>
 <h3 id='http-request-7'>HTTP Request</h3>
-<p><code>POST /wallet/:id/create</code></p>
-<h3 id='post-parameters'>Post Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>outputs <br> <em>array</em></td>
-<td>An array of outputs to send for the transaction</td>
-</tr>
-<tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the account</td>
-</tr>
-<tr>
-<td>smart <br> <em>bool</em></td>
-<td>If set, will spend unconfirmed change outputs (only from transactions sent from this wallet).</td>
-</tr>
-<tr>
-<td>rate <br> <em>int</em></td>
-<td>the rate for transaction fees. Denominated in subunits per kb</td>
-</tr>
-<tr>
-<td>maxFee <br> <em>int</em></td>
-<td>maximum fee you&#39;re willing to pay</td>
-</tr>
-<tr>
-<td>subtractFee <br> <em>bool</em></td>
-<td>whether to subtract fee from outputs (evenly)</td>
-</tr>
-<tr>
-<td>subtractIndex <br> <em>int</em></td>
-<td>subtract only from specified output index</td>
-</tr>
-<tr>
-<td>selection <br> <em>enum</em> - <code>all</code>, <code>random</code>, <code>age</code>, <code>value</code></td>
-<td>How to select coins</td>
-</tr>
-<tr>
-<td>depth <br> <em>int</em></td>
-<td>number of confirmation for coins to spend</td>
-</tr>
-<tr>
-<td>value <br> <em>int</em> (or <em>float</em>)</td>
-<td>Value to send in subunits (or whole HNS, see warning above)</td>
-</tr>
-<tr>
-<td>address <br> <em>string</em></td>
-<td>destination address for transaction</td>
-</tr>
-</tbody></table>
+<p><code>POST /wallet/:id/send</code></p>
+<h3 id='post-paramaters'>POST Paramaters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the parameter list.</p>
 <h2 id='sign-transaction'>Sign Transaction</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">tx</span><span class="p">,</span> <span class="nx">passphrase</span><span class="p">;</span>
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s2">"multisig2"</span>
 <span class="nv">passphrase</span><span class="o">=</span><span class="s2">"multisecret456"</span>
@@ -8228,7 +8276,7 @@ Does not broadcast or add to wallet.</p>
 <p>Sign a templated transaction (useful for multisig).</p>
 <h3 id='http-request-8'>HTTP Request</h3>
 <p><code>POST /wallet/:id/sign</code></p>
-<h3 id='post-parameters-2'>Post Parameters</h3>
+<h3 id='post-parameters'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8295,7 +8343,7 @@ curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/zap <sp
 <p>Remove all pending transactions older than a specified age.</p>
 <h3 id='http-request-9'>HTTP Request</h3>
 <p><code>POST /wallet/:id/zap?age=3600</code></p>
-<h3 id='post-parameters-3'>Post Parameters</h3>
+<h3 id='post-parameters-2'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Paramaters</th>
@@ -8346,7 +8394,7 @@ curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/zap <sp
 <p>Derive the AES key from passphrase and hold it in memory for a specified number of seconds. Note: During this time, account creation and signing of transactions will not require a passphrase.</p>
 <h3 id='http-request-10'>HTTP Request</h3>
 <p><code>POST /wallet/:id/unlock</code></p>
-<h3 id='body-parameters-2'>Body Parameters</h3>
+<h3 id='body-parameters'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8451,7 +8499,7 @@ Note that imported keys do not exist anywhere in the wallet's HD tree. They can 
 </aside>
 <h3 id='http-request-12'>HTTP Request</h3>
 <p><code>POST /wallet/:id/import</code></p>
-<h3 id='body-parameters-3'>Body Parameters</h3>
+<h3 id='body-parameters-2'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8513,7 +8561,7 @@ Note that imported keys do not exist anywhere in the wallet's HD tree. They can 
 <p>The HTTP endpoint is the same as for key imports.</p>
 <h3 id='http-request-13'>HTTP Request</h3>
 <p><code>POST /wallet/:id/import</code></p>
-<h3 id='body-parameters-4'>Body Parameters</h3>
+<h3 id='body-parameters-3'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8666,7 +8714,7 @@ Note that since it must be a multisig, the wallet on creation should be set with
 <code>false</code> if key already added, but will still return <code>success: true</code> with status <code>200</code>.</p>
 <h3 id='http-request-16'>HTTP Request</h3>
 <p><code>PUT /wallet/:id/shared-key</code></p>
-<h3 id='body-parameters-5'>Body Parameters</h3>
+<h3 id='body-parameters-4'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8727,7 +8775,7 @@ Once a multisig wallet has the right number of keys to create m-of-n addresses, 
 </aside>
 <h3 id='http-request-17'>HTTP Request</h3>
 <p><code>DEL /wallet/:id/shared-key</code></p>
-<h3 id='body-parameters-6'>Body Parameters</h3>
+<h3 id='body-parameters-5'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8889,7 +8937,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 </aside>
 <h3 id='http-request-20'>HTTP Request</h3>
 <p><code>POST /wallet/:id/address</code></p>
-<h3 id='post-parameters-4'>Post Parameters</h3>
+<h3 id='post-parameters-3'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8943,7 +8991,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 </aside>
 <h3 id='http-request-21'>HTTP Request</h3>
 <p><code>POST /wallet/:id/change</code></p>
-<h3 id='post-parameters-5'>Post Parameters</h3>
+<h3 id='post-parameters-4'>Post Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -9119,7 +9167,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 <td>index of the output in the transaction being referenced</td>
 </tr>
 </tbody></table>
-<h3 id='body-parameters-7'>Body Parameters</h3>
+<h3 id='body-parameters-6'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -9184,7 +9232,7 @@ Note that, except for the CLI which assumes 'default' account, an account must b
 <td>index of the output in the transaction being referenced</td>
 </tr>
 </tbody></table>
-<h3 id='body-parameters-8'>Body Parameters</h3>
+<h3 id='body-parameters-7'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -9345,7 +9393,19 @@ add <code>?token=</code> to all admin requests.</p>
 </span></code></pre></div>
 <p>Initiates a blockchain rescan for the walletdb. Wallets will be rolled back to the specified height (transactions above this height will be unconfirmed).</p>
 <h3 id='example-http-request'>Example HTTP Request</h3>
-<p><code>POST /rescan?height=50</code></p>
+<p><code>POST /rescan</code></p>
+<h3 id='post-parameters-json'>POST Parameters (JSON)</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>height</td>
+<td>Block height to reset to and rescan from</td>
+</tr>
+</tbody></table>
 <h2 id='wallet-resend'>Wallet Resend</h2><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/resend <span class="se">\</span>
 <span class="nt">-X</span> POST
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-cli resend
@@ -9725,7 +9785,7 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <p>Create account with specified account name.</p>
 <h3 id='http-request-3'>HTTP Request</h3>
 <p><code>PUT /wallet/:id/account/:name</code></p>
-<h3 id='options-object'>Options object</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -9733,24 +9793,144 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 </tr>
 </thead><tbody>
 <tr>
-<td>name <br> <em>string</em></td>
-<td>name to give the account. Option can be <code>account</code> or <code>name</code></td>
+<td>id <br> <em>string</em></td>
+<td>Wallet ID</td>
 </tr>
 <tr>
+<td>name <br> <em>string</em></td>
+<td>Name to give the account. Option can be <code>account</code> or <code>name</code></td>
+</tr>
+</tbody></table>
+<h3 id='put-options-json'>PUT Options (JSON)</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
 <td>accountKey <br> <em>string</em></td>
-<td>the extended public key for the account. This is ignored for non watch only wallets. Watch only accounts can&#39;t accept private keys for import (or sign transactions)</td>
+<td>Optional</td>
+<td>The extended public key for the account. This is ignored for non watch only wallets. Watch only accounts can&#39;t accept private keys for import (or sign transactions)</td>
 </tr>
 <tr>
 <td>type <br> <em>string</em></td>
-<td>what type of wallet to make it (&#39;multisig&#39;, &#39;pubkeyhash&#39;)</td>
+<td>pubkeyhash</td>
+<td>What type of wallet to make it (&#39;multisig&#39;, &#39;pubkeyhash&#39;)</td>
 </tr>
 <tr>
 <td>m <br> <em>int</em></td>
-<td>for multisig accounts, what to make <code>m</code> in m-of-n</td>
+<td>1</td>
+<td>For multisig accounts, what to make <code>m</code> in m-of-n</td>
 </tr>
 <tr>
 <td>n <br> <em>int</em></td>
-<td>for multisig accounts, what to make the <code>n</code> in m-of-n</td>
+<td>1</td>
+<td>For multisig accounts, what to make the <code>n</code> in m-of-n</td>
+</tr>
+<tr>
+<td>watchOnly <br> <em>bool</em></td>
+<td>false</td>
+<td>Whether the account is watch only</td>
+</tr>
+<tr>
+<td>lookahead <br> <em>int</em></td>
+<td>200</td>
+<td>Lookahead of the account</td>
+</tr>
+<tr>
+<td>passphrase <br> <em>string</em></td>
+<td>Optional</td>
+<td>Passphrase of the wallet</td>
+</tr>
+</tbody></table>
+<h2 id='modify-wallet-account'>Modify wallet account</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">lookahead</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primry'</span>
+<span class="nv">name</span><span class="o">=</span><span class="s1">'default'</span>
+<span class="nv">lookahead</span><span class="o">=</span>1000
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-cli <span class="nt">--id</span><span class="o">=</span><span class="nv">$id</span> account modify <span class="nv">$name</span> <span class="nt">--lookahead</span><span class="o">=</span><span class="nv">$lookahead</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/account/<span class="nv">$name</span> <span class="se">\</span>
+    <span class="nt">-X</span> PATCH <span class="se">\</span>
+    <span class="nt">--data</span> <span class="s1">'{"lookahead": $lookahead}'</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span> <span class="na">lookahead</span><span class="p">:</span> <span class="nx">lookahead</span> <span class="p">};</span>
+
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">modifyAccount</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre></div>
+<blockquote>
+<p>Sample response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"initialized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"watchOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pubkeyhash"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"accountIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"receiveDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">1205</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"changeDepth"</span><span class="p">:</span><span class="w"> </span><span class="mi">1207</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"lookahead"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"receiveAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qgu0rd30wmehjhn6ench4v3p7339qss3myzt2l2"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"changeAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q8u9x033v0yme6l80ujtd9ely52h285le6wyqsq"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"accountKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpubKBB4qSM8zgRQyYbvycbwFe224HAnVSbT27HDp7T74aYfKTjMj5Xk3ciDA1A2nJ3KCotMBhuWXZ47HZMwF1bcBysksWUds982wyxvsb6ViS8T"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="nl">"balance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">135</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"coin"</span><span class="p">:</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"unconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">260000000000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"confirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">260000000000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lockedUnconfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lockedConfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Modify existing account.</p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>PATCH /wallet/:id/account/:name</code></p>
+
+<table><thead>
+<tr>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id <br> <em>string</em></td>
+<td>id of wallet you would like to modify</td>
+</tr>
+<tr>
+<td>name <br> <em>string</em></td>
+<td>Name of the account</td>
+</tr>
+</tbody></table>
+<h3 id='patch-options-json'>PATCH options (JSON)</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>lookahead <br> <em>int</em></td>
+<td>Optional</td>
+<td>New lookahead for the account.</td>
 </tr>
 </tbody></table>
 <h1 id='wallet-transactions'>Wallet - Transactions</h1><h2 id='get-wallet-tx-details'>Get Wallet TX Details</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">hash</span>
@@ -9883,10 +10063,13 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <td>hash of transaction you would like to remove.</td>
 </tr>
 </tbody></table>
-<h2 id='get-wallet-tx-history'>Get Wallet TX History</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">;</span>
+<h2 id='get-wallet-tx-history'>Get Wallet TX History</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">time</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">;</span>
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-cli <span class="nt">--id</span><span class="o">=</span><span class="nv">$id</span> <span class="nb">history</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/tx/history
+<span class="nv">limit</span><span class="o">=</span>5
+<span class="nb">time</span><span class="o">=</span>1736413154
+<span class="nv">reverse</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-cli <span class="nt">--id</span><span class="o">=</span><span class="nv">$id</span> <span class="nb">history</span> <span class="nt">--limit</span><span class="o">=</span><span class="nv">$limit</span> <span class="nt">--time</span><span class="o">=</span><span class="nv">$time</span> <span class="nt">--reverse</span><span class="o">=</span><span class="nv">$reverse</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/tx/history?limit<span class="o">=</span><span class="nv">$limit</span>&amp;time<span class="o">=</span><span class="nv">$time</span>&amp;reverse<span class="o">=</span><span class="nv">$reverse</span>
 </code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
@@ -9901,7 +10084,12 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <span class="kd">const</span> <span class="nx">account</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">default</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getHistory</span><span class="p">(</span><span class="nx">account</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">limit</span><span class="p">,</span>
+    <span class="nx">time</span><span class="p">,</span>
+    <span class="nx">reverse</span>
+  <span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getHistory</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre></div>
@@ -9969,10 +10157,10 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
  </span><span class="err">...</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre></div>
-<p>Get wallet TX history. Returns array of tx details.</p>
+<p>Get wallet transaction history chronologically (oldest to newest, unless reversed), including both confirmed and pending transactions. Returns an array of transaction details.</p>
 <h3 id='http-request-3'>HTTP Request</h3>
 <p><code>GET /wallet/:id/tx/history</code></p>
-<h3 id='request-parameters-2'>Request Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -9981,13 +10169,58 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>id of wallet to get history of</td>
+<td>Wallet ID</td>
 </tr>
 </tbody></table>
-<h2 id='get-pending-transactions'>Get Pending Transactions</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">;</span>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>account <br> <em>string</em></td>
+<td>Optional</td>
+<td>Account name to filter transactions. All TXs by default.</td>
+</tr>
+<tr>
+<td>after <br> <em>hex</em></td>
+<td>Optional</td>
+<td>List transactions after this tx hash (priority 1)</td>
+</tr>
+<tr>
+<td>time <br> <em>int</em></td>
+<td>Optional</td>
+<td>List transactions after this timestamp in epoch seconds (priority 2)</td>
+</tr>
+<tr>
+<td>limit <br> <em>int</em></td>
+<td><code>maxTXs</code>*</td>
+<td>Maximum number of transactions to return</td>
+</tr>
+<tr>
+<td>reverse <br> <em>bool</em></td>
+<td><code>false</code></td>
+<td>TX Ordering, whether it should reverse the chronological order (oldest to newest)</td>
+</tr>
+</tbody></table>
+
+<p>Notes:</p>
+
+<ul>
+<li>When using <code>time</code>, the timestamp is indexed based on median-time-past (MTP).</li>
+<li>*<code>maxTXs</code> refers to wallet <code>maxHistoryTXs</code> configuration.</li>
+<li><code>limit</code> can not exceed <code>maxHistoryTXs</code> configuration.</li>
+</ul>
+<h2 id='get-pending-transactions'>Get Pending Transactions</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">after</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">;</span>
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-cli <span class="nt">--id</span><span class="o">=</span><span class="nv">$id</span> pending
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/tx/unconfirmed
+<span class="nv">limit</span><span class="o">=</span>5
+<span class="nv">reverse</span><span class="o">=</span><span class="nb">true
+</span><span class="nv">after</span><span class="o">=</span><span class="s1">'6cfd18f4e5810cc4285964df3cda75b8249d336e3544c2db9b30f066d349d0cc'</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-cli <span class="nt">--id</span><span class="o">=</span><span class="nv">$id</span> pending <span class="nt">--limit</span><span class="o">=</span><span class="nv">$limit</span> <span class="nt">--after</span><span class="o">=</span><span class="nv">$after</span> <span class="nt">--reverse</span><span class="o">=</span><span class="nv">$reverse</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/tx/unconfirmed?limit<span class="o">=</span><span class="nv">$limit</span>&amp;after<span class="o">=</span><span class="nv">$after</span>&amp;reverse<span class="o">=</span><span class="nv">$reverse</span>
 </code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
@@ -10001,46 +10234,12 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <span class="kd">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 
 <span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getPending</span><span class="p">();</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-<span class="p">})();</span>
-</code></pre></div>
-<p>Get pending wallet transactions. Returns array of tx details.</p>
-<h3 id='http-request-4'>HTTP Request</h3>
-<p><code>GET /wallet/:id/tx/unconfirmed</code></p>
-<h3 id='request-parameters-3'>Request Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id <br> <em>string</em></td>
-<td>id of wallet to get pending/unconfirmed txs</td>
-</tr>
-</tbody></table>
-<h2 id='get-range-of-transactions'>Get Range of Transactions</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">account</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">;</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s2">"primary"</span>
-<span class="nv">account</span><span class="o">=</span><span class="s2">"default"</span>
-<span class="nv">start</span><span class="o">=</span><span class="s2">"1527184612"</span>
-<span class="nv">end</span><span class="o">=</span><span class="s2">"1527186612"</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code><span class="c"># range not available in CLI</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/tx/range?start<span class="o">=</span><span class="nv">$start</span><span class="s1">'&amp;'</span><span class="nv">end</span><span class="o">=</span><span class="nv">$end</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
-  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
-<span class="p">}</span>
-
-<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-
-<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getRange</span><span class="p">(</span><span class="nx">account</span><span class="p">,</span> <span class="p">{</span><span class="na">start</span><span class="p">:</span> <span class="nx">start</span><span class="p">,</span> <span class="na">end</span><span class="p">:</span> <span class="nx">end</span><span class="p">});</span>
+  <span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">limit</span><span class="p">,</span>
+    <span class="nx">reverse</span><span class="p">,</span>
+    <span class="nx">after</span>
+  <span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getPending</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre></div>
@@ -10049,73 +10248,61 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bc0f93bb233fdf42a25a086ffb744fcb4f64afe6f5d4243da8e3745835fd57b3"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"57dd1e1b306de8da08d38b68b77e239bffe6d6b0b32bd734cf72684c21a03068"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
     </span><span class="nl">"block"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
     </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"mtime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1528468930</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"mtime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736411031</span><span class="p">,</span><span class="w">
     </span><span class="nl">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1970-01-01T00:00:00Z"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"mdate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-06-08T14:42:10Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"mdate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-01-09T08:23:51Z"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">215</span><span class="p">,</span><span class="w">
     </span><span class="nl">"virtualSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">140</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">2800</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"rate"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"rate"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
     </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
     </span><span class="nl">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
       </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">500002800</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q7qumafugfglg268djelwr7ps4l2uh2vsdpfnuc"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"change"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"derivation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m/0'/0/0"</span><span class="w">
-        </span><span class="p">}</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qannv3v0wacekpsfk9ysa2p7mnepd86c63543sh"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
       </span><span class="p">}</span><span class="w">
     </span><span class="p">],</span><span class="w">
     </span><span class="nl">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
       </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000000</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q7rvnwj3vaqxrwuv87j7xc6ye83tpevfkvhzsap"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">9000000</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qgjpc0kpty45za0dwdf4jgqmw9e3yjtej3gvadw"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
           </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NONE"</span><span class="p">,</span><span class="w">
           </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
           </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
           </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
           </span><span class="nl">"change"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"derivation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m/0'/0/1"</span><span class="w">
+          </span><span class="nl">"derivation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m/0'/0/2"</span><span class="w">
         </span><span class="p">}</span><span class="w">
       </span><span class="p">},</span><span class="w">
       </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">400000000</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q2x2suqr44gjn2plm3f99v2ae6ead3rpat9qtzg"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1990997200</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qpaf5s2qyl8pyu0upgpq95m68kfp7gnflgcscsr"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"covenant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
           </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NONE"</span><span class="p">,</span><span class="w">
           </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
         </span><span class="p">},</span><span class="w">
-        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"change"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"derivation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m/0'/1/4"</span><span class="w">
-        </span><span class="p">}</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
       </span><span class="p">}</span><span class="w">
     </span><span class="p">],</span><span class="w">
-    </span><span class="nl">"tx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000001758758e600061e62b92831cb40163011e07bd42cac34467f7d34f57c4a921e35000000000241825ebb96f395c02d3cdce7f88594dab343347879dd96af29320bf020f2c5677d4ab7ef79349007d562a4cdafb54d8e1cbd538275deef1b78eb945155315ae648012102deb957b2e4ebb246e1ecb27a4dc7d142504e70a420adb3cf40f9fb5d3928fdf9ffffffff0200e1f505000000000014f0d9374a2ce80c377187f4bc6c68993c561cb13600000084d71700000000001451950e0075aa253507fb8a4a562bb9d67ad88c3d000000000000"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
+    </span><span class="nl">"tx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00000000013e298505af6b7176afedcaa25528e0b118f263a7e0fff2318eb62800dc07497400000000ffffffff0240548900000000000014448387d82b25682ebdae6a6b24036e2e62492f320000d034ac760000000000140f53482804f9c24e3f8140405a6f47b243e44d3f000000000000024156129fcf21f7de6a7e4b62569b050495e1168c7a69f5e8db6dc37c41d216e3ed27842585b94fa353108981671068989a0b742225f3c93bfc4838352a165fefce0121027a7e5e2e8a0447e7e76d27247af1a7c2b2c19fbd3dc77512a8ee96dc3612c453"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
   </span><span class="err">...</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre></div>
-<p>Get range of wallet transactions by timestamp. Returns array of tx details.</p>
+<p>Get pending (unconfirmed) wallet transactions chronologically (oldest to newest, unless reversed). Returns an array of transaction details.</p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>GET /wallet/:id/tx/unconfirmed</code></p>
 
-<aside class="notice">
-Note that there are other options documented that `getRange` accepts in the options body, `limit` and `reverse`. At the time of writing however they do not have any effect.
-</aside>
-<h3 id='http-request-5'>HTTP Request</h3>
-<p><code>GET /wallet/:id/tx/range</code></p>
-<h3 id='body-parameters'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -10123,28 +10310,56 @@ Note that there are other options documented that `getRange` accepts in the opti
 </tr>
 </thead><tbody>
 <tr>
-<td>account <br><em>string</em></td>
-<td>account to get the tx history from</td>
+<td>id <br> <em>string</em></td>
+<td>Wallet ID</td>
+</tr>
+</tbody></table>
+<h3 id='query-parameters-2'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>account <br> <em>string</em></td>
+<td>None</td>
+<td>Account name to filter transactions</td>
 </tr>
 <tr>
-<td>start <br> <em>int</em></td>
-<td>start time to get range from</td>
+<td>after <br> <em>string</em></td>
+<td>None</td>
+<td>List transactions after this transaction ID (Priority 1)</td>
 </tr>
 <tr>
-<td>end <br> <em>int</em></td>
-<td>end time to get range from</td>
+<td>time <br> <em>int</em></td>
+<td>None</td>
+<td>List transactions after this timestamp in epoch seconds (Priority 2)</td>
+</tr>
+<tr>
+<td>limit <br> <em>int</em></td>
+<td><code>maxTXs</code>*</td>
+<td>Maximum number of transactions to return</td>
+</tr>
+<tr>
+<td>reverse <br> <em>bool</em></td>
+<td><code>false</code></td>
+<td>TX Ordering, whether it should reverse the chronological order (oldest to newest)</td>
 </tr>
 </tbody></table>
 
-<!-- ##GET /wallet/:id/tx/last
+<p>Notes:</p>
 
-Get last N wallet transactions.
-
-### HTTP Request
-
-`GET /wallet/:id/tx/last` -->
-<h1 id='wallet-auctions'>Wallet - Auctions</h1><h2 id='get-wallet-names'>Get Wallet Names</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/name
+<ul>
+<li>For unconfirmed transactions, the <code>time</code> parameter is based on when the transaction was added to the wallet.</li>
+<li>*<code>maxTXs</code> refers to wallet <code>maxHistoryTXs</code> configuration</li>
+<li><code>limit</code> can not exceed <code>maxHistoryTXs</code> configuration</li>
+</ul>
+<h1 id='wallet-auctions'>Wallet - Auctions</h1><h2 id='get-wallet-names'>Get Wallet Names</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">own</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
+<span class="nv">own</span><span class="o">=</span><span class="nb">false</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039/wallet/<span class="nv">$id</span>/name?own<span class="o">=</span><span class="nv">$own</span>
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code><span class="o">&gt;</span> no CLI <span class="nb">command </span>available
 </code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
@@ -10159,7 +10374,11 @@ Get last N wallet transactions.
 <span class="kd">const</span> <span class="nx">wallet</span> <span class="o">=</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">wallet</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 
 <span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getNames</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">own</span><span class="p">:</span> <span class="nx">own</span>
+  <span class="p">};</span>
+
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">getNames</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre></div>
@@ -10202,13 +10421,27 @@ Get last N wallet transactions.
 
 <table><thead>
 <tr>
-<th>Parameters</th>
+<th>Parameter</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
+</tr>
+</tbody></table>
+<h3 id='get-parameters'>GET Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>own <br> <em>bool</em></td>
+<td><code>false</code></td>
+<td>List only owned names</td>
 </tr>
 </tbody></table>
 <h2 id='get-wallet-name'>Get Wallet Name</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
@@ -10343,6 +10576,7 @@ Get last N wallet transactions.
         </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
         </span><span class="nl">"lockup"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000000</span><span class="p">,</span><span class="w">
         </span><span class="nl">"blind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3d694cb7529caae741b6e70db09a0102c61813420b161cee65fb657e116d1f5b"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">110</span><span class="p">,</span><span class="w">
         </span><span class="nl">"own"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
       </span><span class="p">}</span><span class="w">
     </span><span class="p">],</span><span class="w">
@@ -10352,6 +10586,10 @@ Get last N wallet transactions.
         </span><span class="nl">"nameHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
           </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10f18571b6b7af1f256ebe74d5da06d792da91ceb7f3f93302c0d216e1f899b8"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"bidPrevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0702d5f7cf4afd626189c1f8362676a5e7b7edfa5110d256a57185f32a3d12e1"</span><span class="p">,</span><span class="w">
           </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
@@ -10368,13 +10606,13 @@ Get last N wallet transactions.
 
 <table><thead>
 <tr>
-<th>Parameters</th>
+<th>Parameter</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
 </tbody></table>
 <h2 id='get-wallet-auction-by-name'>Get Wallet Auction by Name</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
@@ -10438,6 +10676,7 @@ Get last N wallet transactions.
       </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
       </span><span class="nl">"lockup"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000000</span><span class="p">,</span><span class="w">
       </span><span class="nl">"blind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3d694cb7529caae741b6e70db09a0102c61813420b161cee65fb657e116d1f5b"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">110</span><span class="p">,</span><span class="w">
       </span><span class="nl">"own"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">],</span><span class="w">
@@ -10447,6 +10686,10 @@ Get last N wallet transactions.
       </span><span class="nl">"nameHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7550acc639a10fd7bb2e6e1d183f364127c3adfcb4d171d98b0319f973286324"</span><span class="p">,</span><span class="w">
       </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10f18571b6b7af1f256ebe74d5da06d792da91ceb7f3f93302c0d216e1f899b8"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"bidPrevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0702d5f7cf4afd626189c1f8362676a5e7b7edfa5110d256a57185f32a3d12e1"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
       </span><span class="p">},</span><span class="w">
       </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
@@ -10468,11 +10711,11 @@ Get last N wallet transactions.
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
 <tr>
 <td>name <br> <em>string</em></td>
-<td>name</td>
+<td>Name</td>
 </tr>
 </tbody></table>
 <h2 id='get-wallet-bids'>Get Wallet Bids</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
@@ -10512,6 +10755,7 @@ Get last N wallet transactions.
     </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
     </span><span class="nl">"lockup"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000000</span><span class="p">,</span><span class="w">
     </span><span class="nl">"blind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3d694cb7529caae741b6e70db09a0102c61813420b161cee65fb657e116d1f5b"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">110</span><span class="p">,</span><span class="w">
     </span><span class="nl">"own"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
@@ -10573,6 +10817,7 @@ Get last N wallet transactions.
     </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
     </span><span class="nl">"lockup"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000000</span><span class="p">,</span><span class="w">
     </span><span class="nl">"blind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3d694cb7529caae741b6e70db09a0102c61813420b161cee65fb657e116d1f5b"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">110</span><span class="p">,</span><span class="w">
     </span><span class="nl">"own"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
@@ -10584,6 +10829,7 @@ Get last N wallet transactions.
     </span><span class="p">},</span><span class="w">
     </span><span class="nl">"lockup"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000000</span><span class="p">,</span><span class="w">
     </span><span class="nl">"blind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"47e8cf3dacfe6aeb14187ebd52f25c55c6f63fd24fed666c676c8ada0b132c10"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">110</span><span class="p">,</span><span class="w">
     </span><span class="nl">"own"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
@@ -10645,6 +10891,10 @@ Get last N wallet transactions.
       </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6b90495db28d71bc96ad6211d87b78ab6a3b548b702a98f3149e41c3a0892140"</span><span class="p">,</span><span class="w">
       </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
     </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"bidPrevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0243800d6ac2631225ec94ce7a958ad95aa43433cab079dae17ef5d199e23ed9"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
     </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
     </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">221</span><span class="p">,</span><span class="w">
     </span><span class="nl">"own"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
@@ -10654,6 +10904,10 @@ Get last N wallet transactions.
     </span><span class="nl">"nameHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
       </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d8acd574cba75c32f5e671fad2adf7cc93854303be02212fe8628a727229d610"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"bidPrevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0702d5f7cf4afd626189c1f8362676a5e7b7edfa5110d256a57185f32a3d12e1"</span><span class="p">,</span><span class="w">
       </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000000</span><span class="p">,</span><span class="w">
@@ -10716,6 +10970,10 @@ Get last N wallet transactions.
       </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6b90495db28d71bc96ad6211d87b78ab6a3b548b702a98f3149e41c3a0892140"</span><span class="p">,</span><span class="w">
       </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
     </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"bidPrevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0702d5f7cf4afd626189c1f8362676a5e7b7edfa5110d256a57185f32a3d12e1"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
     </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span><span class="w">
     </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">221</span><span class="p">,</span><span class="w">
     </span><span class="nl">"own"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
@@ -10725,6 +10983,10 @@ Get last N wallet transactions.
     </span><span class="nl">"nameHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3aa2528576f96bd40fcff0bd6b60c44221d73c43b4e42d4b908ed20a93b8d1b6"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"prevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
       </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d8acd574cba75c32f5e671fad2adf7cc93854303be02212fe8628a727229d610"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"bidPrevout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0243800d6ac2631225ec94ce7a958ad95aa43433cab079dae17ef5d199e23ed9"</span><span class="p">,</span><span class="w">
       </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000000</span><span class="p">,</span><span class="w">
@@ -10919,7 +11181,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 <span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span><span class="nx">passphrase</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">broadcastBid</span><span class="p">,</span> <span class="nx">sign</span><span class="p">,</span> <span class="nx">bid</span><span class="p">,</span> <span class="nx">lockup</span><span class="p">};</span>
 
 <span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">createAuctionTxs</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">createAuctionTXs</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre></div>
@@ -11043,7 +11305,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 <p>Create BID and REVEAL transactions in advance. Optionally sign and broadcast the bid.</p>
 <h3 id='http-request-11'>HTTP Request</h3>
 <p><code>POST /wallet/:id/auction</code></p>
-<h3 id='post-parameters'>Post Parameters</h3>
+<h3 id='post-parameters'>POST Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11165,7 +11427,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 <p>Create, sign, and send a name OPEN.</p>
 <h3 id='http-request-12'>HTTP Request</h3>
 <p><code>POST /wallet/:id/open</code></p>
-<h3 id='post-parameters-2'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11174,22 +11436,32 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-2'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
+<td>Required</td>
 <td>name to OPEN</td>
 </tr>
 <tr>
 <td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to sign the transaction</td>
 </tr>
 <tr>
 <td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to broadcast the transaction (must sign if true)</td>
 </tr>
 </tbody></table>
@@ -11288,7 +11560,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 <p>Create, sign, and send a name BID.</p>
 <h3 id='http-request-13'>HTTP Request</h3>
 <p><code>POST /wallet/:id/bid</code></p>
-<h3 id='post-parameters-3'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11297,31 +11569,43 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-3'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
+<td>Required</td>
 <td>name to BID on</td>
 </tr>
 <tr>
-<td>sign <br> <em>bool</em></td>
-<td>whether to sign the transaction</td>
-</tr>
-<tr>
-<td>broadcast <br> <em>bool</em></td>
-<td>whether to broadcast the transaction (must sign if true)</td>
-</tr>
-<tr>
 <td>bid <br> <em>int</em></td>
+<td>Required</td>
 <td>value (in dollarydoos) to bid for name</td>
 </tr>
 <tr>
 <td>lockup <br> <em>int</em></td>
+<td>Required</td>
 <td>value (in dollarydoos) to actually send in the transaction,<br>blinding the actual bid value</td>
+</tr>
+<tr>
+<td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
+<td>whether to sign the transaction</td>
+</tr>
+<tr>
+<td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
+<td>whether to broadcast the transaction (must sign if true)</td>
 </tr>
 </tbody></table>
 <h2 id='send-reveal'>Send REVEAL</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
@@ -11429,7 +11713,7 @@ all bids will be revealed by this transaction. If no value is passed in for <cod
 all reveals for all names in the wallet will be sent.</p>
 <h3 id='http-request-14'>HTTP Request</h3>
 <p><code>POST /wallet/:id/reveal</code></p>
-<h3 id='post-parameters-4'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11438,22 +11722,32 @@ all reveals for all names in the wallet will be sent.</p>
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-4'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
+<td>Required</td>
 <td>name to REVEAL bids for (or <code>null</code> for all names)</td>
 </tr>
 <tr>
 <td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to sign the transaction</td>
 </tr>
 <tr>
 <td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to broadcast the transaction (must sign if true)</td>
 </tr>
 </tbody></table>
@@ -11572,7 +11866,7 @@ all losing bids will be redeemed by this transaction. If no value is passed in f
 all qualifying bids are redeemed.</p>
 <h3 id='http-request-15'>HTTP Request</h3>
 <p><code>POST /wallet/:id/redeem</code></p>
-<h3 id='post-parameters-5'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11581,22 +11875,32 @@ all qualifying bids are redeemed.</p>
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-5'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
+<td>Required</td>
 <td>name to REDEEM bids for (or <code>null</code> for all names)</td>
 </tr>
 <tr>
 <td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to sign the transaction</td>
 </tr>
 <tr>
 <td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to broadcast the transaction (must sign if true)</td>
 </tr>
 </tbody></table>
@@ -11711,7 +12015,7 @@ associated with a given name.</p>
 <aside>Note: Due to behavior of some shells like bash, if your TXT value contains spaces you may need to add additional quotes like this: <code>"'"$value"'"</code></aside>
 <h3 id='http-request-16'>HTTP Request</h3>
 <p><code>POST /wallet/:id/update</code></p>
-<h3 id='post-parameters-6'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11720,34 +12024,41 @@ associated with a given name.</p>
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-6'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
+<td>Required</td>
 <td>name to UPDATE</td>
 </tr>
 <tr>
+<td>data <br> <em>object</em></td>
+<td>Required</td>
+<td>JSON object containing an array of DNS records (see <a href="#resource-object">next section</a>)</td>
+</tr>
+<tr>
 <td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to sign the transaction</td>
 </tr>
 <tr>
 <td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to broadcast the transaction (must sign if true)</td>
 </tr>
-<tr>
-<td>data <br> <em>object</em></td>
-<td>JSON object containing an array of DNS records (see next section)</td>
-</tr>
 </tbody></table>
-<h2 id='resource-object'>Resource Object</h2>
-<p>The resource object must contain one property <code>records</code>, which is an array
-of record objects. Each record object must have a property <code>type</code> which defines the DNS
-record type. Depending on the type, the record object may have various additional properties.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>// Example of a valid resource object
+<h2 id='resource-object'>Resource Object</h2><div class="highlight"><pre class="highlight plaintext"><code>// Example of a valid resource object
 // containing examples of all available record types:
 
 {
@@ -11788,7 +12099,11 @@ record type. Depending on the type, the record object may have various additiona
     }
   ]
 }
-</code></pre></div><h2 id='send-renew'>Send RENEW</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
+</code></pre></div>
+<p>The resource object must contain one property <code>records</code>, which is an array
+of record objects. Each record object must have a property <code>type</code> which defines the DNS
+record type. Depending on the type, the record object may have various additional properties.</p>
+<h2 id='send-renew'>Send RENEW</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
 <span class="nv">name</span><span class="o">=</span><span class="s1">'bread'</span>
 <span class="nv">passphrase</span><span class="o">=</span><span class="s1">'secret123'</span>
 <span class="nv">broadcast</span><span class="o">=</span><span class="nb">true
@@ -11886,7 +12201,7 @@ record type. Depending on the type, the record object may have various additiona
 <p>Create, sign, and send a RENEW.</p>
 <h3 id='http-request-17'>HTTP Request</h3>
 <p><code>POST /wallet/:id/renew</code></p>
-<h3 id='post-parameters-7'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -11895,22 +12210,32 @@ record type. Depending on the type, the record object may have various additiona
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-7'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
+<td>Required</td>
 <td>name to RENEW</td>
 </tr>
 <tr>
 <td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to sign the transaction</td>
 </tr>
 <tr>
 <td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to broadcast the transaction (must sign if true)</td>
 </tr>
 </tbody></table>
@@ -12015,7 +12340,7 @@ record type. Depending on the type, the record object may have various additiona
 <p>Create, sign, and send a TRANSFER.</p>
 <h3 id='http-request-18'>HTTP Request</h3>
 <p><code>POST /wallet/:id/transfer</code></p>
-<h3 id='post-parameters-8'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -12024,27 +12349,38 @@ record type. Depending on the type, the record object may have various additiona
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-8'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
+<td>Required</td>
 <td>name to TRANSFER</td>
 </tr>
 <tr>
+<td>address <br> <em>string</em></td>
+<td>Required</td>
+<td>address to transfer name ownership to</td>
+</tr>
+<tr>
 <td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to sign the transaction</td>
 </tr>
 <tr>
 <td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to broadcast the transaction (must sign if true)</td>
-</tr>
-<tr>
-<td>address <br> <em>string</em></td>
-<td>address to transfer name ownership to</td>
 </tr>
 </tbody></table>
 <h2 id='cancel-transfer'>Cancel TRANSFER</h2><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nb">id</span><span class="o">=</span><span class="s1">'primary'</span>
@@ -12149,7 +12485,7 @@ UPDATE covenant (with an empty resource object) in order to cancel a transfer
 already in progress.</p>
 <h3 id='http-request-19'>HTTP Request</h3>
 <p><code>POST /wallet/:id/cancel</code></p>
-<h3 id='post-parameters-9'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -12158,22 +12494,32 @@ already in progress.</p>
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-9'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
-<td>name in transferred state to cancel transfer for</td>
+<td>Required</td>
+<td>Name in transferred state to cancel transfer for</td>
 </tr>
 <tr>
 <td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to sign the transaction</td>
 </tr>
 <tr>
 <td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to broadcast the transaction (must sign if true)</td>
 </tr>
 </tbody></table>
@@ -12279,7 +12625,7 @@ already in progress.</p>
 <p>Create, sign, and send a FINALIZE.</p>
 <h3 id='http-request-20'>HTTP Request</h3>
 <p><code>POST /wallet/:id/finalize</code></p>
-<h3 id='post-parameters-10'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -12288,22 +12634,32 @@ already in progress.</p>
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-10'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
+<td>Required</td>
 <td>name in transferred state to finalize transfer for</td>
 </tr>
 <tr>
 <td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to sign the transaction</td>
 </tr>
 <tr>
 <td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to broadcast the transaction (must sign if true)</td>
 </tr>
 </tbody></table>
@@ -12409,7 +12765,7 @@ that not only cancels the transfer, but burns the name preventing any further
 updates or transfers. The name can be reopened with a new auction after a set time.</p>
 <h3 id='http-request-21'>HTTP Request</h3>
 <p><code>POST /wallet/:id/revoke</code></p>
-<h3 id='post-parameters-11'>Post Parameters</h3>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -12418,22 +12774,32 @@ updates or transfers. The name can be reopened with a new auction after a set ti
 </thead><tbody>
 <tr>
 <td>id <br> <em>string</em></td>
-<td>wallet id</td>
+<td>Wallet ID</td>
 </tr>
+</tbody></table>
+<h3 id='post-parameters-11'>POST Parameters</h3>
+<p>See <a href="#create-a-transaction">Create a transaction</a> for the more options.</p>
+
+<table><thead>
 <tr>
-<td>passphrase <br> <em>string</em></td>
-<td>passphrase to unlock the wallet</td>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
+</thead><tbody>
 <tr>
 <td>name <br> <em>string</em></td>
-<td>name in transferred state to revoke transfer for</td>
+<td>Required</td>
+<td>Name in transferred state to revoke transfer for</td>
 </tr>
 <tr>
 <td>sign <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to sign the transaction</td>
 </tr>
 <tr>
 <td>broadcast <br> <em>bool</em></td>
+<td><code>true</code></td>
 <td>whether to broadcast the transaction (must sign if true)</td>
 </tr>
 </tbody></table>
@@ -13810,17 +14176,12 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 <tr>
 <td>name</td>
 <td>Required</td>
-<td>name to open bidding on</td>
-</tr>
-<tr>
-<td>force <em>(bool)</em></td>
-<td>Optional</td>
-<td><em>currently ignored but required if additional parameters are passed</em></td>
+<td>Name to open bidding on</td>
 </tr>
 <tr>
 <td>account</td>
 <td>Optional</td>
-<td>account to use</td>
+<td>Account to use</td>
 </tr>
 </tbody></table>
 <h2 id='createbid'>createbid</h2>

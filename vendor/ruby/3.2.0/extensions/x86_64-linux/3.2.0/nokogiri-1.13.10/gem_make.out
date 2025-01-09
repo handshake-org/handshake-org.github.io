@@ -68,7 +68,8 @@ Running 'install' for libxslt 1.1.37... OK
 Activating libxslt 1.1.37 (from /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ports/x86_64-linux/libxslt/1.1.37)...
 checking for whether -DNOKOGIRI_PACKAGED_LIBRARIES is accepted as CPPFLAGS... yes
 checking for whether -DNOKOGIRI_LIBXML2_PATCHES="\"0001-Remove-script-macro-support.patch 0002-Update-entities-to-remove-handling-of-ssi.patch 0003-libxml2.la-is-in-top_builddir.patch 0005-avoid-isnan-isinf.patch 0009-allow-wildcard-namespaces.patch\"" is accepted as CPPFLAGS... yes
-checking for -llzma... yes
+checking for -llzma... no
+checking for -lliblzma... no
 checking for whether -DNOKOGIRI_LIBXSLT_PATCHES="\"0001-update-automake-files-for-arm64.patch\"" is accepted as CPPFLAGS... yes
 checking for xmlParseDoc() in libxml/parser.h... yes
 checking for xsltParseStylesheetDoc() in libxslt/xslt.h... yes
@@ -96,16 +97,16 @@ checking for whether -DNOKOGIRI_OTHER_LIBRARY_VERSIONS="\"libgumbo:1.0.0-nokogir
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri
-make DESTDIR\= sitearchdir\=./.gem.20230321-2030-fc5mr6 sitelibdir\=./.gem.20230321-2030-fc5mr6 clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3260-zdsyu1 sitelibdir\=./.gem.20250109-3260-zdsyu1 clean
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri
-make DESTDIR\= sitearchdir\=./.gem.20230321-2030-fc5mr6 sitelibdir\=./.gem.20230321-2030-fc5mr6
+make DESTDIR\= sitearchdir\=./.gem.20250109-3260-zdsyu1 sitelibdir\=./.gem.20250109-3260-zdsyu1
 compiling gumbo.c
 gumbo.c: In function ‘noko_init_gumbo’:
 gumbo.c:569:1: warning: old-style function definition [-Wold-style-definition]
   569 | noko_init_gumbo()
       | ^~~~~~~~~~~~~~~
-gumbo.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -114,7 +115,7 @@ html4_document.c: In function ‘noko_init_html_document’:
 html4_document.c:153:1: warning: old-style function definition [-Wold-style-definition]
   153 | noko_init_html_document()
       | ^~~~~~~~~~~~~~~~~~~~~~~
-html4_document.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -123,7 +124,7 @@ html4_element_description.c: In function ‘noko_init_html_element_description�
 html4_element_description.c:273:1: warning: old-style function definition [-Wold-style-definition]
   273 | noko_init_html_element_description()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-html4_element_description.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -132,7 +133,7 @@ html4_entity_lookup.c: In function ‘noko_init_html_entity_lookup’:
 html4_entity_lookup.c:32:1: warning: old-style function definition [-Wold-style-definition]
    32 | noko_init_html_entity_lookup()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-html4_entity_lookup.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -141,7 +142,7 @@ html4_sax_parser_context.c: In function ‘noko_init_html_sax_parser_context’:
 html4_sax_parser_context.c:109:1: warning: old-style function definition [-Wold-style-definition]
   109 | noko_init_html_sax_parser_context()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-html4_sax_parser_context.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -150,7 +151,7 @@ html4_sax_push_parser.c: In function ‘noko_init_html_sax_push_parser’:
 html4_sax_push_parser.c:88:1: warning: old-style function definition [-Wold-style-definition]
    88 | noko_init_html_sax_push_parser()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-html4_sax_push_parser.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -160,7 +161,7 @@ nokogiri.c: In function ‘Init_nokogiri’:
 nokogiri.c:155:1: warning: old-style function definition [-Wold-style-definition]
   155 | Init_nokogiri()
       | ^~~~~~~~~~~~~
-nokogiri.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -169,7 +170,7 @@ test_global_handlers.c: In function ‘noko_init_test_global_handlers’:
 test_global_handlers.c:35:1: warning: old-style function definition [-Wold-style-definition]
    35 | noko_init_test_global_handlers()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-test_global_handlers.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -178,7 +179,7 @@ xml_attr.c: In function ‘noko_init_xml_attr’:
 xml_attr.c:92:1: warning: old-style function definition [-Wold-style-definition]
    92 | noko_init_xml_attr()
       | ^~~~~~~~~~~~~~~~~~
-xml_attr.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -187,7 +188,7 @@ xml_attribute_decl.c: In function ‘noko_init_xml_attribute_decl’:
 xml_attribute_decl.c:62:1: warning: old-style function definition [-Wold-style-definition]
    62 | noko_init_xml_attribute_decl()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_attribute_decl.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -196,7 +197,7 @@ xml_cdata.c: In function ‘noko_init_xml_cdata’:
 xml_cdata.c:48:1: warning: old-style function definition [-Wold-style-definition]
    48 | noko_init_xml_cdata()
       | ^~~~~~~~~~~~~~~~~~~
-xml_cdata.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -205,7 +206,7 @@ xml_comment.c: In function ‘noko_init_xml_comment’:
 xml_comment.c:51:1: warning: old-style function definition [-Wold-style-definition]
    51 | noko_init_xml_comment()
       | ^~~~~~~~~~~~~~~~~~~~~
-xml_comment.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -214,7 +215,7 @@ xml_document.c: In function ‘noko_init_xml_document’:
 xml_document.c:662:1: warning: old-style function definition [-Wold-style-definition]
   662 | noko_init_xml_document()
       | ^~~~~~~~~~~~~~~~~~~~~~
-xml_document.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -223,7 +224,7 @@ xml_document_fragment.c: In function ‘noko_init_xml_document_fragment’:
 xml_document_fragment.c:35:1: warning: old-style function definition [-Wold-style-definition]
    35 | noko_init_xml_document_fragment()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_document_fragment.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -232,7 +233,7 @@ xml_dtd.c: In function ‘noko_init_xml_dtd’:
 xml_dtd.c:193:1: warning: old-style function definition [-Wold-style-definition]
   193 | noko_init_xml_dtd()
       | ^~~~~~~~~~~~~~~~~
-xml_dtd.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -241,7 +242,7 @@ xml_element_content.c: In function ‘noko_init_xml_element_content’:
 xml_element_content.c:115:1: warning: old-style function definition [-Wold-style-definition]
   115 | noko_init_xml_element_content()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_element_content.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -250,7 +251,7 @@ xml_element_decl.c: In function ‘noko_init_xml_element_decl’:
 xml_element_decl.c:59:1: warning: old-style function definition [-Wold-style-definition]
    59 | noko_init_xml_element_decl()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_element_decl.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -259,7 +260,7 @@ xml_encoding_handler.c: In function ‘noko_init_xml_encoding_handler’:
 xml_encoding_handler.c:92:1: warning: old-style function definition [-Wold-style-definition]
    92 | noko_init_xml_encoding_handler()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_encoding_handler.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -268,7 +269,7 @@ xml_entity_decl.c: In function ‘noko_init_xml_entity_decl’:
 xml_entity_decl.c:89:1: warning: old-style function definition [-Wold-style-definition]
    89 | noko_init_xml_entity_decl()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~
-xml_entity_decl.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -277,7 +278,7 @@ xml_entity_reference.c: In function ‘noko_init_xml_entity_reference’:
 xml_entity_reference.c:41:1: warning: old-style function definition [-Wold-style-definition]
    41 | noko_init_xml_entity_reference()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_entity_reference.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -286,7 +287,7 @@ xml_namespace.c: In function ‘noko_init_xml_namespace’:
 xml_namespace.c:148:1: warning: old-style function definition [-Wold-style-definition]
   148 | noko_init_xml_namespace()
       | ^~~~~~~~~~~~~~~~~~~~~~~
-xml_namespace.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -295,7 +296,7 @@ xml_node.c: In function ‘noko_init_xml_node’:
 xml_node.c:2102:1: warning: old-style function definition [-Wold-style-definition]
  2102 | noko_init_xml_node()
       | ^~~~~~~~~~~~~~~~~~
-xml_node.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -305,7 +306,7 @@ xml_processing_instruction.c: In function ‘noko_init_xml_processing_instructio
 xml_processing_instruction.c:44:1: warning: old-style function definition [-Wold-style-definition]
    44 | noko_init_xml_processing_instruction()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_processing_instruction.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -314,7 +315,7 @@ xml_reader.c: In function ‘noko_init_xml_reader’:
 xml_reader.c:735:1: warning: old-style function definition [-Wold-style-definition]
   735 | noko_init_xml_reader()
       | ^~~~~~~~~~~~~~~~~~~~
-xml_reader.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -323,7 +324,7 @@ xml_relax_ng.c: In function ‘noko_init_xml_relax_ng’:
 xml_relax_ng.c:176:1: warning: old-style function definition [-Wold-style-definition]
   176 | noko_init_xml_relax_ng()
       | ^~~~~~~~~~~~~~~~~~~~~~
-xml_relax_ng.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -332,7 +333,7 @@ xml_sax_parser.c: In function ‘noko_init_xml_sax_parser’:
 xml_sax_parser.c:291:1: warning: old-style function definition [-Wold-style-definition]
   291 | noko_init_xml_sax_parser()
       | ^~~~~~~~~~~~~~~~~~~~~~~~
-xml_sax_parser.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -341,7 +342,7 @@ xml_sax_parser_context.c: In function ‘noko_init_xml_sax_parser_context’:
 xml_sax_parser_context.c:269:1: warning: old-style function definition [-Wold-style-definition]
   269 | noko_init_xml_sax_parser_context()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_sax_parser_context.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -350,7 +351,7 @@ xml_sax_push_parser.c: In function ‘noko_init_xml_sax_push_parser’:
 xml_sax_push_parser.c:155:1: warning: old-style function definition [-Wold-style-definition]
   155 | noko_init_xml_sax_push_parser()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_sax_push_parser.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -359,7 +360,7 @@ xml_schema.c: In function ‘noko_init_xml_schema’:
 xml_schema.c:273:1: warning: old-style function definition [-Wold-style-definition]
   273 | noko_init_xml_schema()
       | ^~~~~~~~~~~~~~~~~~~~
-xml_schema.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -368,7 +369,7 @@ xml_syntax_error.c: In function ‘noko_init_xml_syntax_error’:
 xml_syntax_error.c:78:1: warning: old-style function definition [-Wold-style-definition]
    78 | noko_init_xml_syntax_error()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~
-xml_syntax_error.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -377,7 +378,7 @@ xml_text.c: In function ‘noko_init_xml_text’:
 xml_text.c:39:1: warning: old-style function definition [-Wold-style-definition]
    39 | noko_init_xml_text()
       | ^~~~~~~~~~~~~~~~~~
-xml_text.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -387,7 +388,7 @@ xslt_stylesheet.c: In function ‘noko_init_xslt_stylesheet’:
 xslt_stylesheet.c:350:1: warning: old-style function definition [-Wold-style-definition]
   350 | noko_init_xslt_stylesheet()
       | ^~~~~~~~~~~~~~~~~~~~~~~~~
-xslt_stylesheet.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -395,9 +396,9 @@ linking shared-object nokogiri/nokogiri.so
 Cleaning files only used during build.
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri
-make DESTDIR\= sitearchdir\=./.gem.20230321-2030-fc5mr6 sitelibdir\=./.gem.20230321-2030-fc5mr6 install
-/usr/bin/install -c -m 0755 nokogiri.so ./.gem.20230321-2030-fc5mr6/nokogiri
+make DESTDIR\= sitearchdir\=./.gem.20250109-3260-zdsyu1 sitelibdir\=./.gem.20250109-3260-zdsyu1 install
+/usr/bin/install -c -m 0755 nokogiri.so ./.gem.20250109-3260-zdsyu1/nokogiri
 installing nokogiri libraries
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri
-make DESTDIR\= sitearchdir\=./.gem.20230321-2030-fc5mr6 sitelibdir\=./.gem.20230321-2030-fc5mr6 clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3260-zdsyu1 sitelibdir\=./.gem.20250109-3260-zdsyu1 clean

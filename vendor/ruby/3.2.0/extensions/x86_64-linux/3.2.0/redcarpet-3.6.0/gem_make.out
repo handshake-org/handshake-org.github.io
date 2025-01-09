@@ -3,10 +3,10 @@ current directory: /home/runner/work/handshake-org.github.io/handshake-org.githu
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20230321-2030-cvxatk sitelibdir\=./.gem.20230321-2030-cvxatk clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3260-k6xvlp sitelibdir\=./.gem.20250109-3260-k6xvlp clean
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20230321-2030-cvxatk sitelibdir\=./.gem.20230321-2030-cvxatk
+make DESTDIR\= sitearchdir\=./.gem.20250109-3260-k6xvlp sitelibdir\=./.gem.20250109-3260-k6xvlp
 compiling autolink.c
 compiling buffer.c
 buffer.c: In function ‘bufcstr’:
@@ -16,7 +16,7 @@ buffer.c:111:52: warning: passing argument 1 of ‘bufgrow’ discards ‘const�
 buffer.c:60:21: note: expected ‘struct buf *’ but argument is of type ‘const struct buf *’
    60 | bufgrow(struct buf *buf, size_t neosz)
       |         ~~~~~~~~~~~~^~~
-buffer.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -51,7 +51,7 @@ In file included from html_smartypants.c:26:
 /usr/include/string.h:159:51: note: expected ‘const char *’ but argument is of type ‘const uint8_t *’ {aka ‘const unsigned char *’}
   159 | extern int strncmp (const char *__s1, const char *__s2, size_t __n)
       |                                       ~~~~~~~~~~~~^~~~
-html_smartypants.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -82,7 +82,7 @@ rc_markdown.c: In function ‘Init_redcarpet’:
 rc_markdown.c:174:6: warning: old-style function definition [-Wold-style-definition]
   174 | void Init_redcarpet()
       |      ^~~~~~~~~~~~~~
-rc_markdown.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -95,7 +95,7 @@ rc_render.c: In function ‘Init_redcarpet_rndr’:
 rc_render.c:571:6: warning: old-style function definition [-Wold-style-definition]
   571 | void Init_redcarpet_rndr()
       |      ^~~~~~~~~~~~~~~~~~~
-rc_render.c: At top level:
+At top level:
 cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
 cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
@@ -103,8 +103,8 @@ compiling stack.c
 linking shared-object redcarpet.so
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20230321-2030-cvxatk sitelibdir\=./.gem.20230321-2030-cvxatk install
-/usr/bin/install -c -m 0755 redcarpet.so ./.gem.20230321-2030-cvxatk
+make DESTDIR\= sitearchdir\=./.gem.20250109-3260-k6xvlp sitelibdir\=./.gem.20250109-3260-k6xvlp install
+/usr/bin/install -c -m 0755 redcarpet.so ./.gem.20250109-3260-k6xvlp
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/redcarpet-3.6.0/ext/redcarpet
-make DESTDIR\= sitearchdir\=./.gem.20230321-2030-cvxatk sitelibdir\=./.gem.20230321-2030-cvxatk clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3260-k6xvlp sitelibdir\=./.gem.20250109-3260-k6xvlp clean
