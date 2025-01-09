@@ -46,3 +46,16 @@
 .toc-wrapper .toc-link.active {
   background-color: #5659dc;
 }
+
+.highlight {
+  float: right;
+  clear: right;
+  width: 50%;
+  margin-left: 5%;
+}
+
+.highlight > pre {
+  float: left;
+  width: 100%;
+  text-wrap: auto;
+}

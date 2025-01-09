@@ -90,8 +90,8 @@ List all account names (array indices map directly to bip44 account indices) ass
 `GET /wallet/:id/account`
 
 
-Parameters | Description
----------- | -----------
+Parameters       | Description
+---------------- | -----------
 id <br> _string_ | id of wallet you would like to retrieve the account list for
 
 <aside class="notice">
@@ -170,9 +170,9 @@ Get account info.
 
 `GET /wallet/:id/account/:account`
 
-Parameters | Description
----------- | -----------
-id <br> _string_ | id of wallet you would like to query
+Parameters            | Description
+--------------------- | -----------
+id <br> _string_      | id of wallet you would like to query
 account <br> _string_ | id of account you would to retrieve information for
 
 ## Create new wallet account
@@ -253,11 +253,109 @@ Create account with specified account name.
 
 `PUT /wallet/:id/account/:name`
 
-### Options object
-Parameter | Description
---------- | -----------------
-name <br> _string_ | name to give the account. Option can be `account` or `name`
-accountKey <br> _string_ | the extended public key for the account. This is ignored for non watch only wallets. Watch only accounts can't accept private keys for import (or sign transactions)
-type <br> _string_ | what type of wallet to make it ('multisig', 'pubkeyhash')
-m <br> _int_ | for multisig accounts, what to make `m` in m-of-n
-n <br> _int_ | for multisig accounts, what to make the `n` in m-of-n
+Parameter                | Description
+------------------------ | -----------------
+id <br> _string_         | Wallet ID
+name <br> _string_       | Name to give the account. Option can be `account` or `name`
+
+### PUT Options (JSON)
+
+Parameter                | Default    | Description
+------------------------ | --------   | -----------------
+accountKey <br> _string_ | Optional   | The extended public key for the account. This is ignored for non watch only wallets. Watch only accounts can't accept private keys for import (or sign transactions)
+type <br> _string_       | pubkeyhash | What type of wallet to make it ('multisig', 'pubkeyhash')
+m <br> _int_             | 1          | For multisig accounts, what to make `m` in m-of-n
+n <br> _int_             | 1          | For multisig accounts, what to make the `n` in m-of-n
+watchOnly <br> _bool_    | false      | Whether the account is watch only
+lookahead <br> _int_     | 200        | Lookahead of the account
+passphrase <br> _string_ | Optional   | Passphrase of the wallet
+
+## Modify wallet account
+
+```javascript
+let id, name, lookahead;
+```
+
+```shell--vars
+id='primry'
+name='default'
+lookahead=1000
+```
+
+```shell--cli
+hsw-cli --id=$id account modify $name --lookahead=$lookahead
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14039/wallet/$id/account/$name \
+    -X PATCH \
+    --data '{"lookahead": $lookahead}'
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+const wallet = walletClient.wallet(id);
+const options = { lookahead: lookahead };
+
+(async () => {
+  const result = await wallet.modifyAccount(name, options);
+  console.log(result);
+})();
+```
+
+> Sample response:
+
+```json
+{
+  "name": "default",
+  "initialized": true,
+  "watchOnly": false,
+  "type": "pubkeyhash",
+  "m": 1,
+  "n": 1,
+  "accountIndex": 0,
+  "receiveDepth": 1205,
+  "changeDepth": 1207,
+  "lookahead": 1000,
+  "receiveAddress": "rs1qgu0rd30wmehjhn6ench4v3p7339qss3myzt2l2",
+  "changeAddress": "rs1q8u9x033v0yme6l80ujtd9ely52h285le6wyqsq",
+  "accountKey": "rpubKBB4qSM8zgRQyYbvycbwFe224HAnVSbT27HDp7T74aYfKTjMj5Xk3ciDA1A2nJ3KCotMBhuWXZ47HZMwF1bcBysksWUds982wyxvsb6ViS8T",
+  "keys": [],
+  "balance": {
+    "account": 0,
+    "tx": 135,
+    "coin": 128,
+    "unconfirmed": 260000000000,
+    "confirmed": 260000000000,
+    "lockedUnconfirmed": 0,
+    "lockedConfirmed": 0
+  }
+}
+```
+
+Modify existing account.
+
+
+### HTTP Request
+
+`PATCH /wallet/:id/account/:name`
+
+Parameters         | Description
+------------------ | -----------
+id <br> _string_   | id of wallet you would like to modify
+name <br> _string_ | Name of the account
+
+### PATCH options (JSON)
+
+Parameter                 | Default  | Description
+-------------------- | -------  | -----------
+lookahead <br> _int_ | Optional | New lookahead for the account.

@@ -61,7 +61,12 @@ const walletClient = new WalletClient(walletOptions);
 Initiates a blockchain rescan for the walletdb. Wallets will be rolled back to the specified height (transactions above this height will be unconfirmed).
 
 ### Example HTTP Request
-`POST /rescan?height=50`
+`POST /rescan`
+
+### POST Parameters (JSON)
+Parameter | Description
+--------- | -----------
+height    | Block height to reset to and rescan from
 
 ## Wallet Resend
 ```shell--curl
@@ -232,8 +237,8 @@ right away!
 
 `GET /wallet/:id/master`
 
-Parameters | Description
----------- | -----------
+Parameters       | Description
+---------------- | -----------
 id <br> _string_ | wallet id
 
 ## List all Wallets

@@ -1424,11 +1424,10 @@ const client = new WalletClient(clientOptions);
 Creates `OPEN` transaction without signing or broadcasting it.
 
 ### Params
-Name | Default |  Description
+Name      | Default   | Description
 --------- | --------- | ---------
-name | Required | name to open bidding on
-force *(bool)* | Optional | _currently ignored but required if additional parameters are passed_
-account| Optional | account to use
+name      | Required  | Name to open bidding on
+account   | Optional  | Account to use
 
 
 
@@ -2341,10 +2340,10 @@ Create `REVOKE` transaction without signing or broadcasting it.
 
 
 ### Params
-Name | Default |  Description
+Name      | Default   | Description
 --------- | --------- | ---------
-name | Required | name to revoke the in-progress transfer of
-account | Optional | account to use
+name      | Required  | name to revoke the in-progress transfer of
+account   | Optional  | account to use
 
 ## importname
 
@@ -2396,7 +2395,7 @@ Once the auction is rescanned, [`rpc getbids`](#getbids) can be used to return
 all current BIDs on a name, even if the wallet has not placed any BIDs itself.
 
 ### Params
-Name | Default |  Description
+Name      | Default   | Description
 --------- | --------- | ---------
-name | Required | name to import
-height | Optional | if present, perform a wallet rescan from specified height
+name      | Required  | name to import
+height    | Optional  | if present, perform a wallet rescan from specified height
