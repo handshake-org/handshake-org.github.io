@@ -97,10 +97,10 @@ checking for whether -DNOKOGIRI_OTHER_LIBRARY_VERSIONS="\"libgumbo:1.0.0-nokogir
 creating Makefile
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri
-make DESTDIR\= sitearchdir\=./.gem.20250109-3260-zdsyu1 sitelibdir\=./.gem.20250109-3260-zdsyu1 clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3279-2n9f7g sitelibdir\=./.gem.20250109-3279-2n9f7g clean
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri
-make DESTDIR\= sitearchdir\=./.gem.20250109-3260-zdsyu1 sitelibdir\=./.gem.20250109-3260-zdsyu1
+make DESTDIR\= sitearchdir\=./.gem.20250109-3279-2n9f7g sitelibdir\=./.gem.20250109-3279-2n9f7g
 compiling gumbo.c
 gumbo.c: In function ‘noko_init_gumbo’:
 gumbo.c:569:1: warning: old-style function definition [-Wold-style-definition]
@@ -396,9 +396,9 @@ linking shared-object nokogiri/nokogiri.so
 Cleaning files only used during build.
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri
-make DESTDIR\= sitearchdir\=./.gem.20250109-3260-zdsyu1 sitelibdir\=./.gem.20250109-3260-zdsyu1 install
-/usr/bin/install -c -m 0755 nokogiri.so ./.gem.20250109-3260-zdsyu1/nokogiri
+make DESTDIR\= sitearchdir\=./.gem.20250109-3279-2n9f7g sitelibdir\=./.gem.20250109-3279-2n9f7g install
+/usr/bin/install -c -m 0755 nokogiri.so ./.gem.20250109-3279-2n9f7g/nokogiri
 installing nokogiri libraries
 
 current directory: /home/runner/work/handshake-org.github.io/handshake-org.github.io/build/vendor/ruby/3.2.0/gems/nokogiri-1.13.10/ext/nokogiri
-make DESTDIR\= sitearchdir\=./.gem.20250109-3260-zdsyu1 sitelibdir\=./.gem.20250109-3260-zdsyu1 clean
+make DESTDIR\= sitearchdir\=./.gem.20250109-3279-2n9f7g sitelibdir\=./.gem.20250109-3279-2n9f7g clean
