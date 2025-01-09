@@ -1293,15 +1293,20 @@ name | Required | name to revoke the in-progress transfer of
 
 ## sendbatch
 
-```shell--vars
-batch='[["TRANSFER","probability", "hs1qafnywhh4s3rpf60cfs22j20j7k6pmpzngknskm"],["OPEN","possibility"]]'
-```
-
 ```shell--cli
+batch='[["TRANSFER", "probability", "rs1qsjl5c967nw3hcsfl65p67kv6zr35qmq8jgrv3x"], ["OPEN", "possibility"]]'
+
 hsw-rpc sendbatch $batch
 ```
 
 ```javascript
+let batch;
+
+batch = [
+  ["TRANSFER", "probability", "rs1qsjl5c967nw3hcsfl65p67kv6zr35qmq8jgrv3x"],
+  ["OPEN", "possibility"]
+];
+
 const {WalletClient} = require('hs-client');
 const {Network} = require('hsd');
 const network = Network.get('regtest');
@@ -1323,52 +1328,67 @@ const client = new WalletClient(clientOptions);
 
 ```json
 {
-  "hash": "fb7761c46161c736853f56d1be41e76ff8f004b7a4b5f096b880221544ee99f8",
-  "witnessHash": "2fc85765999cd443f660b8af1c44e86d755ad706f8cb9f21632eaebc165ec9c0",
-  "mtime": 1538011729,
+  "hash": "37a1e2a12ac27458f68666880893d8aa1e2a44754067e05ff90e001ada02300e",
+  "witnessHash": "03aab8ad186179b2cd3dec911f9a13f2bc66673b94612d94015ebdf2b99436fb",
+  "mtime": 1736421443,
   "version": 0,
   "inputs": [
     {
       "prevout": {
-        "hash": "c7fc96fa1b865a6139286b29626edf00ff286cb242c5fc65b3a78e0db1613a04",
+        "hash": "11be5660810c3feb46d592fad6a4c4aa11a51f125e077fedde1a55d966e3531e",
         "index": 0
       },
       "witness": [
-        "078cf39beab769eb3331b00c1d6c92f152883fcd3ee62f54c69db5b33dd2919d568e52f89ac1d3cd0cb88cba6e88b703a872d61d7a953886bb4b8dce4938e33e01",
-        "02896c8c128f86f155e61b74aced241304dd7f94feee6510d22f70e1d1b6e42fff"
+        "4f68995585028c1d09a807183a1adc35065c583053e1d9e2bf0467cd13b9294c6467610d083982ab76b7a6b3caa13c6798017f90458804c8414cf6cfdda68f1c01",
+        "02742d367750ec18d235e885d53b652fed8f6bad8311d0b47a2a48e3ed3bf92544"
       ],
       "sequence": 4294967295,
-      "address": "rs1qucar8syx0dt32nms6kh63y0xcgsa747jaexn40"
+      "address": "rs1qgn3vg5p7csa5f5a4war5t0fv0f6plkg2dzlh7k"
     },
     {
       "prevout": {
-        "hash": "5e0a26e6ba89dfafd7cd5436ddd5c26180f8619dd8dfebfe27459c4b4ac2093f",
+        "hash": "c78bce05f9dc83d90734a373924b685a1f8c9417289951016c223b690f4f12a3",
         "index": 0
       },
       "witness": [
-        "cf4ce38d371515c47bc51d28476adc288bcd06d39a1d1acf85bc6d39fd88799d578768e873263723e4012f181f071dcde145998107f1d37ad476b6c594cf7de401",
-        "03fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
+        "0cd1784f3c32d1b474a4a7d5f5065612faff401989d50f5bc1e41c92529a5564704627a155fe74d93430b2f46094ec780be05880996abef897045338671f34bc01",
+        "0354c965c77096a31fbdd2deb132b465b3c4789f1dd45a1857f7b457954e9df7d6"
       ],
       "sequence": 4294967295,
-      "address": "rs1qj6340u3vv0vqe0uyjjlnlvqaljv07nydvdz2jv"
+      "address": "rs1qvscqlrwy7dz0f8twec4e8gmtcz074lq8dwddat"
     }
   ],
   "outputs": [
     {
-      "value": 3000000,
-      "address": "rs1qucar8syx0dt32nms6kh63y0xcgsa747jaexn40",
+      "value": 0,
+      "address": "rs1qgn3vg5p7csa5f5a4war5t0fv0f6plkg2dzlh7k",
       "covenant": {
-        "type": 11,
-        "action": "REVOKE",
+        "type": 9,
+        "action": "TRANSFER",
         "items": [
-          "08141335637fff1366102f06f2f7d7ac306e5d85c6d8e0f979c765db6a9ec894",
-          "8b000000"
+          "7d3bb2c8a86dc01939586a5db6566e6fa60a24dccebae4dcdf9de27256ecfa54",
+          "65000000",
+          "00",
+          "84bf4c175e9ba37c413fd503af599a10e3406c07"
         ]
       }
     },
     {
-      "value": 1000000460,
-      "address": "rs1qk9qqak6mqp7lfd7dxpfdntdhsep7xj75ajracs",
+      "value": 0,
+      "address": "rs1qf0xarqn8e367hd0mqz792vemx27hda6at4cnhm",
+      "covenant": {
+        "type": 2,
+        "action": "OPEN",
+        "items": [
+          "01c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb",
+          "00000000",
+          "706f73736962696c697479"
+        ]
+      }
+    },
+    {
+      "value": 1999998560,
+      "address": "rs1qdqnwu4a05exl8q6gtfvctk4x57tnsefprkc9r0",
       "covenant": {
         "type": 0,
         "action": "NONE",
@@ -1377,36 +1397,36 @@ const client = new WalletClient(clientOptions);
     }
   ],
   "locktime": 0,
-  "hex": "0000000002c7fc96fa1b865a6139286b29626edf00ff286cb242c5fc65b3a78e0db1613a0400000000ffffffff5e0a26e6ba89dfafd7cd5436ddd5c26180f8619dd8dfebfe27459c4b4ac2093f00000000ffffffff02c0c62d00000000000014e63a33c0867b57154f70d5afa891e6c221df57d20b022008141335637fff1366102f06f2f7d7ac306e5d85c6d8e0f979c765db6a9ec894048b000000cccb9a3b000000000014b1400edb5b007df4b7cd3052d9adb78643e34bd40000000000000241078cf39beab769eb3331b00c1d6c92f152883fcd3ee62f54c69db5b33dd2919d568e52f89ac1d3cd0cb88cba6e88b703a872d61d7a953886bb4b8dce4938e33e012102896c8c128f86f155e61b74aced241304dd7f94feee6510d22f70e1d1b6e42fff0241cf4ce38d371515c47bc51d28476adc288bcd06d39a1d1acf85bc6d39fd88799d578768e873263723e4012f181f071dcde145998107f1d37ad476b6c594cf7de4012103fc902c7ebd0f4bb7437f86c41a3a88f0940a0566746159b581cd4684f725c7c0"
+  "hex": "000000000211be5660810c3feb46d592fad6a4c4aa11a51f125e077fedde1a55d966e3531e00000000ffffffffc78bce05f9dc83d90734a373924b685a1f8c9417289951016c223b690f4f12a300000000ffffffff030000000000000000001444e2c4503ec43b44d3b5774745bd2c7a741fd90a0904207d3bb2c8a86dc01939586a5db6566e6fa60a24dccebae4dcdf9de27256ecfa54046500000001001484bf4c175e9ba37c413fd503af599a10e3406c07000000000000000000144bcdd18267cc75ebb5fb00bc55333b32bd76f75d02032001c05e8ea3d1c347342ef11c50fe5a1f621c942f7f8f7e0ee329eb883f93f9eb04000000000b706f73736962696c697479608e35770000000000146826ee57afa64df383485a5985daa6a79738652100000000000002414f68995585028c1d09a807183a1adc35065c583053e1d9e2bf0467cd13b9294c6467610d083982ab76b7a6b3caa13c6798017f90458804c8414cf6cfdda68f1c012102742d367750ec18d235e885d53b652fed8f6bad8311d0b47a2a48e3ed3bf9254402410cd1784f3c32d1b474a4a7d5f5065612faff401989d50f5bc1e41c92529a5564704627a155fe74d93430b2f46094ec780be05880996abef897045338671f34bc01210354c965c77096a31fbdd2deb132b465b3c4789f1dd45a1857f7b457954e9df7d6"
 }
 ```
 
-Send a batch of any combination of the above transactions. The batch is an array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.  
-
-### Params
-Name | Default |  Description
---------- | --------- | ---------
-batch | Required | array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.
-
-### Batch Types
-Type | Params | Description
---------- | --------- | ---------
-NONE | [address, value] | Send a transaction with no covenant (used for sending HNS to an address)
-OPEN | [name] | Open a name for bidding
-BID | [name, bid, value] | Place a bid on a name
-REVEAL | [name] | Reveal a bid on a name
-REDEEM | [name] | Redeem bids on a name
-UPDATE | [name, data] | Update a name's data
-TRANSFER | [name, address] | Transfer a name to a new address
-FINALIZE | [name] | Finalize a name transfer
-CANCEL | [name] | Cancel a name transfer
-REVOKE | [name] | Revoke a name transfer
-
-## importnonce
 <aside class="warning">
 This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
 </aside>
 
+Send a batch of any combination of the above transactions. The batch is an array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.  
+
+### Params
+Name  | Default  | Description
+----- | -------- | ---------
+batch | Required | array of arrays, where each inner array is a transaction. The first element of each inner array is the transaction type, and the rest of the elements are the transaction parameters.
+
+### Batch Types
+Type     | Params             | Description
+-------- | ------------------ | -----------
+NONE     | [address, value]   | Send a transaction with no covenant (used for sending HNS to an address)
+OPEN     | [name]             | Open a name for bidding
+BID      | [name, bid, value] | Place a bid on a name
+REVEAL   | [name]             | Reveal a bid on a name
+REDEEM   | [name]             | Redeem bids on a name
+UPDATE   | [name, data]       | Update a name's data, See the [Resource Object section](#resource-object) for details on formatting the name resource data.
+TRANSFER | [name, address]    | Transfer a name to a new address
+FINALIZE | [name]             | Finalize a name transfer
+CANCEL   | [name]             | Cancel a name transfer
+REVOKE   | [name]             | Revoke a name transfer
+
+## importnonce
 ```shell--vars
 name='possibility'
 address='rs1qhrnda3ct3237e6hl0vyh4tz2e90wvaxnmdldfq'
@@ -1440,6 +1460,11 @@ const client = new WalletClient(clientOptions);
 ```
 064802bfe52159d6c744625b17b887834d26dcc04605190fb82e4b41862adf60
 ```
+
+<aside class="warning">
+This command involves entering HNS values, be careful with <a href="#values">different formats</a> of values for different APIs.
+</aside>
+
 
 Deterministically regenerate the nonce for a bid.
 
