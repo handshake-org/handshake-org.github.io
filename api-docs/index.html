@@ -1028,7 +1028,22 @@
                     <a href="#listsinceblock" class="toc-h2 toc-link" data-title="RPC Calls - Wallet">listsinceblock</a>
                   </li>
                   <li>
-                    <a href="#listtransactions" class="toc-h2 toc-link" data-title="RPC Calls - Wallet">listtransactions</a>
+                    <a href="#listhistory" class="toc-h2 toc-link" data-title="RPC Calls - Wallet">listhistory</a>
+                  </li>
+                  <li>
+                    <a href="#listhistoryafter" class="toc-h2 toc-link" data-title="RPC Calls - Wallet">listhistoryafter</a>
+                  </li>
+                  <li>
+                    <a href="#listhistorybytime" class="toc-h2 toc-link" data-title="RPC Calls - Wallet">listhistorybytime</a>
+                  </li>
+                  <li>
+                    <a href="#listunconfirmed" class="toc-h2 toc-link" data-title="RPC Calls - Wallet">listunconfirmed</a>
+                  </li>
+                  <li>
+                    <a href="#listunconfirmedafter" class="toc-h2 toc-link" data-title="RPC Calls - Wallet">listunconfirmedafter</a>
+                  </li>
+                  <li>
+                    <a href="#listunconfirmedbytime" class="toc-h2 toc-link" data-title="RPC Calls - Wallet">listunconfirmedbytime</a>
                   </li>
                   <li>
                     <a href="#listunspent" class="toc-h2 toc-link" data-title="RPC Calls - Wallet">listunspent</a>
@@ -10191,12 +10206,12 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <tr>
 <td>after <br> <em>hex</em></td>
 <td>Optional</td>
-<td>List transactions after this tx hash (priority 1)</td>
+<td>List transactions after this tx hash</td>
 </tr>
 <tr>
 <td>time <br> <em>int</em></td>
 <td>Optional</td>
-<td>List transactions after this timestamp in epoch seconds (priority 2)</td>
+<td>List transactions after this timestamp in epoch seconds, used if <code>after</code> is not specified.</td>
 </tr>
 <tr>
 <td>limit <br> <em>int</em></td>
@@ -10331,14 +10346,14 @@ Note that command defaults to primary (default) wallet if no wallet id is passed
 <td>Account name to filter transactions</td>
 </tr>
 <tr>
-<td>after <br> <em>string</em></td>
-<td>None</td>
-<td>List transactions after this transaction ID (Priority 1)</td>
+<td>after <br> <em>hex</em></td>
+<td>Optional</td>
+<td>List transactions after this tx hash</td>
 </tr>
 <tr>
 <td>time <br> <em>int</em></td>
-<td>None</td>
-<td>List transactions after this timestamp in epoch seconds (Priority 2)</td>
+<td>Optional</td>
+<td>List transactions after this timestamp in epoch seconds, used if <code>after</code> is not specified.</td>
 </tr>
 <tr>
 <td>limit <br> <em>int</em></td>
@@ -17158,15 +17173,17 @@ transactions if no block is specifiied.</p>
 <td>(bool) Whether to include watch-only addresses</td>
 </tr>
 </tbody></table>
-<h2 id='listtransactions'>listtransactions</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">account</span><span class="p">,</span> <span class="nx">count</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">watchOnly</span><span class="p">;</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">account</span><span class="o">=</span><span class="s1">'hot'</span>
+<h2 id='listhistory'>listhistory</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">account</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
+<span class="nv">limit</span><span class="o">=</span>10
+<span class="nv">reverse</span><span class="o">=</span><span class="nb">false</span>
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039 <span class="se">\</span>
   <span class="nt">-X</span> POST <span class="se">\</span>
   <span class="nt">--data</span> <span class="s1">'{
-    "method": "listtransactions",
-    "params": [ "'</span><span class="nv">$account</span><span class="s1">'" ]
+    "method": "listhistory",
+    "params": [ "'</span><span class="nv">$account</span><span class="s1">'", '</span><span class="nv">$limit</span><span class="s1">', '</span><span class="nv">$reverse</span><span class="s1">' ]
   }'</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listtransactions <span class="nv">$account</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listhistory <span class="nv">$account</span> <span class="nv">$limit</span> <span class="nv">$reverse</span>
 </code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
@@ -17179,7 +17196,7 @@ transactions if no block is specifiied.</p>
 <span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
 
 <span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="dl">'</span><span class="s1">listtransactions</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="nx">account</span><span class="p">]);</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="dl">'</span><span class="s1">listhistory</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="nx">account</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">})();</span>
 </code></pre></div>
@@ -17189,59 +17206,25 @@ transactions if no block is specifiied.</p>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
     </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q7w7qm0cjtsxnkkssjxs05ud4jyfgwsgrundcw6"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q7dlwsp4zpclyvc8683kn9w0k9ft0vegqqc9rhn"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"receive"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
     </span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"vout"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">1497</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blockhash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7295cec3fd81a2c2ddddf3faf6c000614b429ae0f8c1b2ef83ec937ac227d8e1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"vout"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockhash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5f686f1cbca95a8b99e42a610d18834392bd8b9eb5ba078917f4c6efeeb7fdb5"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"blockindex"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blocktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1580917307</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blockheight"</span><span class="p">:</span><span class="w"> </span><span class="mi">104</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"txid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"adb098a6b38e7c4b2dd0af454f0c9537a3ec735a0b84c3d20b6f241768be12f2"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blocktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736248964</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockheight"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"txid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cc7281e2a9db1c8af883a6d4dc9caddbf3819f577d5ae8c7f0d2d4fd03916389"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"walletconflicts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1580917307</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"timereceived"</span><span class="p">:</span><span class="w"> </span><span class="mi">1580917307</span><span class="w">
+    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736248939</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timereceived"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736248939</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q7w7qm0cjtsxnkkssjxs05ud4jyfgwsgrundcw6"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"receive"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"vout"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">1499</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blockhash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0e7cc9e0dff3d0b3322cec63dad7160fc68a4e7ec3e7a32b5aa84418dfdb7d7c"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blockindex"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blocktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1580917305</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blockheight"</span><span class="p">:</span><span class="w"> </span><span class="mi">102</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"txid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c256c4d550227f5ecd3d6f2af2e9d7005738f5b7b93c62f73746d68f067e9041"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"walletconflicts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1580917307</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"timereceived"</span><span class="p">:</span><span class="w"> </span><span class="mi">1580917307</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q7w7qm0cjtsxnkkssjxs05ud4jyfgwsgrundcw6"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"receive"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"vout"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">1492</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blockhash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"167fc99c384ee2ab6e2e3b0a32f4d0d979aaf99cc3b285fbf642f704a6a939c3"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blockindex"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blocktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1580917308</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"blockheight"</span><span class="p">:</span><span class="w"> </span><span class="mi">109</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"txid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cfef79516a5f0159ec95a49e5ec25295315dafcbbed408d2a13a0aec05005953"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"walletconflicts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1580917307</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"timereceived"</span><span class="p">:</span><span class="w"> </span><span class="mi">1580917307</span><span class="w">
-  </span><span class="p">}</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="err">more</span><span class="w"> </span><span class="err">transactions</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre></div>
-<p>Get all recent transactions for specified account up to a limit, starting from
-a specified index.</p>
+<p>Get transaction history for a specified account.</p>
 <h3 id='params-31'>Params</h3>
 <table><thead>
 <tr>
@@ -17254,28 +17237,494 @@ a specified index.</p>
 <tr>
 <td>1</td>
 <td>account</td>
-<td>Optional</td>
-<td>Account name</td>
+<td>Required</td>
+<td>Account name (<code>*</code> for all)</td>
 </tr>
 <tr>
 <td>2</td>
-<td>count</td>
-<td>Optional</td>
-<td>Max number of transactions to return</td>
+<td>limit</td>
+<td><code>maxTXs</code></td>
+<td>Maximum number of records to return</td>
 </tr>
 <tr>
 <td>3</td>
-<td>from</td>
-<td>Optional</td>
-<td>Number of oldest transactions to skip</td>
+<td>reverse</td>
+<td><code>false</code></td>
+<td>(bool) Reverse order of results</td>
+</tr>
+</tbody></table>
+
+<p>Notes:</p>
+
+<ul>
+<li><code>maxTXs</code> refers to wallet <code>maxHistoryTXs</code> configuration</li>
+<li><code>limit</code> can not exceed <code>maxHistoryTXs</code> configuration</li>
+</ul>
+<h2 id='listhistoryafter'>listhistoryafter</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">account</span><span class="p">,</span> <span class="nx">txid</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
+<span class="nv">txid</span><span class="o">=</span><span class="s1">'cc7281e2a9db1c8af883a6d4dc9caddbf3819f577d5ae8c7f0d2d4fd03916389'</span>
+<span class="nv">limit</span><span class="o">=</span>10
+<span class="nv">reverse</span><span class="o">=</span><span class="nb">false</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039 <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'{
+    "method": "listhistoryafter",
+    "params": [ "'</span><span class="nv">$account</span><span class="s1">'", "'</span><span class="nv">$txid</span><span class="s1">'", '</span><span class="nv">$limit</span><span class="s1">', '</span><span class="nv">$reverse</span><span class="s1">' ]
+  }'</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listhistoryafter <span class="nv">$account</span> <span class="nv">$txid</span> <span class="nv">$limit</span> <span class="nv">$reverse</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="dl">'</span><span class="s1">listhistoryafter</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="nx">account</span><span class="p">,</span> <span class="nx">txid</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON &quot;result&quot; like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1q3rth02c6p9c3qh24nera8dwsvu3m3aklkca8lp"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"receive"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"vout"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockhash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"398a08cb285dd56ff0b561c20303cd7cf91ed0a05effc0268c2f01d6dbc4cf7d"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockindex"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blocktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736249028</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockheight"</span><span class="p">:</span><span class="w"> </span><span class="mi">202</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"txid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"886f0174ee523d627470813b774a3cdd88b04e174d4bcaf447b02706d184203e"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"walletconflicts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736249025</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timereceived"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736249025</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="err">more</span><span class="w"> </span><span class="err">transactions</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p>Get transaction history for a specified account after a specific transaction.
+Useful for pagination of results.</p>
+<h3 id='params-32'>Params</h3>
+<table><thead>
+<tr>
+<th>N.</th>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>account</td>
+<td>Required</td>
+<td>Account name (<code>*</code> for all)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>txid</td>
+<td>Required</td>
+<td>Transaction Hash to start listing from</td>
+</tr>
+<tr>
+<td>3</td>
+<td>limit</td>
+<td><code>maxTXs</code></td>
+<td>Maximum number of records to return</td>
 </tr>
 <tr>
 <td>4</td>
-<td>watchOnly</td>
-<td>Optional</td>
-<td>Whether to include watch-only addresses</td>
+<td>reverse</td>
+<td><code>false</code></td>
+<td>(bool) Reverse order of results</td>
 </tr>
 </tbody></table>
+
+<p>Notes:</p>
+
+<ul>
+<li><code>maxTXs</code> refers to wallet <code>maxHistoryTXs</code> configuration</li>
+<li><code>limit</code> can not exceed <code>maxHistoryTXs</code> configuration</li>
+</ul>
+<h2 id='listhistorybytime'>listhistorybytime</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">account</span><span class="p">,</span> <span class="nx">timestamp</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
+<span class="nv">timestamp</span><span class="o">=</span>1580917307
+<span class="nv">limit</span><span class="o">=</span>10
+<span class="nv">reverse</span><span class="o">=</span><span class="nb">false</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039 <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'{
+    "method": "listhistorybytime",
+    "params": [ "'</span><span class="nv">$account</span><span class="s1">'", '</span><span class="nv">$timestamp</span><span class="s1">', '</span><span class="nv">$limit</span><span class="s1">', '</span><span class="nv">$reverse</span><span class="s1">' ]
+  }'</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listhistorybytime <span class="nv">$account</span> <span class="nv">$timestamp</span> <span class="nv">$limit</span> <span class="nv">$reverse</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="dl">'</span><span class="s1">listhistorybytime</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="nx">account</span><span class="p">,</span> <span class="nx">timestamp</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON &quot;result&quot; like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qndc6l5hqmsrmqvlyrxumnl4lv4gwcmepn5u8mg"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"receive"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"vout"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockhash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6e6fed0372484d88a9686999445e3f39352f45e5dc0188dbabf37e016908c1db"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockindex"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blocktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736249056</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockheight"</span><span class="p">:</span><span class="w"> </span><span class="mi">208</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"txid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0243800d6ac2631225ec94ce7a958ad95aa43433cab079dae17ef5d199e23ed9"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"walletconflicts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736249054</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timereceived"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736249054</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="err">more</span><span class="w"> </span><span class="err">transactions</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p>Get transaction history for a specified account starting from a specific timestamp.</p>
+<h3 id='params-33'>Params</h3>
+<table><thead>
+<tr>
+<th>N.</th>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>account</td>
+<td>Required</td>
+<td>Account name (<code>*</code> for all)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>timestamp</td>
+<td>Required</td>
+<td>Unix timestamp in seconds (block median time past)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>limit</td>
+<td><code>maxTXs</code></td>
+<td>Maximum number of records to return</td>
+</tr>
+<tr>
+<td>4</td>
+<td>reverse</td>
+<td><code>false</code></td>
+<td>(bool) Reverse order of results</td>
+</tr>
+</tbody></table>
+
+<p>Notes:</p>
+
+<ul>
+<li><code>maxTXs</code> refers to wallet <code>maxHistoryTXs</code> configuration</li>
+<li><code>limit</code> can not exceed <code>maxHistoryTXs</code> configuration</li>
+</ul>
+<h2 id='listunconfirmed'>listunconfirmed</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">account</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
+<span class="nv">limit</span><span class="o">=</span>10
+<span class="nv">reverse</span><span class="o">=</span><span class="nb">false</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039 <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'{
+    "method": "listunconfirmed",
+    "params": [ "'</span><span class="nv">$account</span><span class="s1">'", '</span><span class="nv">$limit</span><span class="s1">', '</span><span class="nv">$reverse</span><span class="s1">' ]
+  }'</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listunconfirmed <span class="nv">$account</span> <span class="nv">$limit</span> <span class="nv">$reverse</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="dl">'</span><span class="s1">listunconfirmed</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="nx">account</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON &quot;result&quot; like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qqt6rwnk7qysydpa25mdt6wv3xgyc8k0prz6r4h"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"receive"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"vout"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockhash"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockindex"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blocktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockheight"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"txid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6b617a350bb128a6f23d8fdcf0c5c61d68980b880f39275a52fc8f1d6b7a839f"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"walletconflicts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736508118</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timereceived"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736508118</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="err">more</span><span class="w"> </span><span class="err">transactions</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p>Get list of unconfirmed transactions for a specified account.</p>
+<h3 id='params-34'>Params</h3>
+<table><thead>
+<tr>
+<th>N.</th>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>account</td>
+<td>Required</td>
+<td>Account name (<code>*</code> for all)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>limit</td>
+<td><code>maxTXs</code></td>
+<td>Maximum number of records to return</td>
+</tr>
+<tr>
+<td>3</td>
+<td>reverse</td>
+<td><code>false</code></td>
+<td>(bool) Reverse order of results</td>
+</tr>
+</tbody></table>
+
+<p>Notes:</p>
+
+<ul>
+<li><code>maxTXs</code> refers to wallet <code>maxHistoryTXs</code> configuration</li>
+<li><code>limit</code> can not exceed <code>maxHistoryTXs</code> configuration</li>
+</ul>
+<h2 id='listunconfirmedafter'>listunconfirmedafter</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">account</span><span class="p">,</span> <span class="nx">txid</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
+<span class="nv">txid</span><span class="o">=</span><span class="s1">'6b617a350bb128a6f23d8fdcf0c5c61d68980b880f39275a52fc8f1d6b7a839f'</span>
+<span class="nv">limit</span><span class="o">=</span>10
+<span class="nv">reverse</span><span class="o">=</span><span class="nb">false</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039 <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'{
+    "method": "listunconfirmedafter",
+    "params": [ "'</span><span class="nv">$account</span><span class="s1">'", "'</span><span class="nv">$txid</span><span class="s1">'", '</span><span class="nv">$limit</span><span class="s1">', '</span><span class="nv">$reverse</span><span class="s1">' ]
+  }'</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listunconfirmedafter <span class="nv">$account</span> <span class="nv">$txid</span> <span class="nv">$limit</span> <span class="nv">$reverse</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="dl">'</span><span class="s1">listunconfirmedafter</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="nx">account</span><span class="p">,</span> <span class="nx">txid</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON &quot;result&quot; like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qqt6rwnk7qysydpa25mdt6wv3xgyc8k0prz6r4h"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"receive"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"vout"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockhash"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockindex"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blocktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockheight"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"txid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c60f0cf697b3161e8f94d496566de151626af0aa9d305c01d9f1b1865fcb1070"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"walletconflicts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736508121</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timereceived"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736508121</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="err">more</span><span class="w"> </span><span class="err">transactions</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p>Get list of unconfirmed transactions for a specified account after a specific transaction.
+Useful for pagination of results.</p>
+<h3 id='params-35'>Params</h3>
+<table><thead>
+<tr>
+<th>N.</th>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>account</td>
+<td>Required</td>
+<td>Account name (<code>*</code> for all)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>txid</td>
+<td>Required</td>
+<td>Transaction ID to start listing from</td>
+</tr>
+<tr>
+<td>3</td>
+<td>limit</td>
+<td><code>maxTXs</code></td>
+<td>Maximum number of records to return</td>
+</tr>
+<tr>
+<td>4</td>
+<td>reverse</td>
+<td><code>false</code></td>
+<td>(bool) Reverse order of results</td>
+</tr>
+</tbody></table>
+
+<p>Notes:</p>
+
+<ul>
+<li><code>maxTXs</code> refers to wallet <code>maxHistoryTXs</code> configuration</li>
+<li><code>limit</code> can not exceed <code>maxHistoryTXs</code> configuration</li>
+</ul>
+<h2 id='listunconfirmedbytime'>listunconfirmedbytime</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">account</span><span class="p">,</span> <span class="nx">timestamp</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">account</span><span class="o">=</span><span class="s1">'default'</span>
+<span class="nv">timestamp</span><span class="o">=</span>1736508121
+<span class="nv">limit</span><span class="o">=</span>10
+<span class="nv">reverse</span><span class="o">=</span><span class="nb">false</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--curl"><code>curl http://x:api-key@127.0.0.1:14039 <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'{
+    "method": "listunconfirmedbytime",
+    "params": [ "'</span><span class="nv">$account</span><span class="s1">'", '</span><span class="nv">$timestamp</span><span class="s1">', '</span><span class="nv">$limit</span><span class="s1">', '</span><span class="nv">$reverse</span><span class="s1">' ]
+  }'</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--cli"><code>hsw-rpc listunconfirmedbytime <span class="nv">$account</span> <span class="nv">$timestamp</span> <span class="nv">$limit</span> <span class="nv">$reverse</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span><span class="nx">WalletClient</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hs-client</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">{</span><span class="nx">Network</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsd</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">network</span> <span class="o">=</span> <span class="nx">Network</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">regtest</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">walletOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">port</span><span class="p">:</span> <span class="nx">network</span><span class="p">.</span><span class="nx">walletPort</span><span class="p">,</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">walletClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WalletClient</span><span class="p">(</span><span class="nx">walletOptions</span><span class="p">);</span>
+
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">walletClient</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="dl">'</span><span class="s1">listunconfirmedbytime</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="nx">account</span><span class="p">,</span> <span class="nx">timestamp</span><span class="p">,</span> <span class="nx">limit</span><span class="p">,</span> <span class="nx">reverse</span><span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">})();</span>
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON &quot;result&quot; like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs1qqt6rwnk7qysydpa25mdt6wv3xgyc8k0prz6r4h"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"receive"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"vout"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"confirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockhash"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockindex"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blocktime"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"blockheight"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"txid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c60f0cf697b3161e8f94d496566de151626af0aa9d305c01d9f1b1865fcb1070"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"walletconflicts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736508121</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timereceived"</span><span class="p">:</span><span class="w"> </span><span class="mi">1736508121</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="err">more</span><span class="w"> </span><span class="err">transactions</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p>Get list of unconfirmed transactions for a specified account starting from a specific timestamp.</p>
+<h3 id='params-36'>Params</h3>
+<table><thead>
+<tr>
+<th>N.</th>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>account</td>
+<td>Required</td>
+<td>Account name (<code>*</code> for all)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>timestamp</td>
+<td>Required</td>
+<td>Unix timestamp in seconds for when transaction was received</td>
+</tr>
+<tr>
+<td>3</td>
+<td>limit</td>
+<td><code>maxTXs</code></td>
+<td>Maximum number of records to return</td>
+</tr>
+<tr>
+<td>4</td>
+<td>reverse</td>
+<td><code>false</code></td>
+<td>(bool) Reverse order of results</td>
+</tr>
+</tbody></table>
+
+<p>Notes:</p>
+
+<ul>
+<li><code>maxTXs</code> refers to wallet <code>maxHistoryTXs</code> configuration</li>
+<li><code>limit</code> can not exceed <code>maxHistoryTXs</code> configuration</li>
+</ul>
 <h2 id='listunspent'>listunspent</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">minconf</span><span class="p">,</span> <span class="nx">maxconf</span><span class="p">,</span> <span class="nx">addrs</span><span class="p">;</span>
 <span class="nx">addrs</span><span class="o">=</span><span class="p">[</span><span class="dl">"</span><span class="s2">rs1q3qm3e6sxd0mzax54jx6p3th0p2adzxdx2tm3zl</span><span class="dl">"</span><span class="p">];</span>
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell--vars"><code><span class="nv">minconf</span><span class="o">=</span>0
@@ -17326,7 +17775,7 @@ hsw-rpc listunspent <span class="nv">$minconf</span> <span class="nv">$maxconf</
 </span></code></pre></div>
 <p>Get unsepnt transaction outputs from all addreses, or a specific set
 of addresses.</p>
-<h3 id='params-32'>Params</h3>
+<h3 id='params-37'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -17391,7 +17840,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 <div class="highlight"><pre class="highlight plaintext"><code>94f8a6dbaea9b5863d03d3b606c24e2e588d9e82564972148d54058660308e6a
 </code></pre></div>
 <p>Send HNS from an account to an address.</p>
-<h3 id='params-33'>Params</h3>
+<h3 id='params-38'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -17468,7 +17917,7 @@ hsw-rpc sendmany <span class="nv">$fromaccount</span> <span class="s2">"</span><
 <div class="highlight"><pre class="highlight plaintext"><code>121d1e44f8125f02433e96c7b672a34af00be9906895f0ee51aaf504f4d76b78
 </code></pre></div>
 <p>Send different amounts of HNS from an account to multiple addresses. </p>
-<h3 id='params-34'>Params</h3>
+<h3 id='params-39'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -17607,7 +18056,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 }
 </code></pre></div>
 <p>Create transaction sending HNS to a given address without signing or broadcasting it.</p>
-<h3 id='params-35'>Params</h3>
+<h3 id='params-40'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -17686,7 +18135,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 <div class="highlight"><pre class="highlight plaintext"><code>552006b288266ab26fa30d9048b758a469a4101fd8235eff2384141ca5cf604d
 </code></pre></div>
 <p>Send HNS to an address.</p>
-<h3 id='params-36'>Params</h3>
+<h3 id='params-41'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -17762,7 +18211,7 @@ This command involves entering HNS values, be careful with <a href="#values">dif
 </code></pre></div>
 <p>Set the fee rate for all new transactions until the fee is
 changed again, or set to <code>0</code> (will return to automatic fee).</p>
-<h3 id='params-37'>Params</h3>
+<h3 id='params-42'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -17813,7 +18262,7 @@ changed again, or set to <code>0</code> (will return to automatic fee).</p>
 specified Handshake address in the wallet.</p>
 
 <aside>Note: Due to behavior of some shells like bash, if your message contains spaces you may need to add additional quotes like this: <code>"'"$message"'"</code></aside>
-<h3 id='params-38'>Params</h3>
+<h3 id='params-43'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -17870,7 +18319,7 @@ specified Handshake address in the wallet.</p>
 Handshake address that owns the specified name in the wallet.</p>
 
 <aside>Note: Due to behavior of some shells like bash, if your message contains spaces you may need to add additional quotes like this: <code>"'"$message"'"</code></aside>
-<h3 id='params-39'>Params</h3>
+<h3 id='params-44'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -17919,7 +18368,7 @@ Handshake address that owns the specified name in the wallet.</p>
 </code></pre></div>
 <p>Locks the wallet by removing the decryption key from memory.
 See <a href="#walletpassphrase">walletpassphrase</a>.</p>
-<h3 id='params-40'>Params</h3>
+<h3 id='params-45'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -17967,7 +18416,7 @@ See <a href="#walletpassphrase">walletpassphrase</a>.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>null
 </code></pre></div>
 <p>Change the wallet encryption pasphrase</p>
-<h3 id='params-41'>Params</h3>
+<h3 id='params-46'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -18021,7 +18470,7 @@ See <a href="#walletpassphrase">walletpassphrase</a>.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>null
 </code></pre></div>
 <p>Store wallet decryption key in memory, unlocking the wallet keys.</p>
-<h3 id='params-42'>Params</h3>
+<h3 id='params-47'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -18075,7 +18524,7 @@ See <a href="#walletpassphrase">walletpassphrase</a>.</p>
 </code></pre></div>
 <p>Deletes the specified transaction from the wallet database.
 See <a href="#importprunedfunds">importprunedfunds</a>.</p>
-<h3 id='params-43'>Params</h3>
+<h3 id='params-48'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -18124,7 +18573,7 @@ See <a href="#importprunedfunds">importprunedfunds</a>.</p>
 </span></code></pre></div>
 <p>Get information about memory usage.
 Identical to node RPC call <a href="#getmemoryinfo">getmemoryinfo</a>.</p>
-<h3 id='params-44'>Params</h3>
+<h3 id='params-49'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -18173,7 +18622,7 @@ Identical to node RPC call <a href="#getmemoryinfo">getmemoryinfo</a>.</p>
 <p>Change Log level of the running node.</p>
 
 <p>Levels are: <code>NONE</code>, <code>ERROR</code>, <code>WARNING</code>, <code>INFO</code>, <code>DEBUG</code>, <code>SPAM</code></p>
-<h3 id='params-45'>Params</h3>
+<h3 id='params-50'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
@@ -18215,7 +18664,7 @@ Identical to node RPC call <a href="#getmemoryinfo">getmemoryinfo</a>.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>"Stopping."
 </code></pre></div>
 <p>Closes the wallet database.</p>
-<h3 id='params-46'>Params</h3>
+<h3 id='params-51'>Params</h3>
 <table><thead>
 <tr>
 <th>N.</th>
