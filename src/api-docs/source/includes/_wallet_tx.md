@@ -269,8 +269,8 @@ id <br> _string_ | Wallet ID
 Parameter             | Default   | Description
 --------------------- | -------   | -----------
 account <br> _string_ | Optional  | Account name to filter transactions. All TXs by default.
-after <br> _hex_      | Optional  | List transactions after this tx hash (priority 1)
-time <br> _int_       | Optional  | List transactions after this timestamp in epoch seconds (priority 2)
+after <br> _hex_      | Optional  | List transactions after this tx hash
+time <br> _int_       | Optional  | List transactions after this timestamp in epoch seconds, used if `after` is not specified.
 limit <br> _int_      | `maxTXs`* | Maximum number of transactions to return
 reverse <br> _bool_   | `false`   | TX Ordering, whether it should reverse the chronological order (oldest to newest)
 
@@ -396,8 +396,8 @@ id <br> _string_ | Wallet ID
 Parameter             | Default   | Description
 --------------------- | --------  | -----------
 account <br> _string_ | None      | Account name to filter transactions
-after <br> _string_   | None      | List transactions after this transaction ID (Priority 1)
-time <br> _int_       | None      | List transactions after this timestamp in epoch seconds (Priority 2)
+after <br> _hex_      | Optional  | List transactions after this tx hash
+time <br> _int_       | Optional  | List transactions after this timestamp in epoch seconds, used if `after` is not specified.
 limit <br> _int_      | `maxTXs`* | Maximum number of transactions to return
 reverse <br> _bool_   | `false`   | TX Ordering, whether it should reverse the chronological order (oldest to newest)
 

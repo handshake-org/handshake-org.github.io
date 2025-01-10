@@ -1927,29 +1927,29 @@ N. | Name | Default |  Description
 2 | minconf | Optional | Minimum confirmations required to count a transaction
 3 | watchOnly | Optional | (bool) Whether to include watch-only addresses
 
-
-
-## listtransactions
+## listhistory
 
 ```javascript
-let account, count, from, watchOnly;
+let account, limit, reverse;
 ```
 
 ```shell--vars
-account='hot'
+account='default'
+limit=10
+reverse=false
 ```
 
 ```shell--curl
 curl http://x:api-key@127.0.0.1:14039 \
   -X POST \
   --data '{
-    "method": "listtransactions",
-    "params": [ "'$account'" ]
+    "method": "listhistory",
+    "params": [ "'$account'", '$limit', '$reverse' ]
   }'
 ```
 
 ```shell--cli
-hsw-rpc listtransactions $account
+hsw-rpc listhistory $account $limit $reverse
 ```
 
 ```javascript
@@ -1965,7 +1965,7 @@ const walletOptions = {
 const walletClient = new WalletClient(walletOptions);
 
 (async () => {
-  const result = await walletClient.execute('listtransactions', [account]);
+  const result = await walletClient.execute('listhistory', [account, limit, reverse]);
   console.log(result);
 })();
 ```
@@ -1976,70 +1976,465 @@ const walletClient = new WalletClient(walletOptions);
 [
   {
     "account": "default",
-    "address": "rs1q7w7qm0cjtsxnkkssjxs05ud4jyfgwsgrundcw6",
+    "address": "rs1q7dlwsp4zpclyvc8683kn9w0k9ft0vegqqc9rhn",
     "category": "receive",
-    "amount": 2000,
+    "amount": 10000,
     "label": "default",
-    "vout": 0,
-    "confirmations": 1497,
-    "blockhash": "7295cec3fd81a2c2ddddf3faf6c000614b429ae0f8c1b2ef83ec937ac227d8e1",
+    "vout": 1,
+    "confirmations": 29,
+    "blockhash": "5f686f1cbca95a8b99e42a610d18834392bd8b9eb5ba078917f4c6efeeb7fdb5",
     "blockindex": -1,
-    "blocktime": 1580917307,
-    "blockheight": 104,
-    "txid": "adb098a6b38e7c4b2dd0af454f0c9537a3ec735a0b84c3d20b6f241768be12f2",
+    "blocktime": 1736248964,
+    "blockheight": 201,
+    "txid": "cc7281e2a9db1c8af883a6d4dc9caddbf3819f577d5ae8c7f0d2d4fd03916389",
     "walletconflicts": [],
-    "time": 1580917307,
-    "timereceived": 1580917307
+    "time": 1736248939,
+    "timereceived": 1736248939
   },
-  {
-    "account": "default",
-    "address": "rs1q7w7qm0cjtsxnkkssjxs05ud4jyfgwsgrundcw6",
-    "category": "receive",
-    "amount": 2000,
-    "label": "default",
-    "vout": 0,
-    "confirmations": 1499,
-    "blockhash": "0e7cc9e0dff3d0b3322cec63dad7160fc68a4e7ec3e7a32b5aa84418dfdb7d7c",
-    "blockindex": -1,
-    "blocktime": 1580917305,
-    "blockheight": 102,
-    "txid": "c256c4d550227f5ecd3d6f2af2e9d7005738f5b7b93c62f73746d68f067e9041",
-    "walletconflicts": [],
-    "time": 1580917307,
-    "timereceived": 1580917307
-  },
-  {
-    "account": "default",
-    "address": "rs1q7w7qm0cjtsxnkkssjxs05ud4jyfgwsgrundcw6",
-    "category": "receive",
-    "amount": 2000,
-    "label": "default",
-    "vout": 0,
-    "confirmations": 1492,
-    "blockhash": "167fc99c384ee2ab6e2e3b0a32f4d0d979aaf99cc3b285fbf642f704a6a939c3",
-    "blockindex": -1,
-    "blocktime": 1580917308,
-    "blockheight": 109,
-    "txid": "cfef79516a5f0159ec95a49e5ec25295315dafcbbed408d2a13a0aec05005953",
-    "walletconflicts": [],
-    "time": 1580917307,
-    "timereceived": 1580917307
-  }
+  // ... more transactions
 ]
 ```
 
-Get all recent transactions for specified account up to a limit, starting from
-a specified index.
+Get transaction history for a specified account.
 
 ### Params
-N. | Name | Default |  Description
---------- | --------- | --------- | -----------
-1 | account | Optional | Account name
-2 | count | Optional | Max number of transactions to return
-3 | from | Optional | Number of oldest transactions to skip
-4 | watchOnly | Optional | Whether to include watch-only addresses
+
+N.  | Name      | Default  | Description
+--- | --------- | -------- | -----------
+1   | account   | Required | Account name (`*` for all)
+2   | limit     | `maxTXs` | Maximum number of records to return
+3   | reverse   | `false`  | (bool) Reverse order of results
+
+Notes:
+
+  - `maxTXs` refers to wallet `maxHistoryTXs` configuration
+  - `limit` can not exceed `maxHistoryTXs` configuration
 
 
+## listhistoryafter
+
+```javascript
+let account, txid, limit, reverse;
+```
+
+```shell--vars
+account='default'
+txid='cc7281e2a9db1c8af883a6d4dc9caddbf3819f577d5ae8c7f0d2d4fd03916389'
+limit=10
+reverse=false
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14039 \
+  -X POST \
+  --data '{
+    "method": "listhistoryafter",
+    "params": [ "'$account'", "'$txid'", '$limit', '$reverse' ]
+  }'
+```
+
+```shell--cli
+hsw-rpc listhistoryafter $account $txid $limit $reverse
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+
+(async () => {
+  const result = await walletClient.execute('listhistoryafter', [account, txid, limit, reverse]);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON "result" like this:
+
+```json
+[
+  {
+    "account": "default",
+    "address": "rs1q3rth02c6p9c3qh24nera8dwsvu3m3aklkca8lp",
+    "category": "receive",
+    "amount": 0,
+    "label": "default",
+    "vout": 0,
+    "confirmations": 28,
+    "blockhash": "398a08cb285dd56ff0b561c20303cd7cf91ed0a05effc0268c2f01d6dbc4cf7d",
+    "blockindex": -1,
+    "blocktime": 1736249028,
+    "blockheight": 202,
+    "txid": "886f0174ee523d627470813b774a3cdd88b04e174d4bcaf447b02706d184203e",
+    "walletconflicts": [],
+    "time": 1736249025,
+    "timereceived": 1736249025
+  },
+  // ... more transactions
+]
+```
+
+Get transaction history for a specified account after a specific transaction.
+Useful for pagination of results.
+
+### Params
+
+N.  | Name      | Default   | Description
+--- | --------- | --------- | -----------
+1   | account   | Required  | Account name (`*` for all)
+2   | txid      | Required  | Transaction Hash to start listing from
+3   | limit     | `maxTXs`  | Maximum number of records to return
+4   | reverse   | `false`   | (bool) Reverse order of results
+
+Notes:
+
+  - `maxTXs` refers to wallet `maxHistoryTXs` configuration
+  - `limit` can not exceed `maxHistoryTXs` configuration
+
+
+## listhistorybytime
+
+```javascript
+let account, timestamp, limit, reverse;
+```
+
+```shell--vars
+account='default'
+timestamp=1580917307
+limit=10
+reverse=false
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14039 \
+  -X POST \
+  --data '{
+    "method": "listhistorybytime",
+    "params": [ "'$account'", '$timestamp', '$limit', '$reverse' ]
+  }'
+```
+
+```shell--cli
+hsw-rpc listhistorybytime $account $timestamp $limit $reverse
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+
+(async () => {
+  const result = await walletClient.execute('listhistorybytime', [account, timestamp, limit, reverse]);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON "result" like this:
+
+```json
+[
+  {
+    "account": "default",
+    "address": "rs1qndc6l5hqmsrmqvlyrxumnl4lv4gwcmepn5u8mg",
+    "category": "receive",
+    "amount": 0,
+    "label": "default",
+    "vout": 0,
+    "confirmations": 22,
+    "blockhash": "6e6fed0372484d88a9686999445e3f39352f45e5dc0188dbabf37e016908c1db",
+    "blockindex": -1,
+    "blocktime": 1736249056,
+    "blockheight": 208,
+    "txid": "0243800d6ac2631225ec94ce7a958ad95aa43433cab079dae17ef5d199e23ed9",
+    "walletconflicts": [],
+    "time": 1736249054,
+    "timereceived": 1736249054
+  }
+  // ... more transactions
+]
+```
+
+Get transaction history for a specified account starting from a specific timestamp.
+
+### Params
+
+N.  | Name      | Default   | Description
+--- | --------- | --------- | -----------
+1   | account   | Required  | Account name (`*` for all)
+2   | timestamp | Required  | Unix timestamp in seconds (block median time past)
+3   | limit     | `maxTXs`  | Maximum number of records to return
+4   | reverse   | `false`   | (bool) Reverse order of results
+
+Notes:
+
+  - `maxTXs` refers to wallet `maxHistoryTXs` configuration
+  - `limit` can not exceed `maxHistoryTXs` configuration
+
+
+## listunconfirmed
+
+```javascript
+let account, limit, reverse;
+```
+
+```shell--vars
+account='default'
+limit=10
+reverse=false
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14039 \
+  -X POST \
+  --data '{
+    "method": "listunconfirmed",
+    "params": [ "'$account'", '$limit', '$reverse' ]
+  }'
+```
+
+```shell--cli
+hsw-rpc listunconfirmed $account $limit $reverse
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+
+(async () => {
+  const result = await walletClient.execute('listunconfirmed', [account, limit, reverse]);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON "result" like this:
+
+```json
+[
+  {
+    "account": "default",
+    "address": "rs1qqt6rwnk7qysydpa25mdt6wv3xgyc8k0prz6r4h",
+    "category": "receive",
+    "amount": 10,
+    "label": "default",
+    "vout": 0,
+    "confirmations": 0,
+    "blockhash": null,
+    "blockindex": -1,
+    "blocktime": 0,
+    "blockheight": -1,
+    "txid": "6b617a350bb128a6f23d8fdcf0c5c61d68980b880f39275a52fc8f1d6b7a839f",
+    "walletconflicts": [],
+    "time": 1736508118,
+    "timereceived": 1736508118
+  }
+  // ... more transactions
+]
+```
+
+Get list of unconfirmed transactions for a specified account.
+
+### Params
+N.  | Name      | Default   | Description
+--- | --------- | --------- | -----------
+1   | account   | Required  | Account name (`*` for all)
+2   | limit     | `maxTXs` | Maximum number of records to return
+3   | reverse   | `false`  | (bool) Reverse order of results
+
+Notes:
+
+  - `maxTXs` refers to wallet `maxHistoryTXs` configuration
+  - `limit` can not exceed `maxHistoryTXs` configuration
+
+
+## listunconfirmedafter
+
+```javascript
+let account, txid, limit, reverse;
+```
+
+```shell--vars
+account='default'
+txid='6b617a350bb128a6f23d8fdcf0c5c61d68980b880f39275a52fc8f1d6b7a839f'
+limit=10
+reverse=false
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14039 \
+  -X POST \
+  --data '{
+    "method": "listunconfirmedafter",
+    "params": [ "'$account'", "'$txid'", '$limit', '$reverse' ]
+  }'
+```
+
+```shell--cli
+hsw-rpc listunconfirmedafter $account $txid $limit $reverse
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+
+(async () => {
+  const result = await walletClient.execute('listunconfirmedafter', [account, txid, limit, reverse]);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON "result" like this:
+
+```json
+[
+  {
+    "account": "default",
+    "address": "rs1qqt6rwnk7qysydpa25mdt6wv3xgyc8k0prz6r4h",
+    "category": "receive",
+    "amount": 11,
+    "label": "default",
+    "vout": 0,
+    "confirmations": 0,
+    "blockhash": null,
+    "blockindex": -1,
+    "blocktime": 0,
+    "blockheight": -1,
+    "txid": "c60f0cf697b3161e8f94d496566de151626af0aa9d305c01d9f1b1865fcb1070",
+    "walletconflicts": [],
+    "time": 1736508121,
+    "timereceived": 1736508121
+  },
+  // ... more transactions
+]
+```
+
+Get list of unconfirmed transactions for a specified account after a specific transaction.
+Useful for pagination of results.
+
+### Params
+N.  | Name      | Default   | Description
+--- | --------- | --------- | -----------
+1   | account   | Required  | Account name (`*` for all)
+2   | txid      | Required  | Transaction ID to start listing from
+3   | limit     | `maxTXs`  | Maximum number of records to return
+4   | reverse   | `false`   | (bool) Reverse order of results
+
+Notes:
+
+  - `maxTXs` refers to wallet `maxHistoryTXs` configuration
+  - `limit` can not exceed `maxHistoryTXs` configuration
+
+## listunconfirmedbytime
+
+```javascript
+let account, timestamp, limit, reverse;
+```
+
+```shell--vars
+account='default'
+timestamp=1736508121
+limit=10
+reverse=false
+```
+
+```shell--curl
+curl http://x:api-key@127.0.0.1:14039 \
+  -X POST \
+  --data '{
+    "method": "listunconfirmedbytime",
+    "params": [ "'$account'", '$timestamp', '$limit', '$reverse' ]
+  }'
+```
+
+```shell--cli
+hsw-rpc listunconfirmedbytime $account $timestamp $limit $reverse
+```
+
+```javascript
+const {WalletClient} = require('hs-client');
+const {Network} = require('hsd');
+const network = Network.get('regtest');
+
+const walletOptions = {
+  port: network.walletPort,
+  apiKey: 'api-key'
+}
+
+const walletClient = new WalletClient(walletOptions);
+
+(async () => {
+  const result = await walletClient.execute('listunconfirmedbytime', [account, timestamp, limit, reverse]);
+  console.log(result);
+})();
+```
+
+> The above command returns JSON "result" like this:
+
+```json
+[
+  {
+    "account": "default",
+    "address": "rs1qqt6rwnk7qysydpa25mdt6wv3xgyc8k0prz6r4h",
+    "category": "receive",
+    "amount": 11,
+    "label": "default",
+    "vout": 0,
+    "confirmations": 0,
+    "blockhash": null,
+    "blockindex": -1,
+    "blocktime": 0,
+    "blockheight": -1,
+    "txid": "c60f0cf697b3161e8f94d496566de151626af0aa9d305c01d9f1b1865fcb1070",
+    "walletconflicts": [],
+    "time": 1736508121,
+    "timereceived": 1736508121
+  }
+  // ... more transactions
+]
+```
+
+Get list of unconfirmed transactions for a specified account starting from a specific timestamp.
+
+### Params
+N.  | Name      | Default   | Description
+--- | --------- | --------- | -----------
+1   | account   | Required  | Account name (`*` for all)
+2   | timestamp | Required  | Unix timestamp in seconds for when transaction was received
+3   | limit     | `maxTXs`  | Maximum number of records to return
+4   | reverse   | `false`   | (bool) Reverse order of results
+
+Notes:
+
+  - `maxTXs` refers to wallet `maxHistoryTXs` configuration
+  - `limit` can not exceed `maxHistoryTXs` configuration
 
 ## listunspent
 
